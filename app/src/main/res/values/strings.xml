@@ -18,6 +18,8 @@
     <string name="sign_in_with">Sign In With</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
+    <string name="sign_in_guest"><u>Continue as guest</u></string>
+
 
 
 </resources>

@@ -106,6 +106,7 @@ public class SignIn extends Fragment {
             }
         };
 
+
         bFacebook.setOnClickListener(listener);
         bTwitter.setOnClickListener(listener);
         bGoogle.setOnClickListener(listener);
