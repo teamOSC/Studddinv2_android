@@ -1,9 +1,49 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="in.tosc.studddin.SignIn">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up"/>
 
-</FrameLayout>
+    <Button
+        android:layout_margin="@dimen/signin_button_margin"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up"/>
+
+    <TextView
+        android:id="@+id/sign_in_with"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_in_with" />
+
+    <Button
+        android:id="@+id/b_facebook"
+        android:layout_width="@dimen/signin_button_size"
+        android:layout_height="@dimen/signin_button_size"
+        android:layout_margin="@dimen/signin_button_margin"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/facebook"
+        />
+
+    <Button
+        android:id="@+id/b_twitter"
+        android:layout_width="@dimen/signin_button_size"
+        android:layout_height="@dimen/signin_button_size"
+        android:layout_margin="@dimen/signin_button_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/twitter"/>
+
+    <Button
+        android:id="@+id/b_google"
+        android:layout_width="@dimen/signin_button_size"
+        android:layout_height="@dimen/signin_button_size"
+        android:layout_margin="@dimen/signin_button_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/googleplus"/>
+
+</RelativeLayout>

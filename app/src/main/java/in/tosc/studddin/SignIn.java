@@ -1,11 +1,18 @@
 package in.tosc.studddin;
 
 
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 /**
@@ -18,6 +25,8 @@ public class SignIn extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private View view;
+    private Button bFacebook,bTwitter,bGoogle;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -59,7 +68,44 @@ public class SignIn extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_in, container, false);
+        view = inflater.inflate(R.layout.fragment_sign_in, container, false);
+
+
+        return view;
+    }
+
+    private void displayInit()
+    {
+        int screenWidth, screenHeight;
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        screenHeight = displayMetrics.heightPixels;
+        screenWidth = displayMetrics.widthPixels;
+
+
+
+
+        bFacebook = (Button)view.findViewById(R.id.b_facebook);
+        bTwitter = (Button)view.findViewById(R.id.b_twitter);
+        bGoogle = (Button)view.findViewById(R.id.b_google);
+
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
+
+                UserDataInput newFragment = new UserDataInput();
+
+                transaction.replace(R.id.signon_container,newFragment).addToBackStack(null).commit();
+            }
+        };
+
+
+
     }
 
 
