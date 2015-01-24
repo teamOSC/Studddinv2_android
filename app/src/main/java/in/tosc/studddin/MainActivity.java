@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -56,13 +57,18 @@ public class MainActivity extends ActionBarActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (position) {
             case 0:
+            default:
+                Log.d("Studdd.in", "feed fragment");
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, new FeedFragment())
+                        .replace(R.id.container, FeedFragment.newInstance())
                         .commit();
+            break;
             case 1:
+                Log.d("Studdd.in", "notes fragment");
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new NotesFragment())
                         .commit();
+            break;
         }
 
     }
