@@ -39,4 +39,9 @@
     <string name="notes_branch_name">Branch Name</string>
     <string name="notes_subject_name">Subject Name</string>
 
+    <!-- Feed -->
+    <string name="feed_category_interests" >Your Interests</string>
+    <string name="feed_category_college" >Your College</string>
+    <string name="feed_category_around" >Your Locality</string>
+
 </resources>
