@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ public class NavigationDrawerFragment extends Fragment {
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
+    private LinearLayout mDrawerLinearLayout;
     private ListView mDrawerListView;
     private View mFragmentContainerView;
 
@@ -89,8 +91,9 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
+        mDrawerLinearLayout = (LinearLayout) inflater.inflate(
                 R.layout.fragment_main_navdrawer, container, false);
+        mDrawerListView = (ListView) mDrawerLinearLayout.findViewById(R.id.main_navdrawer_list);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -108,7 +111,7 @@ public class NavigationDrawerFragment extends Fragment {
                         "Listings"
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
+        return mDrawerLinearLayout;
     }
 
     public boolean isDrawerOpen() {
