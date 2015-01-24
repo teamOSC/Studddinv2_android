@@ -3,6 +3,7 @@ package in.tosc.studddin.fragments.notes;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,14 +80,19 @@ public class NotesSearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//                fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager(); //getFragmentManager().beginTransaction();
+
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.notes_slide_exit, R.anim.notes_slide_entry);
 
                 NotesUploadFragment newFragment = new NotesUploadFragment();
-                fragmentTransaction.replace(R.id.notes_upload_container, newFragment);
+
+                fragmentTransaction.replace(R.id.notes_upload_container, newFragment).addToBackStack(null).commit();
 
                 // Start the animated transition.
-                fragmentTransaction.commit();
+
             }
         });
 

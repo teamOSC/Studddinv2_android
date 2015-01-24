@@ -1,6 +1,7 @@
 package in.tosc.studddin.fragments.notes;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -36,6 +37,17 @@ public class NotesUploadFragment extends Fragment {
         topicNameEdTxt = (EditText)rootView.findViewById(R.id.notes_topic);
         branchNameEdTxt = (EditText)rootView.findViewById(R.id.notes_branch);
         subjectNameEdTxt = (EditText)rootView.findViewById(R.id.notes_subject);
+
+
+        attachButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+            }
+        });
 
 
 
