@@ -48,6 +48,7 @@ public class FeedFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_feed, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.feed_recycler_view);
 
+
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
