@@ -81,15 +81,14 @@ public class NotesSearchFragment extends Fragment {
             public void onClick(View v) {
 
 
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager(); //getFragmentManager().beginTransaction();
+                FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.notes_slide_exit, R.anim.notes_slide_entry);
+                fragmentTransaction.setCustomAnimations(R.anim.notes_slide_entry,R.anim.notes_slide_exit);
 
                 NotesUploadFragment newFragment = new NotesUploadFragment();
 
-                fragmentTransaction.replace(R.id.notes_upload_container, newFragment).addToBackStack(null).commit();
+                fragmentTransaction.replace(R.id.notes_pager, newFragment).addToBackStack(null).commit();
 
                 // Start the animated transition.
 
