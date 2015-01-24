@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="horizontal"
-        android:background="#222222"
         >
 
         <ImageView
@@ -36,7 +35,6 @@
 
 
                 android:textSize="15sp"
-                android:textColor="#ffffff"
                 android:layout_marginTop="3dp"
                 />
 
@@ -48,7 +46,6 @@
                 android:textSize="14sp"
                 android:text="Institute"
 
-                android:textColor="#f0f080"
                 />
 
             <TextView
@@ -59,7 +56,6 @@
                 android:textSize="14sp"
                 android:text="Qualification"
 
-                android:textColor="#f0f080"
                 />
 
             <TextView
@@ -70,7 +66,6 @@
                 android:text="Area"
 
                 android:textSize="14sp"
-                android:textColor="#f0f080"
                 />
 
 
@@ -93,8 +88,6 @@
             android:layout_weight="0.12"
             android:orientation="vertical"
             android:layout_marginBottom="5dp"
-            android:textColor="#ffffff"
-            android:text="Status"
             android:layout_marginTop="8dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="10dp"
@@ -116,7 +109,6 @@
                 android:gravity="center"
                 android:layout_weight="1"
                 android:textSize="10sp"
-                android:textColor="#ffffff"
 
                 android:layout_marginBottom="5dp"
                 android:text="Status"
