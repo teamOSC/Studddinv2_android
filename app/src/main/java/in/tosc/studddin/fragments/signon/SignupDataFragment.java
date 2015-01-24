@@ -1,10 +1,8 @@
-package in.tosc.studddin;
+package in.tosc.studddin.fragments.signon;
 
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +11,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.HashMap;
-import java.util.Map;
+
+import in.tosc.studddin.R;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link UserDataInput#newInstance} factory method to
+ * Use the {@link SignupDataFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UserDataInput extends Fragment {
+public class SignupDataFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -46,12 +45,12 @@ public class UserDataInput extends Fragment {
 
 
 
-    public static UserDataInput newInstance() {
-        UserDataInput fragment = new UserDataInput();
+    public static SignupDataFragment newInstance() {
+        SignupDataFragment fragment = new SignupDataFragment();
         return fragment;
     }
 
-    public UserDataInput() {
+    public SignupDataFragment() {
         // Required empty public constructor
     }
 
