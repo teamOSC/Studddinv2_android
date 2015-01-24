@@ -25,7 +25,7 @@ import in.tosc.studddin.fragments.people.PeopleSameInterestsFragment;
 public class PeopleFragment extends Fragment {
 
 
-    ViewPager notesPager;
+    ViewPager peoplePager;
     FragmentPagerAdapter fragmentPagerAdapter;
 
     public PeopleFragment() {
@@ -53,16 +53,32 @@ public class PeopleFragment extends Fragment {
             }
 
             @Override
+            public CharSequence getPageTitle(int position) {
+                switch (position) {
+                    case 0:
+                        return "Near Me";
+                    case 1:
+                        return "Same Institute";
+                    case 2:
+                        return "Same Interests";
+                }
+
+                return null;
+            }
+
+            @Override
             public int getCount() {
-                return 2;
+                return 3;
             }
         };
 
-        notesPager = (ViewPager) view.findViewById(R.id.notes_pager);
-        notesPager.setAdapter(fragmentPagerAdapter);
+        peoplePager = (ViewPager) view.findViewById(R.id.people_pager);
+        peoplePager.setAdapter(fragmentPagerAdapter);
 
         return view;
     }
+
+
 
 
 }

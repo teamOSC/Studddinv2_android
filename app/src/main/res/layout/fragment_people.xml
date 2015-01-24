@@ -6,10 +6,26 @@
     tools:context="in.tosc.studddin.fragments.PeopleFragment">
 
 
+
+
     <android.support.v4.view.ViewPager
         android:id="@+id/people_pager"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
+
+
+
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/pager_tab_strip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="#33b5e5"
+            android:textSize="20sp"
+            android:textColor="#fff"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+
 
     </android.support.v4.view.ViewPager>
 
