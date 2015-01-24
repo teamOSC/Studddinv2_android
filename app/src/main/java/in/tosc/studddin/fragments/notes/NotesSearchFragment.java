@@ -3,9 +3,13 @@ package in.tosc.studddin.fragments.notes;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import in.tosc.studddin.R;
 
@@ -15,6 +19,7 @@ import in.tosc.studddin.R;
  * create an instance of this fragment.
  */
 public class NotesSearchFragment extends Fragment {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -24,6 +29,8 @@ public class NotesSearchFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    Button addNotesButton;
+    EditText searchEdTxt;
 
     /**
      * Use this factory method to create a new instance of
@@ -33,6 +40,7 @@ public class NotesSearchFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment NotesSearchFragment.
      */
+
     // TODO: Rename and change types and number of parameters
     public static NotesSearchFragment newInstance(String param1, String param2) {
         NotesSearchFragment fragment = new NotesSearchFragment();
@@ -40,7 +48,9 @@ public class NotesSearchFragment extends Fragment {
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+
         return fragment;
+
     }
 
     public NotesSearchFragment() {
@@ -49,6 +59,7 @@ public class NotesSearchFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -59,8 +70,34 @@ public class NotesSearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notes_search, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_notes_search, container, false);
+        addNotesButton = (Button) rootView.findViewById(R.id.notes_button_add);
+        searchEdTxt = (EditText) rootView.findViewById(R.id.notes_search);
+
+        addNotesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager(); //getFragmentManager().beginTransaction();
+
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.notes_slide_exit, R.anim.notes_slide_entry);
+
+                NotesUploadFragment newFragment = new NotesUploadFragment();
+
+                fragmentTransaction.replace(R.id.notes_upload_container, newFragment).addToBackStack(null).commit();
+
+                // Start the animated transition.
+
+            }
+        });
+
+        return rootView;
+
     }
 
 
