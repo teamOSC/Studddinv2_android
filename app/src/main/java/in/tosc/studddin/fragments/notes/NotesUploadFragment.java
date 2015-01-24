@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import in.tosc.studddin.R;
 
@@ -20,6 +21,7 @@ public class NotesUploadFragment extends Fragment {
 
     Button attachButton, uploadButton;
     EditText topicNameEdTxt, branchNameEdTxt, subjectNameEdTxt;
+    String topicNameString = "", branchNameString = "", subjectNameString = "";
 
     public NotesUploadFragment() {
         // Required empty public constructor
@@ -51,6 +53,24 @@ public class NotesUploadFragment extends Fragment {
 
 
 
+        uploadButton = (Button)rootView.findViewById(R.id.notes_upload);
+
+        uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(topicNameEdTxt.length() < 1){
+                    Toast.makeText(getActivity(), "Please enter the Topic Name", Toast.LENGTH_SHORT)
+                            .show();
+                } else if (subjectNameEdTxt.length() < 1){
+                    Toast.makeText(getActivity(), "Please enter the Subject Name", Toast.LENGTH_SHORT)
+                            .show();
+                } else if(branchNameEdTxt.length() < 1){
+                    Toast.makeText(getActivity(), "Please enter the Branch Name", Toast.LENGTH_SHORT)
+                            .show();
+                }
+
+            }
+        });
 
 
 
