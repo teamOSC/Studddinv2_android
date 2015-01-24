@@ -13,5 +13,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
+    <string name="test_feeds">Feeds</string>
+    <string name="test_notes">Notes</string>
+    <string name="test_people">People</string>
 
 </resources>

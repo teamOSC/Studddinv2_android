@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import in.tosc.studddin.fragments.FeedFragment;
 import in.tosc.studddin.fragments.NotesFragment;
+import in.tosc.studddin.fragments.PeopleFragment;
 
 
 public class MainActivity extends ActionBarActivity
@@ -69,6 +70,13 @@ public class MainActivity extends ActionBarActivity
                         .replace(R.id.container, new NotesFragment())
                         .commit();
             break;
+            case 2:
+                Log.d("Studdd.in", "feed fragment");
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, new PeopleFragment())
+                        .commit();
+                break;
+
         }
 
     }
@@ -76,13 +84,13 @@ public class MainActivity extends ActionBarActivity
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                mTitle = "Feeds";
+                mTitle = getString(R.string.test_feeds);
                 break;
             case 2:
-                mTitle = "Notes";
+                mTitle = getString(R.string.test_notes);
                 break;
             case 3:
-                mTitle = getString(R.string.title_section3);
+                mTitle = getString(R.string.test_people);
                 break;
         }
     }
