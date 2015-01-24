@@ -106,7 +106,11 @@ public class FeedFragment extends Fragment {
             ViewHolder vh = new ViewHolder(v);
             RecyclerView.LayoutManager mHorizontalLayoutManager = new LinearLayoutManager(context,
                     LinearLayoutManager.HORIZONTAL, false);
-            FeedCategoryAdapter mFeedCategoryAdapter = new FeedCategoryAdapter(new CategoryWrapper[] {new CategoryWrapper(), new CategoryWrapper()});
+            CategoryWrapper[] categoryWrappers = new CategoryWrapper[6];
+            for (int i = 0; i < 6; ++i) {
+                categoryWrappers[i] = new CategoryWrapper();
+            }
+            FeedCategoryAdapter mFeedCategoryAdapter = new FeedCategoryAdapter(categoryWrappers);
             vh.mHorizontalRecyclerView.setAdapter(mFeedCategoryAdapter);
             vh.mHorizontalRecyclerView.setLayoutManager(mHorizontalLayoutManager);
             return vh;
