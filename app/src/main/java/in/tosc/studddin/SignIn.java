@@ -71,6 +71,8 @@ public class SignIn extends Fragment {
         view = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
 
+        displayInit();
+
         return view;
     }
 
@@ -104,6 +106,9 @@ public class SignIn extends Fragment {
             }
         };
 
+        bFacebook.setOnClickListener(listener);
+        bTwitter.setOnClickListener(listener);
+        bGoogle.setOnClickListener(listener);
 
 
     }

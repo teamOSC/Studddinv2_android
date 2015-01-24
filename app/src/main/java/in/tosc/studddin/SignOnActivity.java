@@ -1,6 +1,7 @@
 package in.tosc.studddin;
 
 import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,8 +15,11 @@ public class SignOnActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_on);
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-
+        SignIn newFragment = new SignIn();
+        transaction.replace(R.id.signon_container,newFragment).addToBackStack(null).commit();
     }
 
 
