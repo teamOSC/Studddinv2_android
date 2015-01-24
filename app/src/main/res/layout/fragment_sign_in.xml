@@ -1,0 +1,109 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="in.tosc.studddin.SignIn"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:orientation="vertical">
+
+
+    </LinearLayout>
+
+
+        <Button
+            android:layout_marginLeft="@dimen/signin_button_margin"
+            android:layout_marginRight="@dimen/signin_button_margin"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:text="@string/sign_up"/>
+
+        <Button
+            android:layout_marginLeft="@dimen/signin_button_margin"
+            android:layout_marginRight="@dimen/signin_button_margin"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:text="@string/sign_in"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+    <TextView
+        android:id="@+id/sign_in_with"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_in_with" />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/b_facebook"
+                android:layout_width="@dimen/signin_button_size"
+                android:layout_height="@dimen/signin_button_size"
+                android:layout_margin="@dimen/signin_button_margin"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/facebook"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+        <Button
+        android:id="@+id/b_twitter"
+        android:layout_width="@dimen/signin_button_size"
+        android:layout_height="@dimen/signin_button_size"
+        android:layout_margin="@dimen/signin_button_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/twitter"/>
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
+        <Button
+        android:id="@+id/b_google"
+        android:layout_width="@dimen/signin_button_size"
+        android:layout_height="@dimen/signin_button_size"
+        android:layout_margin="@dimen/signin_button_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/googleplus"/>
+         </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

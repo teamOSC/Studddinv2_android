@@ -1,5 +1,7 @@
 package in.tosc.studddin;
 
+import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +14,12 @@ public class SignOnActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_on);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        SignIn newFragment = new SignIn();
+        transaction.replace(R.id.signon_container,newFragment).addToBackStack(null).commit();
     }
 
 
@@ -24,9 +32,10 @@ public class SignOnActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
+         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        // Handle action bar item clicks here. The action bar will
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

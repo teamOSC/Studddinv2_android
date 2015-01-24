@@ -5,6 +5,7 @@
     <string name="title_activity_sign_on">SignOnActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_section1">Section 1</string>
@@ -16,5 +17,20 @@
     <string name="test_feeds">Feeds</string>
     <string name="test_notes">Notes</string>
     <string name="test_people">People</string>
+
+
+    <string name="user_name">Name</string>
+    <string name="institute_name">College or School</string>
+    <string name="email_id">Email - ID</string>
+    <string name="interests">Interests</string>
+    <string name="submit">Submit</string>
+    <string name="enter_name">Please Enter Name</string>
+    <string name="enter_institute">Please Enter Institute</string>
+    <string name="enter_email">Please enter an email address</string>
+    <string name="empty_interests">empty interests</string>
+    <string name="hello_blank_fragment">Settings</string>
+    <string name="sign_in_with">Sign In With</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
 
 </resources>
