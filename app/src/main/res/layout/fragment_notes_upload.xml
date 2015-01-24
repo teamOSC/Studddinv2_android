@@ -7,6 +7,9 @@
     <!-- TODO: Update blank fragment layout -->
 
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -19,14 +22,14 @@
             android:background="@drawable/attachpin"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="65dp" />
+            android:layout_marginTop="50dp" />
 
         <EditText
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:id="@+id/notes_topic"
             android:hint="@string/notes_topic_name"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="40dp"
             android:layout_below="@+id/notes_attach"
             android:layout_centerHorizontal="true" />
 
@@ -48,6 +51,19 @@
             android:layout_below="@+id/notes_subject"
             android:layout_centerHorizontal="true" />
 
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/upload"
+            android:id="@+id/notes_upload"
+
+            android:layout_alignParentRight = "true"
+            android:layout_marginRight="50dp"
+            android:layout_below="@+id/notes_branch"
+            android:layout_marginTop="10dp"
+            />
+
 
     </RelativeLayout>
+    </ScrollView>
 </FrameLayout>

@@ -17,8 +17,8 @@ import in.tosc.studddin.R;
 public class NotesUploadFragment extends Fragment {
 
 
-    Button attach;
-    EditText topicName, branchName, subjectName;
+    Button attachButton, uploadButton;
+    EditText topicNameEdTxt, branchNameEdTxt, subjectNameEdTxt;
 
     public NotesUploadFragment() {
         // Required empty public constructor
@@ -31,10 +31,12 @@ public class NotesUploadFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_notes_upload, container, false);
 
-        attach = (Button)rootView.findViewById(R.id.notes_attach);
-        topicName = (EditText)rootView.findViewById(R.id.notes_topic);
-        branchName = (EditText)rootView.findViewById(R.id.notes_branch);
-        subjectName = (EditText)rootView.findViewById(R.id.notes_subject);
+        attachButton = (Button)rootView.findViewById(R.id.notes_attach);
+        uploadButton = (Button)rootView.findViewById(R.id.notes_upload);
+        topicNameEdTxt = (EditText)rootView.findViewById(R.id.notes_topic);
+        branchNameEdTxt = (EditText)rootView.findViewById(R.id.notes_branch);
+        subjectNameEdTxt = (EditText)rootView.findViewById(R.id.notes_subject);
+
 
 
 

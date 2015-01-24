@@ -28,8 +28,8 @@ public class NotesSearchFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    Button addNotes;
-    EditText search;
+    Button addNotesButton;
+    EditText searchEdTxt;
 
     /**
      * Use this factory method to create a new instance of
@@ -72,10 +72,10 @@ public class NotesSearchFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_notes_search, container, false);
-        addNotes = (Button) rootView.findViewById(R.id.notes_button_add);
-        search = (EditText) rootView.findViewById(R.id.notes_search);
+        addNotesButton = (Button) rootView.findViewById(R.id.notes_button_add);
+        searchEdTxt = (EditText) rootView.findViewById(R.id.notes_search);
 
-        addNotes.setOnClickListener(new View.OnClickListener() {
+        addNotesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -85,7 +85,7 @@ public class NotesSearchFragment extends Fragment {
                 NotesUploadFragment newFragment = new NotesUploadFragment();
                 fragmentTransaction.replace(R.id.notes_upload_container, newFragment);
 
-               // Start the animated transition.
+                // Start the animated transition.
                 fragmentTransaction.commit();
             }
         });
