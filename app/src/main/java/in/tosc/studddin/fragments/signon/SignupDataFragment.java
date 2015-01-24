@@ -29,6 +29,7 @@ public class SignupDataFragment extends Fragment {
     private static final String institute = "institute";
     private static final String email = "email";
     private static final String interests = "interests";
+    private static final String qualificatons = "qualifications";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -41,6 +42,7 @@ public class SignupDataFragment extends Fragment {
     EditText instituteET;
     EditText emailET;
     EditText interestsET;
+    EditText qualificatonET;
 
 
 
@@ -74,6 +76,7 @@ public class SignupDataFragment extends Fragment {
         instituteET = (EditText) v.findViewById(R.id.institute_input);
         emailET = (EditText) v.findViewById(R.id.email_input);
         interestsET = (EditText) v.findViewById(R.id.interest_input);
+        qualificatonET = (EditText) v.findViewById(R.id.qualification_input);
 
         submitButton = (Button) v.findViewById(R.id.submit_button);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +108,8 @@ public class SignupDataFragment extends Fragment {
             input.put(institute, instituteET.getText().toString());
             input.put(email, emailET.getText().toString());
             input.put(interests, interestsET.getText().toString());
+            input.put(qualificatons,qualificatonET.getText().toString());
+
 
     }
 
@@ -129,7 +134,13 @@ public class SignupDataFragment extends Fragment {
            Toast.makeText(getActivity(),getActivity().getString(R.string.enter_email),Toast.LENGTH_LONG).show();
            f = false;
        }
-       
+
+       if(f && input.get(qualificatons).isEmpty())
+       {
+         Toast.makeText(getActivity(),"Please enter qualifications",Toast.LENGTH_LONG).show();
+         f = false;
+       }
+
        if(f && input.get(interests) == null)
        {
            input.remove(interests);
