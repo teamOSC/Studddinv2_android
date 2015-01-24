@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:background="#222222"
+        >
+
+        <ImageView
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:src="@android:drawable/ic_media_play"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_marginRight="5dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/people_name"
+                android:layout_weight="1.5"
+                android:text="Name"
+
+
+                android:textSize="15sp"
+                android:textColor="#ffffff"
+                android:layout_marginTop="3dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/people_institute"
+                android:layout_weight="1.25"
+                android:textSize="14sp"
+                android:text="Institute"
+
+                android:textColor="#f0f080"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/people_qualification"
+                android:layout_weight="1.25"
+                android:textSize="14sp"
+                android:text="Qualification"
+
+                android:textColor="#f0f080"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/people_area"
+                android:layout_weight="1.25"
+                android:text="Area"
+
+                android:textSize="14sp"
+                android:textColor="#f0f080"
+                />
+
+
+
+
+
+
+
+            </LinearLayout>
+
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="0.12"
+            android:orientation="vertical"
+            android:layout_marginBottom="5dp"
+            android:textColor="#ffffff"
+            android:text="Status"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="10dp"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:layout_weight="1.5"
+                android:background="@android:drawable/ic_menu_compass"
+                android:layout_marginTop="8dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/time"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="10sp"
+                android:textColor="#ffffff"
+
+                android:layout_marginBottom="5dp"
+                android:text="Status"
+                />
+
+            </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    </LinearLayout>
