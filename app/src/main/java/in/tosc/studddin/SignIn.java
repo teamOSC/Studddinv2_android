@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 /**
@@ -27,6 +28,7 @@ public class SignIn extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private View view;
     private Button bFacebook,bTwitter,bGoogle;
+    private TextView guestContinue;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -84,13 +86,10 @@ public class SignIn extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         screenHeight = displayMetrics.heightPixels;
         screenWidth = displayMetrics.widthPixels;
-
-
-
-
         bFacebook = (Button)view.findViewById(R.id.b_facebook);
         bTwitter = (Button)view.findViewById(R.id.b_twitter);
         bGoogle = (Button)view.findViewById(R.id.b_google);
+        guestContinue = (TextView)view.findViewById(R.id.sign_in_guest);
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -105,6 +104,13 @@ public class SignIn extends Fragment {
                 transaction.replace(R.id.signon_container,newFragment).addToBackStack(null).commit();
             }
         };
+
+        guestContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Put stuff here
+            }
+        });
 
         bFacebook.setOnClickListener(listener);
         bTwitter.setOnClickListener(listener);
