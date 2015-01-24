@@ -12,6 +12,7 @@ public class SignOnActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_on);
+
     }
 
 
@@ -24,9 +25,10 @@ public class SignOnActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
+         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        // Handle action bar item clicks here. The action bar will
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
