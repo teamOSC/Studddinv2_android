@@ -20,7 +20,7 @@ public class SignOnActivity extends ActionBarActivity {
         android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         SignOnFragment newFragment = new SignOnFragment();
-        transaction.replace(R.id.signon_container,newFragment).addToBackStack(null).commit();
+        transaction.replace(R.id.signon_container,newFragment).commit();
     }
 
 
