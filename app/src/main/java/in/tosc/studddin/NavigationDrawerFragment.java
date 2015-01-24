@@ -105,6 +105,7 @@ public class NavigationDrawerFragment extends Fragment {
                         "Feeds",
                         "Notes",
                         "People",
+                        "Listings"
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;

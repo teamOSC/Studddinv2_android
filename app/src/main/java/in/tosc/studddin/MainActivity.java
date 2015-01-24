@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import in.tosc.studddin.fragments.FeedFragment;
+import in.tosc.studddin.fragments.ListingsFragment;
 import in.tosc.studddin.fragments.NotesFragment;
 import in.tosc.studddin.fragments.PeopleFragment;
 
@@ -77,6 +78,13 @@ public class MainActivity extends ActionBarActivity
                         .commit();
                 break;
 
+            case 3:
+                Log.d("Studdd.in", "feed fragment");
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, new ListingsFragment())
+                        .commit();
+                break;
+
         }
 
     }
@@ -91,6 +99,9 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 3:
                 mTitle = getString(R.string.test_people);
+                break;
+            case 4:
+                mTitle = "Listings";
                 break;
         }
     }
