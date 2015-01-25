@@ -8,5 +8,6 @@
 
     <dimen name="signin_button_margin">5dp</dimen>
     <dimen name="signin_button_size">70dp</dimen>
+    <dimen name="fragment_sign_up_edit_text_margin">8dp</dimen>
 
 </resources>

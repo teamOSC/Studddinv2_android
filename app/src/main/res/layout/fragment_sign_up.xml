@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,18 +6,19 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_weight="3">
+        android:layout_gravity="top|center"
+        >
         <EditText
-            android:textAlignment="center"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/user_name"
             android:hint="@string/user_name"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+            android:singleLine="true"
             />
         <EditText
             android:textAlignment="center"
@@ -27,7 +28,8 @@
             android:id="@+id/user_password"
             android:inputType="textWebPassword"
             android:hint="@string/user_password"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+            android:singleLine="true"
             />
         <EditText
             android:textAlignment="center"
@@ -36,7 +38,8 @@
             android:layout_weight="1"
             android:id="@+id/user_institute"
             android:hint="@string/institute_name"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+            android:singleLine="true"
             />
         <EditText
             android:textAlignment="center"
@@ -45,7 +48,8 @@
             android:layout_weight="1"
             android:id="@+id/user_email"
             android:hint="@string/email_id"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+            android:singleLine="true"
             />
 
         <EditText
@@ -55,7 +59,8 @@
             android:layout_weight="1"
             android:id="@+id/user_qualifications"
             android:hint="@string/qualifications"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+            android:singleLine="true"
             />
 
         <EditText
@@ -65,26 +70,20 @@
             android:layout_weight="1"
             android:id="@+id/user_interests"
             android:hint="@string/interests"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+            android:singleLine="true"
             />
 
 
 
         </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-    </LinearLayout>
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
         android:layout_gravity="bottom|center"
         android:hint="@string/submit"
         android:id="@+id/submit_button"/>
 
 
-</LinearLayout>
+</FrameLayout>
