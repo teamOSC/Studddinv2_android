@@ -2,6 +2,8 @@
 <resources>
     <color name="signin_guest">#888888</color>
     <color name="white">#FFFFFF</color>
+    <color name="edittext_color">#009688</color>
+    <color name="search_color">#BDBDBD</color>
     <!-- App Main colors -->
     <color name="colorPrimary">#1565C0</color>
     <color name="colorPrimaryDark">#2D5D7B</color>
