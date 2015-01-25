@@ -1,6 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="in.tosc.studddin.fragments.signon.SignupDataFragment"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="in.tosc.studddin.fragments.signon.SignupDataFragment"
     android:orientation="vertical">
 
     <LinearLayout
@@ -13,6 +15,15 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/user_name"
+            android:hint="@string/user_name"
+            android:layout_margin="10dp"
+            />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/user_password"
+            android:inputType="textWebPassword"
             android:hint="@string/user_name"
             android:layout_margin="10dp"
             />

@@ -33,6 +33,7 @@ public class SignupDataFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     
     private static final String USER_NAME = "NAME";
+    private static final String USER_PASSWORD = "NAME";
     private static final String USER_INSTITUTE = "INSTITUTE";
     private static final String USER_EMAIL = "EMAIL";
     private static final String USER_INTERESTS = "INTERESTS";
@@ -103,6 +104,7 @@ public class SignupDataFragment extends Fragment {
 
     private void getInput() {
         input.put(USER_NAME, getStringFromEditText(R.id.user_name));
+        input.put(USER_PASSWORD, getStringFromEditText(R.id.user_password));
         input.put(USER_INSTITUTE, getStringFromEditText(R.id.user_institute));
         input.put(USER_EMAIL, getStringFromEditText(R.id.user_email));
         input.put(USER_INTERESTS, getStringFromEditText(R.id.user_interests));
@@ -113,6 +115,10 @@ public class SignupDataFragment extends Fragment {
         //validate input stored in input
         boolean f = true;
         if (input.get(USER_NAME).isEmpty()) {
+            Toast.makeText(getActivity(), getActivity().getString(R.string.enter_name), Toast.LENGTH_LONG).show();
+            f = false;
+        }
+        if (input.get(USER_PASSWORD).isEmpty()) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.enter_name), Toast.LENGTH_LONG).show();
             f = false;
         }
@@ -152,7 +158,7 @@ public class SignupDataFragment extends Fragment {
         //push the valid input to parse
         ParseUser user = new ParseUser();
         user.setUsername(input.get(USER_EMAIL));
-        user.setPassword("password");
+        user.setPassword(input.get(USER_PASSWORD));
         user.setEmail(input.get(USER_EMAIL));
 
         // other fields can be set just like with ParseObject

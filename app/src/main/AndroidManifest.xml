@@ -15,6 +15,7 @@
         <activity
             android:screenOrientation="locked"
             android:name=".SignOnActivity"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/title_activity_sign_on" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -28,6 +28,7 @@
     <string name="interests">Interests</string>
     <string name="submit">Submit</string>
     <string name="enter_name">Please Enter Name</string>
+    <string name="enter_password">Please Enter password</string>
     <string name="enter_institute">Please Enter Institute</string>
     <string name="enter_email">Please enter an email address</string>
     <string name="empty_interests">empty interests</string>
