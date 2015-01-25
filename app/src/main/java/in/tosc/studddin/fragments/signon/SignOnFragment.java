@@ -26,7 +26,8 @@ public class SignOnFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private View view;
-    private Button bFacebook,bTwitter,bGoogle;
+    private Button facebookLoginButton, twitterLoginButton, googleLoginButton;
+    private Button signUpButton, signInButton;
     private TextView guestContinue;
 
     // TODO: Rename and change types of parameters
@@ -85,9 +86,10 @@ public class SignOnFragment extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         screenHeight = displayMetrics.heightPixels;
         screenWidth = displayMetrics.widthPixels;
-        bFacebook = (Button)view.findViewById(R.id.b_facebook);
-        bTwitter = (Button)view.findViewById(R.id.b_twitter);
-        bGoogle = (Button)view.findViewById(R.id.b_google);
+        facebookLoginButton = (Button)view.findViewById(R.id.signon_button_facebook);
+        twitterLoginButton = (Button)view.findViewById(R.id.signon_button_twitter);
+        googleLoginButton = (Button)view.findViewById(R.id.signon_button_google);
+        signUpButton = (Button) view.findViewById(R.id.signon_button_signup);
         guestContinue = (TextView)view.findViewById(R.id.sign_in_guest);
 
         View.OnClickListener listener = new View.OnClickListener() {
@@ -111,9 +113,10 @@ public class SignOnFragment extends Fragment {
             }
         });
 
-        bFacebook.setOnClickListener(listener);
-        bTwitter.setOnClickListener(listener);
-        bGoogle.setOnClickListener(listener);
+        facebookLoginButton.setOnClickListener(listener);
+        twitterLoginButton.setOnClickListener(listener);
+        googleLoginButton.setOnClickListener(listener);
+        signUpButton.setOnClickListener(listener);
 
 
     }

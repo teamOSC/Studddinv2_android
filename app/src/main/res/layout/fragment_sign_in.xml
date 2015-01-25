@@ -22,6 +22,7 @@
         android:layout_weight="2"
         android:orientation="horizontal">
         <Button
+            android:id="@+id/signon_button_signup"
             android:layout_marginLeft="@dimen/signin_button_margin"
             android:layout_marginRight="@dimen/signin_button_margin"
             android:layout_width="0dp"
@@ -30,6 +31,7 @@
             android:text="@string/sign_up"/>
 
         <Button
+            android:id="@+id/signon_button_signin"
             android:layout_marginLeft="@dimen/signin_button_margin"
             android:layout_marginRight="@dimen/signin_button_margin"
             android:layout_width="0dp"
@@ -69,7 +71,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
             <Button
-                android:id="@+id/b_facebook"
+                android:id="@+id/signon_button_facebook"
                 android:layout_width="@dimen/signin_button_size"
                 android:layout_height="@dimen/signin_button_size"
                 android:layout_margin="@dimen/signin_button_margin"
@@ -85,7 +87,7 @@
             android:orientation="vertical">
 
         <Button
-        android:id="@+id/b_twitter"
+        android:id="@+id/signon_button_twitter"
         android:layout_width="@dimen/signin_button_size"
         android:layout_height="@dimen/signin_button_size"
         android:layout_margin="@dimen/signin_button_margin"
@@ -102,7 +104,7 @@
             android:orientation="vertical"
             >
         <Button
-        android:id="@+id/b_google"
+        android:id="@+id/signon_button_google"
         android:layout_width="@dimen/signin_button_size"
         android:layout_height="@dimen/signin_button_size"
         android:layout_margin="@dimen/signin_button_margin"
