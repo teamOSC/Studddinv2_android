@@ -11,6 +11,7 @@
         android:orientation="vertical"
         android:layout_weight="3">
         <EditText
+            android:textAlignment="center"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -19,15 +20,17 @@
             android:layout_margin="10dp"
             />
         <EditText
+            android:textAlignment="center"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/user_password"
             android:inputType="textWebPassword"
-            android:hint="@string/user_name"
+            android:hint="@string/user_password"
             android:layout_margin="10dp"
             />
         <EditText
+            android:textAlignment="center"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -36,6 +39,7 @@
             android:layout_margin="10dp"
             />
         <EditText
+            android:textAlignment="center"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -45,6 +49,7 @@
             />
 
         <EditText
+            android:textAlignment="center"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -54,6 +59,7 @@
             />
 
         <EditText
+            android:textAlignment="center"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"

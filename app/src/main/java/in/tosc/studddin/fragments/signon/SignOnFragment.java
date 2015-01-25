@@ -1,6 +1,8 @@
 package in.tosc.studddin.fragments.signon;
 
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.parse.LogInCallback;
@@ -18,6 +21,7 @@ import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 
+import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 
 
@@ -31,7 +35,7 @@ public class SignOnFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private View view;
+    private View rootView;
     private Button facebookLoginButton, twitterLoginButton, googleLoginButton;
     private Button signUpButton, signInButton;
     private TextView guestContinue;
@@ -76,12 +80,12 @@ public class SignOnFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_sign_in, container, false);
+        rootView = inflater.inflate(R.layout.fragment_sign_on, container, false);
 
 
         displayInit();
 
-        return view;
+        return rootView;
     }
 
     private void displayInit()
@@ -92,44 +96,13 @@ public class SignOnFragment extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         screenHeight = displayMetrics.heightPixels;
         screenWidth = displayMetrics.widthPixels;
-        facebookLoginButton = (Button)view.findViewById(R.id.signon_button_facebook);
-        twitterLoginButton = (Button)view.findViewById(R.id.signon_button_twitter);
-        googleLoginButton = (Button)view.findViewById(R.id.signon_button_google);
-        signUpButton = (Button) view.findViewById(R.id.signon_button_signup);
-        guestContinue = (TextView)view.findViewById(R.id.sign_in_guest);
+        facebookLoginButton = (Button) rootView.findViewById(R.id.signon_button_facebook);
+        twitterLoginButton = (Button) rootView.findViewById(R.id.signon_button_twitter);
+        googleLoginButton = (Button) rootView.findViewById(R.id.signon_button_google);
+        signUpButton = (Button) rootView.findViewById(R.id.signon_button_signup);
+        signInButton = (Button) rootView.findViewById(R.id.signon_button_signin);
+        guestContinue = (TextView) rootView.findViewById(R.id.sign_in_guest);
 
-        View.OnClickListener signUpListener = new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
-
-                SignupDataFragment newFragment = new SignupDataFragment();
-
-                transaction.replace(R.id.signon_container,newFragment).addToBackStack(null).commit();
-            }
-        };
-
-        View.OnClickListener facebookSignUpListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ParseFacebookUtils.logIn(getActivity(), new LogInCallback() {
-                    @Override
-                    public void done(ParseUser user, ParseException err) {
-                        if (user == null) {
-                            Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
-                        } else if (user.isNew()) {
-                            Log.d("MyApp", "User signed up and logged in through Facebook!");
-                        } else {
-                            Log.d("MyApp", "User logged in through Facebook!");
-                        }
-                    }
-                });
-            }
-        };
 
         guestContinue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,13 +111,78 @@ public class SignOnFragment extends Fragment {
             }
         });
 
-        facebookLoginButton.setOnClickListener(facebookSignUpListener);
-        twitterLoginButton.setOnClickListener(signUpListener);
-        googleLoginButton.setOnClickListener(signUpListener);
 
-        signUpButton.setOnClickListener(signUpListener);
+        facebookLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doFacebookSignon(v);
+            }
+        });
+
+        //twitterLoginButton.setOnClickListener(signUpListener);
+        //googleLoginButton.setOnClickListener(signUpListener);
+
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doSignUp(v);
+            }
+        });
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doSignIn(v);
+            }
+        });
 
 
+    }
+
+    public void doSignIn (View v) {
+        ParseUser.logInInBackground(
+                ((EditText)rootView.findViewById(R.id.sign_in_user_name)).getText().toString(),
+                ((EditText)rootView.findViewById(R.id.sign_in_user_password)).getText().toString(),
+                new LogInCallback() {
+                    @Override
+                    public void done(ParseUser parseUser, ParseException e) {
+                        if (parseUser != null) {
+                            Intent i = new Intent(getActivity(), MainActivity.class);
+                            startActivity(i);
+                        } else {
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle("Login failed")
+                                    .setCancelable(true)
+                                    .setMessage("Logging in to Studdd.in failed !")
+                                    .show();
+                        }
+                    }
+                }
+        );
+    }
+    public void doSignUp (View v) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
+
+        SignupDataFragment newFragment = new SignupDataFragment();
+
+        transaction.replace(R.id.signon_container,newFragment).addToBackStack(null).commit();
+
+    }
+    public void doFacebookSignon (View v) {
+        ParseFacebookUtils.logIn(getActivity(), new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException err) {
+                if (user == null) {
+                    Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
+                } else if (user.isNew()) {
+                    Log.d("MyApp", "User signed up and logged in through Facebook!");
+                } else {
+                    Log.d("MyApp", "User logged in through Facebook!");
+                }
+            }
+        });
     }
 
 

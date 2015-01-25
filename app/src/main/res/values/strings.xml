@@ -23,6 +23,7 @@
 
 
     <string name="user_name">Name</string>
+    <string name="user_username">Username (Email id)</string>
     <string name="institute_name">College or School</string>
     <string name="email_id">Email - ID</string>
     <string name="interests">Interests</string>
@@ -49,5 +50,8 @@
     <string name="feed_category_college" >Your College</string>
     <string name="feed_category_around" >Your Locality</string>
     <string name="feed_search_hint">Search</string>
+    <string name="user_password">Password</string>
+    <string name="sign_in_reset">Reset</string>
+    <string name="sign_in_submit">Submit</string>
 
 </resources>
