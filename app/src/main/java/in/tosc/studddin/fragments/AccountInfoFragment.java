@@ -18,7 +18,7 @@ import in.tosc.studddin.R;
 public class AccountInfoFragment extends Fragment {
 
     private Button editInfo;
-    private TextView eName,ePassword,eEmail,eInterests;
+    private EditText eName,ePassword,eEmail,eInterests;
     private View rootView;
 
     public AccountInfoFragment() {
@@ -45,11 +45,19 @@ public class AccountInfoFragment extends Fragment {
         eEmail = (EditText)rootView.findViewById(R.id.account_info_email);
         eInterests = (EditText)rootView.findViewById(R.id.account_info_interests);
 
+        eName.setEnabled(false);
+        ePassword.setEnabled(false);
+        eInterests.setEnabled(false);
+        eEmail.setEnabled(false);
 
         editInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                eName.setEnabled(true);
+                ePassword.setEnabled(true);
+                eInterests.setEnabled(true);
+                eEmail.setEnabled(true);
             }
         });
     }
