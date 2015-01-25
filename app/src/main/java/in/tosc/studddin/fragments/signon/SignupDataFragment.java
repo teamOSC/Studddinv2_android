@@ -16,7 +16,6 @@ import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
@@ -38,11 +37,9 @@ public class SignupDataFragment extends Fragment {
     private static final String USER_EMAIL = "EMAIL";
     private static final String USER_INTERESTS = "INTERESTS";
     private static final String USER_QUALIFICATIONS = "QUALIFICATIONS";
-    EditText nameET;
-    EditText instituteET;
-    EditText emailET;
-    EditText interestsET;
-    EditText qualificatonET;
+
+    View rootView;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -66,22 +63,17 @@ public class SignupDataFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        input = new HashMap<String, String>();
+        input = new HashMap<>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_user_data_input, container, false);
+        rootView = inflater.inflate(R.layout.fragment_user_data_input, container, false);
 
-        nameET = (EditText) v.findViewById(R.id.name_input);
-        instituteET = (EditText) v.findViewById(R.id.institute_input);
-        emailET = (EditText) v.findViewById(R.id.email_input);
-        interestsET = (EditText) v.findViewById(R.id.interest_input);
-        qualificatonET = (EditText) v.findViewById(R.id.qualification_input);
 
-        submitButton = (Button) v.findViewById(R.id.submit_button);
+        submitButton = (Button) rootView.findViewById(R.id.submit_button);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,20 +90,23 @@ public class SignupDataFragment extends Fragment {
             }
         });
 
-        return v;
+        return rootView;
+    }
+
+    private String getStringFromEditText(int id) {
+        try {
+            return ((EditText) rootView.findViewById(id)).toString();
+        } catch (Exception e) {
+            return " ";
+        }
     }
 
     private void getInput() {
-
-//        Log.d("nametext : ",nameET.getText().toString());
-
-        input.put(USER_NAME, nameET.getText().toString());
-        input.put(USER_INSTITUTE, instituteET.getText().toString());
-        input.put(USER_EMAIL, emailET.getText().toString());
-        input.put(USER_INTERESTS, interestsET.getText().toString());
-        input.put(USER_QUALIFICATIONS, qualificatonET.getText().toString());
-
-
+        input.put(USER_NAME, getStringFromEditText(R.id.user_name));
+        input.put(USER_INSTITUTE, getStringFromEditText(R.id.user_institute));
+        input.put(USER_EMAIL, getStringFromEditText(R.id.user_email));
+        input.put(USER_INTERESTS, getStringFromEditText(R.id.user_interests));
+        input.put(USER_QUALIFICATIONS, getStringFromEditText(R.id.user_qualifications));
     }
 
     private boolean validateInput() {
@@ -157,10 +152,10 @@ public class SignupDataFragment extends Fragment {
         //push the valid input to parse
         ParseUser user = new ParseUser();
         user.setUsername(input.get(USER_EMAIL));
-        user.setPassword(UUID.randomUUID().toString().substring(1,9));
+        user.setPassword("password");
         user.setEmail(input.get(USER_EMAIL));
 
-// other fields can be set just like with ParseObject
+        // other fields can be set just like with ParseObject
         user.put(USER_NAME, input.get(USER_NAME));
         user.put(USER_INSTITUTE, input.get(USER_INSTITUTE));
         user.put(USER_QUALIFICATIONS, input.get(USER_QUALIFICATIONS));

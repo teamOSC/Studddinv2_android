@@ -12,7 +12,7 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:id="@+id/name_input"
+            android:id="@+id/user_name"
             android:hint="@string/user_name"
             android:layout_margin="10dp"
             />
@@ -20,7 +20,7 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:id="@+id/institute_input"
+            android:id="@+id/user_institute"
             android:hint="@string/institute_name"
             android:layout_margin="10dp"
             />
@@ -28,7 +28,7 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:id="@+id/email_input"
+            android:id="@+id/user_email"
             android:hint="@string/email_id"
             android:layout_margin="10dp"
             />
@@ -37,7 +37,7 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:id="@+id/qualification_input"
+            android:id="@+id/user_qualifications"
             android:hint="@string/qualifications"
             android:layout_margin="10dp"
             />
@@ -46,7 +46,7 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:id="@+id/interest_input"
+            android:id="@+id/user_interests"
             android:hint="@string/interests"
             android:layout_margin="10dp"
             />
