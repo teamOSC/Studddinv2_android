@@ -3,6 +3,7 @@ package in.tosc.studddin.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.HashMap;
+import java.util.List;
 
 import in.tosc.studddin.R;
 
@@ -28,6 +34,7 @@ public class AccountInfoFragment extends Fragment {
     }
 
     private static final String USER_NAME = "NAME";
+    private static final String USER_UID = "UID";
     private static final String USER_PASSWORD = "NAME";
     private static final String USER_INSTITUTE = "INSTITUTE";
     private static final String USER_EMAIL = "EMAIL";
@@ -43,7 +50,9 @@ public class AccountInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_account_info, container, false);
 
+        userInfo = new HashMap<>();
         init();
+        fetchInfoFromParse();
 
         return rootView;
     }
@@ -93,6 +102,8 @@ public class AccountInfoFragment extends Fragment {
                 ePassword.setEnabled(true);
                 eInterests.setEnabled(true);
                 eEmail.setEnabled(true);
+
+                ParseUser currentUser = ParseUser.getCurrentUser();
             }
         });
     }
