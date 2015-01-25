@@ -3,9 +3,9 @@
     <color name="signin_guest">#888888</color>
     <color name="white">#FFFFFF</color>
     <color name="edittext_color">#009688</color>
-    <color name="search_color">#BDBDBD</color>
+    <color name="search_color">#982360</color>
     <!-- App Main colors -->
-    <color name="colorPrimary">#1565C0</color>
-    <color name="colorPrimaryDark">#2D5D7B</color>
+    <color name="colorPrimary">#EFC88B</color>
+    <color name="colorPrimaryDark">#AF7A6D</color><!-- #CF5C36 -->
     
 </resources>

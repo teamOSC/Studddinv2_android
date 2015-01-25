@@ -37,9 +37,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:hint="@string/user_name"
-                    app:baseColor="@color/colorPrimary"
+                    app:baseColor="@color/search_color"
+                    app:primaryColor="@color/colorPrimaryDark"
                     app:floatingLabel="highlight"
-                    app:primaryColor="@color/search_color"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
                     android:textAlignment="center" />
 
@@ -51,7 +51,8 @@
                     android:layout_margin="10dp"
                     android:hint="@string/user_password"
                     android:inputType="textWebPassword"
-                    app:baseColor="@color/colorPrimary"
+                    app:baseColor="@color/search_color"
+                    app:primaryColor="@color/colorPrimaryDark"
                     app:floatingLabel="highlight"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
                     android:textAlignment="center" />
@@ -64,7 +65,8 @@
                     android:layout_margin="10dp"
                     android:hint="@string/user_dob"
                     android:inputType="date"
-                    app:baseColor="@color/colorPrimary"
+                    app:baseColor="@color/search_color"
+                    app:primaryColor="@color/colorPrimaryDark"
                     app:floatingLabel="highlight"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
                     android:textAlignment="center" />
@@ -76,7 +78,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:hint="@string/institute_name"
-                    app:baseColor="@color/colorPrimary"
+                    app:baseColor="@color/search_color"
+                    app:primaryColor="@color/colorPrimaryDark"
                     app:floatingLabel="highlight"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
                     android:textAlignment="center" />
@@ -88,7 +91,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:hint="@string/user_location"
-                    app:baseColor="@color/colorPrimary"
+                    app:baseColor="@color/search_color"
+                    app:primaryColor="@color/colorPrimaryDark"
                     app:floatingLabel="highlight"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
                     android:textAlignment="center" />
@@ -100,7 +104,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:hint="@string/email_id"
-                    app:baseColor="@color/colorPrimary"
+                    app:baseColor="@color/search_color"
+                    app:primaryColor="@color/colorPrimaryDark"
                     app:floatingLabel="highlight"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
                     android:textAlignment="center" />
@@ -112,7 +117,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:hint="@string/qualifications"
-                    app:baseColor="@color/colorPrimary"
+                    app:baseColor="@color/search_color"
+                    app:primaryColor="@color/colorPrimaryDark"
                     app:floatingLabel="highlight"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
                     android:textAlignment="center" />
@@ -124,7 +130,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:hint="@string/interests"
-                    app:baseColor="@color/colorPrimary"
+                    app:baseColor="@color/search_color"
+                    app:primaryColor="@color/colorPrimaryDark"
                     app:floatingLabel="highlight"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
                     android:textAlignment="center" />
