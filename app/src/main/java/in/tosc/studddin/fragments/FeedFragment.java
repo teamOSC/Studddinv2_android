@@ -46,6 +46,19 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         // Required empty public constructor
     }
 
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     */
+    // TODO: Rename and change types and number of parameters
+    public static FeedFragment newInstance() {
+        FeedFragment fragment = new FeedFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
