@@ -228,7 +228,6 @@ public class SignOnFragment extends Fragment {
                 if (user == null) {
                     Log.d(TAG, "Uh oh. The user cancelled the Twitter login.");
                 } else if (user.isNew()) {
-                    ParseTwitterUtils.getTwitter().getScreenName();
                     Log.d(TAG, "User signed up and logged in through Twitter!" + ParseTwitterUtils.getTwitter().getScreenName());
                 } else {
                     Log.d(TAG, "User logged in through Twitter!");

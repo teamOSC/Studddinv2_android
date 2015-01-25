@@ -53,5 +53,7 @@
     <string name="user_password">Password</string>
     <string name="sign_in_reset">Reset</string>
     <string name="sign_in_submit">Submit</string>
+    <string name="user_dob">Date of Birth</string>
+    <string name="user_location">Location</string>
 
 </resources>
