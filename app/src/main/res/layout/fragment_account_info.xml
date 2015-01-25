@@ -5,105 +5,123 @@
     android:orientation="vertical"
     tools:context="in.tosc.studddin.fragments.AccountInfoFragment">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-    <EditText
-        android:id="@+id/account_info_name"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="8"
-        android:hint="@string/user_name"
-        android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
-        />
-       <Button
-           android:layout_width="0dp"
-           android:layout_height="match_parent"
-           android:layout_weight="1"
-           android:id="@+id/edit_name_button"/>
-      </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-    <EditText
-        android:id="@+id/account_info_user_name"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="8"
-        android:hint="@string/user_uid"
-        android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
-        />
-        <Button
-            android:layout_width="0dp"
+        android:layout_weight="2"
+        android:orientation="horizontal"
+        android:animateLayoutChanges="true">
+        <TextView
+            android:id="@+id/account_info_uid"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/edit_user_name"/>
+            android:text="@string/user_uid"
+            android:textSize="30sp"
+            android:textColor="#000000"
+            android:layout_gravity="center"
+            android:gravity="center"
+            />
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:animateLayoutChanges="true">
+
+    <EditText
+        android:id="@+id/account_info_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="6"
+        android:hint="@string/user_name"
+        android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
+        />
+       <ImageButton
+           android:layout_width="0dp"
+           android:layout_height="match_parent"
+           android:layout_weight="1"
+           android:id="@+id/edit_name_button"
+           android:background="@drawable/pencil"/>
+      </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:animateLayoutChanges="true">
     <EditText
         android:id="@+id/account_info_password"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:hint="@string/user_password"
-        android:layout_weight="8"
+        android:layout_weight="6"
         android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
         />
-        <Button
+        <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/edit_password_button"/>
+            android:id="@+id/edit_password_button"
+            android:background="@drawable/pencil"/>
        </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:animateLayoutChanges="true">
     <EditText
-        android:id="@+id/account_info_email"
+        android:id="@+id/account_info_institute"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:hint="@string/email_id"
-        android:layout_weight="8"
+        android:hint="@string/institute_name"
+        android:layout_weight="6"
         android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
         />
-        <Button
+        <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/edit_email_button"/>
+            android:id="@+id/edit_institute_button"
+            android:background="@drawable/pencil"/>
         </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:animateLayoutChanges="true">
     <EditText
         android:id="@+id/account_info_qualification"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:hint="@string/qualifications"
-        android:layout_weight="8"
+        android:layout_weight="6"
         android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
         />
-        <Button
+        <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:id="@+id/edit_qualification_button"
             android:layout_weight="1"
-            android:id="@+id/edit_qualification_button"/>
+            android:background="@drawable/pencil"
+            android:scaleType="centerInside"/>
     </LinearLayout>
 
 
@@ -111,16 +129,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
+        android:layout_weight="2"
         android:layout_margin="@dimen/fragment_sign_up_edit_text_margin">
 
 
-        <Button
-            android:id="@+id/button_edit_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/edit_info"
-            />
+
     </LinearLayout>
 
 

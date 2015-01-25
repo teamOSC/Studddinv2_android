@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +27,9 @@ import in.tosc.studddin.R;
 
 public class AccountInfoFragment extends Fragment {
 
-    private Button editInfo;
-    private EditText eName,ePassword,eEmail,eUid,eQualificaton;//eInterests
-    private Button editName,editUid,editEmail,editPassword,editQualification; //editInterest
+    private EditText eName,ePassword,eQualificaton,eInstitute;//eInterests
+    private TextView tUID;
+    private ImageButton editName,editPassword,editQualification,editInstitute; //editInterest
     View.OnClickListener oclEdit,oclSubmit;
     private View rootView;
 
@@ -36,9 +37,9 @@ public class AccountInfoFragment extends Fragment {
         // Required empty public constructor
     }
 
-    private static final String USER_NAME = "NAME";
-    private static final String USER_UID = "USER NAME";
-    private static final String USER_PASSWORD = "NAME";
+    private static final String USER_FULLNAME = "NAME";
+    private static final String USER_UID = "USERNAME";
+    private static final String USER_PASSWORD = "xxxxxxxxx";
     private static final String USER_INSTITUTE = "INSTITUTE";
     private static final String USER_EMAIL = "EMAIL";
     private static final String USER_INTERESTS = "INTERESTS";
@@ -65,18 +66,21 @@ public class AccountInfoFragment extends Fragment {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if(currentUser != null)
         {
-            userInfo.put(USER_EMAIL,currentUser.getEmail());
-            eEmail.setText(userInfo.get(USER_EMAIL));
-            userInfo.put(USER_NAME,currentUser.getString(USER_NAME));
-            eName.setText(userInfo.get(USER_NAME));
-            userInfo.put(USER_INSTITUTE,currentUser.getString(USER_INSTITUTE));
-            userInfo.put(USER_UID,currentUser.getUsername());
 
-            userInfo.put(USER_QUALIFICATIONS,currentUser.getString(USER_QUALIFICATIONS));
-//            eQualificaton.setText(userInfo.get(USER_QUALIFICATIONS));
 
-            userInfo.put(USER_INTERESTS,currentUser.getString(USER_INTERESTS));
-            eQualificaton.setText(userInfo.get(USER_INTERESTS));
+            tUID.setText(currentUser.getUsername());
+
+
+            if ( !(currentUser.getString(USER_INSTITUTE).isEmpty()) ) {
+                eInstitute.setText(currentUser.getString(USER_INSTITUTE));
+            }
+
+            if ( !(currentUser.getString(USER_FULLNAME).isEmpty()) )
+                eName.setText(currentUser.getString(USER_FULLNAME));
+
+            if ( !(currentUser.getString(USER_INTERESTS).isEmpty()) )
+                eQualificaton.setText(currentUser.getString(USER_INTERESTS));
+
         }
         else
         {
@@ -85,35 +89,38 @@ public class AccountInfoFragment extends Fragment {
     }
 
     private void init() {
-        editInfo = (Button) rootView.findViewById(R.id.button_edit_info);
+
+
         eName = (EditText) rootView.findViewById(R.id.account_info_name);
-        editName = (Button) rootView.findViewById(R.id.edit_name_button);
+        editName = (ImageButton) rootView.findViewById(R.id.edit_name_button);
 
         ePassword = (EditText) rootView.findViewById(R.id.account_info_password);
-        editPassword = (Button) rootView.findViewById(R.id.edit_user_name);
+        editPassword = (ImageButton) rootView.findViewById(R.id.edit_password_button);
 
-        eEmail = (EditText) rootView.findViewById(R.id.account_info_email);
-        editEmail = (Button) rootView.findViewById(R.id.edit_email_button);
+        eInstitute = (EditText) rootView.findViewById(R.id.account_info_institute);
+        editInstitute = (ImageButton) rootView.findViewById(R.id.edit_institute_button);
 
 
         eQualificaton = (EditText) rootView.findViewById(R.id.account_info_qualification);
-        editQualification = (Button) rootView.findViewById(R.id.edit_qualification_button);
+        editQualification = (ImageButton) rootView.findViewById(R.id.edit_qualification_button);
 
-        eUid = (EditText) rootView.findViewById(R.id.account_info_user_name);
+        tUID = (TextView)rootView.findViewById(R.id.account_info_uid);
+
 
         eName.setEnabled(false);
         ePassword.setEnabled(false);
         eQualificaton.setEnabled(false);
-        eEmail.setEnabled(false);
-        eUid.setEnabled(false);
+        eInstitute.setEnabled(false);
+
+        eName.clearFocus();
 
         oclEdit = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId())
                 {
-                    case R.id.edit_email_button:
-                        eEmail.setEnabled(true);
+                    case R.id.edit_institute_button:
+                        eInstitute.setEnabled(true);
                         break;
                     case R.id.edit_name_button:
                         eName.setEnabled(true);
@@ -135,11 +142,11 @@ public class AccountInfoFragment extends Fragment {
             public void onClick(View v) {
 
                 switch (v.getId()) {
-                    case R.id.edit_email_button:
-                        changeAttribute(eEmail,USER_EMAIL);
+                    case R.id.edit_institute_button:
+                        changeAttribute(eInstitute,USER_EMAIL);
                         break;
                     case R.id.edit_name_button:
-                        changeAttribute(eName,USER_NAME);
+                        changeAttribute(eName,USER_FULLNAME);
                         break;
                     case R.id.edit_qualification_button:
                         changeAttribute(eQualificaton,USER_QUALIFICATIONS);
@@ -154,26 +161,13 @@ public class AccountInfoFragment extends Fragment {
         };
 
         editQualification.setOnClickListener(oclEdit);
-        editEmail.setOnClickListener(oclEdit);
+        editInstitute.setOnClickListener(oclEdit);
         editName.setOnClickListener(oclEdit);
-
-
-        editInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                eName.setEnabled(true);
-                ePassword.setEnabled(true);
-                eQualificaton.setEnabled(true);
-                eEmail.setEnabled(true);
-                eUid.setEnabled(true);
-            }
-        });
     }
 
     private void changeAttribute(EditText e,String attr)
     {
-        if(attr.equals(USER_EMAIL) || attr.equals(USER_NAME))
+        if(attr.equals(USER_INSTITUTE) || attr.equals(USER_FULLNAME))
         {
             if(e.getText().toString().isEmpty())
             Toast.makeText(getActivity(),attr + "cannot be empty",Toast.LENGTH_LONG);
