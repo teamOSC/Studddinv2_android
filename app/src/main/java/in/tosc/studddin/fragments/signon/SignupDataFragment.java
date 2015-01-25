@@ -4,7 +4,6 @@ package in.tosc.studddin.fragments.signon;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,7 +96,7 @@ public class SignupDataFragment extends Fragment {
 
     private String getStringFromEditText(int id) {
         try {
-            return ((EditText) rootView.findViewById(id)).getText().toString();
+            return ((EditText) rootView.findViewById(id)).toString();
         } catch (Exception e) {
             return " ";
         }
@@ -157,11 +156,8 @@ public class SignupDataFragment extends Fragment {
 
     private void pushInputToParse() {
         //push the valid input to parse
-//        Toast.makeText(getActivity(),"Inside push input",Toast.LENGTH_SHORT).show();
-        Log.d("position","inside push input");
         ParseUser user = new ParseUser();
         user.setUsername(input.get(USER_EMAIL));
-        Log.d("email",input.get(USER_EMAIL));
         user.setPassword(input.get(USER_PASSWORD));
         user.setEmail(input.get(USER_EMAIL));
 
@@ -175,16 +171,12 @@ public class SignupDataFragment extends Fragment {
             public void done(ParseException e) {
                 if (e == null) {
                     // Hooray! Let them use the app now.
-                    Log.d("position","hooray");
                     Intent i = new Intent(getActivity(), MainActivity.class);
                     startActivity(i);
                     getActivity().finish();
                 } else {
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
-                    Log.d("position","encountered error "+e.getMessage());
-
-
                 }
             }
         });
