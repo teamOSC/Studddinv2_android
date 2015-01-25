@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,6 +22,8 @@ import in.tosc.studddin.R;
 public class PeopleSameInterestsFragment extends Fragment {
 
 
+    EditText search ;
+
     ArrayList<EachRow3> list3 = new ArrayList<PeopleSameInterestsFragment.EachRow3>();
     EachRow3 each;
     MyAdapter3 q ;
@@ -29,7 +32,7 @@ public class PeopleSameInterestsFragment extends Fragment {
     ArrayList<String> namelist = new ArrayList<String>();
     ArrayList<String> institutelist = new ArrayList<String>();
     ArrayList<String> qualificationlist = new ArrayList<String>();
-    ArrayList<String> arealist = new ArrayList<String>();
+    ArrayList<String> interestslist = new ArrayList<String>();
     ArrayList<String> distancelist = new ArrayList<String>();
 
     public PeopleSameInterestsFragment() {
@@ -44,7 +47,7 @@ public class PeopleSameInterestsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_people_same_interests, container, false);
 
 
-
+        search = (EditText) view.findViewById(R.id.people_search);
 
         lv = (ListView)view.findViewById(R.id.listviewpeople);
 
@@ -88,7 +91,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                 convertView = inflat.inflate(R.layout.listview_people, null);
                 holder = new ViewHolder();
                 holder.textname = (TextView) convertView.findViewById(R.id.people_name);
-                holder.textarea = (TextView) convertView.findViewById(R.id.people_area);
+                holder.textinterests = (TextView) convertView.findViewById(R.id.people_interests);
 //                holder.textdate = (TextView) convertView.findViewById(R.id.date);
                 holder.textinstituition = (TextView) convertView.findViewById(R.id.people_institute);
                 holder.textdistance = (TextView) convertView.findViewById(R.id.people_distance);
@@ -100,7 +103,7 @@ public class PeopleSameInterestsFragment extends Fragment {
             EachRow3 row = getItem(position);
 
             holder.textname.setText(row.cname);
-            holder.textarea.setText(row.carea);
+            holder.textinterests.setText(row.cinterests);
             holder.textinstituition.setText(row.cinstituition);
             holder.textdistance.setText(row.cdistance);
             holder.textqualification.setText(row.cqualification);
@@ -114,7 +117,7 @@ public class PeopleSameInterestsFragment extends Fragment {
         private class ViewHolder {
 
             TextView textname;
-            TextView textarea;
+            TextView textinterests;
             TextView textdistance;
             TextView textinstituition;
             TextView textqualification;
@@ -133,7 +136,7 @@ public class PeopleSameInterestsFragment extends Fragment {
     private class EachRow3
     {
         String cname;
-        String carea ;
+        String cinterests ;
         String cdistance ;
         String cqualification ;
         String cinstituition ;
@@ -154,7 +157,7 @@ public class PeopleSameInterestsFragment extends Fragment {
         {
             each = new EachRow3();
             each.cname = "Laavanye";
-            each.carea  = "Rohini"  ;
+            each.cinterests  = "Basketball"  ;
             each.cqualification  = "B tech"  ;
             each.cinstituition  = "DTU"  ;
             each.cdistance = "5 km"  ;

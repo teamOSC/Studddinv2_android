@@ -61,9 +61,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:id="@+id/people_area"
+                android:id="@+id/people_interests"
                 android:layout_weight="1.25"
-                android:text="Area"
+                android:text="Interests"
 
                 android:textSize="14sp"
                 />
