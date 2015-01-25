@@ -92,10 +92,10 @@
         android:layout_weight="1"
         android:orientation="horizontal">
     <EditText
-        android:id="@+id/account_info_interests"
+        android:id="@+id/account_info_qualification"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:hint="@string/interests"
+        android:hint="@string/qualifications"
         android:layout_weight="8"
         android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
         />
@@ -103,7 +103,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/edit_interest_button"/>
+            android:id="@+id/edit_qualification_button"/>
     </LinearLayout>
 
 

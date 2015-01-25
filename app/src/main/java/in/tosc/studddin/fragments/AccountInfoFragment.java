@@ -21,8 +21,9 @@ import in.tosc.studddin.R;
 public class AccountInfoFragment extends Fragment {
 
     private Button editInfo;
-    private EditText eName,ePassword,eEmail,eInterests,eUid;
-    private Button editName,editUid,editEmail,editInterest,editPassword;
+    private EditText eName,ePassword,eEmail,eUid,eQualificaton;//eInterests
+    private Button editName,editUid,editEmail,editPassword,editQualification; //editInterest
+    View.OnClickListener oclEdit,oclSubmit;
     private View rootView;
 
     public AccountInfoFragment() {
@@ -65,12 +66,11 @@ public class AccountInfoFragment extends Fragment {
             userInfo.put(USER_INSTITUTE,currentUser.getString(USER_INSTITUTE));
             userInfo.put(USER_UID,currentUser.getUsername());
 
-
-
             userInfo.put(USER_QUALIFICATIONS,currentUser.getString(USER_QUALIFICATIONS));
+//            eQualificaton.setText(userInfo.get(USER_QUALIFICATIONS));
 
             userInfo.put(USER_INTERESTS,currentUser.getString(USER_INTERESTS));
-            eInterests.setText(userInfo.get(USER_INTERESTS));
+            eQualificaton.setText(userInfo.get(USER_INTERESTS));
         }
         else
         {
@@ -90,17 +90,66 @@ public class AccountInfoFragment extends Fragment {
         editEmail = (Button) rootView.findViewById(R.id.edit_email_button);
 
 
-        eInterests = (EditText) rootView.findViewById(R.id.account_info_interests);
-        editInterest = (Button) rootView.findViewById(R.id.edit_interest_button);
+        eQualificaton = (EditText) rootView.findViewById(R.id.account_info_qualification);
+        editQualification = (Button) rootView.findViewById(R.id.edit_qualification_button);
 
         eUid = (EditText) rootView.findViewById(R.id.account_info_user_name);
 
         eName.setEnabled(false);
         ePassword.setEnabled(false);
-        eInterests.setEnabled(false);
+        eQualificaton.setEnabled(false);
         eEmail.setEnabled(false);
         eUid.setEnabled(false);
 
+        oclEdit = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId())
+                {
+                    case R.id.edit_email_button:
+                        eEmail.setEnabled(true);
+                        break;
+                    case R.id.edit_name_button:
+                        eName.setEnabled(true);
+                        break;
+                    case R.id.edit_qualification_button:
+                        eQualificaton.setEnabled(true);
+                        break;
+                }
+
+                //TODO: change image on click
+                //v.setBackground();
+
+                v.setOnClickListener(oclSubmit);
+            }
+        };
+
+        oclSubmit = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                switch (v.getId()) {
+                    case R.id.edit_email_button:
+                        changeAttribute(eEmail,USER_EMAIL);
+                        break;
+                    case R.id.edit_name_button:
+                        changeAttribute(eName,USER_NAME);
+                        break;
+                    case R.id.edit_qualification_button:
+                        changeAttribute(eQualificaton,USER_QUALIFICATIONS);
+                        break;
+                }
+
+                //TODO: change background image
+                //v.setDrawable()
+
+                v.setOnClickListener(oclEdit);
+            }
+        };
+
+        editQualification.setOnClickListener(oclEdit);
+        editEmail.setOnClickListener(oclEdit);
+        editName.setOnClickListener(oclEdit);
 
 
         editInfo.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +158,7 @@ public class AccountInfoFragment extends Fragment {
 
                 eName.setEnabled(true);
                 ePassword.setEnabled(true);
-                eInterests.setEnabled(true);
+                eQualificaton.setEnabled(true);
                 eEmail.setEnabled(true);
                 eUid.setEnabled(true);
             }
@@ -127,5 +176,6 @@ public class AccountInfoFragment extends Fragment {
         ParseUser cu = ParseUser.getCurrentUser();
         cu.put(attr,e.getText().toString());
         cu.saveEventually();
+        e.setEnabled(false);
     }
 }
