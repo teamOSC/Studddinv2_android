@@ -12,5 +12,6 @@
     <string name="feed_category_interests" >Your Interests</string>
     <string name="feed_category_college" >Your College</string>
     <string name="feed_category_around" >Your Locality</string>
+    <string name="feed_search_hint">Search</string>
 
 </resources>
