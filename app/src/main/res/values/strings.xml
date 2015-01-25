@@ -34,11 +34,15 @@
     <string name="enter_email">Please enter an email address</string>
     <string name="empty_interests">empty interests</string>
     <string name="hello_blank_fragment">Settings</string>
+
+
     <string name="sign_in_with">Sign In With</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_in_guest"><u>Continue as guest</u></string>
     <string name="qualifications">Qualifications</string>
+    <string name="edit_info">Edit Info</string>
+
 
     <string name="notes_search">Search</string>
     <string name="notes_topic_name">Topic Name</string>
@@ -53,5 +57,7 @@
     <string name="user_password">Password</string>
     <string name="sign_in_reset">Reset</string>
     <string name="sign_in_submit">Submit</string>
+
+
 
 </resources>

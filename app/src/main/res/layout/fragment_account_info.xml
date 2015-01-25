@@ -12,38 +12,42 @@
 
     </LinearLayout>
 
-    <TextView
+    <EditText
         android:id="@+id/account_info_name"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:text="@string/user_name"
         android:layout_weight="1"
-        android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"/>
+        android:hint="@string/user_name"
+        android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+        android:editable="false"/>
 
-    <TextView
+    <EditText
         android:id="@+id/account_info_password"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:text="@string/user_password"
+        android:hint="@string/user_password"
         android:layout_weight="1"
-        android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"/>
+        android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+        android:editable="false"/>
 
 
-    <TextView
+    <EditText
         android:id="@+id/account_info_email"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:text="@string/email_id"
+        android:hint="@string/email_id"
         android:layout_weight="1"
-        android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"/>
+        android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+        android:editable="false"/>
 
-    <TextView
+    <EditText
         android:id="@+id/account_info_interests"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:text="@string/email_id"
+        android:hint="@string/interests"
         android:layout_weight="1"
-        android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"/>
+        android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+        android:editable="false"/>
 
 
     <LinearLayout
@@ -52,6 +56,12 @@
         android:layout_weight="5"
         android:layout_margin="@dimen/fragment_sign_up_edit_text_margin">
 
+        <Button
+            android:id="@+id/button_edit_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_info"
+            />
     </LinearLayout>
 
 
