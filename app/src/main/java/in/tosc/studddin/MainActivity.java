@@ -1,28 +1,25 @@
 package in.tosc.studddin;
 
-import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.os.Build;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import in.tosc.studddin.fragments.FeedFragment;
 import in.tosc.studddin.fragments.ListingsFragment;
 import in.tosc.studddin.fragments.NotesFragment;
 import in.tosc.studddin.fragments.PeopleFragment;
+import in.tosc.studddin.fragments.listings.ListingsUploadFragment;
 
 
 public class MainActivity extends ActionBarActivity
@@ -140,6 +137,44 @@ public class MainActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if ((requestCode == 0) && resultCode == RESULT_OK) {
+            int targetW = ListingsUploadFragment.listing_image.getWidth();
+            int targetH = ListingsUploadFragment.listing_image.getHeight();
+
+            // Get the dimensions of the bitmap
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(ListingsUploadFragment.mCurrentPhotoPath, bmOptions);
+            int photoW = bmOptions.outWidth;
+            int photoH = bmOptions.outHeight;
+
+            // Determine how much to scale down the image
+            int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+            // Decode the image file into a Bitmap sized to fill the View
+            bmOptions.inJustDecodeBounds = false;
+            bmOptions.inSampleSize = scaleFactor;
+            bmOptions.inPurgeable = true;
+
+            Bitmap bitmap = BitmapFactory.decodeFile(ListingsUploadFragment.mCurrentPhotoPath, bmOptions);
+            ListingsUploadFragment.listing_image.setImageBitmap(bitmap);
+        }
+        else if((requestCode == 1) && resultCode == RESULT_OK) {
+
+            Uri selectedImage = data.getData();
+            String[] filePath = { MediaStore.Images.Media.DATA };
+            Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+            c.moveToFirst();
+            int columnIndex = c.getColumnIndex(filePath[0]);
+            String picturePath = c.getString(columnIndex);
+            c.close();
+            Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+            ListingsUploadFragment.listing_image.setImageBitmap(thumbnail);
+        }
     }
 
 

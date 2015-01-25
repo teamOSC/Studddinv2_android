@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/listing_filter"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="Filter"
+
+        >
+    </item>
+
+    <item
+        android:id="@+id/listing_upload"
+        android:icon="@android:drawable/stat_sys_upload"
+        android:title="Upload"
+
+        >
+    </item>
+
+
+
+</menu>
