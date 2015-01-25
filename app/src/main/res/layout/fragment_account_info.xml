@@ -5,56 +5,115 @@
     android:orientation="vertical"
     tools:context="in.tosc.studddin.fragments.AccountInfoFragment">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2">
-
-    </LinearLayout>
-
+        android:layout_weight="1"
+        android:orientation="horizontal">
     <EditText
         android:id="@+id/account_info_name"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="8"
         android:hint="@string/user_name"
         android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
         />
+       <Button
+           android:layout_width="0dp"
+           android:layout_height="match_parent"
+           android:layout_weight="1"
+           android:id="@+id/edit_name_button"/>
+      </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+    <EditText
+        android:id="@+id/account_info_user_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="8"
+        android:hint="@string/user_uid"
+        android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+        />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/edit_user_name"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
     <EditText
         android:id="@+id/account_info_password"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:hint="@string/user_password"
-        android:layout_weight="1"
+        android:layout_weight="8"
         android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
         />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/edit_password_button"/>
+       </LinearLayout>
 
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
     <EditText
         android:id="@+id/account_info_email"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:hint="@string/email_id"
-        android:layout_weight="1"
+        android:layout_weight="8"
         android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
         />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/edit_email_button"/>
+        </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
     <EditText
         android:id="@+id/account_info_interests"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:hint="@string/interests"
-        android:layout_weight="1"
+        android:layout_weight="8"
         android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
         />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/edit_interest_button"/>
+    </LinearLayout>
+
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5"
+        android:layout_weight="4"
         android:layout_margin="@dimen/fragment_sign_up_edit_text_margin">
+
 
         <Button
             android:id="@+id/button_edit_info"
