@@ -96,7 +96,7 @@ public class SignupDataFragment extends Fragment {
 
     private String getStringFromEditText(int id) {
         try {
-            return ((EditText) rootView.findViewById(id)).toString();
+            return ((EditText) rootView.findViewById(id)).getText().toString();
         } catch (Exception e) {
             return " ";
         }
