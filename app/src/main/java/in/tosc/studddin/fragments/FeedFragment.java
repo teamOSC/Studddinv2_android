@@ -1,28 +1,39 @@
 package in.tosc.studddin.fragments;
 
-
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.InputStream;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.utils.HttpExecute;
+import in.tosc.studddin.utils.HttpExecutor;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FeedFragment extends Fragment {
+public class FeedFragment extends Fragment implements View.OnKeyListener{
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -32,6 +43,13 @@ public class FeedFragment extends Fragment {
     private static Context context;
 
     private static final String TAG = FeedFragment.class.getName();
+
+    private EditText searchEditText;
+
+    private static final String KEY_LINK = "link";
+    private static final String KEY_TITLE = "title";
+
+    String searchUrl = "tosc.in:8082/search?q=";
 
     public FeedFragment() {
         // Required empty public constructor
@@ -56,6 +74,8 @@ public class FeedFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_feed, container, false);
+        searchEditText = (EditText) rootView.findViewById(R.id.feed_search);
+        searchEditText.setOnKeyListener(this);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.feed_recycler_view);
 
         context = getActivity();
@@ -64,28 +84,31 @@ public class FeedFragment extends Fragment {
         mVerticalLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
 
-        mRecyclerView.setLayoutManager(mVerticalLayoutManager);
-
-        FeedRootWrapper[] wrappers = new FeedRootWrapper[3];
-        for (int i = 0; i < 3; ++i) {
-            int resourceId = 0;
-            try {
-                resourceId = getCategoryResource(i);
-            } catch (UnsupportedOperationException e) {
-                Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
-            }
-            wrappers[i] = new FeedRootWrapper(getString(resourceId));
-        }
-
-        // specify an adapter (see also next example)
-        mAdapter = new FeedRootAdapter(wrappers);
-        mRecyclerView.setAdapter(mAdapter);
-
+        new ReadFromJSON(getJSON()).execute();
         return rootView;
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (v.getId() == R.id.feed_search) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                switch (keyCode) {
+                    case KeyEvent.KEYCODE_DPAD_CENTER:
+                    case KeyEvent.KEYCODE_ENTER:
+                        Toast.makeText(context, "Search", Toast.LENGTH_SHORT).show();
+                        doSearch(((EditText) v).getText().toString());
+                        return true;
+                    default:
+                        break;
+                }
+            }
+        }
+        return false;
     }
 
     private static class FeedRootAdapter extends RecyclerView.Adapter<FeedRootAdapter.ViewHolder> {
         private FeedRootWrapper[] mDataset;
+        private JSONArray jsonArray;
 
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
@@ -104,9 +127,9 @@ public class FeedFragment extends Fragment {
             }
         }
 
-        // Provide a suitable constructor (depends on the kind of dataset)
-        public FeedRootAdapter(FeedRootWrapper[] dataSet) {
+        public FeedRootAdapter(FeedRootWrapper[] dataSet, JSONArray jsonArray) {
             mDataset = dataSet;
+            this.jsonArray = jsonArray;
         }
 
         // Create new views (invoked by the layout manager)
@@ -123,7 +146,7 @@ public class FeedFragment extends Fragment {
             for (int i = 0; i < 6; ++i) {
                 categoryWrappers[i] = new CategoryWrapper();
             }
-            FeedCategoryAdapter mFeedCategoryAdapter = new FeedCategoryAdapter(categoryWrappers);
+            FeedCategoryAdapter mFeedCategoryAdapter = new FeedCategoryAdapter(categoryWrappers, jsonArray);
             vh.mHorizontalRecyclerView.setAdapter(mFeedCategoryAdapter);
             vh.mHorizontalRecyclerView.setLayoutManager(mHorizontalLayoutManager);
             return vh;
@@ -132,8 +155,6 @@ public class FeedFragment extends Fragment {
         // Replace the contents of a view (invoked by the layout manager)
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            // - get element from your dataset at this position
-            // - replace the contents of the view with that element
             holder.mTextView.setText(mDataset[position].dummyString);
         }
 
@@ -147,17 +168,22 @@ public class FeedFragment extends Fragment {
     private static class FeedCategoryAdapter extends RecyclerView.Adapter<FeedCategoryAdapter.FeedCategoryViewHolder> {
 
         private CategoryWrapper[] mDataSet;
+        private JSONArray jsonArray;
 
-        public FeedCategoryAdapter(CategoryWrapper[] wrappers) {
+        public FeedCategoryAdapter(CategoryWrapper[] wrappers, JSONArray jsonArray) {
             this.mDataSet = wrappers;
+            this.jsonArray = jsonArray;
+            Log.d(TAG, "jsonArray = " + jsonArray.toString());
         }
 
         public static class FeedCategoryViewHolder extends RecyclerView.ViewHolder {
             // each data item is just a string in this case
             public LinearLayout view;
+            public TextView mTextView;
             public FeedCategoryViewHolder(LinearLayout v) {
                 super(v);
                 this.view = v;
+                mTextView = (TextView) this.view.findViewById(R.id.feed_item_text_view);
             }
         }
 
@@ -172,7 +198,25 @@ public class FeedFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(FeedCategoryViewHolder holder, int position) {
-
+            try {
+                final JSONObject mJsonObject = (JSONObject) jsonArray.get(position);
+                holder.mTextView.setText(mJsonObject.getString(KEY_TITLE));
+                holder.view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent browserIntent = null;
+                        try {
+                            browserIntent = new Intent(Intent.ACTION_VIEW,
+                                    Uri.parse(mJsonObject.getString(KEY_LINK)));
+                            context.startActivity(browserIntent);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -206,5 +250,63 @@ public class FeedFragment extends Fragment {
             default:
                 throw new UnsupportedOperationException();
         }
+    }
+
+    private class ReadFromJSON extends AsyncTask<Void, Void, Void> {
+
+        private String json;
+
+        public ReadFromJSON(String json) {
+            this.json = json;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                JSONArray jsonArray = new JSONArray(json);
+                JSONArray mJsonArray = (JSONArray) jsonArray.get(0);
+                FeedRootWrapper[] wrappers = new FeedRootWrapper[3];
+                for (int i = 0; i < 3; ++i) {
+                    int resourceId = 0;
+                    try {
+                        resourceId = getCategoryResource(i);
+                    } catch (UnsupportedOperationException e) {
+                        Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
+                    }
+                    wrappers[i] = new FeedRootWrapper(getString(resourceId));
+                }
+                mAdapter = new FeedRootAdapter(wrappers, mJsonArray);
+                mRecyclerView.setLayoutManager(mVerticalLayoutManager);
+                mRecyclerView.setAdapter(mAdapter);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    private String getJSON() {
+        try {
+            Resources res = getResources();
+            InputStream in_s = res.openRawResource(R.raw.feed);
+
+            byte[] b = new byte[in_s.available()];
+            in_s.read(b);
+            Log.d(TAG, "String = " + new String(b));
+            return new String(b);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public void doSearch(String query) {
+        String url = searchUrl + query;
+        new HttpExecute(new HttpExecutor() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Response = " + response);
+            }
+        }, url).execute();
     }
 }
