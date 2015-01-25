@@ -27,6 +27,8 @@ import org.json.JSONObject;
 import java.io.InputStream;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.utils.HttpExecute;
+import in.tosc.studddin.utils.HttpExecutor;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,6 +48,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
     private static final String KEY_LINK = "link";
     private static final String KEY_TITLE = "title";
+
+    String searchUrl = "tosc.in:8082/search?q=";
 
     public FeedFragment() {
         // Required empty public constructor
@@ -87,13 +91,12 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if (v.getId() == R.id.feed_search) {
-            if (event.getAction() == KeyEvent.ACTION_DOWN)
-            {
-                switch (keyCode)
-                {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                switch (keyCode) {
                     case KeyEvent.KEYCODE_DPAD_CENTER:
                     case KeyEvent.KEYCODE_ENTER:
                         Toast.makeText(context, "Search", Toast.LENGTH_SHORT).show();
+                        doSearch(((EditText) v).getText().toString());
                         return true;
                     default:
                         break;
@@ -295,5 +298,15 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
             e.printStackTrace();
             return "";
         }
+    }
+
+    public void doSearch(String query) {
+        String url = searchUrl + query;
+        new HttpExecute(new HttpExecutor() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Response = " + response);
+            }
+        }, url).execute();
     }
 }
