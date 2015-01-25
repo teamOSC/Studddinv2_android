@@ -8,15 +8,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="110dp"
         android:orientation="horizontal"
+        android:background="@drawable/abc_popup_background_mtrl_mult"
         >
 
         <ImageView
             android:layout_width="0sp"
             android:layout_height="match_parent"
             android:layout_weight="0.2"
-            android:src="@android:drawable/ic_media_play"/>
+            android:src="@android:drawable/ic_menu_call"/>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -32,6 +33,7 @@
                 android:id="@+id/people_name"
                 android:layout_weight="1.5"
                 android:text="Name"
+                android:textStyle="bold"
 
 
                 android:textSize="15sp"
@@ -97,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="center"
-                android:layout_weight="1.5"
+                android:layout_weight="1.1"
                 android:background="@android:drawable/ic_menu_compass"
                 android:layout_marginTop="8dp"
                 />

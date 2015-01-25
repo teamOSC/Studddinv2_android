@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -96,7 +97,7 @@ public class SignupDataFragment extends Fragment {
 
     private String getStringFromEditText(int id) {
         try {
-            return ((EditText) rootView.findViewById(id)).toString();
+            return ((EditText) rootView.findViewById(id)).getText().toString();
         } catch (Exception e) {
             return " ";
         }
@@ -156,7 +157,11 @@ public class SignupDataFragment extends Fragment {
 
     private void pushInputToParse() {
         //push the valid input to parse
+
+
         ParseUser user = new ParseUser();
+
+
         user.setUsername(input.get(USER_EMAIL));
         user.setPassword(input.get(USER_PASSWORD));
         user.setEmail(input.get(USER_EMAIL));
@@ -170,6 +175,7 @@ public class SignupDataFragment extends Fragment {
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
                 if (e == null) {
+
                     // Hooray! Let them use the app now.
                     Intent i = new Intent(getActivity(), MainActivity.class);
                     startActivity(i);

@@ -13,12 +13,23 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import in.tosc.studddin.R;
 
 public class PeopleSameInstituteFragment extends Fragment {
+
+
+    String currentuser;
 
     EditText search ;
 
@@ -148,20 +159,51 @@ public class PeopleSameInstituteFragment extends Fragment {
             list3.remove(each);
         }
 
+        currentuser = ParseUser.getCurrentUser().getUsername();
+        String currentuseremail = ParseUser.getCurrentUser().getString("email");
+        String currentuserinterests = ParseUser.getCurrentUser().getString("INTERESTS");
+        String currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
+        String currentusername = ParseUser.getCurrentUser().getString("NAME");
+        String currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
 
-        for(int  i = 0 ; i<5; i++)
-        {
-            each = new EachRow3();
-            each.cname = "Laavanye";
-            each.cinterests  = "BasketBall"  ;
-            each.cqualification  = "B tech"  ;
-            each.cinstituition  = "DTU"  ;
-            each.cdistance = "5 km"  ;
 
-            list3.add(each);
-        }
 
-        lv.setAdapter(q);
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereContains("INSTITUTE", currentuserinstituition);
+        query.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+
+                    for (ParseUser pu : objects) {
+                        //access the data associated with the ParseUser using the get method
+                        //pu.getString("key") or pu.get("key")
+
+                        if(!pu.getUsername().equals(currentuser))
+                        {
+                            each = new EachRow3();
+                            each.cname = pu.getString("NAME");
+                            each.cinterests = pu.getString("INTERESTS");
+                            each.cqualification = pu.getString("QUALIFICATIONS");
+                            each.cinstituition = pu.getString("INSTITUTE");
+//                        each.cdistance = pu.getString("NAME");
+
+                            list3.add(each);
+                        }
+
+                    }
+
+
+                    lv.setAdapter(q);
+
+
+                    // The query was successful.
+                } else {
+                    // Something went wrong.
+                }
+            }
+        });
+
+
 
 
     }

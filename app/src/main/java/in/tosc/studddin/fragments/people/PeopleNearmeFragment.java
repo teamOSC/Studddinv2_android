@@ -16,11 +16,17 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.parse.Parse;
+import com.parse.ParseFacebookUtils;
+import com.parse.ParseUser;
+
 import java.util.ArrayList;
 
 import in.tosc.studddin.R;
 
 public class PeopleNearmeFragment extends Fragment {
+
+
 
     EditText search ;
 
@@ -144,6 +150,10 @@ public class PeopleNearmeFragment extends Fragment {
 
     private void loaddata()
     {
+
+
+        ParseUser.getCurrentUser().getUsername();
+
 
         for(int i=0 ; i<list3.size(); i++)
         {

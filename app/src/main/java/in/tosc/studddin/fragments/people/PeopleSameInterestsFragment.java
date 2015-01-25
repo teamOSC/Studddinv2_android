@@ -13,8 +13,17 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import in.tosc.studddin.R;
 
@@ -22,6 +31,8 @@ import in.tosc.studddin.R;
 public class PeopleSameInterestsFragment extends Fragment {
 
 
+    HashMap<String,Boolean> existingelement = new HashMap<String,Boolean>();
+    String currentuser;
     EditText search ;
 
     ArrayList<EachRow3> list3 = new ArrayList<PeopleSameInterestsFragment.EachRow3>();
@@ -152,23 +163,70 @@ public class PeopleSameInterestsFragment extends Fragment {
             list3.remove(each);
         }
 
+          currentuser = ParseUser.getCurrentUser().getUsername();
+        String currentuseremail = ParseUser.getCurrentUser().getString("email");
+        String currentuserinterests = ParseUser.getCurrentUser().getString("INTERESTS");
+        String currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
+        String currentusername = ParseUser.getCurrentUser().getString("NAME");
+        String currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
 
-        for(int  i = 0 ; i<5; i++)
+        List<String> interestslist = Arrays.asList(currentuserinterests.split(", "));
+
+
+        for( int c = 0 ; c < interestslist.size() ; c++ )
         {
-            each = new EachRow3();
-            each.cname = "Laavanye";
-            each.cinterests  = "Basketball"  ;
-            each.cqualification  = "B tech"  ;
-            each.cinstituition  = "DTU"  ;
-            each.cdistance = "5 km"  ;
+                if (!interestslist.get(c).equals("") || !interestslist.get(c).equals(null)) {
 
-            list3.add(each);
-        }
 
-        lv.setAdapter(q);
+                    ParseQuery<ParseUser> query = ParseUser.getQuery();
+                    query.whereContains("INTERESTS", interestslist.get(c));
+                    query.findInBackground(new FindCallback<ParseUser>() {
+                        public void done(List<ParseUser> objects, ParseException e) {
+                            if (e == null) {
+
+                                for (ParseUser pu : objects) {
+                                    //access the data associated with the ParseUser using the get method
+                                    //pu.getString("key") or pu.get("key")
+
+                                    if (!pu.getUsername().equals(currentuser)) {
+
+                                        if(!existingelement.containsKey(pu.getUsername())) {
+
+                                            each = new EachRow3();
+                                            each.cname = pu.getString("NAME");
+                                            Toast.makeText(getActivity(), pu.getString("NAME"), Toast.LENGTH_LONG).show();
+                                            each.cinterests = pu.getString("INTERESTS");
+                                            each.cqualification = pu.getString("QUALIFICATIONS");
+                                            each.cinstituition = pu.getString("INSTITUTE");
+//                                          each.cdistance = pu.getString("NAME");
+
+                                            list3.add(each);
+                                            existingelement.put(pu.getUsername(), true);
+                                        }
+                                    }
+                                }
+
+                                // The query was successful.
+                            } else {
+                                // Something went wrong.
+                            }
+
+                            lv.setAdapter(q);
+
+                        }
+                    });
+
+
+                }
+
+            }
+
+
+
 
 
     }
+
 
 
 }
