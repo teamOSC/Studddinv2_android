@@ -24,6 +24,9 @@ import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.twitter.Twitter;
 
+import java.util.Arrays;
+import java.util.List;
+
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 
@@ -34,6 +37,8 @@ import in.tosc.studddin.R;
  * create an instance of this fragment.
  */
 public class SignOnFragment extends Fragment {
+
+    public static final String TAG = "SignOnFragment";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -180,36 +185,60 @@ public class SignOnFragment extends Fragment {
 
     }
     public void doFacebookSignOn (View v) {
-        ParseFacebookUtils.logIn(getActivity(), new LogInCallback() {
+        List<String> permissions = Arrays.asList("public_profile", "user_friends",
+                ParseFacebookUtils.Permissions.User.ABOUT_ME,
+                ParseFacebookUtils.Permissions.User.RELATIONSHIPS,
+                ParseFacebookUtils.Permissions.User.BIRTHDAY,
+                ParseFacebookUtils.Permissions.User.LOCATION);
+        ParseFacebookUtils.logIn(permissions, getActivity(), new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException err) {
+                try {
+                    Log.d(TAG, "user = " + user.getUsername());
+                    Log.d(TAG, "pe = " + err.getCode() + err.getMessage());
+                } catch (Exception e) {
+                    // Do nothing
+                }
                 if (user == null) {
-                    Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
+                    Log.d(TAG, "Uh oh. The user cancelled the Facebook login.");
                 } else if (user.isNew()) {
-                    Log.d("MyApp", "User signed up and logged in through Facebook!");
+                    Log.d(TAG, "User signed up and logged in through Facebook!");
                 } else {
-                    Log.d("MyApp", "User logged in through Facebook!");
+                    Log.d(TAG, "User logged in through Facebook!");
+                }
+            }
+        });
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult called");
+        ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
+    }
+
+    public void doTwitterSignOn (View v) {
+        ParseTwitterUtils.logIn(getActivity(), new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException err) {
+                try {
+                    Log.d(TAG, "pe = " + err.getCode() + err.getMessage());
+                } catch (Exception e) {
+                    // Do nothing
+                }
+                if (user == null) {
+                    Log.d(TAG, "Uh oh. The user cancelled the Twitter login.");
+                } else if (user.isNew()) {
+                    ParseTwitterUtils.getTwitter().getScreenName();
+                    Log.d(TAG, "User signed up and logged in through Twitter!" + ParseTwitterUtils.getTwitter().getScreenName());
+                } else {
+                    Log.d(TAG, "User logged in through Twitter!");
                 }
             }
         });
     }
 
-    public void doTwitterSignOn (View v) {
-        Twitter t = new Twitter("FfUOeQ5OBuv0qOkdHbfXCrwdk", "xQmFnUSii54eS3iUrl0uIrxfeL4EfIdFc6iyoHUDgSIVGDbauD");
-        ParseTwitterUtils.logIn(getActivity(), new LogInCallback() {
-            @Override
-            public void done(ParseUser user, ParseException err) {
-                Log.d("myapp", "pe = " + err.getCode() + err.getMessage());
-                if (user == null) {
-                    Log.d("MyApp", "Uh oh. The user cancelled the Twitter login.");
-                } else if (user.isNew()) {
-                    ParseTwitterUtils.getTwitter().getScreenName();
-                    Log.d("MyApp", "User signed up and logged in through Twitter!" + ParseTwitterUtils.getTwitter().getScreenName());
-                } else {
-                    Log.d("MyApp", "User logged in through Twitter!");
-                }
-            }
-        });
+    public void doGoogleSignOn (View v) {
+
     }
 
 
