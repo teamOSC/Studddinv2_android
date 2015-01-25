@@ -40,11 +40,7 @@ public class PeopleSameInterestsFragment extends Fragment {
     MyAdapter3 q ;
     ListView lv ;
 
-    ArrayList<String> namelist = new ArrayList<String>();
-    ArrayList<String> institutelist = new ArrayList<String>();
-    ArrayList<String> qualificationlist = new ArrayList<String>();
-    ArrayList<String> interestslist = new ArrayList<String>();
-    ArrayList<String> distancelist = new ArrayList<String>();
+
 
     public PeopleSameInterestsFragment() {
         // Required empty public constructor
