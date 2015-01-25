@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import in.tosc.studddin.fragments.AccountInfoFragment;
 import in.tosc.studddin.fragments.FeedFragment;
 import in.tosc.studddin.fragments.ListingsFragment;
 import in.tosc.studddin.fragments.NotesFragment;
@@ -79,6 +80,12 @@ public class MainActivity extends ActionBarActivity
                 Log.d("Studdd.in", "feed fragment");
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new ListingsFragment())
+                        .commit();
+                break;
+            case 4:
+                Log.d("Studd.in","account info");
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container,new AccountInfoFragment())
                         .commit();
                 break;
 
