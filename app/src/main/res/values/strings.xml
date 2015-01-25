@@ -33,6 +33,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_in_guest"><u>Continue as guest</u></string>
+    <string name="qualifications">Qualifications</string>
 
     <string name="notes_search">Search</string>
     <string name="notes_topic_name">Topic Name</string>

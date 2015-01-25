@@ -32,6 +32,16 @@
             android:hint="@string/email_id"
             android:layout_margin="10dp"
             />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/qualification_input"
+            android:hint="@string/qualifications"
+            android:layout_margin="10dp"
+            />
+
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="0dp"
@@ -40,6 +50,7 @@
             android:hint="@string/interests"
             android:layout_margin="10dp"
             />
+
 
 
         </LinearLayout>
