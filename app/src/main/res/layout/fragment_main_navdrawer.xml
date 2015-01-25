@@ -6,7 +6,7 @@
     tools:context="in.tosc.studddin.NavigationDrawerFragment"
     >
     <View
-        android:background="@android:color/background_light"
+        android:background="@drawable/ic_abstract"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="2"/>
@@ -19,7 +19,8 @@
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
-        android:background="#cccc" />
+        android:background="#cccc"
+        android:listSelector="@drawable/item_bg"/>
 
 </LinearLayout>
 

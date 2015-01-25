@@ -8,13 +8,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-
-import java.util.ArrayList;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.fragments.notes.NotesSearchFragment;
-import in.tosc.studddin.fragments.notes.NotesUploadFragment;
 import in.tosc.studddin.fragments.people.PeopleNearmeFragment;
 import in.tosc.studddin.fragments.people.PeopleSameInstituteFragment;
 import in.tosc.studddin.fragments.people.PeopleSameInterestsFragment;
@@ -38,7 +34,7 @@ public class PeopleFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_people, container, false);
-
+        
 
         fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
