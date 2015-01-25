@@ -1,6 +1,7 @@
 package in.tosc.studddin.fragments.signon;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,8 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.HashMap;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
+import java.util.HashMap;
+import java.util.UUID;
+
+import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 
 
@@ -25,35 +32,31 @@ public class SignupDataFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String name = "name";
-    private static final String institute = "institute";
-    private static final String email = "email";
-    private static final String interests = "interests";
-    private static final String qualificatons = "qualifications";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private HashMap<String,String> input;
-
-    private Button submitButton;
+    
+    private static final String USER_NAME = "NAME";
+    private static final String USER_INSTITUTE = "INSTITUTE";
+    private static final String USER_EMAIL = "EMAIL";
+    private static final String USER_INTERESTS = "INTERESTS";
+    private static final String USER_QUALIFICATIONS = "QUALIFICATIONS";
     EditText nameET;
     EditText instituteET;
     EditText emailET;
     EditText interestsET;
     EditText qualificatonET;
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+    private HashMap<String, String> input;
+    private Button submitButton;
 
 
-
+    public SignupDataFragment() {
+        // Required empty public constructor
+    }
 
     public static SignupDataFragment newInstance() {
         SignupDataFragment fragment = new SignupDataFragment();
         return fragment;
-    }
-
-    public SignupDataFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -63,7 +66,7 @@ public class SignupDataFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        input = new HashMap<String,String>();
+        input = new HashMap<String, String>();
     }
 
     @Override
@@ -83,11 +86,10 @@ public class SignupDataFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getInput();
-                
+
                 boolean f = validateInput();
 
-                if(f)
-                {
+                if (f) {
                     pushInputToParse();
                     startNextActivity();
                 }
@@ -99,72 +101,86 @@ public class SignupDataFragment extends Fragment {
         return v;
     }
 
-    private void getInput()
-    {
+    private void getInput() {
 
 //        Log.d("nametext : ",nameET.getText().toString());
 
-            input.put(name, nameET.getText().toString());
-            input.put(institute, instituteET.getText().toString());
-            input.put(email, emailET.getText().toString());
-            input.put(interests, interestsET.getText().toString());
-            input.put(qualificatons,qualificatonET.getText().toString());
+        input.put(USER_NAME, nameET.getText().toString());
+        input.put(USER_INSTITUTE, instituteET.getText().toString());
+        input.put(USER_EMAIL, emailET.getText().toString());
+        input.put(USER_INTERESTS, interestsET.getText().toString());
+        input.put(USER_QUALIFICATIONS, qualificatonET.getText().toString());
 
 
     }
 
-    private boolean validateInput()
-    {
+    private boolean validateInput() {
         //validate input stored in input
         boolean f = true;
-       if(input.get(name).isEmpty())
-       {
-           Toast.makeText(getActivity(),getActivity().getString(R.string.enter_name),Toast.LENGTH_LONG).show();
-           f = false;
-       }
+        if (input.get(USER_NAME).isEmpty()) {
+            Toast.makeText(getActivity(), getActivity().getString(R.string.enter_name), Toast.LENGTH_LONG).show();
+            f = false;
+        }
 
-       if(f && input.get(institute).isEmpty())
-       {
-           Toast.makeText(getActivity(),getActivity().getString(R.string.enter_institute),Toast.LENGTH_LONG).show();
-           f = false;
-       }
+        if (f && input.get(USER_INSTITUTE).isEmpty()) {
+            Toast.makeText(getActivity(), getActivity().getString(R.string.enter_institute), Toast.LENGTH_LONG).show();
+            f = false;
+        }
 
-       if(f && input.get(email).isEmpty())
-       {
-           Toast.makeText(getActivity(),getActivity().getString(R.string.enter_email),Toast.LENGTH_LONG).show();
-           f = false;
-       }
+        if (f && input.get(USER_EMAIL).isEmpty()) {
+            Toast.makeText(getActivity(), getActivity().getString(R.string.enter_email), Toast.LENGTH_LONG).show();
+            f = false;
+        }
 
-       if(f && input.get(qualificatons).isEmpty())
-       {
-         Toast.makeText(getActivity(),"Please enter qualifications",Toast.LENGTH_LONG).show();
-         f = false;
-       }
+        if (f && input.get(USER_QUALIFICATIONS).isEmpty()) {
+            Toast.makeText(getActivity(), "Please enter qualifications", Toast.LENGTH_LONG).show();
+            f = false;
+        }
 
-       if(f && input.get(interests) == null)
-       {
-           input.remove(interests);
-           input.put(interests, getActivity().getString(R.string.empty_interests));
-       }
+        if (f && input.get(USER_INTERESTS) == null) {
+            input.remove(USER_INTERESTS);
+            input.put(USER_INTERESTS, getActivity().getString(R.string.empty_interests));
+        }
 
-       //TODO: also make sure a valid email id is entered
+        //TODO: also make sure a valid USER_EMAIL id is entered
 
-       return f;
+        return f;
     }
 
 
-    private void startNextActivity()
-    {
+    private void startNextActivity() {
         //get to next activity and set flags etc in shared preferences
 
     }
 
-    private void pushInputToParse()
-    {
+    private void pushInputToParse() {
         //push the valid input to parse
+        ParseUser user = new ParseUser();
+        user.setUsername(input.get(USER_EMAIL));
+        user.setPassword(UUID.randomUUID().toString().substring(1,9));
+        user.setEmail(input.get(USER_EMAIL));
+
+// other fields can be set just like with ParseObject
+        user.put(USER_NAME, input.get(USER_NAME));
+        user.put(USER_INSTITUTE, input.get(USER_INSTITUTE));
+        user.put(USER_QUALIFICATIONS, input.get(USER_QUALIFICATIONS));
+        user.put(USER_INTERESTS, input.get(USER_INTERESTS));
+
+        user.signUpInBackground(new SignUpCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    // Hooray! Let them use the app now.
+                    Intent i = new Intent(getActivity(), MainActivity.class);
+                    startActivity(i);
+                    getActivity().finish();
+                } else {
+                    // Sign up didn't succeed. Look at the ParseException
+                    // to figure out what went wrong
+                }
+            }
+        });
 
     }
-
 
 
 }
