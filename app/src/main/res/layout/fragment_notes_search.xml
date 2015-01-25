@@ -5,10 +5,16 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center">
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="1">
 
         <EditText
             android:layout_width="200dp"
@@ -31,7 +37,19 @@
             android:layout_alignParentRight ="true"
             android:layout_marginRight="50dp"
 
-             />
+            />
 
     </RelativeLayout>
+    <GridView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:numColumns="auto_fit"
+        android:gravity="center"
+        android:columnWidth="100dp"
+        android:stretchMode="columnWidth"
+        android:id="@+id/notes_gridview">
+
+        </GridView>
+    </LinearLayout>
 </FrameLayout>
