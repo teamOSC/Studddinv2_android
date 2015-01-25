@@ -15,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.parse.LocationCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -38,11 +40,16 @@ public class SignupDataFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     
     private static final String USER_NAME = "NAME";
-    private static final String USER_PASSWORD = "NAME";
+    private static final String USER_PASSWORD = "PASSWORD";
+    private static final String USER_DOB= "DOB";
     private static final String USER_INSTITUTE = "INSTITUTE";
+    private static final String USER_CITY = "CITY";
     private static final String USER_EMAIL = "EMAIL";
     private static final String USER_INTERESTS = "INTERESTS";
     private static final String USER_QUALIFICATIONS = "QUALIFICATIONS";
+    private static final String USER_LAT = "LAT";
+    private static final String USER_LONG = "LONG";
+
 
     View rootView;
 
@@ -95,6 +102,15 @@ public class SignupDataFragment extends Fragment {
 
             }
         });
+        ParseGeoPoint.getCurrentLocationInBackground(10000, new LocationCallback() {
+            @Override
+            public void done(ParseGeoPoint parseGeoPoint, ParseException e) {
+                if (parseGeoPoint != null) {
+                    input.put(USER_LAT, String.valueOf(parseGeoPoint.getLatitude()));
+                    input.put(USER_LONG, String.valueOf(parseGeoPoint.getLongitude()));
+                }
+            }
+        });
 
         return rootView;
     }
@@ -110,7 +126,9 @@ public class SignupDataFragment extends Fragment {
     private void getInput() {
         input.put(USER_NAME, getStringFromEditText(R.id.user_name));
         input.put(USER_PASSWORD, getStringFromEditText(R.id.user_password));
+        input.put(USER_DOB, getStringFromEditText(R.id.user_dob));
         input.put(USER_INSTITUTE, getStringFromEditText(R.id.user_institute));
+        input.put(USER_CITY, getStringFromEditText(R.id.user_city));
         input.put(USER_EMAIL, getStringFromEditText(R.id.user_email));
         input.put(USER_INTERESTS, getStringFromEditText(R.id.user_interests));
         input.put(USER_QUALIFICATIONS, getStringFromEditText(R.id.user_qualifications));
@@ -171,6 +189,8 @@ public class SignupDataFragment extends Fragment {
         user.put(USER_INSTITUTE, input.get(USER_INSTITUTE));
         user.put(USER_QUALIFICATIONS, input.get(USER_QUALIFICATIONS));
         user.put(USER_INTERESTS, input.get(USER_INTERESTS));
+        user.put(USER_LAT, input.get(USER_LAT));
+        user.put(USER_LONG, input.get(USER_LONG));
 
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {

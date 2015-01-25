@@ -1,12 +1,17 @@
 package in.tosc.studddin.fragments.signon;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.transition.Explode;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -81,6 +86,20 @@ public class SignOnFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+
+        ParseUser pUser = ParseUser.getCurrentUser();
+        if (pUser!=null && pUser.isAuthenticated()) {
+            Intent i = new Intent(getActivity(), MainActivity.class);
+            if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+                Activity activity = getActivity();
+                Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
+                activity.getWindow().setExitTransition(new Explode());
+                ActivityCompat.startActivityForResult(activity, i, 0, options);
+            }else{
+                startActivity(i);
+            }
+            getActivity().finish();
         }
     }
 
