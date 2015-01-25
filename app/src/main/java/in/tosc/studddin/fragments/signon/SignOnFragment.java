@@ -17,9 +17,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.parse.LogInCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
+import com.parse.twitter.Twitter;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
@@ -115,11 +118,17 @@ public class SignOnFragment extends Fragment {
         facebookLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doFacebookSignon(v);
+                doFacebookSignOn(v);
             }
         });
 
-        //twitterLoginButton.setOnClickListener(signUpListener);
+
+        twitterLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doTwitterSignOn(v);
+            }
+        });
         //googleLoginButton.setOnClickListener(signUpListener);
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
@@ -170,7 +179,7 @@ public class SignOnFragment extends Fragment {
         transaction.replace(R.id.signon_container,newFragment).addToBackStack(null).commit();
 
     }
-    public void doFacebookSignon (View v) {
+    public void doFacebookSignOn (View v) {
         ParseFacebookUtils.logIn(getActivity(), new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException err) {
@@ -180,6 +189,24 @@ public class SignOnFragment extends Fragment {
                     Log.d("MyApp", "User signed up and logged in through Facebook!");
                 } else {
                     Log.d("MyApp", "User logged in through Facebook!");
+                }
+            }
+        });
+    }
+
+    public void doTwitterSignOn (View v) {
+        Twitter t = new Twitter("FfUOeQ5OBuv0qOkdHbfXCrwdk", "xQmFnUSii54eS3iUrl0uIrxfeL4EfIdFc6iyoHUDgSIVGDbauD");
+        ParseTwitterUtils.logIn(getActivity(), new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException err) {
+                Log.d("myapp", "pe = " + err.getCode() + err.getMessage());
+                if (user == null) {
+                    Log.d("MyApp", "Uh oh. The user cancelled the Twitter login.");
+                } else if (user.isNew()) {
+                    ParseTwitterUtils.getTwitter().getScreenName();
+                    Log.d("MyApp", "User signed up and logged in through Twitter!" + ParseTwitterUtils.getTwitter().getScreenName());
+                } else {
+                    Log.d("MyApp", "User logged in through Twitter!");
                 }
             }
         });
