@@ -6,11 +6,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
+import com.parse.ParseUser;
 
 import in.tosc.studddin.R;
 
@@ -92,7 +98,8 @@ public class SignOnFragment extends Fragment {
         signUpButton = (Button) view.findViewById(R.id.signon_button_signup);
         guestContinue = (TextView)view.findViewById(R.id.sign_in_guest);
 
-        View.OnClickListener listener = new View.OnClickListener() {
+        View.OnClickListener signUpListener = new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
 
@@ -106,6 +113,24 @@ public class SignOnFragment extends Fragment {
             }
         };
 
+        View.OnClickListener facebookSignUpListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseFacebookUtils.logIn(getActivity(), new LogInCallback() {
+                    @Override
+                    public void done(ParseUser user, ParseException err) {
+                        if (user == null) {
+                            Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
+                        } else if (user.isNew()) {
+                            Log.d("MyApp", "User signed up and logged in through Facebook!");
+                        } else {
+                            Log.d("MyApp", "User logged in through Facebook!");
+                        }
+                    }
+                });
+            }
+        };
+
         guestContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,10 +138,11 @@ public class SignOnFragment extends Fragment {
             }
         });
 
-        facebookLoginButton.setOnClickListener(listener);
-        twitterLoginButton.setOnClickListener(listener);
-        googleLoginButton.setOnClickListener(listener);
-        signUpButton.setOnClickListener(listener);
+        facebookLoginButton.setOnClickListener(facebookSignUpListener);
+        twitterLoginButton.setOnClickListener(signUpListener);
+        googleLoginButton.setOnClickListener(signUpListener);
+
+        signUpButton.setOnClickListener(signUpListener);
 
 
     }
