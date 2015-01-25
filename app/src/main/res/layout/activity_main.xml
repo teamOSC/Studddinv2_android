@@ -4,10 +4,23 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     tools:context="in.tosc.studddin.MainActivity">
 
+
+
     <!-- As the main content view, the view below consumes the entire
          space available using match_parent in both dimensions. -->
     <FrameLayout android:id="@+id/container" android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        >
+    <android.support.v7.widget.Toolbar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:theme="@style/myCustomTheme"/>
+    </FrameLayout>
+
+   
 
     <!-- android:layout_gravity="start" tells DrawerLayout to treat
          this as a sliding drawer on the left side for left-to-right
@@ -16,9 +29,13 @@
          android:layout_gravity="left" instead. -->
     <!-- The drawer is given a fixed width in dp and extends the full height of
          the container. -->
+
     <fragment android:id="@+id/navigation_drawer"
-        android:layout_width="@dimen/navigation_drawer_width" android:layout_height="match_parent"
-        android:layout_gravity="start" android:name="in.tosc.studddin.NavigationDrawerFragment"
-        tools:layout="@layout/fragment_main_navdrawer" />
+        android:layout_width="@dimen/navigation_drawer_width" 
+        android:layout_height="match_parent"
+        android:layout_gravity="start" 
+        android:name="in.tosc.studddin.NavigationDrawerFragment"
+        tools:layout="@layout/fragment_main_navdrawer"
+        android:layout_marginTop="?attr/actionBarSize"/>
 
 </android.support.v4.widget.DrawerLayout>
