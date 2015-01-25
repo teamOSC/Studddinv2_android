@@ -1,7 +1,9 @@
 package in.tosc.studddin.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -41,6 +43,9 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
     private static final String TAG = FeedFragment.class.getName();
 
     private EditText searchEditText;
+
+    private static final String KEY_LINK = "link";
+    private static final String KEY_TITLE = "title";
 
     public FeedFragment() {
         // Required empty public constructor
@@ -191,9 +196,21 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         @Override
         public void onBindViewHolder(FeedCategoryViewHolder holder, int position) {
             try {
-                JSONObject mJsonObject = (JSONObject) jsonArray.get(position);
-                holder.mTextView.setText("link" + mJsonObject.getString("link") + "\n"
-                        + "title" + mJsonObject.getString("title"));
+                final JSONObject mJsonObject = (JSONObject) jsonArray.get(position);
+                holder.mTextView.setText(mJsonObject.getString(KEY_TITLE));
+                holder.view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent browserIntent = null;
+                        try {
+                            browserIntent = new Intent(Intent.ACTION_VIEW,
+                                    Uri.parse(mJsonObject.getString(KEY_LINK)));
+                            context.startActivity(browserIntent);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             } catch (JSONException e) {
                 e.printStackTrace();
             }
