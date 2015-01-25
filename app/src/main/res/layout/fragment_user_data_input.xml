@@ -1,54 +1,79 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="in.tosc.studddin.fragments.signon.SignupDataFragment"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="in.tosc.studddin.fragments.signon.SignupDataFragment"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_height="0dp"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_weight="3">
-        <EditText
+        android:layout_weight="4"
+        android:layout_marginTop="5dp">
+        <in.tosc.studddin.customview.MaterialEditText
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/user_name"
             android:hint="@string/user_name"
-            android:layout_margin="10dp"
+            android:text="@string/enter_here"
+            android:layout_margin="9dp"
+            app:baseColor="@color/colorPrimary"
+            app:floatingLabel="highlight"
+            app:primaryColor="@color/search_color"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
             />
-        <EditText
+        <in.tosc.studddin.customview.MaterialEditText
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/user_institute"
             android:hint="@string/institute_name"
+            android:text="@string/enter_here"
             android:layout_margin="10dp"
+            app:baseColor="@color/colorPrimary"
+            app:floatingLabel="highlight"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
             />
-        <EditText
+        <in.tosc.studddin.customview.MaterialEditText
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/user_email"
             android:hint="@string/email_id"
+            android:text="@string/enter_here"
             android:layout_margin="10dp"
+            app:baseColor="@color/colorPrimary"
+            app:floatingLabel="highlight"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
             />
 
-        <EditText
+        <in.tosc.studddin.customview.MaterialEditText
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/user_qualifications"
             android:hint="@string/qualifications"
+            android:text="@string/enter_here"
             android:layout_margin="10dp"
+            app:baseColor="@color/colorPrimary"
+            app:floatingLabel="highlight"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
             />
 
-        <EditText
+        <in.tosc.studddin.customview.MaterialEditText
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/user_interests"
             android:hint="@string/interests"
+            android:text="@string/enter_here"
             android:layout_margin="10dp"
+            app:baseColor="@color/colorPrimary"
+            app:floatingLabel="highlight"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
             />
 
 

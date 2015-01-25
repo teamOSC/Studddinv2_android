@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.parse.ParseException;
@@ -19,6 +18,7 @@ import java.util.HashMap;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
+import in.tosc.studddin.customview.MaterialEditText;
 
 
 /**
@@ -95,7 +95,7 @@ public class SignupDataFragment extends Fragment {
 
     private String getStringFromEditText(int id) {
         try {
-            return ((EditText) rootView.findViewById(id)).toString();
+            return ((MaterialEditText) rootView.findViewById(id)).toString();
         } catch (Exception e) {
             return " ";
         }

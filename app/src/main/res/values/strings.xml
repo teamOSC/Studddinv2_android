@@ -20,6 +20,7 @@
     <string name="test_feeds">Feeds</string>
     <string name="test_notes">Notes</string>
     <string name="test_people">People</string>
+    <string name="test_listing">Listings</string>
 
 
     <string name="user_name">Name</string>
@@ -37,6 +38,7 @@
     <string name="sign_in">Sign In</string>
     <string name="sign_in_guest"><u>Continue as guest</u></string>
     <string name="qualifications">Qualifications</string>
+    <string name="enter_here">Enter here</string>
 
     <string name="notes_search">Search</string>
     <string name="notes_topic_name">Topic Name</string>

@@ -275,6 +275,7 @@ public class NavigationDrawerFragment extends Fragment {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setTitle(R.string.app_name);
+        //((ActionBarActivity)getActivity()).getSupportActionBar().setTitle(R.string.app_name);
     }
 
     private ActionBar getActionBar() {
