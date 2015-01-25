@@ -1,9 +1,14 @@
 package in.tosc.studddin.fragments.signon;
 
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.transition.Explode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -166,7 +171,14 @@ public class SignupDataFragment extends Fragment {
                 if (e == null) {
                     // Hooray! Let them use the app now.
                     Intent i = new Intent(getActivity(), MainActivity.class);
-                    startActivity(i);
+                        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+                            Activity activity = getActivity();
+                            Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
+                        activity.getWindow().setExitTransition(new Explode());
+                            ActivityCompat.startActivityForResult(activity, i, 0,options);
+                        }else{
+                        startActivity(i);
+                    }
                     getActivity().finish();
                 } else {
                     // Sign up didn't succeed. Look at the ParseException
