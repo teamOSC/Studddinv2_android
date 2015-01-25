@@ -2,6 +2,7 @@ package in.tosc.studddin.fragments.people;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -36,6 +37,7 @@ public class PeopleNearmeFragment extends Fragment {
     ListView lv ;
 
 
+
     public PeopleNearmeFragment() {
         // Required empty public constructor
     }
@@ -62,6 +64,14 @@ public class PeopleNearmeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                Intent in = new Intent(getActivity(), ViewPerson.class);
+                in.putExtra("name" , list3.get(i).cname);
+                in.putExtra("institute" , list3.get(i).cinstituition);
+                in.putExtra("qualifications" , list3.get(i).cqualification);
+                in.putExtra("interests" , list3.get(i).cinterests);
+                in.putExtra("distance" , list3.get(i).cdistance);
+
+                startActivity(in);
 
             }
         });

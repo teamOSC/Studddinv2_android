@@ -19,7 +19,8 @@ package in.tosc.studddin.fragments.people;
  */
 public class ViewPerson extends Fragment {
 
-    TextView name , interests , qualifications , area , institute;
+    TextView name , interests , qualifications , distance , institute;
+    String sname , sinterests , squalifications , sdistance , sinstitute;
 
 
 
@@ -34,11 +35,26 @@ public class ViewPerson extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.view_person, container, false);
 
+        Intent i = getActivity().getIntent();
+        sname = i.getStringExtra("name");
+        sinstitute = i.getStringExtra("institute");
+        sinterests = i.getStringExtra("interests");
+        squalifications = i.getStringExtra("qualifications");
+        sdistance = i.getStringExtra("distance");
+
+
+
         name = (TextView)rootView.findViewById(R.id.person_name);
         institute = (TextView)rootView.findViewById(R.id.person_institute);
         interests = (TextView)rootView.findViewById(R.id.person_interests);
         qualifications = (TextView)rootView.findViewById(R.id.person_qualifications);
-        area = (TextView)rootView.findViewById(R.id.person_area);
+        distance = (TextView)rootView.findViewById(R.id.person_area);
+
+        name.setText("Name : " + sname);
+        interests.setText("Interests : " + sinterests);
+        institute.setText("Institute : " + sinstitute);
+        qualifications.setText("Qualifications : " + squalifications);
+        distance.setText("Distance : " + sdistance);
 
         return rootView;
 
