@@ -74,7 +74,7 @@ public class PeopleFragment extends Fragment {
 
         peoplePager = (ViewPager) view.findViewById(R.id.people_pager);
         peoplePager.setAdapter(fragmentPagerAdapter);
-
+        peoplePager.setOffscreenPageLimit(3);
         return view;
     }
 

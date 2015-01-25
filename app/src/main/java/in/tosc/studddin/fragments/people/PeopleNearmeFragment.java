@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 import in.tosc.studddin.R;
 
-
 public class PeopleNearmeFragment extends Fragment {
 
     EditText search ;
@@ -146,7 +145,7 @@ public class PeopleNearmeFragment extends Fragment {
     private void loaddata()
     {
 
-        for(int i  =0 ; i<list3.size(); i++)
+        for(int i=0 ; i<list3.size(); i++)
         {
             list3.remove(each);
         }
