@@ -1,14 +1,18 @@
 package in.tosc.studddin.fragments.signon;
 
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.transition.Explode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.parse.ParseException;
@@ -19,6 +23,7 @@ import java.util.HashMap;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
+import in.tosc.studddin.customview.MaterialEditText;
 
 
 /**
@@ -96,7 +101,7 @@ public class SignupDataFragment extends Fragment {
 
     private String getStringFromEditText(int id) {
         try {
-            return ((EditText) rootView.findViewById(id)).getText().toString();
+            return ((MaterialEditText) rootView.findViewById(id)).getText().toString();
         } catch (Exception e) {
             return " ";
         }
@@ -172,7 +177,14 @@ public class SignupDataFragment extends Fragment {
                 if (e == null) {
                     // Hooray! Let them use the app now.
                     Intent i = new Intent(getActivity(), MainActivity.class);
-                    startActivity(i);
+                        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+                            Activity activity = getActivity();
+                            Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
+                        activity.getWindow().setExitTransition(new Explode());
+                            ActivityCompat.startActivityForResult(activity, i, 0,options);
+                        }else{
+                        startActivity(i);
+                    }
                     getActivity().finish();
                 } else {
                     // Sign up didn't succeed. Look at the ParseException
