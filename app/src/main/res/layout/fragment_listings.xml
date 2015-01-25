@@ -1,13 +1,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="in.tosc.studddin.fragments.ListingsFragment">
 
-    <EditText
+    <in.tosc.studddin.customview.MaterialEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search"/>
+        android:hint="@string/notes_search"
+        android:text="Search here"
+        android:textCursorDrawable="@drawable/text_cursor_cyan"
+        app:baseColor="@color/search_color"
+        app:floatingLabel="highlight"
+        app:maxCharacters="25"
+        app:primaryColor="@color/edittext_color"
+        app:singleLineEllipsis="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/listing_recycler_view"
