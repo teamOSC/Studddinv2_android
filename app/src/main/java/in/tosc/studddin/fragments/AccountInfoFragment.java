@@ -1,6 +1,7 @@
 package in.tosc.studddin.fragments;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -177,7 +179,8 @@ public class AccountInfoFragment extends Fragment {
                 ePassword.setEnabled(true);
                 eNewPassword.setEnabled(true);
                 eConfirmPassword.setEnabled(true);
-                slide_down(getActivity(),newpassFormContainer);
+                ePassword.setHint(getActivity().getString(R.string.old_password));
+                slide_down(getActivity(), newpassFormContainer);
                 ImageButton clicked = (ImageButton)rootView.findViewById(v.getId());
                 clicked.setImageResource(R.drawable.tick);
                 editPassword.setOnClickListener(oclPasswordSubmit);
@@ -187,13 +190,18 @@ public class AccountInfoFragment extends Fragment {
         oclPasswordSubmit = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ePassword.setEnabled(false);
-                eNewPassword.setEnabled(false);
-                eConfirmPassword.setEnabled(false);
-                slide_up(getActivity(),newpassFormContainer);
-                ImageButton clicked = (ImageButton)rootView.findViewById(v.getId());
-                clicked.setImageResource(R.drawable.pencil);
-                editPassword.setOnClickListener(oclPasswordEdit);
+
+
+                    ePassword.setEnabled(false);
+                    eNewPassword.setEnabled(false);
+                    eConfirmPassword.setEnabled(false);
+                    ePassword.setHint(getActivity().getString(R.string.password));
+                    changePassword();
+                    slide_up(getActivity(), newpassFormContainer);
+                    ImageButton clicked = (ImageButton) rootView.findViewById(v.getId());
+                    clicked.setImageResource(R.drawable.pencil);
+                    editPassword.setOnClickListener(oclPasswordEdit);
+
             }
         };
 
@@ -236,6 +244,60 @@ public class AccountInfoFragment extends Fragment {
             v.startAnimation(a);
             v.setVisibility(View.INVISIBLE);
         }
+    }
+
+    private boolean changePassword() {
+        String oldPassword,newPassword,confirmPassword;
+
+
+        oldPassword = ePassword.getText().toString();
+        newPassword = eNewPassword.getText().toString();
+        confirmPassword = eConfirmPassword.getText().toString();
+
+        if(oldPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
+
+            Toast.makeText(getActivity(),"Please enter the Old Password and the new password twice.",Toast.LENGTH_LONG).show();
+            ePassword.setText("");
+            eNewPassword.setText("");
+            eConfirmPassword.setText("");
+            return false;
+
+        }
+
+        if(!(newPassword.equals(confirmPassword))) {
+
+            Toast.makeText(getActivity(),"New passwords don't match",Toast.LENGTH_LONG).show();
+
+            eNewPassword.setText("");
+            eConfirmPassword.setText("");
+            return false;
+        }
+
+        ParseUser cu = ParseUser.getCurrentUser();
+        authenticate(cu.getUsername(), oldPassword, newPassword);
+        return true;
+    }
+
+
+    public void authenticate(String username,String oldPassword, final String newPassword) {
+        ParseUser.logInInBackground(
+                username,oldPassword,
+                new LogInCallback() {
+                    @Override
+                    public void done(ParseUser parseUser, ParseException e) {
+                        if (parseUser != null) {
+                            parseUser.setPassword(newPassword);
+                            parseUser.saveEventually();
+                        } else {
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle("Authentication Failed")
+                                    .setCancelable(true)
+                                    .setMessage("Old password is Incorrect!! Password not changed.")
+                                    .show();
+                        }
+                    }
+                }
+        );
     }
 
 }
