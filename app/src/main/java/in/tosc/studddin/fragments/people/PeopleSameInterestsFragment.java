@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ import in.tosc.studddin.R;
 
 public class PeopleSameInterestsFragment extends Fragment {
 
+    ProgressBar progressBar ;
 
     HashMap<String,Boolean> existingelement = new HashMap<String,Boolean>();
 
@@ -63,6 +65,7 @@ public class PeopleSameInterestsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_people_same_interests, container, false);
 
+        progressBar=(ProgressBar)view.findViewById(R.id.progressbar_people);
 
         search = (EditText) view.findViewById(R.id.people_search);
 
@@ -235,7 +238,8 @@ public class PeopleSameInterestsFragment extends Fragment {
                             }
 
                             lv.setAdapter(q);
-
+                            progressBar.setVisibility(View.GONE);
+                            lv.setVisibility(View.VISIBLE);
                         }
                     });
 

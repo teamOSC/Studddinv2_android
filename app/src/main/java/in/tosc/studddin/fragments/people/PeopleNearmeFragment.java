@@ -16,7 +16,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
@@ -33,6 +35,8 @@ import java.util.List;
 import in.tosc.studddin.R;
 
 public class PeopleNearmeFragment extends Fragment {
+
+    ProgressBar progressBar ;
 
     String currentuseremail = "";
     String currentuserinterests= "";
@@ -60,6 +64,7 @@ public class PeopleNearmeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_people_nearme, container, false);
+        progressBar=(ProgressBar)view.findViewById(R.id.progressbar_people);
 
 
         search = (EditText) view.findViewById(R.id.people_search);
@@ -151,6 +156,7 @@ public class PeopleNearmeFragment extends Fragment {
             TextView textdistance;
             TextView textinstituition;
             TextView textqualification;
+            ImageView userimg;
 
         }
 
@@ -223,7 +229,8 @@ public class PeopleNearmeFragment extends Fragment {
                         }
 
                         lv.setAdapter(q);
-
+                        progressBar.setVisibility(View.GONE);
+                        lv.setVisibility(View.VISIBLE);
                     }
                 });
 

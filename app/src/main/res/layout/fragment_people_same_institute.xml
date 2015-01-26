@@ -37,7 +37,7 @@
     <ProgressBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/progressbar_nearme"/>
+        android:id="@+id/progressbar_people"/>
 
     <ListView
         android:layout_weight="8"

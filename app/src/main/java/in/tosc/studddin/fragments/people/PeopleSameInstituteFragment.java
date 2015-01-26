@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import in.tosc.studddin.R;
 import in.tosc.studddin.fragments.signon.SignupDataFragment;
 
 public class PeopleSameInstituteFragment extends Fragment {
+    ProgressBar progressBar ;
 
 
     String currentuseremail = "";
@@ -59,6 +61,7 @@ public class PeopleSameInstituteFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_people_same_institute, container, false);
+        progressBar=(ProgressBar)view.findViewById(R.id.progressbar_people);
 
         search = (EditText) view.findViewById(R.id.people_search);
 
@@ -91,7 +94,7 @@ public class PeopleSameInstituteFragment extends Fragment {
 
                 newFragment.setArguments(in);
 
-                transaction.replace(R.id.people_pager,newFragment).commit();
+                transaction.replace(R.id.people_pager, newFragment).commit();
 
             }
         });
@@ -215,6 +218,8 @@ public class PeopleSameInstituteFragment extends Fragment {
 
 
                     lv.setAdapter(q);
+                    progressBar.setVisibility(View.GONE);
+                    lv.setVisibility(View.VISIBLE);
 
 
                     // The query was successful.
