@@ -33,7 +33,12 @@ import in.tosc.studddin.fragments.signon.SignupDataFragment;
 public class PeopleSameInstituteFragment extends Fragment {
 
 
-    String currentuser;
+    String currentuseremail = "";
+    String currentuserinterests= "";
+    String currentuserinstituition= "";
+    String currentusername= "";
+    String currentuserqualification= "";
+    String currentuser = "";
 
     EditText search ;
 
@@ -86,7 +91,7 @@ public class PeopleSameInstituteFragment extends Fragment {
 
                 newFragment.setArguments(in);
 
-                transaction.replace(R.id.container,newFragment).addToBackStack(null).commit();
+                transaction.replace(R.id.people_pager,newFragment).commit();
 
             }
         });

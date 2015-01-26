@@ -19,17 +19,27 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import in.tosc.studddin.R;
 
 public class PeopleNearmeFragment extends Fragment {
 
-
+    String currentuseremail = "";
+    String currentuserinterests= "";
+    String currentuserinstituition= "";
+    String currentusername= "";
+    String currentuserqualification= "";
+    String currentuser = "";
 
     EditText search ;
 
@@ -81,7 +91,7 @@ public class PeopleNearmeFragment extends Fragment {
 
                 newFragment.setArguments(in);
 
-                transaction.replace(R.id.container,newFragment).addToBackStack(null).commit();
+                transaction.replace(R.id.people_pager,newFragment).commit();
 
 
             }
@@ -167,30 +177,55 @@ public class PeopleNearmeFragment extends Fragment {
     private void loaddata()
     {
 
-
-        ParseUser.getCurrentUser().getUsername();
-
-
-        for(int i=0 ; i<list3.size(); i++)
+        for(int i  =0 ; i<list3.size(); i++)
         {
             list3.remove(each);
         }
 
 
-        for(int  i = 0 ; i<15; i++)
-        {
-            each = new EachRow3();
-            each.cname = "Laavanye";
-            each.cinterests  = "BasketBAll "  ;
-            each.cqualification  = "B tech"  ;
-            each.cinstituition  = "DTU"  ;
-            each.cdistance = "5 km"  ;
 
-            list3.add(each);
-        }
+        currentuser = ParseUser.getCurrentUser().getUsername();
+        currentuseremail = ParseUser.getCurrentUser().getString("email");
+        currentuserinterests = ParseUser.getCurrentUser().getString("INTERESTS");
+        currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
+        currentusername = ParseUser.getCurrentUser().getString("NAME");
+        currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
 
-        lv.setAdapter(q);
 
+
+                ParseQuery<ParseUser> query = ParseUser.getQuery();
+                query.findInBackground(new FindCallback<ParseUser>() {
+                    public void done(List<ParseUser> objects, ParseException e) {
+                        if (e == null) {
+
+                            for (ParseUser pu : objects) {
+                                //access the data associated with the ParseUser using the get method
+                                //pu.getString("key") or pu.get("key")
+
+                                if (!pu.getUsername().equals(currentuser)) {
+
+
+                                        each = new EachRow3();
+                                        each.cname = pu.getString("NAME");
+                                        each.cinterests = pu.getString("INTERESTS");
+                                        each.cqualification = pu.getString("QUALIFICATIONS");
+                                        each.cinstituition = pu.getString("INSTITUTE");
+//                                          each.cdistance = pu.getString("NAME");
+
+                                        list3.add(each);
+
+                                }
+                            }
+
+                            // The query was successful.
+                        } else {
+                            // Something went wrong.
+                        }
+
+                        lv.setAdapter(q);
+
+                    }
+                });
 
     }
 

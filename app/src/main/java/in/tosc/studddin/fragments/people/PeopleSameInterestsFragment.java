@@ -35,7 +35,14 @@ public class PeopleSameInterestsFragment extends Fragment {
 
 
     HashMap<String,Boolean> existingelement = new HashMap<String,Boolean>();
-    String currentuser;
+
+    String currentuseremail = "";
+    String currentuserinterests= "";
+    String currentuserinstituition= "";
+    String currentusername= "";
+    String currentuserqualification= "";
+    String currentuser = "";
+
     EditText search ;
 
     ArrayList<EachRow3> list3 = new ArrayList<PeopleSameInterestsFragment.EachRow3>();
@@ -87,7 +94,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                 newFragment.setArguments(in);
 
-                transaction.replace(R.id.container,newFragment).addToBackStack(null).commit();
+                transaction.replace(R.id.people_pager,newFragment).commit();
 
             }
         });
@@ -178,12 +185,14 @@ public class PeopleSameInterestsFragment extends Fragment {
             list3.remove(each);
         }
 
-          currentuser = ParseUser.getCurrentUser().getUsername();
-        String currentuseremail = ParseUser.getCurrentUser().getString("email");
-        String currentuserinterests = ParseUser.getCurrentUser().getString("INTERESTS");
-        String currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
-        String currentusername = ParseUser.getCurrentUser().getString("NAME");
-        String currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
+
+
+        currentuser = ParseUser.getCurrentUser().getUsername();
+         currentuseremail = ParseUser.getCurrentUser().getString("email");
+         currentuserinterests = ParseUser.getCurrentUser().getString("INTERESTS");
+         currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
+         currentusername = ParseUser.getCurrentUser().getString("NAME");
+         currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
 
         List<String> interestslist = Arrays.asList(currentuserinterests.split(", "));
 
