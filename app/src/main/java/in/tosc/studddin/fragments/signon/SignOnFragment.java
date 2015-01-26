@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.facebook.model.GraphUser;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
@@ -37,7 +36,7 @@ import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.externalapi.FbApi;
-import in.tosc.studddin.fragments.signon.SignupDataFragment.UserDataFields;
+import in.tosc.studddin.externalapi.UserDataFields;
 import in.tosc.studddin.utils.FloatingActionButton;
 
 
@@ -237,21 +236,24 @@ public class SignOnFragment extends Fragment {
                     Log.w(TAG, "Uh oh. The user cancelled the Facebook login.");
                 } else if (user.isNew()) {
                     Log.w(TAG, "User signed up and logged in through Facebook!");
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
-                    Bundle b = new Bundle();
 
                     Log.w(TAG,
                             "FBSHIT \n" +
                             ParseFacebookUtils.getSession().getAccessToken() + " \n" +
-                            ParseFacebookUtils.getSession().getAccessToken() + " \n" +
                             ParseFacebookUtils.getFacebook().getAppId()
                     );
+                    FbApi.setSession(ParseFacebookUtils.getSession());
+                    FbApi.getFacebookData(new FbApi.FbGotDataCallback() {
+                        @Override
+                        public void gotData(Bundle b) {
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            FragmentTransaction transaction = fragmentManager.beginTransaction();
+                            transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
+                            SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
+                            transaction.replace(R.id.signon_container,newFragment).addToBackStack("SignIn").commit();
 
-                    SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
-
-                    transaction.replace(R.id.signon_container,newFragment).addToBackStack("SignIn").commit();
+                        }
+                    });
 
                 } else {
                     Log.w(TAG, "User logged in through Facebook!");

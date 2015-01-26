@@ -2,7 +2,6 @@ package in.tosc.studddin.fragments.signon;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.parse.LocationCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
@@ -29,6 +27,7 @@ import java.util.HashMap;
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.externalapi.UserDataFields;
 
 
 /**
@@ -38,19 +37,6 @@ import in.tosc.studddin.customview.MaterialEditText;
  */
 public class SignupDataFragment extends Fragment {
 
-
-    public class UserDataFields {
-        public static final String USER_NAME = "NAME";
-        public static final String USER_PASSWORD = "PASSWORD";
-        public static final String USER_DOB= "DOB";
-        public static final String USER_INSTITUTE = "INSTITUTE";
-        public static final String USER_CITY = "CITY";
-        public static final String USER_EMAIL = "EMAIL";
-        public static final String USER_INTERESTS = "INTERESTS";
-        public static final String USER_QUALIFICATIONS = "QUALIFICATIONS";
-        public static final String USER_LAT = "LAT";
-        public static final String USER_LONG = "LONG";
-    }
 
     Bundle userDataBundle;
     
