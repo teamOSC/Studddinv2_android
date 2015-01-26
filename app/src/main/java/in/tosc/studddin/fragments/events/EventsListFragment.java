@@ -117,13 +117,14 @@ public class EventsListFragment extends Fragment {
                 convertView = inflator.inflate(R.layout.listview_events_child, null);
                 holder = new viewHolder();
                 holder.header = (TextView) convertView.findViewById(R.id.event_description);
-                holder.footer = (TextView) convertView.findViewById(R.id.event_time);
+                holder.footer = (TextView) convertView.findViewById(R.id.event_type);
                 convertView.setTag(holder);
             }
 
             holder = (viewHolder) convertView.getTag();
             Parent p = parents.get(groupPosition);
             holder.header.setText(p.getEventDescription());
+            holder.footer.setText(p.getEventType());
             return convertView;
         }
 
@@ -141,9 +142,8 @@ public class EventsListFragment extends Fragment {
     public class Parent{
         private String event_name;
         private Date event_date;
-
         private String event_description;
-        private Date event_time;
+        private String event_type;
 
 
         public String getEventName(){
@@ -170,6 +170,14 @@ public class EventsListFragment extends Fragment {
             this.event_description = d;
         }
 
+        public String getEventType(){
+            return event_type;
+        }
+
+        public void setEventType(String d){
+            this.event_type = d;
+        }
+
     }
 
     private class FetchData extends AsyncTask<Void,Void,Void>{
@@ -193,6 +201,7 @@ public class EventsListFragment extends Fragment {
                     parent.setEventName((String) listing.get("title"));
                     parent.setEventDate((Date) listing.get("createdAt"));
                     parent.setEventDescription((String) listing.get("description"));
+                    parent.setEventType((String) listing.get("type"));
                     parents.add(parent);
                 }
             }
