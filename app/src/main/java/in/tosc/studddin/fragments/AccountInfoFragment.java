@@ -3,9 +3,13 @@ package in.tosc.studddin.fragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,15 +20,18 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
+import com.facebook.widget.ProfilePictureView;
 import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -34,6 +41,19 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.BufferedHttpEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
@@ -49,6 +69,9 @@ public class AccountInfoFragment extends Fragment {
     private View rootView;
     private LinearLayout passwordContainer;
     private View newpassFormContainer;
+    private ImageView imageProfile;
+    private Bundle fbParams;
+
 
     public AccountInfoFragment() {
         // Required empty public constructor
@@ -66,6 +89,7 @@ public class AccountInfoFragment extends Fragment {
 
 
     private ParseFacebookUtils fUtils;
+    private Bitmap fbBitmap;
 
     private HashMap<String,String> userInfo;
 
@@ -110,7 +134,8 @@ public class AccountInfoFragment extends Fragment {
         }
 
         ParseFacebookUtils.initialize(FB_APP_ID);
-        makeMeRequest();
+        Task1 asyncRequest = new Task1();
+        asyncRequest.doInBackground();
     }
 
     private void init() {
@@ -143,6 +168,8 @@ public class AccountInfoFragment extends Fragment {
         eNewPassword.setEnabled(false);
         eConfirmPassword.setEnabled(false);
         eInstitute.setSelected(false);
+
+        imageProfile = (ImageView)rootView.findViewById(R.id.account_info_picture);
 
         oclEdit = new View.OnClickListener() {
             @Override
@@ -234,6 +261,12 @@ public class AccountInfoFragment extends Fragment {
         };
 
         editPassword.setOnClickListener(oclPasswordEdit);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                .permitAll()
+                .penaltyLog()
+                .build();
+        StrictMode.setThreadPolicy(policy);
 
     }
 
@@ -360,6 +393,28 @@ public class AccountInfoFragment extends Fragment {
                             if (user != null) {
                                 String facebookId = user.getId();
                                 Log.d("facebookId",facebookId);
+
+                                URL img_value = null;
+                                try {
+
+                                    Bitmap bitmap;
+                                    img_value = new URL("https://graph.facebook.com/"+facebookId+"/picture?width=300&&height=300");
+                                    HttpURLConnection connection = (HttpURLConnection) img_value.openConnection();
+                                    connection.setDoInput(true);
+                                    connection.setInstanceFollowRedirects( true );
+                                    connection.connect();
+                                    InputStream inputStream = connection.getInputStream();
+//                                    img_value.openConnection().setInstanceFollowRedirects(true).getInputStream()
+                                    bitmap = BitmapFactory.decodeStream(inputStream);
+                                    imageProfile.setImageBitmap(bitmap);
+                                    Log.d("image","got image");
+
+                                }
+                                catch (Exception e)
+                                {
+                                    Log.d("Exception profile pic",e.toString());
+                                }
+
                             }
                         }
                         if (response.getError() != null) {
@@ -370,5 +425,34 @@ public class AccountInfoFragment extends Fragment {
         request.executeAsync();
     }
 
+
+    class Task1 extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+        }
+        @Override
+        protected String doInBackground(Void... arg0)
+        {
+            //Record method
+            makeMeRequest();
+            return "X";
+
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            super.onPostExecute(result);
+
+        }
+    }
+
 }
+
+
+
+
 
