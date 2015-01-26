@@ -7,14 +7,19 @@
     <!-- TODO: Update blank fragment layout -->
 
 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center">
-
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/notes_selected_image"
+        android:layout_alignParentBottom="true"/>
         <Button
             android:layout_width="128dp"
             android:layout_height="128dp"
