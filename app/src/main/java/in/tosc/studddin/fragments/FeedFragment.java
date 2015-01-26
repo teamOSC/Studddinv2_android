@@ -14,10 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.koushikdutta.ion.Ion;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -48,12 +50,15 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
     private static final String KEY_LINK = "url";
     private static final String KEY_TITLE = "title";
+    private static final String KEY_IMAGE_URL = "image";
     private static final String FEED_TABLE = "Feed";
     private static final String KEY_LOCAL_DATASTORE = "feed";
 
     public static final int CATEGORY_INTERESTS = 0;
     public static final int CATEGORY_AROUND = 1;
     public static final int CATEGORY_COLLEGE = 2;
+
+    private boolean isQueryRunning = false;
 
     String searchUrl = "tosc.in:8082/search?q=";
 
@@ -93,9 +98,9 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         mAdapter = new FeedRootAdapter();
         mRecyclerView.setAdapter(mAdapter);
 
-        updateUI(CATEGORY_INTERESTS);
-        updateUI(CATEGORY_COLLEGE);
-        updateUI(CATEGORY_AROUND);
+        updateUI(CATEGORY_INTERESTS, 0);
+        updateUI(CATEGORY_COLLEGE, 0);
+        updateUI(CATEGORY_AROUND, 0);
         getFeed();
         return rootView;
     }
@@ -134,7 +139,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
         public void setDataSet(int i, List<ParseObject> parseObjects, String categoryName) {
             mDataset[i].setData(parseObjects, categoryName);
-            Log.d(TAG, "Setting dataset for " + categoryName);
         }
 
         public void invalidateData(int i) {
@@ -172,7 +176,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         // Replace the contents of a view (invoked by the layout manager)
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.mTextView.setText(mDataset[position].dummyString);
+            holder.mTextView.setText(mDataset[position].string);
 
             RecyclerView.LayoutManager mHorizontalLayoutManager = new LinearLayoutManager(context,
                     LinearLayoutManager.HORIZONTAL, false);
@@ -202,10 +206,12 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
             // each data item is just a string in this case
             public LinearLayout view;
             public TextView mTextView;
+            public ImageView mImageView;
             public FeedCategoryViewHolder(LinearLayout v) {
                 super(v);
                 this.view = v;
                 mTextView = (TextView) this.view.findViewById(R.id.feed_item_text_view);
+                mImageView = (ImageView) this.view.findViewById(R.id.feed_item_image);
             }
         }
 
@@ -213,9 +219,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         public FeedCategoryAdapter.FeedCategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LinearLayout view = (LinearLayout) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.feed_category_item, parent, false);
-            FeedCategoryAdapter.FeedCategoryViewHolder vh = new FeedCategoryAdapter.FeedCategoryViewHolder(view);
-            Log.d(TAG, "onCreateViewHolder");
-            return vh;
+            //FeedCategoryAdapter.FeedCategoryViewHolder vh = new FeedCategoryAdapter.FeedCategoryViewHolder(view);
+            return new FeedCategoryAdapter.FeedCategoryViewHolder(view);
         }
 
         @Override
@@ -223,6 +228,12 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
             final ParseObject object = parseObjects.get(position);
             holder.mTextView.setText(object.getString(KEY_TITLE));
+            Ion.with(holder.mImageView)
+//                    .placeholder(R.drawable.placeholder_image)
+//                    .error(R.drawable.error_image)
+//                    .animateLoad(spinAnimation)
+//                    .animateIn(fadeInAnimation)
+                    .load(object.getString(KEY_IMAGE_URL));
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -237,22 +248,21 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         public int getItemCount() {
             if (parseObjects == null)
                 return 0;
-            Log.d(TAG, "COUNT = " + parseObjects.size());
             return parseObjects.size();
         }
     }
 
     private static class FeedRootWrapper {
-        public String dummyString;
+        public String string;
         public List<ParseObject> parseObjects;
 
         public void setData(List<ParseObject> parseObjects, String categoryTitle) {
             this.parseObjects = parseObjects;
-            this.dummyString = categoryTitle;
+            this.string = categoryTitle;
         }
 
         public void setData(List<ParseObject> parseObjects) {
-            setData(parseObjects, dummyString);
+            setData(parseObjects, string);
         }
     }
 
@@ -325,12 +335,10 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         interestQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
-                Log.d(TAG, "inside interest done");
                 if (e == null) {
                     ParseObject.unpinAllInBackground(KEY_LOCAL_DATASTORE);
                     ParseObject.pinAllInBackground(KEY_LOCAL_DATASTORE, parseObjects);
-                    updateUI(CATEGORY_AROUND);
-                    Log.d(TAG, "finished with interests count = " + parseObjects.size());
+                    updateUI(CATEGORY_INTERESTS, 1);
                 } else {
                     Log.e(TAG, "Getting feed query broke");
                 }
@@ -344,8 +352,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
                     ParseObject.pinAllInBackground(parseObjects);
-                    updateUI(CATEGORY_COLLEGE);
-                    Log.d(TAG, "finished with college");
+                    Log.d(TAG, "Calling update UI from getFeed College");
+                    updateUI(CATEGORY_COLLEGE, 1);
                 } else {
                     Log.e(TAG, "Getting feed query broke");
                 }
@@ -359,8 +367,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
                     ParseObject.pinAllInBackground(parseObjects);
-                    updateUI(CATEGORY_AROUND);
-                    Log.d(TAG, "finished with around");
+                    Log.d(TAG, "Calling update UI from getFeed Around");
+                    updateUI(CATEGORY_AROUND, 1);
                 } else {
                     Log.e(TAG, "Getting feed query broke");
                 }
@@ -368,7 +376,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         });
     }
 
-    private void updateUI (final int i) {
+    private void updateUI (final int i, final int flag) {
         if (isAdded()) {
             ParseQuery<ParseObject> query = ParseQuery.getQuery(FEED_TABLE).fromLocalDatastore();
             query.findInBackground(new FindCallback<ParseObject>() {
@@ -381,13 +389,10 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
                             Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
                         }
                         mAdapter.setDataSet(i, parseObjects, getString(resourceId));
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+
                                 mAdapter.invalidateData(i);
                                 mAdapter.notifyDataSetChanged();
-                            }
-                        });
+
                     } else {
                         Log.e(TAG, "Query failed");
                     }
