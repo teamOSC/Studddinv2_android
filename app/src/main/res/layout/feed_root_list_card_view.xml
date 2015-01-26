@@ -23,12 +23,19 @@
             android:text="#DUMMY#"
             android:textSize="35sp" />
 
+        <ProgressBar
+            android:id="@+id/feed_category_progress_bar"
+            android:layout_below="@id/feed_category_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/feed_category_horizontal_recycler_view"
             android:layout_marginTop="10dp"
             android:scrollbars="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="100dp"/>
+            android:layout_height="100dp"
+            android:visibility="gone" />
     </LinearLayout>
 
 </android.support.v7.widget.CardView>
