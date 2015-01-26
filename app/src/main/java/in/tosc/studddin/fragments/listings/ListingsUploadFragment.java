@@ -46,9 +46,9 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_listings_upload, container, false);
-        camera = (ImageView) rootView.findViewById(R.id.listing_camera);
+        camera = (ImageView) rootView.findViewById(R.id.listing_image);
         upload = (ImageView) rootView.findViewById(R.id.listing_upload);
-        sdCard = (ImageView) rootView.findViewById(R.id.listing_sdcard);
+        sdCard = (ImageView) rootView.findViewById(R.id.distance_image);
         listing = (EditText) rootView.findViewById(R.id.et_listing);
         mobile = (EditText) rootView.findViewById(R.id.et_mobile);
         name = (EditText) rootView.findViewById(R.id.et_name);
@@ -65,7 +65,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-            case R.id.listing_camera :
+            case R.id.listing_image:
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 File photoFile = null;
                 try {
@@ -81,7 +81,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                 }
                 break;
 
-            case R.id.listing_sdcard :
+            case R.id.distance_image:
                 Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 getActivity().startActivityForResult(i,1);
                 break;

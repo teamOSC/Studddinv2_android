@@ -6,7 +6,7 @@
     <ImageView
         android:layout_width="128dp"
         android:layout_height="128dp"
-        android:id="@+id/listing_camera"
+        android:id="@+id/listing_image"
         android:src="@android:drawable/ic_menu_camera"
         android:layout_marginTop="63dp"
         android:layout_marginLeft="65dp"
@@ -18,10 +18,10 @@
     <ImageView
         android:layout_width="128dp"
         android:layout_height="128dp"
-        android:id="@+id/listing_sdcard"
-        android:layout_alignTop="@+id/listing_camera"
-        android:layout_toRightOf="@+id/listing_camera"
-        android:layout_toEndOf="@+id/listing_camera"
+        android:id="@+id/distance_image"
+        android:layout_alignTop="@+id/listing_image"
+        android:layout_toRightOf="@+id/listing_image"
+        android:layout_toEndOf="@+id/listing_image"
         android:src="@android:drawable/ic_delete"
         />
     
@@ -72,6 +72,6 @@
         android:layout_alignBottom="@+id/et_listing"
         android:layout_toLeftOf="@+id/et_listing"
         android:layout_toStartOf="@+id/et_listing"
-        android:layout_below="@+id/listing_camera" />
+        android:layout_below="@+id/listing_image" />
 
 </RelativeLayout>
