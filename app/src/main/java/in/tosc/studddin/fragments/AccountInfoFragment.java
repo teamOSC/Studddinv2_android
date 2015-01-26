@@ -67,13 +67,17 @@ public class AccountInfoFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_account_info, container, false);
         userInfo = new HashMap<>();
         init();
-        fetchInfoFromParse();
+        try {
+            fetchInfoFromParse();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return rootView;
     }
 
 
-    private void fetchInfoFromParse()
+    private void fetchInfoFromParse () throws  Exception
     {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if(currentUser != null)
