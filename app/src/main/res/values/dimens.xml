@@ -18,4 +18,7 @@
     <dimen name="inner_components_spacing">8dp</dimen>
     <dimen name="bottom_ellipsis_height">5dp</dimen>
 
+    <dimen name="fragment_sign_up_edit_text_margin">8dp</dimen>
+
+
 </resources>

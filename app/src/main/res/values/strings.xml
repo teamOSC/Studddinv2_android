@@ -35,12 +35,15 @@
     <string name="enter_email">Please enter an email address</string>
     <string name="empty_interests">empty interests</string>
     <string name="hello_blank_fragment">Settings</string>
+
+
     <string name="sign_in_with">Sign In With</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_in_guest"><u>Continue as guest</u></string>
     <string name="qualifications">Qualifications</string>
     <string name="enter_here">Enter here</string>
+    <string name="edit_info">Edit Info</string>
 
     <string name="notes_search">Search</string>
     <string name="notes_topic_name">Topic Name</string>
@@ -55,6 +58,7 @@
     <string name="user_password">Password</string>
     <string name="sign_in_reset">Reset</string>
     <string name="sign_in_submit">Submit</string>
+
     <string name="user_dob">Date of Birth</string>
     <string name="user_location">Location</string>
 
@@ -62,5 +66,11 @@
     <string name="event_description">Description</string>
     <string name="event_location">Location</string>
     <string name="event_date">Date</string>
+
+    <string name="user_uid">UserID</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="password">Password</string>
 
 </resources>
