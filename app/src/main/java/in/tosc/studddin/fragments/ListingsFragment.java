@@ -52,8 +52,6 @@ public class ListingsFragment extends Fragment {
         notesPager = (ViewPager) rootView.findViewById(R.id.notes_pager);
         notesPager.setAdapter(fragmentPagerAdapter);
 
-
-
         return rootView;
 
 
