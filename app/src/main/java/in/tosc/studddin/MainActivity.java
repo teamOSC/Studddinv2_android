@@ -44,7 +44,7 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        myTitle = getResources().getString(R.string.test_feeds);
+        myTitle = getString(R.string.test_feeds);
         if(toolbar==null){
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             if(toolbar!=null){
@@ -199,6 +199,4 @@ public class MainActivity extends ActionBarActivity
             ListingsUploadFragment.listing_image.setImageBitmap(thumbnail);
         }
     }
-
-
 }

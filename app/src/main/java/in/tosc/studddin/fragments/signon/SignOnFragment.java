@@ -1,23 +1,28 @@
 package in.tosc.studddin.fragments.signon;
 
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.transition.Explode;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseTwitterUtils;
@@ -29,6 +34,8 @@ import java.util.List;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
+import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.fragments.signon.SignupDataFragment.UserDataFields;
 
 
 /**
@@ -81,6 +88,21 @@ public class SignOnFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+
+        ParseUser pUser = ParseUser.getCurrentUser();
+        if ((pUser != null) && (pUser.isAuthenticated()) && (pUser.getSessionToken() != null)) {
+            Log.d("SignOnFragment", pUser.getUsername() + pUser.getSessionToken());
+            Intent i = new Intent(getActivity(), MainActivity.class);
+            if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+                Activity activity = getActivity();
+                Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
+                activity.getWindow().setExitTransition(new Explode());
+                ActivityCompat.startActivityForResult(activity, i, 0, options);
+            }else{
+                startActivity(i);
+            }
+            getActivity().finish();
         }
     }
 
@@ -155,8 +177,8 @@ public class SignOnFragment extends Fragment {
 
     public void doSignIn (View v) {
         ParseUser.logInInBackground(
-                ((EditText)rootView.findViewById(R.id.sign_in_user_name)).getText().toString(),
-                ((EditText)rootView.findViewById(R.id.sign_in_user_password)).getText().toString(),
+                ((MaterialEditText)rootView.findViewById(R.id.sign_in_user_name)).getText().toString(),
+                ((MaterialEditText)rootView.findViewById(R.id.sign_in_user_password)).getText().toString(),
                 new LogInCallback() {
                     @Override
                     public void done(ParseUser parseUser, ParseException e) {
@@ -179,9 +201,16 @@ public class SignOnFragment extends Fragment {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
 
-        SignupDataFragment newFragment = new SignupDataFragment();
+        Bundle b = new Bundle();
 
-        transaction.replace(R.id.signon_container,newFragment).addToBackStack(null).commit();
+        AccountManager am = AccountManager.get(getActivity());
+        Account[] accounts = am.getAccountsByType("com.google");
+        if (accounts.length > 0)
+            b.putString(UserDataFields.USER_EMAIL, accounts[0].name);
+
+        SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
+
+        transaction.replace(R.id.signon_container,newFragment).addToBackStack("SignIn").commit();
 
     }
     public void doFacebookSignOn (View v) {
@@ -205,6 +234,16 @@ public class SignOnFragment extends Fragment {
                     Log.d(TAG, "User signed up and logged in through Facebook!");
                 } else {
                     Log.d(TAG, "User logged in through Facebook!");
+                    Intent i = new Intent(getActivity(), MainActivity.class);
+                    if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+                        Activity activity = getActivity();
+                        Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
+                        activity.getWindow().setExitTransition(new Explode());
+                        ActivityCompat.startActivityForResult(activity, i, 0,options);
+                    }else{
+                        startActivity(i);
+                    }
+                    getActivity().finish();
                 }
             }
         });
@@ -228,10 +267,29 @@ public class SignOnFragment extends Fragment {
                 if (user == null) {
                     Log.d(TAG, "Uh oh. The user cancelled the Twitter login.");
                 } else if (user.isNew()) {
-                    ParseTwitterUtils.getTwitter().getScreenName();
                     Log.d(TAG, "User signed up and logged in through Twitter!" + ParseTwitterUtils.getTwitter().getScreenName());
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
+                    Bundle b = new Bundle();
+
+                    Twitter t = ParseTwitterUtils.getTwitter();
+                    b.putString(UserDataFields.USER_NAME, t.getScreenName());
+                    SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
+
+                    transaction.replace(R.id.signon_container,newFragment).addToBackStack("SignIn").commit();
                 } else {
                     Log.d(TAG, "User logged in through Twitter!");
+                    Intent i = new Intent(getActivity(), MainActivity.class);
+                    if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+                        Activity activity = getActivity();
+                        Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
+                        activity.getWindow().setExitTransition(new Explode());
+                        ActivityCompat.startActivityForResult(activity, i, 0,options);
+                    }else{
+                        startActivity(i);
+                    }
+                    getActivity().finish();
                 }
             }
         });

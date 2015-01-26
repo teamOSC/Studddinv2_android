@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="MaterialEditText">
+    <!-- the base color of the line and the texts. default is black. -->
+    <attr name="baseColor" format="color"/>
+    <!-- the highlight color of the line, and the floating label if the highlightFloatingLabel is true. -->
+    <attr name="primaryColor" format="color"/>
+    <!-- how the floating label should be shown. default is none -->
+    <attr name="floatingLabel">
+      <enum name="none" value="0"/>
+      <enum name="normal" value="1"/>
+      <enum name="highlight" value="2"/>
+    </attr>
+    <!-- the color for when something is wrong.(e.g. exceeding max characters) -->
+    <attr name="errorColor" format="color"/>
+    <!-- characters count limit. 0 means no limit. -->
+    <attr name="maxCharacters" format="integer"/>
+    <!-- whether to show the bottom ellipsis in singleLine mode -->
+    <attr name="singleLineEllipsis" format="boolean"/>
+    <!--if the text has the be checked against a regular expression -->
+    <attr name="regexExpression" format="string"/>
+    <!-- error text to show the user if input is not valid -->
+    <attr name="regexErrorText" format="string" />
+    <!-- text to show the user if input is valid -->
+    <attr name="regexText" format="string" />
+  </declare-styleable>
+</resources>

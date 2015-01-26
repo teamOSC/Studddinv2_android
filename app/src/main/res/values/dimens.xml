@@ -8,5 +8,14 @@
 
     <dimen name="signin_button_margin">5dp</dimen>
     <dimen name="signin_button_size">70dp</dimen>
+    
+    <!-- EditText dimens -->
+    <dimen name="default_padding_top">8dp</dimen>
+    <dimen name="default_padding_bottom">8dp</dimen>
+    <dimen name="inner_padding_left">3dp</dimen>
+    <dimen name="inner_padding_right">0dp</dimen>
+    <dimen name="floating_label_text_size">15dp</dimen>
+    <dimen name="inner_components_spacing">8dp</dimen>
+    <dimen name="bottom_ellipsis_height">5dp</dimen>
 
 </resources>

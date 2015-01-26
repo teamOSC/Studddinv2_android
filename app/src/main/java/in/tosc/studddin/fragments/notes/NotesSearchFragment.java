@@ -8,8 +8,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import in.tosc.studddin.R;
 
@@ -32,6 +38,7 @@ public class NotesSearchFragment extends Fragment {
     Button addNotesButton;
     EditText searchEdTxt;
 
+    private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -67,12 +74,21 @@ public class NotesSearchFragment extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_notes_search, container, false);
+
+        GridView notesGridView = (GridView)rootView.findViewById(R.id.notes_gridview);
+
+        notesCollegeName = new ArrayList<String>();
+        notesBranchName = new ArrayList<String>();
+        notesSubjectName = new ArrayList<String>();
+        notesTopicName = new ArrayList<String>();
+
         addNotesButton = (Button) rootView.findViewById(R.id.notes_button_add);
         searchEdTxt = (EditText) rootView.findViewById(R.id.notes_search);
 
@@ -93,6 +109,62 @@ public class NotesSearchFragment extends Fragment {
                 // Start the animated transition.
 
             }
+        });
+
+        searchEdTxt = (EditText) rootView.findViewById(R.id.notes_search);
+
+        notesBranchName.add("MCE");
+        notesTopicName.add("Sequences");
+        notesSubjectName.add("RA");
+        notesCollegeName.add("DTU");
+
+
+        NotesCustomGridViewAdapter adapter = new NotesCustomGridViewAdapter(getActivity(), notesCollegeName, notesBranchName, notesTopicName, notesSubjectName);
+        notesGridView = (GridView)rootView.findViewById(R.id.notes_gridview);
+        notesGridView.setAdapter(adapter);
+
+        notesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Toast.makeText(getActivity(), "Chal raha hai", Toast.LENGTH_SHORT);
+
+            }
+        });
+
+
+
+        addNotesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Fragment viewPagerOfNotesFragment = getParentFragment();
+
+                List<Fragment> currFragment = viewPagerOfNotesFragment.getChildFragmentManager().getFragments();
+                FragmentTransaction fragmentTransaction = viewPagerOfNotesFragment.getFragmentManager().beginTransaction();
+                fragmentTransaction.show(currFragment.get(0));
+
+                fragmentTransaction.hide(currFragment.get(1));
+
+
+
+
+
+            }
+
+//                FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
+////                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager(); //getFragmentManager().beginTransaction();
+//
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.setCustomAnimations(R.anim.notes_slide_entry, R.anim.notes_slide_exit);
+//
+//                NotesUploadFragment newFragment = new NotesUploadFragment();
+//
+//                fragmentTransaction.replace(R.id.notes_pager, newFragment).addToBackStack(null).commit();
+
+            // Start the animated transition.
+
+
         });
 
         return rootView;
