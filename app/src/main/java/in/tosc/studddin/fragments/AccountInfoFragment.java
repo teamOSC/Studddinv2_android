@@ -27,6 +27,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.HashMap;
 import java.util.List;
@@ -161,7 +162,7 @@ public class AccountInfoFragment extends Fragment {
 
                 switch (v.getId()) {
                     case R.id.edit_institute_button:
-                        changeAttribute(eInstitute,USER_EMAIL);
+                        changeAttribute(eInstitute,USER_INSTITUTE);
                         break;
                     case R.id.edit_qualification_button:
                         changeAttribute(eQualificaton,USER_QUALIFICATIONS);
@@ -218,17 +219,23 @@ public class AccountInfoFragment extends Fragment {
 
     }
 
-    private void changeAttribute(EditText e,String attr)
+    private void changeAttribute(EditText e, final String attr)
     {
         if(attr.equals(USER_INSTITUTE) || attr.equals(USER_FULLNAME))
         {
             if(e.getText().toString().isEmpty())
-            Toast.makeText(getActivity(),attr + "cannot be empty",Toast.LENGTH_LONG);
+            Toast.makeText(getActivity(),attr + "cannot be empty",Toast.LENGTH_LONG).show();
         }
 
         ParseUser cu = ParseUser.getCurrentUser();
         cu.put(attr,e.getText().toString());
-        cu.saveEventually();
+        cu.saveEventually( new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                Toast.makeText(getActivity(),"Updated " + attr.toLowerCase() + " successfully.",Toast.LENGTH_LONG).show();
+
+            }
+        });
         e.setEnabled(false);
         e.setFocusable(false);
     }
@@ -297,7 +304,20 @@ public class AccountInfoFragment extends Fragment {
                     public void done(ParseUser parseUser, ParseException e) {
                         if (parseUser != null) {
                             parseUser.setPassword(newPassword);
-                            parseUser.saveEventually();
+                            parseUser.saveEventually(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if(e == null) {
+                                        Toast.makeText(getActivity(),"Updated Password Successfully",Toast.LENGTH_LONG).show();
+                                    }
+                                    else {
+                                        Toast.makeText(getActivity(),"Unable to update password : " + e.getMessage(),
+                                        Toast.LENGTH_LONG);
+                                    }
+
+
+                                }
+                            });
                         } else {
                             new AlertDialog.Builder(getActivity())
                                     .setTitle("Authentication Failed")
