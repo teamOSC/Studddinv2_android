@@ -27,11 +27,5 @@
         android:layout_below = "@+id/notes_gridview_subjectname"
         android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/notes_gridview_collegename"
-        android:layout_below="@+id/notes_gridview_branchname"
-        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

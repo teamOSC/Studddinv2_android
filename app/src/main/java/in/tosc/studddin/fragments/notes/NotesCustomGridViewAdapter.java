@@ -62,12 +62,12 @@ public class NotesCustomGridViewAdapter extends BaseAdapter {
                 TextView branchNameTxtView = (TextView) grid.findViewById(R.id.notes_gridview_branchname);
                 TextView subjectNameTxtView = (TextView) grid.findViewById(R.id.notes_gridview_subjectname);
                 TextView topicNameTxtView = (TextView) grid.findViewById(R.id.notes_gridview_topicname);
-                TextView collegeNameTxtView = (TextView) grid.findViewById(R.id.notes_gridview_collegename);
+
 
                 branchNameTxtView.setText(notesBranchName.get(0));
                 topicNameTxtView.setText(notesTopicName.get(0));
                 subjectNameTxtView.setText(notesSubjectName.get(0));
-                collegeNameTxtView.setText(notesCollegeName.get(0));
+
             }
 
         } else {

@@ -1,5 +1,6 @@
 package in.tosc.studddin;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -25,6 +26,7 @@ import in.tosc.studddin.fragments.ListingsFragment;
 import in.tosc.studddin.fragments.NotesFragment;
 import in.tosc.studddin.fragments.PeopleFragment;
 import in.tosc.studddin.fragments.listings.ListingsUploadFragment;
+import in.tosc.studddin.fragments.notes.NotesUploadFragment;
 
 
 public class MainActivity extends ActionBarActivity
@@ -41,6 +43,7 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
     private Toolbar toolbar;
     private String myTitle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +86,7 @@ public class MainActivity extends ActionBarActivity
             case 1:
                 Log.d("Studdd.in", "notes fragment");
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, new NotesFragment())
+                        .replace(R.id.container, new NotesFragment(), "NOTES")
                         .commit();
             break;
             case 2:
@@ -212,6 +215,22 @@ public class MainActivity extends ActionBarActivity
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             thumbnail.compress(Bitmap.CompressFormat.PNG, 100, stream);
             ListingsUploadFragment.byteArray = stream.toByteArray();
+
+        }
+
+
+        if (requestCode == 5 && resultCode == Activity.RESULT_OK) {
+            String[] all_path = data.getStringArrayExtra("all_path");
+
+            NotesUploadFragment notesUploadFragment = (NotesUploadFragment) getSupportFragmentManager().findFragmentByTag("NOTES");
+
+            if(notesUploadFragment != null)
+                notesUploadFragment.setImagePaths(all_path);
+
+//            viewSwitcher.setDisplayedChild(0);
+//            adapter.addAll(dataT);
+
         }
     }
+
 }
