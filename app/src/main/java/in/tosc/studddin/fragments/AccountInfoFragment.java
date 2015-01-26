@@ -21,9 +21,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.model.GraphUser;
 import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -56,7 +61,11 @@ public class AccountInfoFragment extends Fragment {
     private static final String USER_EMAIL = "EMAIL";
     private static final String USER_INTERESTS = "INTERESTS";
     private static final String USER_QUALIFICATIONS = "QUALIFICATIONS";
+    private static final String USER_AUTH = "authData";
+    private static final String FB_APP_ID = "90313744064438";
 
+
+    private ParseFacebookUtils fUtils;
 
     private HashMap<String,String> userInfo;
 
@@ -82,23 +91,26 @@ public class AccountInfoFragment extends Fragment {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if(currentUser != null)
         {
-            if ( !(currentUser.getEmail().isEmpty()))
+            if ( currentUser.get(USER_EMAIL)!=null)
                 tEmail.setText(currentUser.getEmail());
 
-            if ( !(currentUser.getString(USER_INSTITUTE).isEmpty()) ) {
+            if (  currentUser.get(USER_INSTITUTE)!=null ) {
                 eInstitute.setText(currentUser.getString(USER_INSTITUTE));
             }
 
-            if ( !(currentUser.getString(USER_FULLNAME).isEmpty()) )
+            if (  currentUser.get(USER_FULLNAME)!=null )
                 tFullName.setText(currentUser.getString(USER_FULLNAME));
 
-            if ( !(currentUser.getString(USER_QUALIFICATIONS).isEmpty()) )
+            if ( currentUser.get(USER_QUALIFICATIONS)!=null )
                 eQualificaton.setText(currentUser.getString(USER_QUALIFICATIONS));
         }
         else
         {
             //TODO: handle errors if any generated
         }
+
+        ParseFacebookUtils.initialize(FB_APP_ID);
+        makeMeRequest();
     }
 
     private void init() {
@@ -334,6 +346,28 @@ public class AccountInfoFragment extends Fragment {
                     }
                 }
         );
+    }
+
+    private void makeMeRequest() {
+        final Session session = fUtils.getSession();
+        Request request = Request.newMeRequest(session,
+                new Request.GraphUserCallback() {
+
+                    @Override
+                    public void onCompleted(GraphUser user, Response response) {
+                        // If the response is successful
+                        if (session == Session.getActiveSession()) {
+                            if (user != null) {
+                                String facebookId = user.getId();
+                                Log.d("facebookId",facebookId);
+                            }
+                        }
+                        if (response.getError() != null) {
+                            // Handle error
+                        }
+                    }
+                });
+        request.executeAsync();
     }
 
 }
