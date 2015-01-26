@@ -42,7 +42,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
     private static Context context;
 
-    private static final String TAG = FeedFragment.class.getName();
+    private static final String TAG = "[[[OMERJERK]]]";
 
     private EditText searchEditText;
 
@@ -130,6 +130,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
         public void setDataSet(int i, List<ParseObject> parseObjects, String categoryName) {
             mDataset[i].setData(parseObjects, categoryName);
+            Log.d(TAG, "Setting dataset for " + categoryName);
         }
 
         public void invalidateData(int i) {
@@ -230,6 +231,9 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
         @Override
         public int getItemCount() {
+            if (parseObjects == null)
+                return 0;
+            Log.d(TAG, "COUNT = " + parseObjects.size());
             return parseObjects.size();
         }
     }
@@ -312,11 +316,11 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
     public void getFeed() {
 
         /* Get data related to interest*/
-        ParseQuery<ParseObject> interestQuery = ParseQuery.getQuery(FEED_TABLE_NAME);
+        ParseQuery<ParseObject> interestQuery = ParseQuery.getQuery(FEED_TABLE_NAME).setLimit(10);
         interestQuery.whereEqualTo("category", "Economics");
         interestQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(List<ParseObject> parseObject, ParseException e) {
+            public void done(List<ParseObject> parseObjects, ParseException e) {
                 Log.d(TAG, "inside interest done");
                 if (e == null) {
                     int resourceId = 0;
@@ -325,9 +329,16 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
                     } catch (UnsupportedOperationException ex) {
                         Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
                     }
-                    mAdapter.setDataSet(CATEGORY_INTERESTS, parseObject, getString(resourceId));
+                    mAdapter.setDataSet(CATEGORY_INTERESTS, parseObjects, getString(resourceId));
                     mAdapter.invalidateData(CATEGORY_INTERESTS);
-                    Log.d(TAG, "finished with interests");
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mAdapter.invalidateData(CATEGORY_AROUND);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    Log.d(TAG, "finished with interests count = " + parseObjects.size());
                 } else {
                     Log.e(TAG, "Getting feed query broke");
                 }
@@ -335,10 +346,10 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         });
 
         /*Get data related to user's college*/
-        ParseQuery<ParseObject> collegeQuery = ParseQuery.getQuery(FEED_TABLE_NAME);
+        ParseQuery<ParseObject> collegeQuery = ParseQuery.getQuery(FEED_TABLE_NAME).setLimit(10);
         collegeQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(List<ParseObject> parseObject, ParseException e) {
+            public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
                     int resourceId = 0;
                     try {
@@ -346,8 +357,15 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
                     } catch (UnsupportedOperationException ex) {
                         Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
                     }
-                    mAdapter.setDataSet(CATEGORY_COLLEGE, parseObject, getString(resourceId));
+                    mAdapter.setDataSet(CATEGORY_COLLEGE, parseObjects, getString(resourceId));
                     mAdapter.invalidateData(CATEGORY_COLLEGE);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mAdapter.invalidateData(CATEGORY_AROUND);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
                     Log.d(TAG, "finished with college");
                 } else {
                     Log.e(TAG, "Getting feed query broke");
@@ -356,10 +374,10 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         });
 
         /*Get data related to the around the user*/
-        ParseQuery<ParseObject> aroundQuery = ParseQuery.getQuery(FEED_TABLE_NAME);
+        ParseQuery<ParseObject> aroundQuery = ParseQuery.getQuery(FEED_TABLE_NAME).setLimit(10);
         aroundQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(List<ParseObject> parseObject, ParseException e) {
+            public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
                     int resourceId = 0;
                     try {
@@ -367,8 +385,14 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
                     } catch (UnsupportedOperationException ex) {
                         Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
                     }
-                    mAdapter.setDataSet(CATEGORY_AROUND, parseObject, getString(resourceId));
-                    mAdapter.invalidateData(CATEGORY_AROUND);
+                    mAdapter.setDataSet(CATEGORY_AROUND, parseObjects, getString(resourceId));
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mAdapter.invalidateData(CATEGORY_AROUND);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
                     Log.d(TAG, "finished with around");
                 } else {
                     Log.e(TAG, "Getting feed query broke");
