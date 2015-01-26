@@ -1,6 +1,8 @@
 package in.tosc.studddin.fragments.signon;
 
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -25,6 +27,7 @@ import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
+import com.parse.twitter.Twitter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +35,7 @@ import java.util.List;
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.fragments.signon.SignupDataFragment.UserDataFields;
 
 
 /**
@@ -197,9 +201,16 @@ public class SignOnFragment extends Fragment {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
 
-        SignupDataFragment newFragment = new SignupDataFragment();
+        Bundle b = new Bundle();
 
-        transaction.replace(R.id.signon_container,newFragment).addToBackStack(null).commit();
+        AccountManager am = AccountManager.get(getActivity());
+        Account[] accounts = am.getAccountsByType("com.google");
+        if (accounts.length > 0)
+            b.putString(UserDataFields.USER_EMAIL, accounts[0].name);
+
+        SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
+
+        transaction.replace(R.id.signon_container,newFragment).addToBackStack("SignIn").commit();
 
     }
     public void doFacebookSignOn (View v) {
@@ -257,6 +268,16 @@ public class SignOnFragment extends Fragment {
                     Log.d(TAG, "Uh oh. The user cancelled the Twitter login.");
                 } else if (user.isNew()) {
                     Log.d(TAG, "User signed up and logged in through Twitter!" + ParseTwitterUtils.getTwitter().getScreenName());
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
+                    Bundle b = new Bundle();
+
+                    Twitter t = ParseTwitterUtils.getTwitter();
+                    b.putString(UserDataFields.USER_NAME, t.getScreenName());
+                    SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
+
+                    transaction.replace(R.id.signon_container,newFragment).addToBackStack("SignIn").commit();
                 } else {
                     Log.d(TAG, "User logged in through Twitter!");
                     Intent i = new Intent(getActivity(), MainActivity.class);

@@ -19,6 +19,7 @@ import com.parse.LocationCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.util.HashMap;
@@ -34,28 +35,27 @@ import in.tosc.studddin.customview.MaterialEditText;
  * create an instance of this fragment.
  */
 public class SignupDataFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
+
+    public class UserDataFields {
+        public static final String USER_NAME = "NAME";
+        public static final String USER_PASSWORD = "PASSWORD";
+        public static final String USER_DOB= "DOB";
+        public static final String USER_INSTITUTE = "INSTITUTE";
+        public static final String USER_CITY = "CITY";
+        public static final String USER_EMAIL = "EMAIL";
+        public static final String USER_INTERESTS = "INTERESTS";
+        public static final String USER_QUALIFICATIONS = "QUALIFICATIONS";
+        public static final String USER_LAT = "LAT";
+        public static final String USER_LONG = "LONG";
+    }
+
+    Bundle userDataBundle;
     
-    private static final String USER_NAME = "NAME";
-    private static final String USER_PASSWORD = "PASSWORD";
-    private static final String USER_DOB= "DOB";
-    private static final String USER_INSTITUTE = "INSTITUTE";
-    private static final String USER_CITY = "CITY";
-    private static final String USER_EMAIL = "EMAIL";
-    private static final String USER_INTERESTS = "INTERESTS";
-    private static final String USER_QUALIFICATIONS = "QUALIFICATIONS";
-    private static final String USER_LAT = "LAT";
-    private static final String USER_LONG = "LONG";
 
 
     View rootView;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private HashMap<String, String> input;
     private Button submitButton;
 
@@ -64,8 +64,9 @@ public class SignupDataFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static SignupDataFragment newInstance() {
+    public static SignupDataFragment newInstance(Bundle bundle) {
         SignupDataFragment fragment = new SignupDataFragment();
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -73,8 +74,7 @@ public class SignupDataFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            userDataBundle = getArguments();
         }
         input = new HashMap<>();
     }
@@ -85,6 +85,9 @@ public class SignupDataFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
+        if (userDataBundle != null) {
+            autoFillData();
+        }
 
         submitButton = (Button) rootView.findViewById(R.id.submit_button);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -106,8 +109,8 @@ public class SignupDataFragment extends Fragment {
             @Override
             public void done(ParseGeoPoint parseGeoPoint, ParseException e) {
                 if (parseGeoPoint != null) {
-                    input.put(USER_LAT, String.valueOf(parseGeoPoint.getLatitude()));
-                    input.put(USER_LONG, String.valueOf(parseGeoPoint.getLongitude()));
+                    input.put(UserDataFields.USER_LAT, String.valueOf(parseGeoPoint.getLatitude()));
+                    input.put(UserDataFields.USER_LONG, String.valueOf(parseGeoPoint.getLongitude()));
                 }
             }
         });
@@ -123,47 +126,63 @@ public class SignupDataFragment extends Fragment {
         }
     }
 
+    private void setDataToFields (int id, String fieldName) {
+        try {
+            ((MaterialEditText) rootView.findViewById(id)).setText(userDataBundle.getString(fieldName));
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void autoFillData() {
+        setDataToFields(R.id.user_name, UserDataFields.USER_NAME);
+        setDataToFields(R.id.user_dob, UserDataFields.USER_DOB);
+        setDataToFields(R.id.user_institute, UserDataFields.USER_INSTITUTE);
+        setDataToFields(R.id.user_city, UserDataFields.USER_CITY);
+        setDataToFields(R.id.user_email, UserDataFields.USER_EMAIL);
+    }
+
     private void getInput() {
-        input.put(USER_NAME, getStringFromEditText(R.id.user_name));
-        input.put(USER_PASSWORD, getStringFromEditText(R.id.user_password));
-        input.put(USER_DOB, getStringFromEditText(R.id.user_dob));
-        input.put(USER_INSTITUTE, getStringFromEditText(R.id.user_institute));
-        input.put(USER_CITY, getStringFromEditText(R.id.user_city));
-        input.put(USER_EMAIL, getStringFromEditText(R.id.user_email));
-        input.put(USER_INTERESTS, getStringFromEditText(R.id.user_interests));
-        input.put(USER_QUALIFICATIONS, getStringFromEditText(R.id.user_qualifications));
+        input.put(UserDataFields.USER_NAME, getStringFromEditText(R.id.user_name));
+        input.put(UserDataFields.USER_PASSWORD, getStringFromEditText(R.id.user_password));
+        input.put(UserDataFields.USER_DOB, getStringFromEditText(R.id.user_dob));
+        input.put(UserDataFields.USER_INSTITUTE, getStringFromEditText(R.id.user_institute));
+        input.put(UserDataFields.USER_CITY, getStringFromEditText(R.id.user_city));
+        input.put(UserDataFields.USER_EMAIL, getStringFromEditText(R.id.user_email));
+        input.put(UserDataFields.USER_INTERESTS, getStringFromEditText(R.id.user_interests));
+        input.put(UserDataFields.USER_QUALIFICATIONS, getStringFromEditText(R.id.user_qualifications));
     }
 
     private boolean validateInput() {
         //validate input stored in input
         boolean f = true;
-        if (input.get(USER_NAME).isEmpty()) {
+        if (input.get(UserDataFields.USER_NAME).isEmpty()) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.enter_name), Toast.LENGTH_LONG).show();
             f = false;
         }
-        if (input.get(USER_PASSWORD).isEmpty()) {
+        if (input.get(UserDataFields.USER_PASSWORD).isEmpty()) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.enter_name), Toast.LENGTH_LONG).show();
             f = false;
         }
 
-        if (f && input.get(USER_INSTITUTE).isEmpty()) {
+        if (f && input.get(UserDataFields.USER_INSTITUTE).isEmpty()) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.enter_institute), Toast.LENGTH_LONG).show();
             f = false;
         }
 
-        if (f && input.get(USER_EMAIL).isEmpty()) {
+        if (f && input.get(UserDataFields.USER_EMAIL).isEmpty()) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.enter_email), Toast.LENGTH_LONG).show();
             f = false;
         }
 
-        if (f && input.get(USER_QUALIFICATIONS).isEmpty()) {
+        if (f && input.get(UserDataFields.USER_QUALIFICATIONS).isEmpty()) {
             Toast.makeText(getActivity(), "Please enter qualifications", Toast.LENGTH_LONG).show();
             f = false;
         }
 
-        if (f && input.get(USER_INTERESTS) == null) {
-            input.remove(USER_INTERESTS);
-            input.put(USER_INTERESTS, getActivity().getString(R.string.empty_interests));
+        if (f && input.get(UserDataFields.USER_INTERESTS) == null) {
+            input.remove(UserDataFields.USER_INTERESTS);
+            input.put(UserDataFields.USER_INTERESTS, getActivity().getString(R.string.empty_interests));
         }
 
         //TODO: also make sure a valid USER_EMAIL id is entered
@@ -179,45 +198,61 @@ public class SignupDataFragment extends Fragment {
 
     private void pushInputToParse() {
         //push the valid input to parse
-        ParseUser user = new ParseUser();
-        user.setUsername(input.get(USER_EMAIL));
-        user.setPassword(input.get(USER_PASSWORD));
-        user.setEmail(input.get(USER_EMAIL));
+        ParseUser user = ParseUser.getCurrentUser();
+        user.setUsername(input.get(UserDataFields.USER_EMAIL));
+        user.setPassword(input.get(UserDataFields.USER_PASSWORD));
+        user.setEmail(input.get(UserDataFields.USER_EMAIL));
 
         // other fields can be set just like with ParseObject
-        user.put(USER_NAME, input.get(USER_NAME));
-        user.put(USER_INSTITUTE, input.get(USER_INSTITUTE));
-        user.put(USER_QUALIFICATIONS, input.get(USER_QUALIFICATIONS));
-        user.put(USER_INTERESTS, input.get(USER_INTERESTS));
+        user.put(UserDataFields.USER_NAME, input.get(UserDataFields.USER_NAME));
+        user.put(UserDataFields.USER_INSTITUTE, input.get(UserDataFields.USER_INSTITUTE));
+        user.put(UserDataFields.USER_QUALIFICATIONS, input.get(UserDataFields.USER_QUALIFICATIONS));
+        user.put(UserDataFields.USER_INTERESTS, input.get(UserDataFields.USER_INTERESTS));
         try {
-            user.put(USER_LAT, input.get(USER_LAT));
-            user.put(USER_LONG, input.get(USER_LONG));
+            user.put(UserDataFields.USER_LAT, input.get(UserDataFields.USER_LAT));
+            user.put(UserDataFields.USER_LONG, input.get(UserDataFields.USER_LONG));
         } catch (Exception e) {
             // Nothing now
         }
-
-        user.signUpInBackground(new SignUpCallback() {
-            public void done(ParseException e) {
-                if (e == null) {
-                    // Hooray! Let them use the app now.
-                    Intent i = new Intent(getActivity(), MainActivity.class);
-                        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-                            Activity activity = getActivity();
-                            Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
-                        activity.getWindow().setExitTransition(new Explode().setDuration(1500));
-                            ActivityCompat.startActivityForResult(activity, i, 0,options);
-                        }else{
-                        startActivity(i);
+        if (user.getSessionToken() != null) {
+            user.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        // Hooray! Let them use the app now.
+                        goToMainActivity();
+                    } else {
                     }
-                    getActivity().finish();
-                } else {
-                    // Sign up didn't succeed. Look at the ParseException
-                    // to figure out what went wrong
                 }
-            }
-        });
+            });
+        } else {
+            user.signUpInBackground(new SignUpCallback() {
+                public void done(ParseException e) {
+                    if (e == null) {
+                        // Hooray! Let them use the app now.
+                        goToMainActivity();
+                    } else {
+                    }
+                }
+            });
+        }
+
+
+
 
     }
+
+    private void goToMainActivity () {
+        Intent i = new Intent(getActivity(), MainActivity.class);
+        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+            Activity activity = getActivity();
+            Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
+            activity.getWindow().setExitTransition(new Explode().setDuration(1500));
+            ActivityCompat.startActivityForResult(activity, i, 0,options);
+        }else{
+            startActivity(i);
+        }
+        getActivity().finish();}
 
 
 }
