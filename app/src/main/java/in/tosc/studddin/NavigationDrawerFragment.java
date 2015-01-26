@@ -115,7 +115,8 @@ public class NavigationDrawerFragment extends Fragment {
                         "Notes",
                         "People",
                         "Listings",
-                        "Events"
+                        "Events",
+                        "Account"
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerLinearLayout;
