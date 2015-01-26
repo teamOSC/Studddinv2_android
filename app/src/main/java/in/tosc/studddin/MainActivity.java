@@ -199,6 +199,4 @@ public class MainActivity extends ActionBarActivity
             ListingsUploadFragment.listing_image.setImageBitmap(thumbnail);
         }
     }
-
-
 }
