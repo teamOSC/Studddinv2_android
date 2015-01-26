@@ -46,9 +46,9 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_listings_upload, container, false);
-        camera = (ImageView) rootView.findViewById(R.id.listing_image);
+        camera = (ImageView) rootView.findViewById(R.id.listing_camera);
         upload = (ImageView) rootView.findViewById(R.id.listing_upload);
-        sdCard = (ImageView) rootView.findViewById(R.id.distance_image);
+        sdCard = (ImageView) rootView.findViewById(R.id.listing_sdcard);
         listing = (EditText) rootView.findViewById(R.id.et_listing);
         mobile = (EditText) rootView.findViewById(R.id.et_mobile);
         name = (EditText) rootView.findViewById(R.id.et_name);

@@ -28,6 +28,7 @@ import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
@@ -178,6 +179,14 @@ public class ListingsSearchFragment extends Fragment {
             viewHolder.owner_name.setText(mDataset.get(i).getOwner_name());
             viewHolder.mobile.setText(mDataset.get(i).getMobile());
             viewHolder.listing_image.setParseFile(mDataset.get(i).getImage());
+            viewHolder.listing_image.loadInBackground(new GetDataCallback() {
+                @Override
+                public void done(byte[] bytes, ParseException e) {
+                    // nothing to do
+                    if (e != null)
+                        e.printStackTrace();
+                }
+            });
             viewHolder.listing_distance.setText(mDataset.get(i).getDistance());
         }
 
@@ -222,8 +231,6 @@ public class ListingsSearchFragment extends Fragment {
                 query.orderByAscending("createdAt");
                 listings = query.find();
                 for (ParseObject listing : listings) {
-
-                    ParseFile image = (ParseFile) listing.get("image");
 
                     ListingInfo listingInfo = new ListingInfo();
                     listingInfo.setListing_name((String) listing.get("listingName"));
