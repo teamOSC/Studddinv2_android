@@ -7,5 +7,14 @@
     <!-- App Main colors -->
     <color name="colorPrimary">#EFC88B</color>
     <color name="colorPrimaryDark">#AF7A6D</color><!-- #CF5C36 -->
+
+    <color name="pink">#e91e63</color>
+    <color name="pink_pressed">#ec407a</color>
+    <color name="blue_semi_transparent">#3b5998</color>
+    <color name="blue_semi_transparent_pressed">#8b9dc3</color>
+    <color name="twitter_blue">#55ACEE</color>
+    <color name="twitter_blue_pressed">#aa55ACEE</color>
+    <color name="google_red">#E02F2F</color>
+    <color name="google_red_pressed">#aaE02F2F</color>
     
 </resources>
