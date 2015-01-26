@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,11 +29,12 @@ import in.tosc.studddin.R;
 
 public class AccountInfoFragment extends Fragment {
 
-    private EditText eName,ePassword,eQualificaton,eInstitute;//eInterests
-    private TextView tUID;
-    private ImageButton editName,editPassword,editQualification,editInstitute; //editInterest
+    private EditText ePassword,eQualificaton,eInstitute;//eInterests
+    private TextView tEmail,tFullName;
+    private ImageButton editPassword,editQualification,editInstitute; //editInterest
     View.OnClickListener oclEdit,oclSubmit;
     private View rootView;
+    private LinearLayout passwordContainer;
 
     public AccountInfoFragment() {
         // Required empty public constructor
@@ -66,21 +69,18 @@ public class AccountInfoFragment extends Fragment {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if(currentUser != null)
         {
-
-
-            tUID.setText(currentUser.getUsername());
-
+            if ( !(currentUser.getEmail().isEmpty()))
+                tEmail.setText(currentUser.getEmail());
 
             if ( !(currentUser.getString(USER_INSTITUTE).isEmpty()) ) {
                 eInstitute.setText(currentUser.getString(USER_INSTITUTE));
             }
 
             if ( !(currentUser.getString(USER_FULLNAME).isEmpty()) )
-                eName.setText(currentUser.getString(USER_FULLNAME));
+                tFullName.setText(currentUser.getString(USER_FULLNAME));
 
-            if ( !(currentUser.getString(USER_INTERESTS).isEmpty()) )
-                eQualificaton.setText(currentUser.getString(USER_INTERESTS));
-
+            if ( !(currentUser.getString(USER_QUALIFICATIONS).isEmpty()) )
+                eQualificaton.setText(currentUser.getString(USER_QUALIFICATIONS));
         }
         else
         {
@@ -91,8 +91,8 @@ public class AccountInfoFragment extends Fragment {
     private void init() {
 
 
-        eName = (EditText) rootView.findViewById(R.id.account_info_name);
-        editName = (ImageButton) rootView.findViewById(R.id.edit_name_button);
+        tFullName = (TextView) rootView.findViewById(R.id.account_info_fullname);
+        tEmail = (TextView)rootView.findViewById(R.id.account_info_email);
 
         ePassword = (EditText) rootView.findViewById(R.id.account_info_password);
         editPassword = (ImageButton) rootView.findViewById(R.id.edit_password_button);
@@ -104,15 +104,13 @@ public class AccountInfoFragment extends Fragment {
         eQualificaton = (EditText) rootView.findViewById(R.id.account_info_qualification);
         editQualification = (ImageButton) rootView.findViewById(R.id.edit_qualification_button);
 
-        tUID = (TextView)rootView.findViewById(R.id.account_info_uid);
 
+        passwordContainer = (LinearLayout)rootView.findViewById(R.id.account_info_container_password);
 
-        eName.setEnabled(false);
         ePassword.setEnabled(false);
         eQualificaton.setEnabled(false);
         eInstitute.setEnabled(false);
 
-        eName.clearFocus();
 
         oclEdit = new View.OnClickListener() {
             @Override
@@ -122,9 +120,7 @@ public class AccountInfoFragment extends Fragment {
                     case R.id.edit_institute_button:
                         eInstitute.setEnabled(true);
                         break;
-                    case R.id.edit_name_button:
-                        eName.setEnabled(true);
-                        break;
+
                     case R.id.edit_qualification_button:
                         eQualificaton.setEnabled(true);
                         break;
@@ -145,9 +141,6 @@ public class AccountInfoFragment extends Fragment {
                     case R.id.edit_institute_button:
                         changeAttribute(eInstitute,USER_EMAIL);
                         break;
-                    case R.id.edit_name_button:
-                        changeAttribute(eName,USER_FULLNAME);
-                        break;
                     case R.id.edit_qualification_button:
                         changeAttribute(eQualificaton,USER_QUALIFICATIONS);
                         break;
@@ -162,7 +155,17 @@ public class AccountInfoFragment extends Fragment {
 
         editQualification.setOnClickListener(oclEdit);
         editInstitute.setOnClickListener(oclEdit);
-        editName.setOnClickListener(oclEdit);
+
+        editPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView newView = new TextView(getActivity());
+                newView.setText("new password");
+                passwordContainer.addView(newView);
+                newView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                passwordContainer.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
+        });
     }
 
     private void changeAttribute(EditText e,String attr)
