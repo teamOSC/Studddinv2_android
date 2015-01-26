@@ -46,7 +46,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
     private EditText searchEditText;
 
-    private static final String KEY_LINK = "link";
+    private static final String KEY_LINK = "url";
     private static final String KEY_TITLE = "title";
     private static final String FEED_TABLE_NAME = "Feed";
 
