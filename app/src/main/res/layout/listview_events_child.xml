@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layoutAnimation="@anim/slide_in_gogo">
 
     <TextView
         android:id="@+id/event_description"
@@ -14,15 +15,15 @@
     <TextView
         android:layout_below="@+id/event_description"
         android:layout_margin="10dp"
-        android:id="@+id/event_time"
+        android:id="@+id/event_type"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="Date"
+        android:text="Type"
         android:textColor="#000000"
         />
 
     <View
-        android:layout_below="@id/event_time"
+        android:layout_below="@id/event_type"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"></View>

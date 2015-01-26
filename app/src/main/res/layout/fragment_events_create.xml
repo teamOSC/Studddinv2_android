@@ -31,8 +31,8 @@
         android:layout_height="1dp"
         android:layout_weight="1"
         android:layout_margin="10dp"
-        android:hint="@string/event_location"
-        android:id="@+id/event_location"
+        android:hint="Date"
+        android:id="@+id/event_date"
         />
 
     <EditText
@@ -40,8 +40,8 @@
         android:layout_height="1dp"
         android:layout_weight="1"
         android:layout_margin="10dp"
-        android:hint="@string/event_date"
-        android:id="@+id/event_date"
+        android:hint="Type"
+        android:id="@+id/event_type"
         />
         </LinearLayout>
 
