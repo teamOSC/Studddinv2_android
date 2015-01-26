@@ -315,7 +315,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
             byte[] b = new byte[in_s.available()];
             in_s.read(b);
-            Log.d(TAG, "String = " + new String(b));
+            Log.w(TAG, "String = " + new String(b));
             return new String(b);
         } catch (Exception e) {
             e.printStackTrace();
@@ -328,7 +328,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         new HttpExecute(new HttpExecutor() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Response = " + response);
+                Log.w(TAG, "Response = " + response);
             }
         }, url).execute();
     }
@@ -359,8 +359,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
                 if (e == null) {
                     ParseObject.unpinAllInBackground(KEY_LOCAL_DATASTORE);
                     ParseObject.pinAllInBackground(parseObjects);
-                    Log.d(TAG, "Calling update UI from getFeed College");
-                    Log.d(TAG, "Random = " + parseObjects.get(0).getString(KEY_TITLE));
+                    Log.w(TAG, "Calling update UI from getFeed College");
+                    Log.w(TAG, "Random = " + parseObjects.get(0).getString(KEY_TITLE));
                     updateUI(CATEGORY_COLLEGE, EVENTS_TABLE, 1);
                 } else {
                     Log.e(TAG, "Getting feed query broke");
@@ -376,7 +376,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
                 if (e == null) {
                     ParseObject.unpinAllInBackground(KEY_LOCAL_DATASTORE);
                     ParseObject.pinAllInBackground(parseObjects);
-                    Log.d(TAG, "Calling update UI from getFeed Around");
+                    Log.w(TAG, "Calling update UI from getFeed Around");
                     updateUI(CATEGORY_AROUND, FEED_TABLE, 1);
                 } else {
                     Log.e(TAG, "Getting feed query broke");

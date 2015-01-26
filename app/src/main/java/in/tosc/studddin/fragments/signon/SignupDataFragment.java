@@ -2,6 +2,7 @@ package in.tosc.studddin.fragments.signon;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -221,7 +222,7 @@ public class SignupDataFragment extends Fragment {
                 public void done(ParseException e) {
                     if (e == null) {
                         // Hooray! Let them use the app now.
-                        goToMainActivity();
+                        goToMainActivity(getActivity());
                     } else {
                     }
                 }
@@ -231,7 +232,7 @@ public class SignupDataFragment extends Fragment {
                 public void done(ParseException e) {
                     if (e == null) {
                         // Hooray! Let them use the app now.
-                        goToMainActivity();
+                        goToMainActivity(getActivity());
                     } else {
                     }
                 }
@@ -243,17 +244,17 @@ public class SignupDataFragment extends Fragment {
 
     }
 
-    private void goToMainActivity () {
-        Intent i = new Intent(getActivity(), MainActivity.class);
+    public static void goToMainActivity (Activity act) {
+        Intent i = new Intent(act, MainActivity.class);
         if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-            Activity activity = getActivity();
+            Activity activity = act;
             Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
             activity.getWindow().setExitTransition(new Explode().setDuration(1500));
             ActivityCompat.startActivityForResult(activity, i, 0,options);
         }else{
-            startActivity(i);
+            act.startActivity(i);
         }
-        getActivity().finish();}
+        act.finish();}
 
 
 }

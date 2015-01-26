@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.facebook.model.GraphUser;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
@@ -35,6 +36,7 @@ import java.util.List;
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.externalapi.FbApi;
 import in.tosc.studddin.fragments.signon.SignupDataFragment.UserDataFields;
 import in.tosc.studddin.utils.FloatingActionButton;
 
@@ -226,27 +228,40 @@ public class SignOnFragment extends Fragment {
             @Override
             public void done(ParseUser user, ParseException err) {
                 try {
-                    Log.d(TAG, "user = " + user.getUsername());
-                    Log.d(TAG, "pe = " + err.getCode() + err.getMessage());
+                    Log.w(TAG, "user = " + user.getUsername());
+                    Log.w(TAG, "pe = " + err.getCode() + err.getMessage());
                 } catch (Exception e) {
                     // Do nothing
                 }
                 if (user == null) {
-                    Log.d(TAG, "Uh oh. The user cancelled the Facebook login.");
+                    Log.w(TAG, "Uh oh. The user cancelled the Facebook login.");
                 } else if (user.isNew()) {
-                    Log.d(TAG, "User signed up and logged in through Facebook!");
+                    Log.w(TAG, "User signed up and logged in through Facebook!");
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
+                    Bundle b = new Bundle();
+
+                    Log.w(TAG,
+                            "FBSHIT \n" +
+                            ParseFacebookUtils.getSession().getAccessToken() + " \n" +
+                            ParseFacebookUtils.getSession().getAccessToken() + " \n" +
+                            ParseFacebookUtils.getFacebook().getAppId()
+                    );
+
+                    SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
+
+                    transaction.replace(R.id.signon_container,newFragment).addToBackStack("SignIn").commit();
+
                 } else {
-                    Log.d(TAG, "User logged in through Facebook!");
-                    Intent i = new Intent(getActivity(), MainActivity.class);
-                    if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-                        Activity activity = getActivity();
-                        Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
-                        activity.getWindow().setExitTransition(new Explode());
-                        ActivityCompat.startActivityForResult(activity, i, 0,options);
-                    }else{
-                        startActivity(i);
-                    }
-                    getActivity().finish();
+                    Log.w(TAG, "User logged in through Facebook!");
+                    Log.w(TAG,
+                            "FBSHIT \n" +
+                                    ParseFacebookUtils.getSession().getAccessToken() + " \n" +
+                                    ParseFacebookUtils.getSession().getAccessToken() + " \n" +
+                                    ParseFacebookUtils.getFacebook().getAppId()
+                    );
+                    SignupDataFragment.goToMainActivity(getActivity());
                 }
             }
         });
@@ -254,7 +269,7 @@ public class SignOnFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "onActivityResult called");
+        Log.w(TAG, "onActivityResult called");
         ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
     }
 
@@ -263,14 +278,14 @@ public class SignOnFragment extends Fragment {
             @Override
             public void done(ParseUser user, ParseException err) {
                 try {
-                    Log.d(TAG, "pe = " + err.getCode() + err.getMessage());
+                    Log.w(TAG, "pe = " + err.getCode() + err.getMessage());
                 } catch (Exception e) {
                     // Do nothing
                 }
                 if (user == null) {
-                    Log.d(TAG, "Uh oh. The user cancelled the Twitter login.");
+                    Log.w(TAG, "Uh oh. The user cancelled the Twitter login.");
                 } else if (user.isNew()) {
-                    Log.d(TAG, "User signed up and logged in through Twitter!" + ParseTwitterUtils.getTwitter().getScreenName());
+                    Log.w(TAG, "User signed up and logged in through Twitter!" + ParseTwitterUtils.getTwitter().getScreenName());
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
                     transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
@@ -282,17 +297,8 @@ public class SignOnFragment extends Fragment {
 
                     transaction.replace(R.id.signon_container,newFragment).addToBackStack("SignIn").commit();
                 } else {
-                    Log.d(TAG, "User logged in through Twitter!");
-                    Intent i = new Intent(getActivity(), MainActivity.class);
-                    if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-                        Activity activity = getActivity();
-                        Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
-                        activity.getWindow().setExitTransition(new Explode());
-                        ActivityCompat.startActivityForResult(activity, i, 0,options);
-                    }else{
-                        startActivity(i);
-                    }
-                    getActivity().finish();
+                    Log.w(TAG, "User logged in through Twitter!");
+                    SignupDataFragment.goToMainActivity(getActivity());
                 }
             }
         });
@@ -301,6 +307,8 @@ public class SignOnFragment extends Fragment {
     public void doGoogleSignOn (View v) {
 
     }
+
+
 
 
 }
