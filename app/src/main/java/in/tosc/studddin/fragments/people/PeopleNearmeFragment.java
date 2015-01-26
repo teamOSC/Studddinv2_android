@@ -1,6 +1,8 @@
 package in.tosc.studddin.fragments.people;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
@@ -10,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +23,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseFile;
+import com.parse.ParseImageView;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -131,6 +138,8 @@ public class PeopleNearmeFragment extends Fragment {
                 holder.textinstituition = (TextView) convertView.findViewById(R.id.people_institute);
                 holder.textdistance = (TextView) convertView.findViewById(R.id.people_distance);
                 holder.textqualification = (TextView) convertView.findViewById(R.id.people_qualification);
+                holder.userimg = (ParseImageView) convertView.findViewById(R.id.people_userimg);
+
 
                 convertView.setTag(holder);
             }
@@ -142,6 +151,38 @@ public class PeopleNearmeFragment extends Fragment {
             holder.textinstituition.setText(row.cinstituition);
             holder.textdistance.setText(row.cdistance);
             holder.textqualification.setText(row.cqualification);
+
+            if(row.fileObject!=null)
+            {
+                row.fileObject
+                        .getDataInBackground(new GetDataCallback() {
+
+                            public void done(byte[] data,
+                                             ParseException e) {
+                                if (e == null) {
+                                    Log.d("test",
+                                            "We've got data in data.");
+
+                                    holder.userimg.setImageBitmap(BitmapFactory
+                                            .decodeByteArray(
+                                                    data, 0,
+                                                    data.length));
+
+                                } else {
+                                    Toast.makeText(getActivity() , "error1" , Toast.LENGTH_SHORT).show();
+
+
+                                    Log.d("test",
+                                            "There was a problem downloading the data.");
+                                }
+                            }
+                        });
+            }
+
+            else
+            {
+                holder.userimg.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_person));
+            }
 
             return convertView;
         }
@@ -156,8 +197,7 @@ public class PeopleNearmeFragment extends Fragment {
             TextView textdistance;
             TextView textinstituition;
             TextView textqualification;
-            ImageView userimg;
-
+            ParseImageView userimg;
         }
 
 
@@ -176,7 +216,9 @@ public class PeopleNearmeFragment extends Fragment {
         String cdistance ;
         String cqualification ;
         String cinstituition ;
-
+        String cusername;
+        Bitmap cbmp;
+        ParseFile fileObject;
     }
 
 
@@ -217,6 +259,16 @@ public class PeopleNearmeFragment extends Fragment {
                                         each.cqualification = pu.getString("QUALIFICATIONS");
                                         each.cinstituition = pu.getString("INSTITUTE");
 //                                          each.cdistance = pu.getString("NAME");
+                                        each.cusername = pu.getString("username");
+
+                                    try
+                                    {
+                                        each.fileObject = (ParseFile) pu.get("image");
+                                    }
+                                    catch (Exception e1 )
+                                    {
+                                        System.out.print("nahh");
+                                    }
 
                                         list3.add(each);
 
