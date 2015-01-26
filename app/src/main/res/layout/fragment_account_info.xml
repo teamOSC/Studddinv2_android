@@ -111,6 +111,7 @@
             android:layout_weight="4"
             android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
             android:descendantFocusability="beforeDescendants"
+            android:inputType="textPassword"
             android:focusable="false"
             />
         <ImageButton
@@ -145,6 +146,7 @@
             android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
             android:descendantFocusability="beforeDescendants"
             android:focusableInTouchMode="true"
+            android:inputType="textPassword"
             />
         <FrameLayout
             android:layout_width="0dp"
@@ -169,6 +171,7 @@
                 android:layout_weight="6"
                 android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
                 android:descendantFocusability="beforeDescendants"
+                android:inputType="textPassword"
                 android:focusableInTouchMode="true"
                 />
             <FrameLayout
