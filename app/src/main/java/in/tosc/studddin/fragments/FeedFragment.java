@@ -61,14 +61,12 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
      * this fragment using the provided parameters.
      *
      */
-    // TODO: Rename and change types and number of parameters
     public static FeedFragment newInstance() {
         FeedFragment fragment = new FeedFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,7 +110,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
     private static class FeedRootAdapter extends RecyclerView.Adapter<FeedRootAdapter.ViewHolder> {
         private FeedRootWrapper[] mDataset;
-        private List<ParseObject> parseObjects;
 
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
@@ -131,9 +128,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
             }
         }
 
-        public FeedRootAdapter(FeedRootWrapper[] dataSet, List<ParseObject> parseObjects) {
+        public FeedRootAdapter(FeedRootWrapper[] dataSet) {
             mDataset = dataSet;
-            this.parseObjects = parseObjects;
         }
 
         // Create new views (invoked by the layout manager)
@@ -144,11 +140,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
             CardView v = (CardView) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.feed_root_list_card_view, parent, false);
             ViewHolder vh = new ViewHolder(v);
-            RecyclerView.LayoutManager mHorizontalLayoutManager = new LinearLayoutManager(context,
-                    LinearLayoutManager.HORIZONTAL, false);
-            FeedCategoryAdapter mFeedCategoryAdapter = new FeedCategoryAdapter(parseObjects);
-            vh.mHorizontalRecyclerView.setAdapter(mFeedCategoryAdapter);
-            vh.mHorizontalRecyclerView.setLayoutManager(mHorizontalLayoutManager);
             return vh;
         }
 
@@ -156,6 +147,12 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             holder.mTextView.setText(mDataset[position].dummyString);
+
+            RecyclerView.LayoutManager mHorizontalLayoutManager = new LinearLayoutManager(context,
+                    LinearLayoutManager.HORIZONTAL, false);
+            FeedCategoryAdapter mFeedCategoryAdapter = new FeedCategoryAdapter(mDataset[position].parseObjects);
+            holder.mHorizontalRecyclerView.setAdapter(mFeedCategoryAdapter);
+            holder.mHorizontalRecyclerView.setLayoutManager(mHorizontalLayoutManager);
         }
 
         // Return the size of your dataset (invoked by the layout manager)
@@ -216,9 +213,11 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
     private static class FeedRootWrapper {
         public String dummyString;
+        public List<ParseObject> parseObjects;
 
-        public FeedRootWrapper(String string) {
+        public FeedRootWrapper(String string, List<ParseObject> parseObjects) {
             this.dummyString = string;
+            this.parseObjects = parseObjects;
         }
     }
 
@@ -301,11 +300,11 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
                         } catch (UnsupportedOperationException ex) {
                             Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
                         }
-                        wrappers[i] = new FeedRootWrapper(getString(resourceId));
+                        wrappers[i] = new FeedRootWrapper(getString(resourceId), parseObject);
                     }
                     Log.d(TAG, "Before");
 
-                    mAdapter = new FeedRootAdapter(wrappers, parseObject);
+                    mAdapter = new FeedRootAdapter(wrappers);
                     mRecyclerView.setAdapter(mAdapter);
                     Log.d(TAG, "After");
                 } else {
