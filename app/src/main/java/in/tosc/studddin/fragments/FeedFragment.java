@@ -36,7 +36,7 @@ import in.tosc.studddin.utils.HttpExecutor;
 public class FeedFragment extends Fragment implements View.OnKeyListener{
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private FeedRootAdapter mAdapter;
     private static RecyclerView.LayoutManager mVerticalLayoutManager;
     View rootView;
 
@@ -49,6 +49,10 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
     private static final String KEY_LINK = "link";
     private static final String KEY_TITLE = "title";
     private static final String FEED_TABLE_NAME = "Feed";
+
+    public static final int CATEGORY_INTERESTS = 0;
+    public static final int CATEGORY_AROUND = 1;
+    public static final int CATEGORY_COLLEGE = 2;
 
     String searchUrl = "tosc.in:8082/search?q=";
 
@@ -85,7 +89,9 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
         mRecyclerView.setLayoutManager(mVerticalLayoutManager);
 
-        Log.d(TAG, "before getFeed");
+        mAdapter = new FeedRootAdapter();
+        mRecyclerView.setAdapter(mAdapter);
+
         getFeed();
         return rootView;
     }
@@ -109,7 +115,26 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
     }
 
     private static class FeedRootAdapter extends RecyclerView.Adapter<FeedRootAdapter.ViewHolder> {
-        private FeedRootWrapper[] mDataset;
+        private static final int CATEGORY_COUNT = 3;
+
+        //Adapters for each category
+        private FeedCategoryAdapter[] adapters = new FeedCategoryAdapter[CATEGORY_COUNT];
+        private FeedRootWrapper[] mDataset = new FeedRootWrapper[CATEGORY_COUNT];
+
+        public FeedRootAdapter() {
+            for (int i = 0; i < CATEGORY_COUNT; ++i) {
+                adapters[i] = new FeedCategoryAdapter();
+                mDataset[i] = new FeedRootWrapper();
+            }
+        }
+
+        public void setDataSet(int i, List<ParseObject> parseObjects, String categoryName) {
+            mDataset[i].setData(parseObjects, categoryName);
+        }
+
+        public void invalidateData(int i) {
+            adapters[i].notifyDataSetChanged();
+        }
 
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
@@ -126,10 +151,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
                 mHorizontalRecyclerView = (RecyclerView)
                         mCardView.findViewById(R.id.feed_category_horizontal_recycler_view);
             }
-        }
-
-        public FeedRootAdapter(FeedRootWrapper[] dataSet) {
-            mDataset = dataSet;
         }
 
         // Create new views (invoked by the layout manager)
@@ -150,7 +171,9 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
             RecyclerView.LayoutManager mHorizontalLayoutManager = new LinearLayoutManager(context,
                     LinearLayoutManager.HORIZONTAL, false);
-            FeedCategoryAdapter mFeedCategoryAdapter = new FeedCategoryAdapter(mDataset[position].parseObjects);
+
+            FeedCategoryAdapter mFeedCategoryAdapter = new FeedCategoryAdapter();
+            mFeedCategoryAdapter.setDataset(mDataset[position].parseObjects);
             holder.mHorizontalRecyclerView.setAdapter(mFeedCategoryAdapter);
             holder.mHorizontalRecyclerView.setLayoutManager(mHorizontalLayoutManager);
         }
@@ -164,9 +187,9 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
     private static class FeedCategoryAdapter extends RecyclerView.Adapter<FeedCategoryAdapter.FeedCategoryViewHolder> {
 
-        List<ParseObject> parseObjects;
+        List<ParseObject> parseObjects = new ArrayList();
 
-        public FeedCategoryAdapter(List<ParseObject> parseObjects) {
+        public void setDataset(List<ParseObject> parseObjects) {
             this.parseObjects = parseObjects;
         }
 
@@ -215,9 +238,13 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         public String dummyString;
         public List<ParseObject> parseObjects;
 
-        public FeedRootWrapper(String string, List<ParseObject> parseObjects) {
-            this.dummyString = string;
+        public void setData(List<ParseObject> parseObjects, String categoryTitle) {
             this.parseObjects = parseObjects;
+            this.dummyString = categoryTitle;
+        }
+
+        public void setData(List<ParseObject> parseObjects) {
+            setData(parseObjects, dummyString);
         }
     }
 
@@ -283,30 +310,66 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
     }
 
     public void getFeed() {
-        Log.d(TAG, "getFeed");
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(FEED_TABLE_NAME).setLimit(1);
-        query.whereEqualTo("category", "Economics");
-        Log.d(TAG, "before findInBackground");
-        query.findInBackground(new FindCallback<ParseObject>() {
+
+        /* Get data related to interest*/
+        ParseQuery<ParseObject> interestQuery = ParseQuery.getQuery(FEED_TABLE_NAME);
+        interestQuery.whereEqualTo("category", "Economics");
+        interestQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObject, ParseException e) {
-                Log.d(TAG, "inside done");
+                Log.d(TAG, "inside interest done");
                 if (e == null) {
-                    FeedRootWrapper[] wrappers = new FeedRootWrapper[3];
-                    for (int i = 0; i < 3; ++i) {
-                        int resourceId = 0;
-                        try {
-                            resourceId = getCategoryResource(i);
-                        } catch (UnsupportedOperationException ex) {
-                            Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
-                        }
-                        wrappers[i] = new FeedRootWrapper(getString(resourceId), parseObject);
+                    int resourceId = 0;
+                    try {
+                        resourceId = getCategoryResource(CATEGORY_INTERESTS);
+                    } catch (UnsupportedOperationException ex) {
+                        Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
                     }
-                    Log.d(TAG, "Before");
+                    mAdapter.setDataSet(CATEGORY_INTERESTS, parseObject, getString(resourceId));
+                    mAdapter.invalidateData(CATEGORY_INTERESTS);
+                    Log.d(TAG, "finished with interests");
+                } else {
+                    Log.e(TAG, "Getting feed query broke");
+                }
+            }
+        });
 
-                    mAdapter = new FeedRootAdapter(wrappers);
-                    mRecyclerView.setAdapter(mAdapter);
-                    Log.d(TAG, "After");
+        /*Get data related to user's college*/
+        ParseQuery<ParseObject> collegeQuery = ParseQuery.getQuery(FEED_TABLE_NAME);
+        collegeQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObject, ParseException e) {
+                if (e == null) {
+                    int resourceId = 0;
+                    try {
+                        resourceId = getCategoryResource(CATEGORY_COLLEGE);
+                    } catch (UnsupportedOperationException ex) {
+                        Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
+                    }
+                    mAdapter.setDataSet(CATEGORY_COLLEGE, parseObject, getString(resourceId));
+                    mAdapter.invalidateData(CATEGORY_COLLEGE);
+                    Log.d(TAG, "finished with college");
+                } else {
+                    Log.e(TAG, "Getting feed query broke");
+                }
+            }
+        });
+
+        /*Get data related to the around the user*/
+        ParseQuery<ParseObject> aroundQuery = ParseQuery.getQuery(FEED_TABLE_NAME);
+        aroundQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObject, ParseException e) {
+                if (e == null) {
+                    int resourceId = 0;
+                    try {
+                        resourceId = getCategoryResource(CATEGORY_AROUND);
+                    } catch (UnsupportedOperationException ex) {
+                        Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
+                    }
+                    mAdapter.setDataSet(CATEGORY_AROUND, parseObject, getString(resourceId));
+                    mAdapter.invalidateData(CATEGORY_AROUND);
+                    Log.d(TAG, "finished with around");
                 } else {
                     Log.e(TAG, "Getting feed query broke");
                 }
