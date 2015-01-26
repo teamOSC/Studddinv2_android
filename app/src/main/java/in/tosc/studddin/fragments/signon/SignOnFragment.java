@@ -5,12 +5,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.transition.Explode;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -18,22 +18,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
-import com.parse.twitter.Twitter;
 
 import java.util.Arrays;
 import java.util.List;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
+import in.tosc.studddin.customview.MaterialEditText;
 
 
 /**
@@ -175,8 +173,8 @@ public class SignOnFragment extends Fragment {
 
     public void doSignIn (View v) {
         ParseUser.logInInBackground(
-                ((EditText)rootView.findViewById(R.id.sign_in_user_name)).getText().toString(),
-                ((EditText)rootView.findViewById(R.id.sign_in_user_password)).getText().toString(),
+                ((MaterialEditText)rootView.findViewById(R.id.sign_in_user_name)).getText().toString(),
+                ((MaterialEditText)rootView.findViewById(R.id.sign_in_user_password)).getText().toString(),
                 new LogInCallback() {
                     @Override
                     public void done(ParseUser parseUser, ParseException e) {

@@ -204,7 +204,7 @@ public class SignupDataFragment extends Fragment {
                         if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
                             Activity activity = getActivity();
                             Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
-                        activity.getWindow().setExitTransition(new Explode());
+                        activity.getWindow().setExitTransition(new Explode().setDuration(1500));
                             ActivityCompat.startActivityForResult(activity, i, 0,options);
                         }else{
                         startActivity(i);
