@@ -54,4 +54,9 @@
     <string name="sign_in_reset">Reset</string>
     <string name="sign_in_submit">Submit</string>
 
+    <string name="event_name">Name</string>
+    <string name="event_description">Description</string>
+    <string name="event_location">Location</string>
+    <string name="event_date">Date</string>
+
 </resources>
