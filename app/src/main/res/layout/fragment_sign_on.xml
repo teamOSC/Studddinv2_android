@@ -60,7 +60,9 @@
             android:layout_marginLeft="@dimen/signin_button_margin"
             android:layout_marginRight="@dimen/signin_button_margin"
             android:layout_weight="2"
-            android:text="@string/sign_up" />
+            android:text="@string/sign_up"
+            android:textColor="@color/white"
+            android:background="@drawable/bbuton_primary_rounded"/>
 
         <Button
             android:id="@+id/signon_button_signin"
@@ -69,7 +71,9 @@
             android:layout_marginLeft="@dimen/signin_button_margin"
             android:layout_marginRight="@dimen/signin_button_margin"
             android:layout_weight="2"
-            android:text="@string/sign_in" />
+            android:text="@string/sign_in"
+            android:textColor="@color/white"
+            android:background="@drawable/bbuton_primary_rounded"/>
     </LinearLayout>
 
     <LinearLayout
