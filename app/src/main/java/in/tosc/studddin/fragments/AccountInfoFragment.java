@@ -3,6 +3,8 @@ package in.tosc.studddin.fragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -123,8 +125,7 @@ public class AccountInfoFragment extends Fragment {
         eInstitute.setEnabled(false);
         eNewPassword.setEnabled(false);
         eConfirmPassword.setEnabled(false);
-
-
+        eInstitute.setSelected(false);
 
         oclEdit = new View.OnClickListener() {
             @Override
@@ -132,10 +133,15 @@ public class AccountInfoFragment extends Fragment {
                 switch (v.getId())
                 {
                     case R.id.edit_institute_button:
+                        eInstitute.setSelected(true);
+                        eInstitute.setSelection(0,eInstitute.getText().length());
+                        eInstitute.setFocusable(true);
                         eInstitute.setEnabled(true);
                         break;
 
                     case R.id.edit_qualification_button:
+                        eQualificaton.setSelected(true);
+                        eQualificaton.setFocusable(true);
                         eQualificaton.setEnabled(true);
                         break;
                 }
@@ -179,6 +185,8 @@ public class AccountInfoFragment extends Fragment {
                 ePassword.setEnabled(true);
                 eNewPassword.setEnabled(true);
                 eConfirmPassword.setEnabled(true);
+                ePassword.setFocusable(true);
+                ePassword.setFocusableInTouchMode(true);
                 ePassword.setHint(getActivity().getString(R.string.old_password));
                 slide_down(getActivity(), newpassFormContainer);
                 ImageButton clicked = (ImageButton)rootView.findViewById(v.getId());
@@ -191,8 +199,9 @@ public class AccountInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-
+                    ePassword.setFocusable(false);
                     ePassword.setEnabled(false);
+                    ePassword.setFocusableInTouchMode(false);
                     eNewPassword.setEnabled(false);
                     eConfirmPassword.setEnabled(false);
                     ePassword.setHint(getActivity().getString(R.string.password));
@@ -221,6 +230,7 @@ public class AccountInfoFragment extends Fragment {
         cu.put(attr,e.getText().toString());
         cu.saveEventually();
         e.setEnabled(false);
+        e.setFocusable(false);
     }
 
     private static void slide_down(Context context,View v) {
