@@ -122,11 +122,17 @@
             android:background="@android:color/transparent"/>
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/account_info_container_password"
+        android:id="@+id/new_password_form_container"
+        android:visibility="gone"
+        >
     <LinearLayout
         android:id="@+id/account_info_container_new_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/account_info_container_password"
         android:orientation="horizontal"
         android:animateLayoutChanges="true">
         <EditText
@@ -171,6 +177,7 @@
                 android:layout_weight="1"
                 />
         </LinearLayout>
+        </RelativeLayout>
 
 
 

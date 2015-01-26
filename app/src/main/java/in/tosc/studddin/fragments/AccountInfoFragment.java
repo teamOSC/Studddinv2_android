@@ -1,12 +1,15 @@
 package in.tosc.studddin.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -29,12 +32,13 @@ import in.tosc.studddin.R;
 
 public class AccountInfoFragment extends Fragment {
 
-    private EditText ePassword,eQualificaton,eInstitute;//eInterests
+    private EditText ePassword,eQualificaton,eInstitute,eNewPassword,eConfirmPassword;//eInterests
     private TextView tEmail,tFullName;
     private ImageButton editPassword,editQualification,editInstitute; //editInterest
-    View.OnClickListener oclEdit,oclSubmit;
+    private View.OnClickListener oclEdit,oclSubmit,oclPasswordEdit,oclPasswordSubmit;
     private View rootView;
     private LinearLayout passwordContainer;
+    private View newpassFormContainer;
 
     public AccountInfoFragment() {
         // Required empty public constructor
@@ -104,12 +108,20 @@ public class AccountInfoFragment extends Fragment {
         eQualificaton = (EditText) rootView.findViewById(R.id.account_info_qualification);
         editQualification = (ImageButton) rootView.findViewById(R.id.edit_qualification_button);
 
+        newpassFormContainer = rootView.findViewById(R.id.new_password_form_container);
+
+        eNewPassword = (EditText) rootView.findViewById(R.id.account_info_new_password);
+        eConfirmPassword = (EditText) rootView.findViewById(R.id.account_info_confirm_password);
+
 
         passwordContainer = (LinearLayout)rootView.findViewById(R.id.account_info_container_password);
 
         ePassword.setEnabled(false);
         eQualificaton.setEnabled(false);
         eInstitute.setEnabled(false);
+        eNewPassword.setEnabled(false);
+        eConfirmPassword.setEnabled(false);
+
 
 
         oclEdit = new View.OnClickListener() {
@@ -149,8 +161,6 @@ public class AccountInfoFragment extends Fragment {
                 }
 
                 //TODO: change background image
-                //v.setDrawable()
-
                 ImageButton clicked = (ImageButton)rootView.findViewById(v.getId());
                 clicked.setImageResource(R.drawable.pencil);
 
@@ -161,12 +171,34 @@ public class AccountInfoFragment extends Fragment {
         editQualification.setOnClickListener(oclEdit);
         editInstitute.setOnClickListener(oclEdit);
 
-        editPassword.setOnClickListener(new View.OnClickListener() {
+        oclPasswordEdit = new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                
+            public void onClick(View v) {
+                ePassword.setEnabled(true);
+                eNewPassword.setEnabled(true);
+                eConfirmPassword.setEnabled(true);
+                slide_down(getActivity(),newpassFormContainer);
+                ImageButton clicked = (ImageButton)rootView.findViewById(v.getId());
+                clicked.setImageResource(R.drawable.tick);
+                editPassword.setOnClickListener(oclPasswordSubmit);
             }
-        });
+        };
+
+        oclPasswordSubmit = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ePassword.setEnabled(false);
+                eNewPassword.setEnabled(false);
+                eConfirmPassword.setEnabled(false);
+                slide_up(getActivity(),newpassFormContainer);
+                ImageButton clicked = (ImageButton)rootView.findViewById(v.getId());
+                clicked.setImageResource(R.drawable.pencil);
+                editPassword.setOnClickListener(oclPasswordEdit);
+            }
+        };
+
+        editPassword.setOnClickListener(oclPasswordEdit);
+
     }
 
     private void changeAttribute(EditText e,String attr)
@@ -182,4 +214,29 @@ public class AccountInfoFragment extends Fragment {
         cu.saveEventually();
         e.setEnabled(false);
     }
+
+    private static void slide_down(Context context,View v) {
+        Animation a = AnimationUtils.loadAnimation(context,R.anim.slide_down);
+        if (a != null)
+            a.reset();
+        if (v != null) {
+            v.clearAnimation();
+            v.setVisibility(View.VISIBLE);
+            v.startAnimation(a);
+        }
+    }
+
+    private static void slide_up(Context context,View v) {
+
+        Animation a = AnimationUtils.loadAnimation(context,R.anim.slide_up);
+        if (a != null)
+            a.reset();
+        if (v != null) {
+            v.clearAnimation();
+            v.startAnimation(a);
+            v.setVisibility(View.INVISIBLE);
+        }
+    }
+
 }
+
