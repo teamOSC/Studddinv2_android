@@ -2,9 +2,7 @@ package in.tosc.studddin.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -20,11 +18,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.utils.HttpExecute;
@@ -48,6 +48,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
     private static final String KEY_LINK = "link";
     private static final String KEY_TITLE = "title";
+    private static final String FEED_TABLE_NAME = "Feed";
 
     String searchUrl = "tosc.in:8082/search?q=";
 
@@ -84,7 +85,10 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         mVerticalLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
 
-        new ReadFromJSON(getJSON()).execute();
+        mRecyclerView.setLayoutManager(mVerticalLayoutManager);
+
+        Log.d(TAG, "before getFeed");
+        getFeed();
         return rootView;
     }
 
@@ -108,7 +112,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
     private static class FeedRootAdapter extends RecyclerView.Adapter<FeedRootAdapter.ViewHolder> {
         private FeedRootWrapper[] mDataset;
-        private JSONArray jsonArray;
+        private List<ParseObject> parseObjects;
 
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
@@ -127,9 +131,9 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
             }
         }
 
-        public FeedRootAdapter(FeedRootWrapper[] dataSet, JSONArray jsonArray) {
+        public FeedRootAdapter(FeedRootWrapper[] dataSet, List<ParseObject> parseObjects) {
             mDataset = dataSet;
-            this.jsonArray = jsonArray;
+            this.parseObjects = parseObjects;
         }
 
         // Create new views (invoked by the layout manager)
@@ -142,11 +146,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
             ViewHolder vh = new ViewHolder(v);
             RecyclerView.LayoutManager mHorizontalLayoutManager = new LinearLayoutManager(context,
                     LinearLayoutManager.HORIZONTAL, false);
-            CategoryWrapper[] categoryWrappers = new CategoryWrapper[6];
-            for (int i = 0; i < 6; ++i) {
-                categoryWrappers[i] = new CategoryWrapper();
-            }
-            FeedCategoryAdapter mFeedCategoryAdapter = new FeedCategoryAdapter(categoryWrappers, jsonArray);
+            FeedCategoryAdapter mFeedCategoryAdapter = new FeedCategoryAdapter(parseObjects);
             vh.mHorizontalRecyclerView.setAdapter(mFeedCategoryAdapter);
             vh.mHorizontalRecyclerView.setLayoutManager(mHorizontalLayoutManager);
             return vh;
@@ -167,13 +167,10 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
     private static class FeedCategoryAdapter extends RecyclerView.Adapter<FeedCategoryAdapter.FeedCategoryViewHolder> {
 
-        private CategoryWrapper[] mDataSet;
-        private JSONArray jsonArray;
+        List<ParseObject> parseObjects;
 
-        public FeedCategoryAdapter(CategoryWrapper[] wrappers, JSONArray jsonArray) {
-            this.mDataSet = wrappers;
-            this.jsonArray = jsonArray;
-            Log.d(TAG, "jsonArray = " + jsonArray.toString());
+        public FeedCategoryAdapter(List<ParseObject> parseObjects) {
+            this.parseObjects = parseObjects;
         }
 
         public static class FeedCategoryViewHolder extends RecyclerView.ViewHolder {
@@ -198,30 +195,22 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
         @Override
         public void onBindViewHolder(FeedCategoryViewHolder holder, int position) {
-            try {
-                final JSONObject mJsonObject = (JSONObject) jsonArray.get(position);
-                holder.mTextView.setText(mJsonObject.getString(KEY_TITLE));
-                holder.view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent browserIntent = null;
-                        try {
-                            browserIntent = new Intent(Intent.ACTION_VIEW,
-                                    Uri.parse(mJsonObject.getString(KEY_LINK)));
-                            context.startActivity(browserIntent);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+
+            final ParseObject object = parseObjects.get(position);
+            holder.mTextView.setText(object.getString(KEY_TITLE));
+            holder.view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent browserIntent = browserIntent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(object.getString(KEY_LINK)));
+                    context.startActivity(browserIntent);
+                }
+            });
         }
 
         @Override
         public int getItemCount() {
-            return mDataSet.length;
+            return parseObjects.size();
         }
     }
 
@@ -230,12 +219,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
         public FeedRootWrapper(String string) {
             this.dummyString = string;
-        }
-    }
-
-    private static class CategoryWrapper {
-        public CategoryWrapper() {
-
         }
     }
 
@@ -252,6 +235,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         }
     }
 
+    /*
     private class ReadFromJSON extends AsyncTask<Void, Void, Void> {
 
         private String json;
@@ -265,19 +249,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
             try {
                 JSONArray jsonArray = new JSONArray(json);
                 JSONArray mJsonArray = (JSONArray) jsonArray.get(0);
-                FeedRootWrapper[] wrappers = new FeedRootWrapper[3];
-                for (int i = 0; i < 3; ++i) {
-                    int resourceId = 0;
-                    try {
-                        resourceId = getCategoryResource(i);
-                    } catch (UnsupportedOperationException e) {
-                        Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
-                    }
-                    wrappers[i] = new FeedRootWrapper(getString(resourceId));
-                }
-                mAdapter = new FeedRootAdapter(wrappers, mJsonArray);
-                mRecyclerView.setLayoutManager(mVerticalLayoutManager);
-                mRecyclerView.setAdapter(mAdapter);
+
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -298,7 +271,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
             e.printStackTrace();
             return "";
         }
-    }
+    } */
 
     public void doSearch(String query) {
         String url = searchUrl + query;
@@ -308,5 +281,37 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
                 Log.d(TAG, "Response = " + response);
             }
         }, url).execute();
+    }
+
+    public void getFeed() {
+        Log.d(TAG, "getFeed");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(FEED_TABLE_NAME).setLimit(1);
+        query.whereEqualTo("category", "Economics");
+        Log.d(TAG, "before findInBackground");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObject, ParseException e) {
+                Log.d(TAG, "inside done");
+                if (e == null) {
+                    FeedRootWrapper[] wrappers = new FeedRootWrapper[3];
+                    for (int i = 0; i < 3; ++i) {
+                        int resourceId = 0;
+                        try {
+                            resourceId = getCategoryResource(i);
+                        } catch (UnsupportedOperationException ex) {
+                            Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
+                        }
+                        wrappers[i] = new FeedRootWrapper(getString(resourceId));
+                    }
+                    Log.d(TAG, "Before");
+
+                    mAdapter = new FeedRootAdapter(wrappers, parseObject);
+                    mRecyclerView.setAdapter(mAdapter);
+                    Log.d(TAG, "After");
+                } else {
+                    Log.e(TAG, "Getting feed query broke");
+                }
+            }
+        });
     }
 }
