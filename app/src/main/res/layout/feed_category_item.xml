@@ -9,6 +9,7 @@
         android:id="@+id/list_item_card_view"
         android:layout_gravity="center"
         android:layout_margin="6dp"
+        android:elevation="10sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="6dp">

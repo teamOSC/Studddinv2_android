@@ -49,7 +49,7 @@ public class HttpExecute {
         @Override
         protected String doInBackground(Void... params) {
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://www.yoursite.com/script.php");
+            HttpPost httppost = new HttpPost(Url);
 
             try {
                 if (nameValuePairs != null) {
