@@ -48,7 +48,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
     private static final String KEY_LINK = "url";
     private static final String KEY_TITLE = "title";
-    private static final String FEED_TABLE_NAME = "Feed";
+    private static final String FEED_TABLE = "Feed";
+    private static final String KEY_LOCAL_DATASTORE = "feed";
 
     public static final int CATEGORY_INTERESTS = 0;
     public static final int CATEGORY_AROUND = 1;
@@ -92,6 +93,9 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         mAdapter = new FeedRootAdapter();
         mRecyclerView.setAdapter(mAdapter);
 
+        updateUI(CATEGORY_INTERESTS);
+        updateUI(CATEGORY_COLLEGE);
+        updateUI(CATEGORY_AROUND);
         getFeed();
         return rootView;
     }
@@ -316,28 +320,16 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
     public void getFeed() {
 
         /* Get data related to interest*/
-        ParseQuery<ParseObject> interestQuery = ParseQuery.getQuery(FEED_TABLE_NAME).setLimit(10);
+        ParseQuery<ParseObject> interestQuery = ParseQuery.getQuery(FEED_TABLE).setLimit(10);
         interestQuery.whereEqualTo("category", "Economics");
         interestQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 Log.d(TAG, "inside interest done");
                 if (e == null) {
-                    int resourceId = 0;
-                    try {
-                        resourceId = getCategoryResource(CATEGORY_INTERESTS);
-                    } catch (UnsupportedOperationException ex) {
-                        Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
-                    }
-                    mAdapter.setDataSet(CATEGORY_INTERESTS, parseObjects, getString(resourceId));
-                    mAdapter.invalidateData(CATEGORY_INTERESTS);
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mAdapter.invalidateData(CATEGORY_AROUND);
-                            mAdapter.notifyDataSetChanged();
-                        }
-                    });
+                    ParseObject.unpinAllInBackground(KEY_LOCAL_DATASTORE);
+                    ParseObject.pinAllInBackground(KEY_LOCAL_DATASTORE, parseObjects);
+                    updateUI(CATEGORY_AROUND);
                     Log.d(TAG, "finished with interests count = " + parseObjects.size());
                 } else {
                     Log.e(TAG, "Getting feed query broke");
@@ -346,26 +338,13 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         });
 
         /*Get data related to user's college*/
-        ParseQuery<ParseObject> collegeQuery = ParseQuery.getQuery(FEED_TABLE_NAME).setLimit(10);
+        ParseQuery<ParseObject> collegeQuery = ParseQuery.getQuery(FEED_TABLE).setLimit(10);
         collegeQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
-                    int resourceId = 0;
-                    try {
-                        resourceId = getCategoryResource(CATEGORY_COLLEGE);
-                    } catch (UnsupportedOperationException ex) {
-                        Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
-                    }
-                    mAdapter.setDataSet(CATEGORY_COLLEGE, parseObjects, getString(resourceId));
-                    mAdapter.invalidateData(CATEGORY_COLLEGE);
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mAdapter.invalidateData(CATEGORY_AROUND);
-                            mAdapter.notifyDataSetChanged();
-                        }
-                    });
+                    ParseObject.pinAllInBackground(parseObjects);
+                    updateUI(CATEGORY_COLLEGE);
                     Log.d(TAG, "finished with college");
                 } else {
                     Log.e(TAG, "Getting feed query broke");
@@ -374,30 +353,46 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         });
 
         /*Get data related to the around the user*/
-        ParseQuery<ParseObject> aroundQuery = ParseQuery.getQuery(FEED_TABLE_NAME).setLimit(10);
+        ParseQuery<ParseObject> aroundQuery = ParseQuery.getQuery(FEED_TABLE).setLimit(10);
         aroundQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
-                    int resourceId = 0;
-                    try {
-                        resourceId = getCategoryResource(CATEGORY_AROUND);
-                    } catch (UnsupportedOperationException ex) {
-                        Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
-                    }
-                    mAdapter.setDataSet(CATEGORY_AROUND, parseObjects, getString(resourceId));
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mAdapter.invalidateData(CATEGORY_AROUND);
-                            mAdapter.notifyDataSetChanged();
-                        }
-                    });
+                    ParseObject.pinAllInBackground(parseObjects);
+                    updateUI(CATEGORY_AROUND);
                     Log.d(TAG, "finished with around");
                 } else {
                     Log.e(TAG, "Getting feed query broke");
                 }
             }
         });
+    }
+
+    private void updateUI (final int i) {
+        if (isAdded()) {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(FEED_TABLE).fromLocalDatastore();
+            query.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> parseObjects, ParseException e) {
+                    if (e == null) {
+                        int resourceId = 0;
+                        try {
+                            resourceId = getCategoryResource(i);
+                        } catch (UnsupportedOperationException ex) {
+                            Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
+                        }
+                        mAdapter.setDataSet(i, parseObjects, getString(resourceId));
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mAdapter.invalidateData(i);
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
+                    } else {
+                        Log.e(TAG, "Query failed");
+                    }
+                }
+            });
+        }
     }
 }
