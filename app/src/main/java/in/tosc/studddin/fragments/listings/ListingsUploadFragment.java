@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
@@ -35,7 +36,6 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
     private ImageView sdCard;
     private EditText listing;
     private EditText mobile;
-    private EditText name;
 
     public static ImageView listing_image;
 
@@ -59,7 +59,6 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         sdCard = (ImageView) rootView.findViewById(R.id.listing_sdcard);
         listing = (EditText) rootView.findViewById(R.id.et_listing);
         mobile = (EditText) rootView.findViewById(R.id.et_mobile);
-        name = (EditText) rootView.findViewById(R.id.et_name);
         listing_image = (ImageView) rootView.findViewById(R.id.listing_image);
 
         camera.setOnClickListener(this);
@@ -104,7 +103,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                 ParseObject imgupload = new ParseObject("Listings");
 
                 imgupload.put("image", file);
-                imgupload.put("ownerName", name.getText().toString());
+                imgupload.put("ownerName", ParseUser.getCurrentUser().getString("NAME"));
                 imgupload.put("listingName", listing.getText().toString());
                 imgupload.put("mobile", mobile.getText().toString());
 

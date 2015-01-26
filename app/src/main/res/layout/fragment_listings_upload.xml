@@ -35,22 +35,12 @@
     <EditText
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:id="@+id/et_name"
-        android:hint="Name"
+        android:id="@+id/et_mobile"
+        android:hint="Mobile"
         android:layout_marginTop="44dp"
         android:layout_below="@+id/et_listing"
         android:layout_alignLeft="@+id/et_listing"
         android:layout_alignStart="@+id/et_listing" />
-
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/et_mobile"
-        android:hint="Mobile"
-        android:layout_marginTop="44dp"
-        android:layout_below="@+id/et_name"
-        android:layout_alignLeft="@+id/et_name"
-        android:layout_alignStart="@+id/et_name" />
 
     <ImageView
         android:layout_width="128dp"
