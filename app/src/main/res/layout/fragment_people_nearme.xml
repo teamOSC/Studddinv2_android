@@ -9,8 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.2"
+        android:layout_height="75dp"
         android:orientation="horizontal"
         >
 
@@ -35,6 +34,11 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressbar_nearme"/>
+
     <ListView
         android:layout_weight="8"
         android:layout_width="match_parent"
@@ -44,6 +48,7 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="5.0sp"
         android:scrollbars="none"
+        android:visibility="gone"
         android:layoutAnimation="@anim/slide_in_gogo"
         />
 
