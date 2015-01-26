@@ -8,31 +8,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sort by:"
-        android:id="@+id/textView5" />
+        android:id="@+id/textView5"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        />
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner" />
+        android:id="@+id/spinner"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
 
-    <CheckBox
+    <android.support.v7.internal.widget.TintCheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Books"
         android:id="@+id/cb_books"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:buttonTint="@color/colorPrimaryDark"
          />
 
-    <CheckBox
+    <android.support.v7.internal.widget.TintCheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Apparatus"
         android:id="@+id/cb_apparatus"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:buttonTint="@color/colorPrimaryDark"
         />
 
-    <CheckBox
+    <android.support.v7.internal.widget.TintCheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Miscellaneous"
         android:id="@+id/cb_misc"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:buttonTint="@color/colorPrimaryDark"
          />
 </LinearLayout>

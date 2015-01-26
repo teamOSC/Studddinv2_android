@@ -36,6 +36,7 @@ import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.fragments.signon.SignupDataFragment.UserDataFields;
+import in.tosc.studddin.utils.FloatingActionButton;
 
 
 /**
@@ -51,7 +52,9 @@ public class SignOnFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private View rootView;
-    private Button facebookLoginButton, twitterLoginButton, googleLoginButton;
+    private FloatingActionButton facebookLoginButton;
+    private FloatingActionButton twitterLoginButton;
+    private FloatingActionButton googleLoginButton;
     private Button signUpButton, signInButton;
     private TextView guestContinue;
 
@@ -126,9 +129,9 @@ public class SignOnFragment extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         screenHeight = displayMetrics.heightPixels;
         screenWidth = displayMetrics.widthPixels;
-        facebookLoginButton = (Button) rootView.findViewById(R.id.signon_button_facebook);
-        twitterLoginButton = (Button) rootView.findViewById(R.id.signon_button_twitter);
-        googleLoginButton = (Button) rootView.findViewById(R.id.signon_button_google);
+        facebookLoginButton = (FloatingActionButton) rootView.findViewById(R.id.signon_button_facebook);
+        twitterLoginButton = (FloatingActionButton) rootView.findViewById(R.id.signon_button_twitter);
+        googleLoginButton = (FloatingActionButton) rootView.findViewById(R.id.signon_button_google);
         signUpButton = (Button) rootView.findViewById(R.id.signon_button_signup);
         signInButton = (Button) rootView.findViewById(R.id.signon_button_signin);
         guestContinue = (TextView) rootView.findViewById(R.id.sign_in_guest);

@@ -151,7 +151,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:hint="@string/submit" />
+                android:text="@string/submit"
+                android:textColor="@color/white"
+                android:background="@drawable/bbuton_primary_rounded"/>
 
     </LinearLayout>
 
