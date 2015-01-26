@@ -128,6 +128,8 @@ public class AccountInfoFragment extends Fragment {
 
                 //TODO: change image on click
                 //v.setBackground();
+                ImageButton clicked = (ImageButton)rootView.findViewById(v.getId());
+                clicked.setImageResource(R.drawable.tick);
 
                 v.setOnClickListener(oclSubmit);
             }
@@ -149,6 +151,9 @@ public class AccountInfoFragment extends Fragment {
                 //TODO: change background image
                 //v.setDrawable()
 
+                ImageButton clicked = (ImageButton)rootView.findViewById(v.getId());
+                clicked.setImageResource(R.drawable.pencil);
+
                 v.setOnClickListener(oclEdit);
             }
         };
@@ -159,11 +164,7 @@ public class AccountInfoFragment extends Fragment {
         editPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TextView newView = new TextView(getActivity());
-                newView.setText("new password");
-                passwordContainer.addView(newView);
-                newView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                passwordContainer.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                
             }
         });
     }

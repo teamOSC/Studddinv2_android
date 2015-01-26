@@ -46,7 +46,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:hint="@string/institute_name"
-        android:layout_weight="6"
+        android:layout_weight="4"
         android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true"
@@ -56,7 +56,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/edit_institute_button"
-            android:background="@drawable/pencil"/>
+            android:src="@drawable/pencil"
+            android:scaleType="centerInside"
+            android:background="@android:color/transparent"/>
         </LinearLayout>
 
     <LinearLayout
@@ -71,7 +73,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:hint="@string/qualifications"
-        android:layout_weight="6"
+        android:layout_weight="4"
         android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true"
@@ -81,8 +83,9 @@
             android:layout_height="match_parent"
             android:id="@+id/edit_qualification_button"
             android:layout_weight="1"
-            android:background="@drawable/pencil"
-            android:scaleType="centerInside"/>
+            android:src="@drawable/pencil"
+            android:scaleType="centerInside"
+            android:background="@android:color/transparent"/>
     </LinearLayout>
 
     <LinearLayout
@@ -97,7 +100,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:hint="@string/user_password"
-            android:layout_weight="6"
+            android:layout_weight="4"
             android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
             android:descendantFocusability="beforeDescendants"
             android:focusableInTouchMode="true"
@@ -107,7 +110,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/edit_password_button"
-            android:background="@drawable/pencil"/>
+            android:src="@drawable/pencil"
+            android:scaleType="centerInside"
+            android:background="@android:color/transparent"/>
     </LinearLayout>
 
 
