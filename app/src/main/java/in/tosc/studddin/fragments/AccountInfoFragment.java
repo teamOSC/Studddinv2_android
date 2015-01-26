@@ -142,12 +142,14 @@ public class AccountInfoFragment extends Fragment {
                         eInstitute.setSelection(0,eInstitute.getText().length());
                         eInstitute.setFocusable(true);
                         eInstitute.setEnabled(true);
+                        eInstitute.setFocusableInTouchMode(true);
                         break;
 
                     case R.id.edit_qualification_button:
                         eQualificaton.setSelected(true);
                         eQualificaton.setFocusable(true);
                         eQualificaton.setEnabled(true);
+                        eQualificaton.setFocusableInTouchMode(true);
                         break;
                 }
 
