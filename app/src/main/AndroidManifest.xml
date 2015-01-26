@@ -35,6 +35,14 @@
             <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.luminous.pick.CustomGalleryActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="luminous.ACTION_PICK"/>
+                <action android:name="luminous.ACTION_MULTIPLE_PICK"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity android:name="com.facebook.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name" />
