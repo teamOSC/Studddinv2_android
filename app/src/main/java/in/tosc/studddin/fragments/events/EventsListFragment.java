@@ -2,20 +2,24 @@ package in.tosc.studddin.fragments.events;
 
 
 import android.content.Context;
-import android.database.DataSetObserver;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
-import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.zip.Inflater;
 
@@ -28,12 +32,9 @@ import in.tosc.studddin.fragments.FeedFragment;
 public class EventsListFragment extends Fragment {
 
     ExpandableListView eventlist;
-    ArrayList<Parent> parents = new ArrayList<Parent>();
-    ArrayList<Child> children = new ArrayList<Child>();
-    Parent parent;
-    Child child;
+    ArrayList<Parent> parents;
     MyListAdapter adapter;
-
+    List<ParseObject> listings;
 
     public EventsListFragment() {
 
@@ -45,9 +46,8 @@ public class EventsListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_events_list, container, false);
         eventlist = (ExpandableListView)v.findViewById(R.id.listviewevents);
         eventlist.setGroupIndicator(null);
-        loadData();
-        adapter = new MyListAdapter(getActivity().getApplicationContext());
-        eventlist.setAdapter(adapter);
+        FetchData f = new FetchData();
+        f.execute();
         return v;
     }
 
@@ -106,8 +106,8 @@ public class EventsListFragment extends Fragment {
 
             holder = (viewHolder) convertView.getTag();
             Parent p = parents.get(groupPosition);
-            holder.header.setText(p.event_name);
-            holder.footer.setText(p.event_date);
+            holder.header.setText(p.getEventName());
+            holder.footer.setText(p.getEventDate() + "");
             return convertView;
         }
 
@@ -122,9 +122,8 @@ public class EventsListFragment extends Fragment {
             }
 
             holder = (viewHolder) convertView.getTag();
-            Child c = children.get(groupPosition);
-            holder.header.setText(c.event_description);
-            holder.footer.setText(c.event_time);
+            Parent p = parents.get(groupPosition);
+            holder.header.setText(p.getEventDescription());
             return convertView;
         }
 
@@ -140,32 +139,71 @@ public class EventsListFragment extends Fragment {
     }
 
     public class Parent{
-        String event_name;
-        String event_date;
-    }
+        private String event_name;
+        private Date event_date;
 
-    public class Child{
-        String event_description;
-        String event_time;
-    }
+        private String event_description;
+        private Date event_time;
 
-    public void loadData(){
 
-        for(int i = 0; i < parents.size(); i++){
-            parents.remove(i);
-            children.remove(i);
+        public String getEventName(){
+            return event_name;
         }
 
-        for(int i = 0; i < 5; i++){
-            parent = new Parent();
-            parent.event_name = "Event" + i ;
-            parent.event_date = "Date" + i;
-            parents.add(i, parent);
-            child = new Child();
-            child.event_description = "Description" + i;
-            child.event_time = "Time" + i;
-            children.add(i, child);
+        public Date getEventDate(){
+            return event_date;
+        }
+
+        public void setEventName(String s){
+            this.event_name = s;
+        }
+
+        public void setEventDate(Date s){
+            this.event_date = s;
+        }
+
+        public String getEventDescription(){
+            return event_description;
+        }
+
+        public void setEventDescription(String d){
+            this.event_description = d;
         }
 
     }
+
+    private class FetchData extends AsyncTask<Void,Void,Void>{
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+            adapter = new MyListAdapter(getActivity().getApplicationContext());
+            eventlist.setAdapter(adapter);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            parents = new ArrayList<Parent>();
+            try {
+                ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+                        "Events");
+                query.orderByAscending("createdAt");
+                listings = query.find();
+                for(ParseObject listing : listings){
+                    Parent parent = new Parent();
+                    parent.setEventName((String) listing.get("title"));
+                    parent.setEventDate((Date) listing.get("createdAt"));
+                    parent.setEventDescription((String) listing.get("description"));
+                    parents.add(parent);
+                }
+            }
+            catch (ParseException e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+
+    }
+
 }
