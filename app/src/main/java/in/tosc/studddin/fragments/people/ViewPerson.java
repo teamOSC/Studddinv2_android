@@ -35,14 +35,16 @@ public class ViewPerson extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.view_person, container, false);
 
-        Intent i = getActivity().getIntent();
-        sname = i.getStringExtra("name");
-        sinstitute = i.getStringExtra("institute");
-        sinterests = i.getStringExtra("interests");
-        squalifications = i.getStringExtra("qualifications");
-        sdistance = i.getStringExtra("distance");
 
-
+        Bundle i = getArguments();
+        if (i  != null )
+        {
+            sname = i.getString("name");
+            sinstitute = i.getString("institute");
+            sinterests = i.getString("interests");
+            squalifications = i.getString("qualifications");
+            sdistance = i.getString("distance");
+        }
 
         name = (TextView)rootView.findViewById(R.id.person_name);
         institute = (TextView)rootView.findViewById(R.id.person_institute);

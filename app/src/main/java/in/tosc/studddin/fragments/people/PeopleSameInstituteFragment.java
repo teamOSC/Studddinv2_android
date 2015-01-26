@@ -2,9 +2,12 @@ package in.tosc.studddin.fragments.people;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,7 @@ import java.util.List;
 import java.util.Objects;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.fragments.signon.SignupDataFragment;
 
 public class PeopleSameInstituteFragment extends Fragment {
 
@@ -67,6 +71,22 @@ public class PeopleSameInstituteFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
+
+                ViewPerson newFragment = new ViewPerson();
+
+                final Bundle in = new Bundle();
+                in.putString("name" , list3.get(i).cname);
+                in.putString("institute" , list3.get(i).cinstituition);
+                in.putString("qualifications" , list3.get(i).cqualification);
+                in.putString("interests" , list3.get(i).cinterests);
+                in.putString("distance" , list3.get(i).cdistance);
+
+                newFragment.setArguments(in);
+
+                transaction.replace(R.id.peoplesameInstitute_container,newFragment).addToBackStack(null).commit();
 
             }
         });
