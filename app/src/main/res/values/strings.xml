@@ -58,6 +58,8 @@
     <string name="sign_in_reset">Reset</string>
     <string name="sign_in_submit">Submit</string>
     <string name="user_uid">UserID</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
 
 
 </resources>
