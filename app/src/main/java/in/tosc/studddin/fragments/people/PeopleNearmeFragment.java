@@ -81,7 +81,7 @@ public class PeopleNearmeFragment extends Fragment {
 
                 newFragment.setArguments(in);
 
-                transaction.replace(R.id.peopleNearme_container,newFragment).addToBackStack(null).commit();
+                transaction.replace(R.id.container,newFragment).addToBackStack(null).commit();
 
 
             }

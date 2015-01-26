@@ -86,7 +86,7 @@ public class PeopleSameInstituteFragment extends Fragment {
 
                 newFragment.setArguments(in);
 
-                transaction.replace(R.id.peoplesameInstitute_container,newFragment).addToBackStack(null).commit();
+                transaction.replace(R.id.container,newFragment).addToBackStack(null).commit();
 
             }
         });
