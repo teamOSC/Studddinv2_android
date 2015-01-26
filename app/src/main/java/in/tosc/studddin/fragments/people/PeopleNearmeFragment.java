@@ -3,6 +3,13 @@ package in.tosc.studddin.fragments.people;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +19,17 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.parse.Parse;
+import com.parse.ParseFacebookUtils;
+import com.parse.ParseUser;
+
 import java.util.ArrayList;
 
 import in.tosc.studddin.R;
 
 public class PeopleNearmeFragment extends Fragment {
+
+
 
     EditText search ;
 
@@ -25,11 +38,7 @@ public class PeopleNearmeFragment extends Fragment {
     MyAdapter3 q ;
     ListView lv ;
 
-    ArrayList<String> namelist = new ArrayList<String>();
-    ArrayList<String> institutelist = new ArrayList<String>();
-    ArrayList<String> qualificationlist = new ArrayList<String>();
-    ArrayList<String> interestslist = new ArrayList<String>();
-    ArrayList<String> distancelist = new ArrayList<String>();
+
 
     public PeopleNearmeFragment() {
         // Required empty public constructor
@@ -56,6 +65,23 @@ public class PeopleNearmeFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
+
+                ViewPerson newFragment = new ViewPerson();
+
+                final Bundle in = new Bundle();
+                in.putString("name", list3.get(i).cname);
+                in.putString("institute", list3.get(i).cinstituition);
+                in.putString("qualifications" , list3.get(i).cqualification);
+                in.putString("interests" , list3.get(i).cinterests);
+                in.putString("distance" , list3.get(i).cdistance);
+
+                newFragment.setArguments(in);
+
+                transaction.replace(R.id.peopleNearme_container,newFragment).addToBackStack(null).commit();
 
 
             }
@@ -140,6 +166,10 @@ public class PeopleNearmeFragment extends Fragment {
 
     private void loaddata()
     {
+
+
+        ParseUser.getCurrentUser().getUsername();
+
 
         for(int i=0 ; i<list3.size(); i++)
         {
