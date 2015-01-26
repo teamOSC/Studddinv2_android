@@ -189,8 +189,12 @@ public class SignupDataFragment extends Fragment {
         user.put(USER_INSTITUTE, input.get(USER_INSTITUTE));
         user.put(USER_QUALIFICATIONS, input.get(USER_QUALIFICATIONS));
         user.put(USER_INTERESTS, input.get(USER_INTERESTS));
-        user.put(USER_LAT, input.get(USER_LAT));
-        user.put(USER_LONG, input.get(USER_LONG));
+        try {
+            user.put(USER_LAT, input.get(USER_LAT));
+            user.put(USER_LONG, input.get(USER_LONG));
+        } catch (Exception e) {
+            // Nothing now
+        }
 
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {

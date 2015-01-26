@@ -87,7 +87,8 @@ public class SignOnFragment extends Fragment {
         }
 
         ParseUser pUser = ParseUser.getCurrentUser();
-        if (pUser!=null && pUser.isAuthenticated()) {
+        if ((pUser != null) && (pUser.isAuthenticated()) && (pUser.getSessionToken() != null)) {
+            Log.d("SignOnFragment", pUser.getUsername() + pUser.getSessionToken());
             Intent i = new Intent(getActivity(), MainActivity.class);
             if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
                 Activity activity = getActivity();
@@ -222,6 +223,16 @@ public class SignOnFragment extends Fragment {
                     Log.d(TAG, "User signed up and logged in through Facebook!");
                 } else {
                     Log.d(TAG, "User logged in through Facebook!");
+                    Intent i = new Intent(getActivity(), MainActivity.class);
+                    if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+                        Activity activity = getActivity();
+                        Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
+                        activity.getWindow().setExitTransition(new Explode());
+                        ActivityCompat.startActivityForResult(activity, i, 0,options);
+                    }else{
+                        startActivity(i);
+                    }
+                    getActivity().finish();
                 }
             }
         });
@@ -248,6 +259,16 @@ public class SignOnFragment extends Fragment {
                     Log.d(TAG, "User signed up and logged in through Twitter!" + ParseTwitterUtils.getTwitter().getScreenName());
                 } else {
                     Log.d(TAG, "User logged in through Twitter!");
+                    Intent i = new Intent(getActivity(), MainActivity.class);
+                    if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+                        Activity activity = getActivity();
+                        Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
+                        activity.getWindow().setExitTransition(new Explode());
+                        ActivityCompat.startActivityForResult(activity, i, 0,options);
+                    }else{
+                        startActivity(i);
+                    }
+                    getActivity().finish();
                 }
             }
         });
