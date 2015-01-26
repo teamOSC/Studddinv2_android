@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -15,6 +16,7 @@ import android.support.v7.internal.widget.TintCheckBox;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,8 +26,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.parse.GetDataCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseImageView;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +48,11 @@ public class ListingsSearchFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    //private RecyclerView.LayoutManager mLayoutManager;
     View rootView;
+
+    private List<ParseObject> listings;
+    private List<ListingInfo> listingInfos;
 
 
     public ListingsSearchFragment() {
@@ -52,6 +64,8 @@ public class ListingsSearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         SharedPreferences filterDetails = getActivity().getSharedPreferences("filterdetails", 0);
+        new FetchListingsData().execute();
+
     }
 
     @Override
@@ -60,17 +74,9 @@ public class ListingsSearchFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_listings, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listing_recycler_view);
-
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        ListingInfo[] listing = new ListingInfo[10];
-        for (int i = 0; i < 10; ++i) {
-            listing[i] = new ListingInfo();
-        }
-
-        mAdapter = new ListingAdapter(listing);
-        mRecyclerView.setAdapter(mAdapter);
         return rootView;
     }
 
@@ -103,28 +109,66 @@ public class ListingsSearchFragment extends Fragment {
 
     public class ListingInfo {
 
-        protected String owner_name;
-        protected String listing_name;
-        protected String mobile;
-        protected String distance;
-        protected ImageView listing_image;
+        private String owner_name;
+        private String listing_name;
+        private String mobile;
+        private String distance;
+        private ParseFile image;
 
 
+        public String getOwner_name() {
+            return owner_name;
+        }
+
+        public void setOwner_name(String owner_name) {
+            this.owner_name = owner_name;
+        }
+
+        public String getListing_name() {
+            return listing_name;
+        }
+
+        public void setListing_name(String listing_name) {
+            this.listing_name = listing_name;
+        }
+
+        public String getMobile() {
+            return mobile;
+        }
+
+        public void setMobile(String mobile) {
+            this.mobile = mobile;
+        }
+
+        public String getDistance() {
+            return distance;
+        }
+
+        public void setDistance(String distance) {
+            this.distance = distance;
+        }
+
+        public ParseFile getImage() {
+            return image;
+        }
+
+        public void setImage(ParseFile image) {
+            this.image = image;
+        }
     }
 
     public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ViewHolder>{
 
+        private List<ListingInfo> mDataset;
 
-        private ListingInfo[] mDataset;
-
-        public ListingAdapter(ListingInfo[] dataSet) {
+        public ListingAdapter(List<ListingInfo> dataSet) {
             mDataset = dataSet;
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
             CardView v = (CardView) LayoutInflater.from(viewGroup.getContext())
-                    .inflate(R.layout.listing_card_view, viewGroup, false);
+                    .inflate(in.tosc.studddin.R.layout.listing_card_view, viewGroup, false);
 
             ViewHolder vh = new ViewHolder(v);
             return vh;
@@ -132,24 +176,88 @@ public class ListingsSearchFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, int i) {
-
+            viewHolder.listing_name.setText(mDataset.get(i).getListing_name());
+            viewHolder.owner_name.setText(mDataset.get(i).getOwner_name());
+            viewHolder.mobile.setText(mDataset.get(i).getMobile());
+            viewHolder.listing_image.setParseFile(mDataset.get(i).getImage());
+            viewHolder.listing_image.loadInBackground(new GetDataCallback() {
+                @Override
+                public void done(byte[] bytes, ParseException e) {
+                    // nothing to do
+                    if (e != null)
+                        e.printStackTrace();
+                }
+            });
+            viewHolder.listing_distance.setText(mDataset.get(i).getDistance());
         }
 
         @Override
         public int getItemCount() {
-            return mDataset.length;
+            return mDataset.size();
         }
 
 
         public class ViewHolder extends RecyclerView.ViewHolder {
 
-            public CardView mCardView;
+            TextView listing_name;
+            TextView owner_name;
+            TextView mobile;
+            ParseImageView listing_image;
+            TextView listing_distance;
+
             public ViewHolder(CardView v) {
                 super(v);
-                mCardView = v;
+                this.listing_name = (TextView) v.findViewById(R.id.listing_name);
+                this.owner_name = (TextView) v.findViewById(R.id.owner_name);
+                this.mobile = (TextView) v.findViewById(R.id.mobile);
+                this.listing_distance = (TextView) v.findViewById(R.id.listing_distance);
+                this.listing_image = (ParseImageView) v.findViewById(R.id.listing_image);
             }
+
+
         }
     }
+
+    private class FetchListingsData extends AsyncTask<Void,Void,Void>
+    {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            // Create the array
+            listingInfos = new ArrayList<ListingInfo>();
+            try {
+
+                ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+                        "Listings");
+                query.orderByAscending("createdAt");
+                listings = query.find();
+                for (ParseObject listing : listings) {
+
+                    ListingInfo listingInfo = new ListingInfo();
+                    listingInfo.setListing_name((String) listing.get("listingName"));
+                    listingInfo.setOwner_name((String) listing.get("ownerName"));
+                    listingInfo.setMobile((String) listing.get("mobile"));
+                    listingInfo.setDistance("temp");
+                    listingInfo.setImage((ParseFile) listing.get("image"));
+                    listingInfos.add(listingInfo);
+                }
+            } catch (ParseException e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+
+
+            mAdapter = new ListingAdapter(listingInfos);
+            mRecyclerView.setAdapter(mAdapter);
+
+        }
+    }
+
 
     public static class FilterDialog extends DialogFragment implements AdapterView.OnItemSelectedListener{
 

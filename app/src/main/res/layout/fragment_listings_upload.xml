@@ -19,11 +19,10 @@
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:id="@+id/listing_sdcard"
+        android:src="@android:drawable/ic_delete"
         android:layout_alignTop="@+id/listing_camera"
         android:layout_toRightOf="@+id/listing_camera"
-        android:layout_toEndOf="@+id/listing_camera"
-        android:src="@android:drawable/ic_delete"
-        />
+        android:layout_toEndOf="@+id/listing_camera" />
     
     <EditText
         android:layout_width="200dp"
@@ -72,6 +71,6 @@
         android:layout_alignBottom="@+id/et_listing"
         android:layout_toLeftOf="@+id/et_listing"
         android:layout_toStartOf="@+id/et_listing"
-        android:layout_below="@+id/listing_camera" />
+        android:layout_below="@+id/listing_image" />
 
 </RelativeLayout>

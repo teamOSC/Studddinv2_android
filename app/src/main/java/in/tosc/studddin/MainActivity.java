@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.ByteArrayOutputStream;
+
 import in.tosc.studddin.fragments.EventsFragment;
 import in.tosc.studddin.fragments.AccountInfoFragment;
 import in.tosc.studddin.fragments.FeedFragment;
@@ -192,6 +194,9 @@ public class MainActivity extends ActionBarActivity
 
             Bitmap bitmap = BitmapFactory.decodeFile(ListingsUploadFragment.mCurrentPhotoPath, bmOptions);
             ListingsUploadFragment.listing_image.setImageBitmap(bitmap);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            ListingsUploadFragment.byteArray = stream.toByteArray();
         }
         else if((requestCode == 1) && resultCode == RESULT_OK) {
 
@@ -204,6 +209,9 @@ public class MainActivity extends ActionBarActivity
             c.close();
             Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
             ListingsUploadFragment.listing_image.setImageBitmap(thumbnail);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            thumbnail.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            ListingsUploadFragment.byteArray = stream.toByteArray();
         }
     }
 }

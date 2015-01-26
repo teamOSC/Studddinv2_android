@@ -11,6 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +38,8 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
     private EditText name;
 
     public static ImageView listing_image;
+
+    public static byte[] byteArray;
 
     public static String mCurrentPhotoPath;
 
@@ -65,7 +73,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-            case R.id.listing_camera :
+            case R.id.listing_camera:
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 File photoFile = null;
                 try {
@@ -81,10 +89,34 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                 }
                 break;
 
-            case R.id.listing_sdcard :
+            case R.id.listing_sdcard:
                 Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 getActivity().startActivityForResult(i,1);
                 break;
+
+            case R.id.listing_upload:
+                // Create the ParseFile
+                ParseFile file = new ParseFile("listing.png", byteArray);
+                // Upload the image into Parse Cloud
+                file.saveInBackground();
+
+                // Create a New Class called "ImageUpload" in Parse
+                ParseObject imgupload = new ParseObject("Listings");
+
+                imgupload.put("image", file);
+                imgupload.put("ownerName", name.getText().toString());
+                imgupload.put("listingName", listing.getText().toString());
+                imgupload.put("mobile", mobile.getText().toString());
+
+                imgupload.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Toast.makeText(getActivity(), "Upload complete",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+
         }
 
     }
