@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
     private EditText listing;
     private EditText mobile;
     private Spinner category;
+    private LinearLayout uploading;
 
     public static ImageView listing_image;
 
@@ -67,6 +69,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         mobile = (EditText) rootView.findViewById(R.id.et_mobile);
         listing_image = (ImageView) rootView.findViewById(R.id.listing_image);
         category = (Spinner) rootView.findViewById(R.id.listing_category);
+        uploading = (LinearLayout) rootView.findViewById(R.id.listing_uploadLayout);
         List<String> categoryList = new ArrayList<String>();
         categoryList.add("Book");
         categoryList.add("Apparatus");
@@ -107,9 +110,8 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                 break;
 
             case R.id.listing_upload:
-                // Create the ParseFile
+                uploading.setVisibility(View.VISIBLE);
                 ParseFile file = new ParseFile("listing.png", byteArray);
-                // Upload the image into Parse Cloud
                 file.saveInBackground();
 
                 ParseObject upload = new ParseObject("Listings");
@@ -125,6 +127,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                 upload.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
+                        uploading.setVisibility(View.GONE);
                         Toast.makeText(getActivity(), "Upload complete",
                                 Toast.LENGTH_SHORT).show();
                     }

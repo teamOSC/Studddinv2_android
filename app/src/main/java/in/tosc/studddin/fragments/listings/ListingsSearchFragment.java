@@ -29,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -53,6 +54,7 @@ public class ListingsSearchFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private ProgressBar loader;
     View rootView;
 
     private List<ParseObject> listings;
@@ -75,11 +77,11 @@ public class ListingsSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         rootView = inflater.inflate(R.layout.fragment_listings, container, false);
+        loader = (ProgressBar) rootView.findViewById(R.id.progressBar);
+        new FetchListingsData().execute();
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listing_recycler_view);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-        new FetchListingsData().execute();
 
         EditText search = (EditText) rootView.findViewById(R.id.listing_search);
         search.addTextChangedListener(new TextWatcher() {
@@ -101,6 +103,7 @@ public class ListingsSearchFragment extends Fragment {
 
         return rootView;
     }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -273,10 +276,10 @@ public class ListingsSearchFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void result) {
+            loader.setVisibility(View.GONE);
             mAdapter = new ListingAdapter(listingInfos);
-            mRecyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
-
+            mRecyclerView.setAdapter(mAdapter);
         }
     }
 

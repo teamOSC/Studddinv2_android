@@ -20,6 +20,14 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"/>
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:indeterminate="true"
+        android:layout_gravity="center" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/listing_recycler_view"
         android:layoutAnimation="@anim/slide_in_gogo"
