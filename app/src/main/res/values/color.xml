@@ -4,6 +4,7 @@
     <color name="white">#FFFFFF</color>
     <color name="edittext_color">#009688</color>
     <color name="search_color">#982360</color>
+    <color name="search_grey">#9E9E9E</color>
     <!-- App Main colors -->
     <color name="colorPrimary">#EFC88B</color>
     <color name="colorPrimaryDark">#AF7A6D</color><!-- #CF5C36 -->

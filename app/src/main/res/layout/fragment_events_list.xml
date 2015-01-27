@@ -10,7 +10,8 @@
         android:layout_gravity="center_horizontal"
         android:childDivider="@android:color/transparent"
         android:dividerHeight="2dp"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:layout_marginTop="3dp">
 
         </ExpandableListView>
 
