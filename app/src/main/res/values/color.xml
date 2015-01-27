@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="signin_guest">#888888</color>
+    <color name="signin_guest">#BDBDBD</color>
     <color name="white">#FFFFFF</color>
     <color name="edittext_color">#009688</color>
     <color name="search_color">#982360</color>
