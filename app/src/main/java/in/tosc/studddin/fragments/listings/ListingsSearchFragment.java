@@ -12,6 +12,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.internal.widget.TintCheckBox;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -54,10 +55,13 @@ public class ListingsSearchFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ProgressBar loader;
+    private SwipeRefreshLayout swipeRefreshLayout;
     View rootView;
 
     private List<ParseObject> listings;
     private ArrayList<ParseObject> listingInfos;
+
+    private boolean onRefresh = false;
 
 
     public ListingsSearchFragment() {
@@ -81,6 +85,15 @@ public class ListingsSearchFragment extends Fragment {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listing_recycler_view);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                onRefresh = true;
+                new FetchListingsData().execute();
+            }
+        });
 
         EditText search = (EditText) rootView.findViewById(R.id.listing_search);
         search.addTextChangedListener(new TextWatcher() {
@@ -194,14 +207,11 @@ public class ListingsSearchFragment extends Fragment {
 
     private class FetchListingsData extends AsyncTask<Void,Void,Void>
     {
-
-
         @Override
         protected Void doInBackground(Void... voids) {
             // Create the array
             listingInfos = new ArrayList<ParseObject>();
             try {
-
                 ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
                         "Listings");
                 query.orderByAscending("createdAt");
@@ -218,9 +228,14 @@ public class ListingsSearchFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void result) {
-            loader.setVisibility(View.GONE);
             mAdapter = new ListingAdapter(listingInfos);
             mAdapter.notifyDataSetChanged();
+            if(onRefresh==true){
+                onRefresh=false;
+                swipeRefreshLayout.setRefreshing(false);
+            }
+            else
+                loader.setVisibility(View.GONE);
             mRecyclerView.setAdapter(mAdapter);
         }
     }
