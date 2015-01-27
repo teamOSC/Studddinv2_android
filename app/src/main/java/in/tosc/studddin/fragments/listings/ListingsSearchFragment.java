@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -19,7 +18,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,7 +31,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.parse.DeleteCallback;
+import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.utils.Utilities;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,13 +58,8 @@ public class ListingsSearchFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private ProgressBar loader;
     private SwipeRefreshLayout swipeRefreshLayout;
-    View rootView;
-
-    private List<ParseObject> listings;
-    private ArrayList<ParseObject> listingInfos;
-
+    private View rootView;
     private boolean onRefresh = false;
-
 
     public ListingsSearchFragment() {
         // Required empty public constructor
@@ -81,19 +78,23 @@ public class ListingsSearchFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_listings, container, false);
         loader = (ProgressBar) rootView.findViewById(R.id.progressBar);
-        new FetchListingsData().execute();
+
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listing_recycler_view);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-
+        if(Utilities.isNetworkAvailable(getActivity()))
+            fetchListings();
+        else
+            fetchFromCache();
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 onRefresh = true;
-                new FetchListingsData().execute();
+                fetchListings();
             }
         });
+
 
         EditText search = (EditText) rootView.findViewById(R.id.listing_search);
         search.addTextChangedListener(new TextWatcher() {
@@ -142,6 +143,64 @@ public class ListingsSearchFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void fetchListings(){
+
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+                "Listings");
+        query.orderByAscending("createdAt");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(final List<ParseObject> parseObjects, ParseException e) {
+                if(e==null){
+                    ParseObject.unpinAllInBackground("listings",new DeleteCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            ParseObject.pinAllInBackground("listings",parseObjects);
+                            mAdapter = new ListingAdapter(parseObjects);
+                            mAdapter.notifyDataSetChanged();
+                            if(onRefresh==true){
+                                onRefresh=false;
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
+                            else
+                                loader.setVisibility(View.GONE);
+                            mRecyclerView.setAdapter(mAdapter);
+                        }
+                    });
+                }
+                else
+                    Toast.makeText(getActivity(),"Please check your internet connection",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void fetchFromCache(){
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+                "Listings");
+        query.orderByAscending("createdAt");
+        query.fromLocalDatastore();
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+                if(e==null){
+                    mAdapter = new ListingAdapter(parseObjects);
+                    mAdapter.notifyDataSetChanged();
+                    if(onRefresh==true){
+                        onRefresh=false;
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                    else
+                        loader.setVisibility(View.GONE);
+                    mRecyclerView.setAdapter(mAdapter);
+                }
+                else
+                    fetchListings();
+            }
+        });
+
     }
 
     public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ViewHolder>{
@@ -205,40 +264,9 @@ public class ListingsSearchFragment extends Fragment {
         }
     }
 
-    private class FetchListingsData extends AsyncTask<Void,Void,Void>
-    {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            // Create the array
-            listingInfos = new ArrayList<ParseObject>();
-            try {
-                ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
-                        "Listings");
-                query.orderByAscending("createdAt");
-                listings = query.find();
-                for (ParseObject listing : listings) {
-                    listingInfos.add(listing);
-                }
-            } catch (ParseException e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return null;
-        }
 
-        @Override
-        protected void onPostExecute(Void result) {
-            mAdapter = new ListingAdapter(listingInfos);
-            mAdapter.notifyDataSetChanged();
-            if(onRefresh==true){
-                onRefresh=false;
-                swipeRefreshLayout.setRefreshing(false);
-            }
-            else
-                loader.setVisibility(View.GONE);
-            mRecyclerView.setAdapter(mAdapter);
-        }
-    }
+
+
 
 
     public static class FilterDialog extends DialogFragment implements AdapterView.OnItemSelectedListener{
