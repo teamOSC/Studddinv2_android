@@ -73,8 +73,8 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:onClick="jumpToPage"
-        fab:fab_colorNormal="@color/twitter_blue"
-        fab:fab_colorPressed="@color/twitter_blue_pressed"
+        fab:fab_colorNormal="@color/note_button"
+        fab:fab_colorPressed="@color/note_button_pressed"
         />
     
 </FrameLayout>

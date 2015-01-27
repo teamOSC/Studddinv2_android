@@ -8,10 +8,9 @@
         android:layout_height="match_parent"
         android:id="@+id/listviewevents"
         android:layout_gravity="center_horizontal"
-        android:childDivider="@android:color/transparent"
-        android:dividerHeight="2dp"
+        android:dividerHeight="0dp"
         android:scrollbars="none"
-        android:layout_marginTop="3dp">
+        android:layout_marginTop="8dp">
 
         </ExpandableListView>
 
