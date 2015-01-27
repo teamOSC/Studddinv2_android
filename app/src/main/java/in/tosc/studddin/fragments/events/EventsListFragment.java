@@ -1,16 +1,21 @@
 package in.tosc.studddin.fragments.events;
 
 
-import android.content.Context;
+import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
+import android.view.animation.LinearInterpolator;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,20 +26,18 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import in.tosc.studddin.R;
-import in.tosc.studddin.fragments.FeedFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class EventsListFragment extends Fragment {
 
-    ExpandableListView eventlist;
+    RecyclerView eventlist;
     ArrayList<Parent> parents;
-    MyListAdapter adapter;
     List<ParseObject> listings;
+    RecyclerView.Adapter adapter;
 
     public EventsListFragment() {
 
@@ -44,99 +47,12 @@ public class EventsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_events_list, container, false);
-        eventlist = (ExpandableListView)v.findViewById(R.id.listviewevents);
-        eventlist.setGroupIndicator(null);
+        eventlist = (RecyclerView)v.findViewById(R.id.listviewevents);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        eventlist.setLayoutManager(layoutManager);
         FetchData f = new FetchData();
         f.execute();
         return v;
-    }
-
-    public class MyListAdapter extends BaseExpandableListAdapter{
-        LayoutInflater inflator;
-        viewHolder holder;
-
-        public MyListAdapter(Context context){
-            inflator = LayoutInflater.from(context);
-        }
-
-        @Override
-        public int getGroupCount() {
-            return parents.size();
-        }
-
-        @Override
-        public int getChildrenCount(int groupPosition) {
-            return 1;
-        }
-
-        @Override
-        public Object getGroup(int groupPosition) {
-            return null;
-        }
-
-        @Override
-        public Object getChild(int groupPosition, int childPosition) {
-            return null;
-        }
-
-        @Override
-        public long getGroupId(int groupPosition) {
-            return 0;
-        }
-
-        @Override
-        public long getChildId(int groupPosition, int childPosition) {
-            return 0;
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return false;
-        }
-
-        @Override
-        public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-            if(convertView == null){
-                convertView = inflator.inflate(R.layout.listview_events, null);
-                holder = new viewHolder();
-                holder.header = (TextView) convertView.findViewById(R.id.event_name);
-                holder.footer = (TextView) convertView.findViewById(R.id.event_date);
-                convertView.setTag(holder);
-            }
-
-            holder = (viewHolder) convertView.getTag();
-            Parent p = parents.get(groupPosition);
-            holder.header.setText(p.getEventName());
-            holder.footer.setText(p.getEventDate() + "");
-            return convertView;
-        }
-
-        @Override
-        public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            if(convertView == null){
-                convertView = inflator.inflate(R.layout.listview_events_child, null);
-                holder = new viewHolder();
-                holder.header = (TextView) convertView.findViewById(R.id.event_description);
-                holder.footer = (TextView) convertView.findViewById(R.id.event_type);
-                convertView.setTag(holder);
-            }
-
-            holder = (viewHolder) convertView.getTag();
-            Parent p = parents.get(groupPosition);
-            holder.header.setText(p.getEventDescription());
-            holder.footer.setText(p.getEventType());
-            return convertView;
-        }
-
-        @Override
-        public boolean isChildSelectable(int groupPosition, int childPosition) {
-            return false;
-        }
-    }
-
-    public class viewHolder{
-        TextView header;
-        TextView footer;
     }
 
     public class Parent{
@@ -180,11 +96,81 @@ public class EventsListFragment extends Fragment {
 
     }
 
+    public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> implements View.OnClickListener{
+
+        private int expandedPosition = -1;
+        private ArrayList<Parent> parents;
+
+        public EventAdapter(ArrayList<Parent> parent){
+            parents = parent;
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            CardView cd = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_events, parent, false);
+            ViewHolder viewHolder = new ViewHolder(cd);
+            viewHolder.itemView.setOnClickListener(EventAdapter.this);
+            viewHolder.itemView.setTag(viewHolder);
+            return viewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.event_name.setText(parents.get(position).getEventName());
+            holder.event_description.setText(parents.get(position).getEventDescription());
+            holder.event_type.setText(parents.get(position).getEventType());
+
+            if (position == expandedPosition) {
+                holder.expanded_area.setVisibility(View.VISIBLE);
+            } else {
+                holder.expanded_area.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return parents.size();
+        }
+
+        @Override
+        public void onClick(View v) {
+            final ViewHolder holder = (ViewHolder) v.getTag();
+            if(holder.getPosition() == expandedPosition){
+                holder.expanded_area.setVisibility(View.GONE);
+                expandedPosition = -1;
+            }else {
+                if (expandedPosition >= 0) {
+                    int prev = expandedPosition;
+                    notifyItemChanged(prev);
+                }
+                expandedPosition = holder.getPosition();
+                notifyItemChanged(expandedPosition);
+            }
+
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder{
+            TextView event_name;
+            TextView event_date;
+            TextView event_description;
+            TextView event_type;
+            LinearLayout expanded_area;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                this.event_name = (TextView) itemView.findViewById(R.id.event_name);
+                this.event_date = (TextView) itemView.findViewById(R.id.event_date);
+                this.event_description = (TextView) itemView.findViewById(R.id.event_description);
+                this.event_type = (TextView) itemView.findViewById(R.id.event_type);
+                this.expanded_area = (LinearLayout) itemView.findViewById(R.id.expanded_area);
+            }
+        }
+    }
+
     private class FetchData extends AsyncTask<Void,Void,Void>{
         @Override
         protected void onPostExecute(Void aVoid) {
-
-            adapter = new MyListAdapter(getActivity().getApplicationContext());
+            adapter = new EventAdapter(parents);
             eventlist.setAdapter(adapter);
         }
 
@@ -211,8 +197,6 @@ public class EventsListFragment extends Fragment {
             }
             return null;
         }
-
-
     }
 
 }
