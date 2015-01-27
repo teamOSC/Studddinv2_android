@@ -35,7 +35,6 @@ import android.widget.TextView;
 
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
@@ -58,7 +57,7 @@ public class ListingsSearchFragment extends Fragment {
     View rootView;
 
     private List<ParseObject> listings;
-    private List<ListingInfo> listingInfos;
+    private ArrayList<ParseObject> listingInfos;
 
 
     public ListingsSearchFragment() {
@@ -132,61 +131,11 @@ public class ListingsSearchFragment extends Fragment {
         }
     }
 
-    public class ListingInfo {
-
-        private String owner_name;
-        private String listing_name;
-        private String mobile;
-        private ParseGeoPoint location;
-        private ParseFile image;
-
-
-        public String getOwner_name() {
-            return owner_name;
-        }
-
-        public void setOwner_name(String owner_name) {
-            this.owner_name = owner_name;
-        }
-
-        public String getListing_name() {
-            return listing_name;
-        }
-
-        public void setListing_name(String listing_name) {
-            this.listing_name = listing_name;
-        }
-
-        public String getMobile() {
-            return mobile;
-        }
-
-        public void setMobile(String mobile) {
-            this.mobile = mobile;
-        }
-
-        public ParseGeoPoint getDistance() {
-            return location;
-        }
-
-        public void setDistance(ParseGeoPoint distance) {
-            this.location = distance;
-        }
-
-        public ParseFile getImage() {
-            return image;
-        }
-
-        public void setImage(ParseFile image) {
-            this.image = image;
-        }
-    }
-
     public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ViewHolder>{
 
-        private List<ListingInfo> mDataset;
+        private List<ParseObject> mDataset;
 
-        public ListingAdapter(List<ListingInfo> dataSet) {
+        public ListingAdapter(List<ParseObject> dataSet) {
             mDataset = dataSet;
         }
 
@@ -201,10 +150,10 @@ public class ListingsSearchFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, int i) {
-            viewHolder.listing_name.setText(mDataset.get(i).getListing_name());
-            viewHolder.owner_name.setText(mDataset.get(i).getOwner_name());
-            viewHolder.mobile.setText(mDataset.get(i).getMobile());
-            viewHolder.listing_image.setParseFile(mDataset.get(i).getImage());
+            viewHolder.listing_name.setText(mDataset.get(i).getString("listingName"));
+            viewHolder.owner_name.setText(mDataset.get(i).getString("ownerName"));
+            viewHolder.mobile.setText(mDataset.get(i).getString("mobile"));
+            viewHolder.listing_image.setParseFile(mDataset.get(i).getParseFile("image"));
             viewHolder.listing_image.loadInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] bytes, ParseException e) {
@@ -213,7 +162,7 @@ public class ListingsSearchFragment extends Fragment {
                         e.printStackTrace();
                 }
             });
-            viewHolder.listing_distance.setText((int) (mDataset.get(i).getDistance()).distanceInKilometersTo(new ParseGeoPoint(28.7500749,77.11766519999992)) + "km");
+            viewHolder.listing_distance.setText((int) (mDataset.get(i).getParseGeoPoint("location")).distanceInKilometersTo(new ParseGeoPoint(28.7500749,77.11766519999992)) + "km");
         }
 
         @Override
@@ -250,7 +199,7 @@ public class ListingsSearchFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... voids) {
             // Create the array
-            listingInfos = new ArrayList<ListingInfo>();
+            listingInfos = new ArrayList<ParseObject>();
             try {
 
                 ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
@@ -258,14 +207,7 @@ public class ListingsSearchFragment extends Fragment {
                 query.orderByAscending("createdAt");
                 listings = query.find();
                 for (ParseObject listing : listings) {
-
-                    ListingInfo listingInfo = new ListingInfo();
-                    listingInfo.setListing_name((String) listing.get("listingName"));
-                    listingInfo.setOwner_name((String) listing.get("ownerName"));
-                    listingInfo.setMobile((String) listing.get("mobile"));
-                    listingInfo.setDistance((ParseGeoPoint) listing.get("location"));
-                    listingInfo.setImage((ParseFile) listing.get("image"));
-                    listingInfos.add(listingInfo);
+                    listingInfos.add(listing);
                 }
             } catch (ParseException e) {
                 Log.e("Error", e.getMessage());
@@ -342,7 +284,7 @@ public class ListingsSearchFragment extends Fragment {
 
                     editor.commit();
 
-                   //refresh listing
+                    //refresh listing
                 }
             });
             return filterDialog.create();
