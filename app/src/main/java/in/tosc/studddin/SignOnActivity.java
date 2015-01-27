@@ -7,11 +7,27 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.parse.ParseFacebookUtils;
 
 import in.tosc.studddin.fragments.signon.SignOnFragment;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import in.tosc.studddin.fragments.signon.SignOnFragment;
 
 public class SignOnActivity extends ActionBarActivity {
 
@@ -50,6 +66,7 @@ public class SignOnActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

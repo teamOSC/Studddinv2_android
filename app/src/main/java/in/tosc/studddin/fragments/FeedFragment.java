@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.fragments.signon.SignupDataFragment.UserDataFields;
 import in.tosc.studddin.utils.HttpExecute;
 import in.tosc.studddin.utils.HttpExecutor;
@@ -49,7 +50,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
 
     private static final String TAG = "[[[OMERJERK]]]";
 
-    private EditText searchEditText;
+    private MaterialEditText searchEditText;
 
     private static final String KEY_LINK = "url";
     private static final String KEY_TITLE = "title";
@@ -88,7 +89,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_feed, container, false);
-        searchEditText = (EditText) rootView.findViewById(R.id.feed_search);
+        searchEditText = (MaterialEditText) rootView.findViewById(R.id.feed_search);
         searchEditText.setOnKeyListener(this);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.feed_recycler_view);
 
@@ -131,7 +132,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
                     case KeyEvent.KEYCODE_DPAD_CENTER:
                     case KeyEvent.KEYCODE_ENTER:
                         Toast.makeText(context, "Search", Toast.LENGTH_SHORT).show();
-                        doSearch(((EditText) v).getText().toString());
+                        doSearch(((MaterialEditText) v).getText().toString());
                         return true;
                     default:
                         break;
@@ -302,44 +303,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
                 throw new UnsupportedOperationException();
         }
     }
-
-    /*
-    private class ReadFromJSON extends AsyncTask<Void, Void, Void> {
-
-        private String json;
-
-        public ReadFromJSON(String json) {
-            this.json = json;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                JSONArray jsonArray = new JSONArray(json);
-                JSONArray mJsonArray = (JSONArray) jsonArray.get(0);
-
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
-
-    private String getJSON() {
-        try {
-            Resources res = getResources();
-            InputStream in_s = res.openRawResource(R.raw.feed);
-
-            byte[] b = new byte[in_s.available()];
-            in_s.read(b);
-            Log.d(TAG, "String = " + new String(b));
-            return new String(b);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }
-    } */
 
     public void doSearch(String query) {
         String url = searchUrl + query;
