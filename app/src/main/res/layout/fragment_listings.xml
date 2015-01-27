@@ -6,6 +6,12 @@
     android:orientation="vertical"
     tools:context="in.tosc.studddin.fragments.ListingsFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="15dp"
+        android:background="@drawable/selector_card_background">
     <in.tosc.studddin.customview.MaterialEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,6 +24,7 @@
         app:singleLineEllipsis="true"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"/>
+        </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/listing_recycler_view"

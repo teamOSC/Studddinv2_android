@@ -67,7 +67,6 @@
         android:layout_gravity="bottom|right"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:background="@drawable/add"
         android:id="@+id/notes_button_add"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight ="true"

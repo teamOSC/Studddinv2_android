@@ -8,15 +8,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.2"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        >
+        android:layout_margin="15dp"
+        android:background="@drawable/selector_card_background">
 
         <in.tosc.studddin.customview.MaterialEditText
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3.5"
+            android:layout_weight="1"
             android:id="@+id/people_search"
             android:hint="@string/notes_search"
             android:layout_marginLeft= "5dp"
@@ -25,17 +25,10 @@
             app:floatingLabel="highlight"
             />
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.1"
-            android:background="@drawable/ic_action_search"
-            />
-
     </LinearLayout>
 
     <ListView
-        android:layout_weight="8"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/listviewpeople"
