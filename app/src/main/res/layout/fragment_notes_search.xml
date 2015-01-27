@@ -43,21 +43,6 @@
                 android:layout_marginRight="5dp"/>
         
 
-        <in.tosc.studddin.utils.AddFloatingActionButton
-            style="?android:attr/buttonStyleSmall"
-            android:layout_gravity="center_horizontal|right"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/add"
-            android:id="@+id/notes_button_add"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="15dp"
-            android:layout_alignParentRight ="true"
-            android:layout_marginRight="20dp"
-            android:onClick="jumpToPage"
-            fab:fab_colorNormal="@color/blue_semi_transparent"
-            fab:fab_colorPressed="@color/blue_semi_transparent_pressed"
-            />
         </FrameLayout>
 
     </RelativeLayout>
@@ -75,4 +60,22 @@
 
         </GridView>
     </LinearLayout>
+
+
+    <in.tosc.studddin.utils.AddFloatingActionButton
+        style="?android:attr/buttonStyleSmall"
+        android:layout_gravity="bottom|right"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/add"
+        android:id="@+id/notes_button_add"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight ="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:onClick="jumpToPage"
+        fab:fab_colorNormal="@color/twitter_blue"
+        fab:fab_colorPressed="@color/twitter_blue_pressed"
+        />
+    
 </FrameLayout>

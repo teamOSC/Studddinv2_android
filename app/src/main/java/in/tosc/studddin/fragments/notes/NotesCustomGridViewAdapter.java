@@ -34,7 +34,7 @@ public class NotesCustomGridViewAdapter extends BaseAdapter {
     }
     @Override
     public int getCount() {
-        return 5;
+        return 15;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class NotesCustomGridViewAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         grid = new View(mContext);
         if (convertView == null) {
-            if(position >= 0 && position < 5) {
+            if(position >= 0 && position < 15) {
 
 
 
