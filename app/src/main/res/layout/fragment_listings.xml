@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/notes_search"
+        android:id="@+id/listing_search"
         android:textCursorDrawable="@drawable/text_cursor_cyan"
         app:baseColor="@color/search_color"
         app:primaryColor="@color/colorPrimaryDark"
@@ -24,5 +25,7 @@
         android:layoutAnimation="@anim/slide_in_gogo"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"/>
+
+
 
 </LinearLayout>

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -99,20 +100,24 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                 // Upload the image into Parse Cloud
                 file.saveInBackground();
 
-                // Create a New Class called "ImageUpload" in Parse
-                ParseObject imgupload = new ParseObject("Listings");
+                ParseObject upload = new ParseObject("Listings");
+                ParseGeoPoint point = new ParseGeoPoint(28.7500749,77.11766519999992);
 
-                imgupload.put("image", file);
-                imgupload.put("ownerName", ParseUser.getCurrentUser().getString("NAME"));
-                imgupload.put("listingName", listing.getText().toString());
-                imgupload.put("mobile", mobile.getText().toString());
+                upload.put("image", file);
+                upload.put("ownerName", ParseUser.getCurrentUser().getString("NAME"));
+                upload.put("listingName", listing.getText().toString());
+                upload.put("mobile", mobile.getText().toString());
+                upload.put("location", point);
 
-                imgupload.saveInBackground(new SaveCallback() {
+                upload.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         Toast.makeText(getActivity(), "Upload complete",
                                 Toast.LENGTH_SHORT).show();
                     }
+
+
+
                 });
                 break;
 

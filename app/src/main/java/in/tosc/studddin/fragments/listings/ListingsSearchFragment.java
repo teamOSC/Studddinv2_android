@@ -16,6 +16,8 @@ import android.support.v7.internal.widget.TintCheckBox;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,12 +28,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -48,7 +52,7 @@ public class ListingsSearchFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    //private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.LayoutManager mLayoutManager;
     View rootView;
 
     private List<ParseObject> listings;
@@ -64,7 +68,7 @@ public class ListingsSearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         SharedPreferences filterDetails = getActivity().getSharedPreferences("filterdetails", 0);
-        new FetchListingsData().execute();
+
 
     }
 
@@ -74,8 +78,28 @@ public class ListingsSearchFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_listings, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listing_recycler_view);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        new FetchListingsData().execute();
+
+        EditText search = (EditText) rootView.findViewById(R.id.listing_search);
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                //TODO
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         return rootView;
     }
@@ -112,7 +136,7 @@ public class ListingsSearchFragment extends Fragment {
         private String owner_name;
         private String listing_name;
         private String mobile;
-        private String distance;
+        private ParseGeoPoint location;
         private ParseFile image;
 
 
@@ -140,12 +164,12 @@ public class ListingsSearchFragment extends Fragment {
             this.mobile = mobile;
         }
 
-        public String getDistance() {
-            return distance;
+        public ParseGeoPoint getDistance() {
+            return location;
         }
 
-        public void setDistance(String distance) {
-            this.distance = distance;
+        public void setDistance(ParseGeoPoint distance) {
+            this.location = distance;
         }
 
         public ParseFile getImage() {
@@ -188,7 +212,7 @@ public class ListingsSearchFragment extends Fragment {
                         e.printStackTrace();
                 }
             });
-            viewHolder.listing_distance.setText(mDataset.get(i).getDistance());
+            viewHolder.listing_distance.setText((int) (mDataset.get(i).getDistance()).distanceInKilometersTo(new ParseGeoPoint(28.7500749,77.11766519999992)) + "km");
         }
 
         @Override
@@ -221,6 +245,7 @@ public class ListingsSearchFragment extends Fragment {
     private class FetchListingsData extends AsyncTask<Void,Void,Void>
     {
 
+
         @Override
         protected Void doInBackground(Void... voids) {
             // Create the array
@@ -237,7 +262,7 @@ public class ListingsSearchFragment extends Fragment {
                     listingInfo.setListing_name((String) listing.get("listingName"));
                     listingInfo.setOwner_name((String) listing.get("ownerName"));
                     listingInfo.setMobile((String) listing.get("mobile"));
-                    listingInfo.setDistance("temp");
+                    listingInfo.setDistance((ParseGeoPoint) listing.get("location"));
                     listingInfo.setImage((ParseFile) listing.get("image"));
                     listingInfos.add(listingInfo);
                 }
@@ -250,10 +275,9 @@ public class ListingsSearchFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void result) {
-
-
             mAdapter = new ListingAdapter(listingInfos);
             mRecyclerView.setAdapter(mAdapter);
+            mAdapter.notifyDataSetChanged();
 
         }
     }

@@ -63,4 +63,6 @@
         android:layout_toStartOf="@+id/et_listing"
         android:layout_below="@+id/listing_image" />
 
+
+
 </RelativeLayout>
