@@ -9,8 +9,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.parse.ParseException;
@@ -23,7 +25,9 @@ import com.parse.SaveCallback;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import in.tosc.studddin.R;
 
@@ -37,6 +41,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
     private ImageView sdCard;
     private EditText listing;
     private EditText mobile;
+    private Spinner category;
 
     public static ImageView listing_image;
 
@@ -61,6 +66,13 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         listing = (EditText) rootView.findViewById(R.id.et_listing);
         mobile = (EditText) rootView.findViewById(R.id.et_mobile);
         listing_image = (ImageView) rootView.findViewById(R.id.listing_image);
+        category = (Spinner) rootView.findViewById(R.id.listing_category);
+        List<String> categoryList = new ArrayList<String>();
+        categoryList.add("Book");
+        categoryList.add("Apparatus");
+        categoryList.add("Misc.");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item,categoryList);
+        category.setAdapter(dataAdapter);
 
         camera.setOnClickListener(this);
         upload.setOnClickListener(this);
@@ -108,6 +120,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                 upload.put("listingName", listing.getText().toString());
                 upload.put("mobile", mobile.getText().toString());
                 upload.put("location", point);
+                upload.put("category",category.getSelectedItem().toString());
 
                 upload.saveInBackground(new SaveCallback() {
                     @Override
@@ -141,4 +154,5 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
             mCurrentPhotoPath = image.getAbsolutePath();
             return image;
         }
+
 }

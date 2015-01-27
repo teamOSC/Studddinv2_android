@@ -67,8 +67,6 @@ public class ListingsSearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        SharedPreferences filterDetails = getActivity().getSharedPreferences("filterdetails", 0);
-
 
     }
 
@@ -337,7 +335,7 @@ public class ListingsSearchFragment extends Fragment {
                     if(misc.isChecked())
                         editor.putBoolean("misc",true);
                     else
-                        editor.putBoolean("books",false);
+                        editor.putBoolean("misc",false);
 
                     editor.commit();
 

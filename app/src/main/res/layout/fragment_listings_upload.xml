@@ -51,7 +51,6 @@
         android:layout_alignParentEnd="true"
         android:layout_toRightOf="@+id/et_mobile"
         android:layout_toEndOf="@+id/et_mobile"
-        android:layout_below="@+id/et_mobile"
         android:src="@android:drawable/arrow_up_float"/>
 
     <ImageView
@@ -63,6 +62,15 @@
         android:layout_toStartOf="@+id/et_listing"
         android:layout_below="@+id/listing_image" />
 
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listing_category"
+        android:layout_below="@+id/et_mobile"
+        android:layout_toLeftOf="@+id/listing_upload"
+        android:layout_alignLeft="@+id/et_mobile"
+        android:layout_alignStart="@+id/et_mobile"
+        android:spinnerMode="dialog" />
 
 
 </RelativeLayout>
