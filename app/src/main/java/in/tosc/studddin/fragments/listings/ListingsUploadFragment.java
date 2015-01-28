@@ -137,7 +137,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                     @Override
                     public void done(ParseException e) {
                         uploading.setVisibility(View.GONE);
-                        Toast.makeText(getActivity(), "Upload complete",
+                        Toast.makeText(getActivity(), getString(R.string.upload_complete),
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
