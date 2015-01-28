@@ -88,13 +88,15 @@ public class PeopleNearmeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+//                FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
+//                FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
 
                 ViewPerson newFragment = new ViewPerson();
 
-                final Bundle in = new Bundle();
+                 Bundle in = new Bundle();
                 in.putString("name", list3.get(i).cname);
                 in.putString("institute", list3.get(i).cinstituition);
                 in.putString("qualifications" , list3.get(i).cqualification);
@@ -103,7 +105,8 @@ public class PeopleNearmeFragment extends Fragment {
 
                 newFragment.setArguments(in);
 
-                transaction.replace(R.id.people_pager,newFragment).commit();
+                transaction.replace(R.id.peopleNearme_container, newFragment);
+                transaction.commit();
 
 
             }
