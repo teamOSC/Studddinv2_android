@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.IOException;
+
 import in.tosc.studddin.R;
 import in.tosc.studddin.fragments.notes.NotesSearchFragment;
 import in.tosc.studddin.fragments.notes.NotesUploadFragment;
@@ -72,8 +74,16 @@ public class NotesFragment extends Fragment {
         Log.d("Raghav", "Request = " + requestCode + "result = " + resultCode);
         String[]  paths = data.getStringArrayExtra("all_path");
         if(paths.length == 0)
-            notesUploadFragment.setImagePaths(paths, false);
-        notesUploadFragment.setImagePaths(paths, true);
+            try {
+                notesUploadFragment.setImagePaths(paths, false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        try {
+            notesUploadFragment.setImagePaths(paths, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

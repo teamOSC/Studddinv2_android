@@ -115,7 +115,7 @@ public class NotesUploadFragment extends Fragment {
                     if(imagePaths.length != 0){
                         try {
                             ZipOutputStream zipFile = createZip(imagePaths, zipFileName);
-                            
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
