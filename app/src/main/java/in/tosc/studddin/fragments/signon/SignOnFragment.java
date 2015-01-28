@@ -29,6 +29,8 @@ import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.twitter.Twitter;
 
+import org.json.JSONArray;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -239,8 +241,8 @@ public class SignOnFragment extends Fragment {
 
                     Log.w(TAG,
                             "FBSHIT \n" +
-                            ParseFacebookUtils.getSession().getAccessToken() + " \n" +
-                            ParseFacebookUtils.getFacebook().getAppId()
+                                    ParseFacebookUtils.getSession().getAccessToken() + " \n" +
+                                    ParseFacebookUtils.getFacebook().getAppId()
                     );
                     FbApi.setSession(ParseFacebookUtils.getSession());
                     FbApi.getFacebookData(new FbApi.FbGotDataCallback() {
@@ -248,9 +250,9 @@ public class SignOnFragment extends Fragment {
                         public void gotData(Bundle b) {
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                             FragmentTransaction transaction = fragmentManager.beginTransaction();
-                            transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
+                            transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
                             SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
-                            transaction.replace(R.id.signon_container,newFragment).addToBackStack("SignIn").commit();
+                            transaction.replace(R.id.signon_container, newFragment).addToBackStack("SignIn").commit();
 
                         }
                     });
