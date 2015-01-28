@@ -202,11 +202,8 @@ public class SignOnFragment extends Fragment {
                 }
         );
     }
-    public void doSignUp (View v) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
 
+    public void doSignUp (View v) {
         Bundle b = new Bundle();
 
         AccountManager am = AccountManager.get(getActivity());
@@ -214,11 +211,9 @@ public class SignOnFragment extends Fragment {
         if (accounts.length > 0)
             b.putString(UserDataFields.USER_EMAIL, accounts[0].name);
 
-        SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
-
-        transaction.replace(R.id.signon_container,newFragment).addToBackStack("SignIn").commit();
-
+        showSignupDataFragment(b);
     }
+
     public void doFacebookSignOn (View v) {
         List<String> permissions = Arrays.asList("public_profile", "user_friends",
                 ParseFacebookUtils.Permissions.User.ABOUT_ME,
@@ -258,6 +253,7 @@ public class SignOnFragment extends Fragment {
                     });
 
                 } else {
+
                     Log.w(TAG, "User logged in through Facebook!");
                     Log.w(TAG,
                             "FBSHIT \n" +
@@ -270,6 +266,7 @@ public class SignOnFragment extends Fragment {
             }
         });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -309,10 +306,15 @@ public class SignOnFragment extends Fragment {
     }
 
     public void doGoogleSignOn (View v) {
-
     }
 
+    public void showSignupDataFragment(Bundle b) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
 
+        SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
 
-
+        transaction.replace(R.id.signon_container,newFragment).addToBackStack("SignIn").commit();
+    }
 }

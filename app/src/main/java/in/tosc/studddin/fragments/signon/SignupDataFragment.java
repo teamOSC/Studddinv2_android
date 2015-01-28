@@ -89,8 +89,6 @@ public class SignupDataFragment extends Fragment {
                     pushInputToParse();
                     startNextActivity();
                 }
-
-
             }
         });
         ParseGeoPoint.getCurrentLocationInBackground(10000, new LocationCallback() {
