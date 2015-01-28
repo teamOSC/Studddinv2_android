@@ -1,6 +1,6 @@
 package in.tosc.studddin.fragments.listings;
 
-
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -48,9 +48,6 @@ import java.util.List;
 import in.tosc.studddin.R;
 import in.tosc.studddin.utils.Utilities;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ListingsSearchFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
@@ -61,6 +58,7 @@ public class ListingsSearchFragment extends Fragment {
     private View rootView;
     private boolean onRefresh = false;
 
+    private SharedPreferences filterPrefs;
     public ListingsSearchFragment() {
         // Required empty public constructor
     }
@@ -69,33 +67,17 @@ public class ListingsSearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
+        filterPrefs = getActivity().getSharedPreferences("filterdetails", 0);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         rootView = inflater.inflate(R.layout.fragment_listings, container, false);
         loader = (ProgressBar) rootView.findViewById(R.id.progressBar);
-
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listing_recycler_view);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        if(Utilities.isNetworkAvailable(getActivity()))
-            fetchListings();
-        else
-            fetchFromCache();
-        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                onRefresh = true;
-                fetchListings();
-            }
-        });
-
-
         EditText search = (EditText) rootView.findViewById(R.id.listing_search);
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -114,9 +96,22 @@ public class ListingsSearchFragment extends Fragment {
             }
         });
 
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                onRefresh = true;
+                fetchListings(false);
+            }
+        });
+
+        if(Utilities.isNetworkAvailable(getActivity()))
+            fetchListings(false);
+        else
+            fetchListings(true);
+
         return rootView;
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -131,7 +126,6 @@ public class ListingsSearchFragment extends Fragment {
             case R.id.listing_filter:
                 FilterDialog dialog = new FilterDialog();
                 dialog.show(getFragmentManager(),"filterdialog");
-
                 return true;
             case R.id.listing_upload:
                 Fragment fragment2 = new ListingsUploadFragment();
@@ -145,68 +139,62 @@ public class ListingsSearchFragment extends Fragment {
         }
     }
 
-    private void fetchListings(){
-
+    private void fetchListings(final boolean cache){
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
                 "Listings");
-        query.orderByAscending("createdAt");
+        ArrayList<String> categories = new ArrayList<>();
+        if(filterPrefs.getBoolean("books",true))
+            categories.add("Book");
+        if(filterPrefs.getBoolean("apparatus",true))
+            categories.add("Apparatus");
+        if(filterPrefs.getBoolean("misc",true))
+            categories.add("Misc.");
+        query.whereContainedIn("category",categories);
+        if(filterPrefs.getString("sortby","nearest").compareTo("nearest")==0)
+            query.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));
+        else
+            query.orderByDescending("createdAt");
+        if(cache)
+            query.fromLocalDatastore();
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> parseObjects, ParseException e) {
                 if(e==null){
-                    ParseObject.unpinAllInBackground("listings",new DeleteCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            ParseObject.pinAllInBackground("listings",parseObjects);
-                            mAdapter = new ListingAdapter(parseObjects);
-                            mAdapter.notifyDataSetChanged();
-                            if(onRefresh==true){
-                                onRefresh=false;
-                                swipeRefreshLayout.setRefreshing(false);
+                    if(cache)
+                        doneFetching(parseObjects);
+                    else{
+                        ParseObject.unpinAllInBackground("listings",new DeleteCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                ParseObject.pinAllInBackground("listings",parseObjects);
+                                doneFetching(parseObjects);
                             }
-                            else
-                                loader.setVisibility(View.GONE);
-                            mRecyclerView.setAdapter(mAdapter);
-                        }
-                    });
+                        });
+                    }
                 }
-                else
-                    Toast.makeText(getActivity(),"Please check your internet connection",Toast.LENGTH_SHORT).show();
+                else{
+                    if(!cache)
+                        Toast.makeText(getActivity(),"Please connect to the Internet",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
     }
 
-    private void fetchFromCache(){
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
-                "Listings");
-        query.orderByAscending("createdAt");
-        query.fromLocalDatastore();
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> parseObjects, ParseException e) {
-                if(e==null){
-                    mAdapter = new ListingAdapter(parseObjects);
-                    mAdapter.notifyDataSetChanged();
-                    if(onRefresh==true){
-                        onRefresh=false;
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                    else
-                        loader.setVisibility(View.GONE);
-                    mRecyclerView.setAdapter(mAdapter);
-                }
-                else
-                    fetchListings();
-            }
-        });
-
+    private void doneFetching(List<ParseObject> parseObjects){
+        mAdapter = new ListingAdapter(parseObjects);
+        mAdapter.notifyDataSetChanged();
+        if(onRefresh==true){
+            onRefresh=false;
+            swipeRefreshLayout.setRefreshing(false);
+        }
+        else
+            loader.setVisibility(View.GONE);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ViewHolder>{
-
         private List<ParseObject> mDataset;
-
         public ListingAdapter(List<ParseObject> dataSet) {
             mDataset = dataSet;
         }
@@ -229,7 +217,6 @@ public class ListingsSearchFragment extends Fragment {
             viewHolder.listing_image.loadInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] bytes, ParseException e) {
-                    // nothing to do
                     if (e != null)
                         e.printStackTrace();
                 }
@@ -242,9 +229,7 @@ public class ListingsSearchFragment extends Fragment {
             return mDataset.size();
         }
 
-
         public class ViewHolder extends RecyclerView.ViewHolder {
-
             TextView listing_name;
             TextView owner_name;
             TextView mobile;
@@ -259,24 +244,16 @@ public class ListingsSearchFragment extends Fragment {
                 this.listing_distance = (TextView) v.findViewById(R.id.listing_distance);
                 this.listing_image = (ParseImageView) v.findViewById(R.id.listing_image);
             }
-
-
         }
     }
 
-
-
-
-
-
-    public static class FilterDialog extends DialogFragment implements AdapterView.OnItemSelectedListener{
-
+    @SuppressLint("ValidFragment")
+    public class FilterDialog extends DialogFragment implements AdapterView.OnItemSelectedListener{
         private View v;
         private CheckBox books;
         private CheckBox apparatus;
         private CheckBox misc;
-        SharedPreferences filterPrefs;
-        SharedPreferences.Editor editor;
+        private SharedPreferences.Editor editor;
 
         @NonNull
         @Override
@@ -326,8 +303,7 @@ public class ListingsSearchFragment extends Fragment {
                         editor.putBoolean("misc",false);
 
                     editor.commit();
-
-                    //refresh listing
+                    fetchListings(true);
                 }
             });
             return filterDialog.create();
@@ -343,17 +319,10 @@ public class ListingsSearchFragment extends Fragment {
                 editor.putString("sortby","recent");
                 editor.commit();
             }
-
         }
 
         @Override
         public void onNothingSelected(AdapterView<?> adapterView) {
-
         }
-
-
     }
-
-
-
 }

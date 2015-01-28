@@ -46,16 +46,12 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
     private LinearLayout uploading;
 
     public static ImageView listing_image;
-
     public static byte[] byteArray;
-
     public static String mCurrentPhotoPath;
-
 
     public ListingsUploadFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,7 +79,6 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
 
         return rootView;
     }
-
 
     @Override
     public void onClick(View view) {
@@ -131,31 +126,24 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                         Toast.makeText(getActivity(), "Upload complete",
                                 Toast.LENGTH_SHORT).show();
                     }
-
-
-
                 });
                 break;
-
         }
-
     }
 
-        private File createImageFile() throws IOException {
-            // Create an image file name
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = "JPEG_" + timeStamp + "_";
-            File storageDir = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES);
-            File image = File.createTempFile(
-                    imageFileName,  /* prefix */
-                    ".jpg",         /* suffix */
-                    storageDir      /* directory */
-            );
-
-            // Save a file: path for use with ACTION_VIEW intents
-            mCurrentPhotoPath = image.getAbsolutePath();
-            return image;
-        }
-
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
 }
