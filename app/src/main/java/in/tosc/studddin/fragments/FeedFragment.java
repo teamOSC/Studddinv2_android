@@ -129,7 +129,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
                 switch (keyCode) {
                     case KeyEvent.KEYCODE_DPAD_CENTER:
                     case KeyEvent.KEYCODE_ENTER:
-                        Toast.makeText(context, "Search", Toast.LENGTH_SHORT).show();
                         doSearch(((MaterialEditText) v).getText().toString());
                         return true;
                     default:
@@ -381,7 +380,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
                         try {
                             resourceId = getCategoryResource(i);
                         } catch (UnsupportedOperationException ex) {
-                            Toast.makeText(getActivity(), "Unsupported Operation", Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "Unsupported Operation");
                         }
                         mAdapter.setDataSet(i, parseObjects, true, getString(resourceId));
 

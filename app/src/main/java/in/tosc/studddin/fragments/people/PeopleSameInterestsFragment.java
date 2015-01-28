@@ -148,7 +148,7 @@ public class PeopleSameInterestsFragment extends Fragment {
             holder.textdistance.setText(row.cdistance);
             holder.textqualification.setText(row.cqualification);
 
-            Toast.makeText(getActivity(), row.cusername, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), row.cusername, Toast.LENGTH_SHORT).show();
 
             if(row.fileObject!=null)
             {
@@ -167,10 +167,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                                                     data.length));
 
                                 } else {
-                                    Toast.makeText(getActivity() , "error1" , Toast.LENGTH_SHORT).show();
-
-
-                                    Log.d("test",
+                                    Log.e("test",
                                             "There was a problem downloading the data.");
                                 }
                             }
@@ -232,6 +229,9 @@ public class PeopleSameInterestsFragment extends Fragment {
         currentusername = ParseUser.getCurrentUser().getString("NAME");
         currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
 
+        if (currentuserinterests == null) {
+            currentuserinterests = "";
+        }
         List<String> interestslist = Arrays.asList(currentuserinterests.split(", "));
 
 

@@ -61,7 +61,7 @@ public class NotesUploadFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(getActivity(), "Button pressed", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "Button pressed", Toast.LENGTH_SHORT).show();
 
                 Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
                 startActivityForResult(i,5);
@@ -81,29 +81,19 @@ public class NotesUploadFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(topicNameEdTxt.length() < 1){
-                    Toast.makeText(getActivity(), "Please enter the Topic Name", Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(getActivity(), getString(R.string.enter_topic_name),
+                            Toast.LENGTH_SHORT).show();
                 } else if (subjectNameEdTxt.length() < 1){
-                    Toast.makeText(getActivity(), "Please enter the Subject Name", Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(getActivity(), getString(R.string.enter_subject_name),
+                            Toast.LENGTH_SHORT).show();
                 } else if(branchNameEdTxt.length() < 1){
-                    Toast.makeText(getActivity(), "Please enter the Branch Name", Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(getActivity(), getString(R.string.enter_branch_name),
+                            Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
-         imageView = (ImageView) rootView.findViewById(R.id.notes_selected_image);
-
-
+        imageView = (ImageView) rootView.findViewById(R.id.notes_selected_image);
         return rootView;
-
     }
-
-
-
-
-
-
 }

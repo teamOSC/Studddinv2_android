@@ -157,12 +157,14 @@ public class SignupDataFragment extends Fragment {
         }
 
         if (f && input.get(UserDataFields.USER_EMAIL).isEmpty()) {
-            Toast.makeText(getActivity(), getActivity().getString(R.string.enter_email), Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), getActivity().getString(R.string.enter_email),
+                    Toast.LENGTH_LONG).show();
             f = false;
         }
 
         if (f && input.get(UserDataFields.USER_QUALIFICATIONS).isEmpty()) {
-            Toast.makeText(getActivity(), "Please enter qualifications", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), getString(R.string.enter_qualifications),
+                    Toast.LENGTH_LONG).show();
             f = false;
         }
 
