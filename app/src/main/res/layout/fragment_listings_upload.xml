@@ -7,7 +7,7 @@
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:id="@+id/listing_camera"
-        android:src="@android:drawable/ic_menu_camera"
+        android:src="@drawable/imageview_selector_listing_camera"
         android:layout_marginTop="63dp"
         android:layout_marginLeft="65dp"
         android:layout_marginStart="65dp"
@@ -19,7 +19,7 @@
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:id="@+id/listing_sdcard"
-        android:src="@android:drawable/ic_delete"
+        android:src="@drawable/imageview_selector_listing_gallery"
         android:layout_alignTop="@+id/listing_camera"
         android:layout_toRightOf="@+id/listing_camera"
         android:layout_toEndOf="@+id/listing_camera" />
@@ -51,11 +51,10 @@
         android:layout_alignParentEnd="true"
         android:layout_toRightOf="@+id/et_mobile"
         android:layout_toEndOf="@+id/et_mobile"
-        android:src="@android:drawable/arrow_up_float"
-        android:layout_alignTop="@+id/linearLayout" />
+        android:src="@drawable/imageview_selector_listing_upload"/>
 
     <ImageView
-        android:layout_width="84dp"
+        android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/listing_image"
         android:layout_alignBottom="@+id/et_listing"

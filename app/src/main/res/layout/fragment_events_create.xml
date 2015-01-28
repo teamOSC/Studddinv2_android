@@ -9,6 +9,8 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_weight="1">
+        
+        
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="1dp"
@@ -50,8 +52,10 @@
     android:layout_height="wrap_content"
     android:layout_weight="0"
     android:layout_gravity="bottom|center"
-    android:hint="@string/submit"
-    android:id="@+id/submit_button"/>
+    android:text="@string/submit"
+    android:textColor="@android:color/white"
+    android:id="@+id/submit_button"
+    android:background="@drawable/bbuton_primary_rounded"/>
 
 
 

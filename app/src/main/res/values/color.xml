@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="signin_guest">#888888</color>
+    <color name="signin_guest">#BDBDBD</color>
     <color name="white">#FFFFFF</color>
     <color name="edittext_color">#009688</color>
     <color name="search_color">#982360</color>
+    <color name="search_grey">#9E9E9E</color>
+    <color name="app_background">#00BCD4</color>
+    
     <!-- App Main colors -->
-    <color name="colorPrimary">#EFC88B</color>
-    <color name="colorPrimaryDark">#AF7A6D</color><!-- #CF5C36 -->
+    <color name="colorPrimary">#F44336</color>
+    <color name="colorPrimaryDark">#C62828</color><!-- #CF5C36 -->
 
     <color name="pink">#e91e63</color>
     <color name="pink_pressed">#ec407a</color>
@@ -16,11 +19,14 @@
     <color name="twitter_blue_pressed">#aa55ACEE</color>
     <color name="google_red">#E02F2F</color>
     <color name="google_red_pressed">#aaE02F2F</color>
-    
+
+    <!-- Button colors -->
     <color name="button_primary">#4BC6B9</color>
     <color name="button_primary_disabled">#4BC6B9</color>
     <color name="button_primary_pressed">#ADE1E5</color>
-    
+    <color name="note_button">#FF9800</color>
+    <color name="note_button_pressed">#aaFF9800</color>
+
     <color name="holo_blue_bright">#ff00ddff</color>
     <color name="menu_bg">#101F2D</color>
     <color name="light_gray">#AA808080</color>
@@ -32,7 +38,7 @@
     <color name="light_black_">#33000000</color>
     <color name="light_white_">#33FFFFFF</color>
     <color name="dialog_bg">#f0f0f0</color>
-    
+
     <drawable name="light_black_">#33000000</drawable>
     
 </resources>

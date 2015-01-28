@@ -1,11 +1,8 @@
 package in.tosc.studddin.fragments.people;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,14 +14,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -242,7 +237,6 @@ public class PeopleSameInterestsFragment extends Fragment {
 
         for (int c = 0; c < interestslist.size(); c++) {
             if (!interestslist.get(c).equals("") || !interestslist.get(c).equals(null)) {
-
 
                 ParseQuery<ParseUser> query = ParseUser.getQuery();
                 query.whereContains("INTERESTS", interestslist.get(c));

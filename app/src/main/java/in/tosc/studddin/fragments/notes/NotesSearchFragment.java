@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 
@@ -17,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.utils.FloatingActionButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +35,7 @@ public class NotesSearchFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    Button addNotesButton;
+    FloatingActionButton addNotesButton;
     EditText searchEdTxt;
 
     private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName;
@@ -88,8 +89,8 @@ public class NotesSearchFragment extends Fragment {
         notesSubjectName = new ArrayList<String>();
         notesTopicName = new ArrayList<String>();
 
-        addNotesButton = (Button) rootView.findViewById(R.id.notes_button_add);
-        searchEdTxt = (EditText) rootView.findViewById(R.id.notes_search);
+        addNotesButton = (FloatingActionButton) rootView.findViewById(R.id.notes_button_add);
+        searchEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_search);
 
         addNotesButton.setOnClickListener(new View.OnClickListener() {
             @Override

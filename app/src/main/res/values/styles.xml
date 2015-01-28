@@ -21,4 +21,12 @@
         <item name="android:textColorSecondary">#FFFFFF</item>
     </style>
 
+    <style name="AppTheme.Custom" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/blue_semi_transparent</item>
+        <item name="colorPrimaryDark">@color/blue_semi_transparent_pressed</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
+
 </resources>

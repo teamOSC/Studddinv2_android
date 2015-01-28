@@ -18,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.io.ByteArrayOutputStream;
-
 import in.tosc.studddin.fragments.AccountInfoFragment;
 import in.tosc.studddin.fragments.EventsFragment;
 import in.tosc.studddin.fragments.FeedFragment;
@@ -41,7 +40,7 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-    private Toolbar toolbar;
+    Toolbar toolbar;
     private String myTitle;
 
 
@@ -50,7 +49,7 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        myTitle = getString(R.string.test_feeds);
+        myTitle = getString(R.string.app_name);
         if(toolbar==null){
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             if(toolbar!=null){
@@ -63,7 +62,7 @@ public class MainActivity extends ActionBarActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
+        mTitle = getResources().getString(R.string.test_feeds);
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -81,18 +80,22 @@ public class MainActivity extends ActionBarActivity
             case 0:
             default:
                 Log.d("Studdd.in", "feed fragment");
+                mTitle = "Feeds";
+                
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, FeedFragment.newInstance())
                         .commit();
             break;
             case 1:
                 Log.d("Studdd.in", "notes fragment");
+                mTitle = "Notes";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new NotesFragment(), "NOTES")
                         .commit();
             break;
             case 2:
                 Log.d("Studdd.in", "feed fragment");
+                mTitle = "People";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new PeopleFragment())
                         .commit();
@@ -100,21 +103,24 @@ public class MainActivity extends ActionBarActivity
 
             case 3:
                 Log.d("Studdd.in", "feed fragment");
+                mTitle = "Listings";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new ListingsFragment())
                         .commit();
                 break;
             case 4:
                 Log.d("Studdd.in", "feed fragment");
+                mTitle = "Events";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new EventsFragment())
                         .commit();
                 break;
             case 5:
                 Log.d("Studd.in","account info");
+                mTitle = "Account";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container,new AccountInfoFragment())
-                        .commit();
+                        .commit(); 
                 break;
 
         }
@@ -141,10 +147,13 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+        //ActionBar actionBar = getSupportActionBar();
+        //actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        //actionBar.setDisplayShowTitleEnabled(true);
+        //actionBar.setTitle(mTitle);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.toolbar.setTitle(mTitle);
+        this.getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
     }
 
 
