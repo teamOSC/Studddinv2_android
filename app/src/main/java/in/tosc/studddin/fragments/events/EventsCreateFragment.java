@@ -51,7 +51,8 @@ public class EventsCreateFragment extends Fragment {
                 event.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        Toast.makeText(getActivity().getApplicationContext(), "Created event", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getApplicationContext(),
+                                getString(R.string.event_created), Toast.LENGTH_SHORT).show();
                     }
                 });
             }

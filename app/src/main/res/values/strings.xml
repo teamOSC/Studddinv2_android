@@ -33,6 +33,7 @@
     <string name="enter_password">Please Enter password</string>
     <string name="enter_institute">Please Enter Institute</string>
     <string name="enter_email">Please enter an email address</string>
+    <string name="enter_qualifications">Please enter qualifications</string>
     <string name="empty_interests">empty interests</string>
     <string name="hello_blank_fragment">Settings</string>
 
@@ -49,6 +50,9 @@
     <string name="notes_topic_name">Topic Name</string>
     <string name="notes_branch_name">Branch Name</string>
     <string name="notes_subject_name">Subject Name</string>
+    <string name="enter_topic_name">Please enter the Topic Name</string>
+    <string name="enter_subject_name">Please enter the Subject Name</string>
+    <string name="enter_branch_name">Please enter the Branch Name</string>
 
     <!-- Feed -->
     <string name="feed_category_interests" >Your Interests</string>
@@ -59,6 +63,7 @@
     <string name="sign_in_reset">Reset</string>
     <string name="sign_in_submit">Submit</string>
 
+    <!-- Signon -->
     <string name="user_dob">Date of Birth</string>
     <string name="user_location">Location</string>
     <string name="notes_upload_details">Details:</string>
@@ -66,10 +71,12 @@
     <string name="notes_gallery_pick_image">Pick From Gallery</string>
     <string name="notes_gallery_pick_multiple_pictures">Pick Multiple Pictures</string>
 
+    <!-- Events -->
     <string name="event_name">Name</string>
     <string name="event_description">Description</string>
     <string name="event_location">Location</string>
     <string name="event_date">Date</string>
+    <string name="event_created">Event created</string>
 
     <string name="user_uid">UserID</string>
     <string name="new_password">New Password</string>
@@ -77,6 +84,7 @@
     <string name="old_password">Old Password</string>
     <string name="password">Password</string>
 
-
+    <!-- Listings -->
+    <string name="upload_complete">Upload complete</string>
 
 </resources>
