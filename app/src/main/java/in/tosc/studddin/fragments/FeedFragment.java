@@ -33,7 +33,7 @@ import java.util.List;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
-import in.tosc.studddin.fragments.signon.SignupDataFragment.UserDataFields;
+import in.tosc.studddin.externalapi.UserDataFields;
 import in.tosc.studddin.utils.HttpExecute;
 import in.tosc.studddin.utils.HttpExecutor;
 
@@ -305,13 +305,18 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
     }
 
     public void doSearch(String query) {
+        Uri uri = Uri.parse("http://www.google.com/#q=" + query);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+        /*
+        //TODO:: Use our own search engine
         String url = searchUrl + query;
         new HttpExecute(new HttpExecutor() {
             @Override
             public void onResponse(String response) {
                 Log.w(TAG, "Response = " + response);
             }
-        }, url).execute();
+        }, url).execute(); */
     }
 
     public void getFeed() {
