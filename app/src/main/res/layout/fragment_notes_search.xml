@@ -56,7 +56,7 @@
         android:columnWidth="320dp"
         android:stretchMode="columnWidth"
         android:id="@+id/notes_gridview"
-        >
+        android:layoutAnimation="@anim/slide_up_gogo">
 
         </GridView>
     </LinearLayout>

@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.utils.FloatingActionButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,7 +25,8 @@ import in.tosc.studddin.R;
 public class NotesUploadFragment extends Fragment {
 
 
-    Button attachButton, uploadButton;
+    Button attachButton;
+    FloatingActionButton uploadButton;
     EditText topicNameEdTxt, branchNameEdTxt, subjectNameEdTxt;
     String topicNameString = "", branchNameString = "", subjectNameString = "";
     ImageView imageView;
@@ -43,7 +45,7 @@ public class NotesUploadFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_notes_upload, container, false);
 
         attachButton = (Button) rootView.findViewById(R.id.notes_attach);
-        uploadButton = (Button) rootView.findViewById(R.id.notes_upload);
+        uploadButton = (FloatingActionButton) rootView.findViewById(R.id.notes_upload);
         topicNameEdTxt = (EditText) rootView.findViewById(R.id.notes_topic);
         branchNameEdTxt = (EditText) rootView.findViewById(R.id.notes_branch);
         subjectNameEdTxt = (EditText) rootView.findViewById(R.id.notes_subject);
@@ -62,7 +64,7 @@ public class NotesUploadFragment extends Fragment {
         });
 
 
-        uploadButton = (Button)rootView.findViewById(R.id.notes_upload);
+        uploadButton = (FloatingActionButton)rootView.findViewById(R.id.notes_upload);
 
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override

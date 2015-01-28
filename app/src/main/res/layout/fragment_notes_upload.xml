@@ -1,6 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:id="@+id/notes_upload_container"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="in.tosc.studddin.fragments.notes.NotesUploadFragment">
 
@@ -13,8 +15,7 @@
         android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center">
+        android:layout_height="match_parent">
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -56,19 +57,22 @@
             android:layout_below="@+id/notes_subject"
             android:layout_centerHorizontal="true" />
 
-        <Button
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@drawable/upload"
-            android:id="@+id/notes_upload"
-
-            android:layout_alignParentRight = "true"
-            android:layout_marginRight="50dp"
-            android:layout_below="@+id/notes_branch"
-            android:layout_marginTop="10dp"
-            />
+        
 
 
     </RelativeLayout>
     </ScrollView>
+    <in.tosc.studddin.utils.AddFloatingActionButton
+        style="?android:attr/buttonStyleSmall"
+        android:layout_gravity="bottom|right"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/notes_upload"
+        android:layout_alignParentRight ="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/notes_branch"
+        fab:fab_colorNormal="@color/pink"
+        fab:fab_colorPressed="@color/pink_pressed"
+        />
 </FrameLayout>
