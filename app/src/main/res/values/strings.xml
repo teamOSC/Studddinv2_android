@@ -61,6 +61,10 @@
 
     <string name="user_dob">Date of Birth</string>
     <string name="user_location">Location</string>
+    <string name="notes_upload_details">Details:</string>
+    <string name="notes_uploadedby">Uploaded By:</string>
+    <string name="notes_gallery_pick_image">Pick From Gallery</string>
+    <string name="notes_gallery_pick_multiple_pictures">Pick Multiple Pictures</string>
 
     <string name="event_name">Name</string>
     <string name="event_description">Description</string>
@@ -73,10 +77,6 @@
     <string name="old_password">Old Password</string>
     <string name="password">Password</string>
 
-    <string name="notes_upload_details">Details:</string>
-    <string name="notes_uploadedby">Uploaded By:</string>
-    <string name="notes_gallery_pick_image">Pick From Gallery</string>
-    <string name="notes_gallery_pick_multiple_pictures">Pick Multiple Pictures</string>
 
 
 </resources>

@@ -27,6 +27,7 @@ import java.util.HashMap;
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.externalapi.UserDataFields;
 
 
 /**
@@ -36,19 +37,6 @@ import in.tosc.studddin.customview.MaterialEditText;
  */
 public class SignupDataFragment extends Fragment {
 
-
-    public class UserDataFields {
-        public static final String USER_NAME = "NAME";
-        public static final String USER_PASSWORD = "PASSWORD";
-        public static final String USER_DOB= "DOB";
-        public static final String USER_INSTITUTE = "INSTITUTE";
-        public static final String USER_CITY = "CITY";
-        public static final String USER_EMAIL = "EMAIL";
-        public static final String USER_INTERESTS = "INTERESTS";
-        public static final String USER_QUALIFICATIONS = "QUALIFICATIONS";
-        public static final String USER_LAT = "LAT";
-        public static final String USER_LONG = "LONG";
-    }
 
     Bundle userDataBundle;
     
@@ -101,8 +89,6 @@ public class SignupDataFragment extends Fragment {
                     pushInputToParse();
                     startNextActivity();
                 }
-
-
             }
         });
         ParseGeoPoint.getCurrentLocationInBackground(10000, new LocationCallback() {
@@ -220,7 +206,7 @@ public class SignupDataFragment extends Fragment {
                 public void done(ParseException e) {
                     if (e == null) {
                         // Hooray! Let them use the app now.
-                        goToMainActivity();
+                        goToMainActivity(getActivity());
                     } else {
                     }
                 }
@@ -230,7 +216,7 @@ public class SignupDataFragment extends Fragment {
                 public void done(ParseException e) {
                     if (e == null) {
                         // Hooray! Let them use the app now.
-                        goToMainActivity();
+                        goToMainActivity(getActivity());
                     } else {
                     }
                 }
@@ -242,17 +228,17 @@ public class SignupDataFragment extends Fragment {
 
     }
 
-    private void goToMainActivity () {
-        Intent i = new Intent(getActivity(), MainActivity.class);
+    public static void goToMainActivity (Activity act) {
+        Intent i = new Intent(act, MainActivity.class);
         if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-            Activity activity = getActivity();
+            Activity activity = act;
             Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
             activity.getWindow().setExitTransition(new Explode().setDuration(1500));
             ActivityCompat.startActivityForResult(activity, i, 0,options);
         }else{
-            startActivity(i);
+            act.startActivity(i);
         }
-        getActivity().finish();}
+        act.finish();}
 
 
 }

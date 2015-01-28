@@ -1,5 +1,6 @@
 package in.tosc.studddin;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.ByteArrayOutputStream;
 import in.tosc.studddin.fragments.AccountInfoFragment;
 import in.tosc.studddin.fragments.EventsFragment;
 import in.tosc.studddin.fragments.FeedFragment;
@@ -23,6 +25,7 @@ import in.tosc.studddin.fragments.ListingsFragment;
 import in.tosc.studddin.fragments.NotesFragment;
 import in.tosc.studddin.fragments.PeopleFragment;
 import in.tosc.studddin.fragments.listings.ListingsUploadFragment;
+import in.tosc.studddin.fragments.notes.NotesUploadFragment;
 
 
 public class MainActivity extends ActionBarActivity
@@ -39,6 +42,7 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
     Toolbar toolbar;
     private String myTitle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +68,8 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+
     }
 
     @Override
@@ -84,7 +90,7 @@ public class MainActivity extends ActionBarActivity
                 Log.d("Studdd.in", "notes fragment");
                 mTitle = "Notes";
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, new NotesFragment())
+                        .replace(R.id.container, new NotesFragment(), "NOTES")
                         .commit();
             break;
             case 2:
@@ -202,6 +208,9 @@ public class MainActivity extends ActionBarActivity
 
             Bitmap bitmap = BitmapFactory.decodeFile(ListingsUploadFragment.mCurrentPhotoPath, bmOptions);
             ListingsUploadFragment.listing_image.setImageBitmap(bitmap);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            ListingsUploadFragment.byteArray = stream.toByteArray();
         }
         else if((requestCode == 1) && resultCode == RESULT_OK) {
 
@@ -214,6 +223,25 @@ public class MainActivity extends ActionBarActivity
             c.close();
             Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
             ListingsUploadFragment.listing_image.setImageBitmap(thumbnail);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            thumbnail.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            ListingsUploadFragment.byteArray = stream.toByteArray();
+
+        }
+
+
+        if (requestCode == 5 && resultCode == Activity.RESULT_OK) {
+            String[] all_path = data.getStringArrayExtra("all_path");
+
+            NotesUploadFragment notesUploadFragment = (NotesUploadFragment) getSupportFragmentManager().findFragmentByTag("NOTES");
+
+            if(notesUploadFragment != null)
+                notesUploadFragment.setImagePaths(all_path);
+
+//            viewSwitcher.setDisplayedChild(0);
+//            adapter.addAll(dataT);
+
         }
     }
+
 }

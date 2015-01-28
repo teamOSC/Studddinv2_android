@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,10 +127,15 @@ public class NotesSearchFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Toast.makeText(getActivity(), "Chal raha hai", Toast.LENGTH_SHORT);
+
+                NotesCustomDialog notesCustomDialog = new NotesCustomDialog(getActivity(),notesCollegeName, notesBranchName, notesTopicName, notesSubjectName);
+                notesCustomDialog.setTitle("Details:");
+                notesCustomDialog.show();
+
 
             }
         });
+
 
 
 

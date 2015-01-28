@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view_events"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
-
+    android:background="@android:color/white"
+    android:id="@+id/main_area"
+    android:animateLayoutChanges="true"
+    >
 
         <TextView
             android:id="@+id/event_name"
@@ -22,5 +31,34 @@
             android:text="Date"
             android:textColor="#000000"
             />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/expanded_area"
+        android:orientation="horizontal"
+        android:layoutAnimation="@anim/slide_in_gogo"
+        >
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/event_description"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Name"
+            android:textColor="#000000"
+            />
+        <TextView
+            android:layout_below="@+id/event_description"
+            android:layout_margin="10dp"
+            android:id="@+id/event_type"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Type"
+            android:textColor="#000000"
+            />
+        </LinearLayout>
+
+</LinearLayout>
+    </android.support.v7.widget.CardView>

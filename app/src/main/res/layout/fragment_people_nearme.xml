@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/peopleNearme_container"
     tools:context="in.tosc.studddin.fragments.people.PeopleNearmeFragment">
 
     <LinearLayout
@@ -27,6 +28,11 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressbar_people"/>
+
     <ListView
         android:layout_weight="1"
         android:layout_width="match_parent"
@@ -35,7 +41,10 @@
         android:layout_gravity="center_horizontal"
         android:divider="@android:color/transparent"
         android:dividerHeight="5.0sp"
-        android:scrollbars="none"/>
+        android:scrollbars="none"
+        android:visibility="gone"
+        android:layoutAnimation="@anim/slide_in_gogo"
+        />
 
 
 

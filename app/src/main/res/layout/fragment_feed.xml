@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_marginTop="5dp"
             android:layout_height="match_parent"
-            android:layoutAnimation="@anim/slide_in_gogo"/>
+            android:layoutAnimation="@anim/slide_in_gogo" />
     </RelativeLayout>
 
 </FrameLayout>
