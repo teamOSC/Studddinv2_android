@@ -26,7 +26,6 @@
         <item name="colorPrimaryDark">@color/blue_semi_transparent_pressed</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-
     </style>
 
 
