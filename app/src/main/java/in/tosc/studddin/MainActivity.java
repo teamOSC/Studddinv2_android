@@ -19,8 +19,8 @@ import android.view.MenuItem;
 
 import java.io.ByteArrayOutputStream;
 
-import in.tosc.studddin.fragments.EventsFragment;
 import in.tosc.studddin.fragments.AccountInfoFragment;
+import in.tosc.studddin.fragments.EventsFragment;
 import in.tosc.studddin.fragments.FeedFragment;
 import in.tosc.studddin.fragments.ListingsFragment;
 import in.tosc.studddin.fragments.NotesFragment;
@@ -69,6 +69,8 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+
     }
 
     @Override

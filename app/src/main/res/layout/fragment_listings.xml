@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/notes_search"
+        android:id="@+id/listing_search"
         android:textCursorDrawable="@drawable/text_cursor_cyan"
         app:baseColor="@color/search_color"
         app:primaryColor="@color/colorPrimaryDark"
@@ -19,9 +20,27 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"/>
 
-    <android.support.v7.widget.RecyclerView
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:indeterminate="true"
+        android:layout_gravity="center" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
         android:id="@+id/listing_recycler_view"
+        android:layoutAnimation="@anim/slide_in_gogo"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
 
 </LinearLayout>

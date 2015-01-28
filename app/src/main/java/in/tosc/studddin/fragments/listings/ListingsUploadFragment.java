@@ -9,19 +9,26 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import in.tosc.studddin.R;
 
@@ -35,19 +42,16 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
     private ImageView sdCard;
     private EditText listing;
     private EditText mobile;
-    private EditText name;
+    private Spinner category;
+    private LinearLayout uploading;
 
     public static ImageView listing_image;
-
     public static byte[] byteArray;
-
     public static String mCurrentPhotoPath;
-
 
     public ListingsUploadFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,8 +63,15 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         sdCard = (ImageView) rootView.findViewById(R.id.listing_sdcard);
         listing = (EditText) rootView.findViewById(R.id.et_listing);
         mobile = (EditText) rootView.findViewById(R.id.et_mobile);
-        name = (EditText) rootView.findViewById(R.id.et_name);
         listing_image = (ImageView) rootView.findViewById(R.id.listing_image);
+        category = (Spinner) rootView.findViewById(R.id.listing_category);
+        uploading = (LinearLayout) rootView.findViewById(R.id.listing_uploadLayout);
+        List<String> categoryList = new ArrayList<String>();
+        categoryList.add("Book");
+        categoryList.add("Apparatus");
+        categoryList.add("Misc.");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item,categoryList);
+        category.setAdapter(dataAdapter);
 
         camera.setOnClickListener(this);
         upload.setOnClickListener(this);
@@ -68,7 +79,6 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
 
         return rootView;
     }
-
 
     @Override
     public void onClick(View view) {
@@ -95,46 +105,45 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                 break;
 
             case R.id.listing_upload:
-                // Create the ParseFile
+                uploading.setVisibility(View.VISIBLE);
                 ParseFile file = new ParseFile("listing.png", byteArray);
-                // Upload the image into Parse Cloud
                 file.saveInBackground();
 
-                // Create a New Class called "ImageUpload" in Parse
-                ParseObject imgupload = new ParseObject("Listings");
+                ParseObject upload = new ParseObject("Listings");
+                ParseGeoPoint point = new ParseGeoPoint(28.7500749,77.11766519999992);
 
-                imgupload.put("image", file);
-                imgupload.put("ownerName", name.getText().toString());
-                imgupload.put("listingName", listing.getText().toString());
-                imgupload.put("mobile", mobile.getText().toString());
+                upload.put("image", file);
+                upload.put("ownerName", ParseUser.getCurrentUser().getString("NAME"));
+                upload.put("listingName", listing.getText().toString());
+                upload.put("mobile", mobile.getText().toString());
+                upload.put("location", point);
+                upload.put("category",category.getSelectedItem().toString());
 
-                imgupload.saveInBackground(new SaveCallback() {
+                upload.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
+                        uploading.setVisibility(View.GONE);
                         Toast.makeText(getActivity(), "Upload complete",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
                 break;
-
         }
-
     }
 
-        private File createImageFile() throws IOException {
-            // Create an image file name
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = "JPEG_" + timeStamp + "_";
-            File storageDir = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES);
-            File image = File.createTempFile(
-                    imageFileName,  /* prefix */
-                    ".jpg",         /* suffix */
-                    storageDir      /* directory */
-            );
-
-            // Save a file: path for use with ACTION_VIEW intents
-            mCurrentPhotoPath = image.getAbsolutePath();
-            return image;
-        }
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
 }
