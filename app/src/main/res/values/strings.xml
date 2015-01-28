@@ -73,4 +73,10 @@
     <string name="old_password">Old Password</string>
     <string name="password">Password</string>
 
+    <string name="notes_upload_details">Details:</string>
+    <string name="notes_uploadedby">Uploaded By:</string>
+    <string name="notes_gallery_pick_image">Pick From Gallery</string>
+    <string name="notes_gallery_pick_multiple_pictures">Pick Multiple Pictures</string>
+
+
 </resources>
