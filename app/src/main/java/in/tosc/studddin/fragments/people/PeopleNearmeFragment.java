@@ -198,8 +198,6 @@ public class PeopleNearmeFragment extends Fragment {
                                                     data.length));
 
                                 } else {
-                                    Toast.makeText(getActivity() , "error1" , Toast.LENGTH_SHORT).show();
-
 
                                     Log.d("test",
                                             "There was a problem downloading the data.");

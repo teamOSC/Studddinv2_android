@@ -181,8 +181,6 @@ public class PeopleSameInterestsFragment extends Fragment {
             holder.textdistance.setText(row.cdistance);
             holder.textqualification.setText(row.cqualification);
 
-            Toast.makeText(getActivity(), row.cusername, Toast.LENGTH_SHORT).show();
-
             if(row.fileObject!=null)
             {
                 row.fileObject
@@ -200,8 +198,6 @@ public class PeopleSameInterestsFragment extends Fragment {
                                                     data.length));
 
                                 } else {
-                                    Toast.makeText(getActivity() , "error1" , Toast.LENGTH_SHORT).show();
-
 
                                     Log.d("test",
                                             "There was a problem downloading the data.");
