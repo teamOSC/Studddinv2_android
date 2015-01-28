@@ -19,18 +19,19 @@ import android.view.MenuItem;
 
 import java.io.ByteArrayOutputStream;
 
-import in.tosc.studddin.fragments.EventsFragment;
 import in.tosc.studddin.fragments.AccountInfoFragment;
+import in.tosc.studddin.fragments.EventsFragment;
 import in.tosc.studddin.fragments.FeedFragment;
 import in.tosc.studddin.fragments.ListingsFragment;
 import in.tosc.studddin.fragments.NotesFragment;
 import in.tosc.studddin.fragments.PeopleFragment;
 import in.tosc.studddin.fragments.listings.ListingsUploadFragment;
-import in.tosc.studddin.fragments.notes.NotesUploadFragment;
 
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+
+    String[] paths;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -86,7 +87,7 @@ public class MainActivity extends ActionBarActivity
             case 1:
                 Log.d("Studdd.in", "notes fragment");
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, new NotesFragment(), "NOTES")
+                        .replace(R.id.container, new NotesFragment())
                         .commit();
             break;
             case 2:
@@ -176,6 +177,7 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("Raghav", ""+requestCode+" "+resultCode);
         if ((requestCode == 0) && resultCode == RESULT_OK) {
             int targetW = ListingsUploadFragment.listing_image.getWidth();
             int targetH = ListingsUploadFragment.listing_image.getHeight();
@@ -219,16 +221,21 @@ public class MainActivity extends ActionBarActivity
         }
 
 
-        if (requestCode == 5 && resultCode == Activity.RESULT_OK) {
-            String[] all_path = data.getStringArrayExtra("all_path");
+        if (requestCode == 131077 && resultCode == Activity.RESULT_OK) {
+           super.onActivityResult(requestCode, resultCode, data);
+           paths = data.getStringArrayExtra("all_path");
 
-            NotesUploadFragment notesUploadFragment = (NotesUploadFragment) getSupportFragmentManager().findFragmentByTag("NOTES");
 
-            if(notesUploadFragment != null)
-                notesUploadFragment.setImagePaths(all_path);
-
-//            viewSwitcher.setDisplayedChild(0);
-//            adapter.addAll(dataT);
+//            NotesUploadFragment notesUploadFragment = (NotesUploadFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:2131296409:1");
+//
+//            if(notesUploadFragment != null) {
+//                Toast.makeText(getApplicationContext(), "Nahi Chal raha idhar bhi", Toast.LENGTH_SHORT)
+//                        .show();
+//                notesUploadFragment.setImagePaths(all_path, true);
+//            }
+//            else
+//                Toast.makeText(getApplicationContext(), "Nahi Chal raha", Toast.LENGTH_SHORT)
+//                .show();
 
         }
     }
