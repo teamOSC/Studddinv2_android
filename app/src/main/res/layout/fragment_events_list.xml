@@ -3,15 +3,10 @@
     android:layout_height="match_parent"
     tools:context="in.tosc.studddin.fragments.events.EventsListFragment">
 
-    <ExpandableListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/listviewevents"
-        android:layout_gravity="center_horizontal"
-        android:childDivider="@android:color/transparent"
-        android:dividerHeight="2dp"
-        android:scrollbars="none">
-
-        </ExpandableListView>
+        android:layoutAnimation="@anim/slide_in_gogo"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"/>
 
 </LinearLayout>
