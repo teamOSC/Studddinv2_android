@@ -3,23 +3,33 @@ package in.tosc.studddin.fragments.people;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseImageView;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -33,16 +43,24 @@ import in.tosc.studddin.R;
 
 public class PeopleSameInterestsFragment extends Fragment {
 
+    List<ParseObject> peopleob;
+    ProgressBar progressBar;
 
-    HashMap<String,Boolean> existingelement = new HashMap<String,Boolean>();
-    String currentuser;
-    EditText search ;
+    HashMap<String, Boolean> existingelement = new HashMap<String, Boolean>();
+
+    String currentuseremail = "";
+    String currentuserinterests = "";
+    String currentuserinstituition = "";
+    String currentusername = "";
+    String currentuserqualification = "";
+    String currentuser = "";
+
+    EditText search;
 
     ArrayList<EachRow3> list3 = new ArrayList<PeopleSameInterestsFragment.EachRow3>();
     EachRow3 each;
-    MyAdapter3 q ;
-    ListView lv ;
-
+    MyAdapter3 q;
+    ListView lv;
 
 
     public PeopleSameInterestsFragment() {
@@ -56,11 +74,11 @@ public class PeopleSameInterestsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_people_same_interests, container, false);
 
+        progressBar = (ProgressBar) view.findViewById(R.id.progressbar_people);
 
         search = (EditText) view.findViewById(R.id.people_search);
 
-        lv = (ListView)view.findViewById(R.id.listviewpeople);
-
+        lv = (ListView) view.findViewById(R.id.listviewpeople);
 
 
         q = new MyAdapter3(getActivity(), 0, list3);
@@ -81,20 +99,19 @@ public class PeopleSameInterestsFragment extends Fragment {
                 final Bundle in = new Bundle();
                 in.putString("name", list3.get(i).cname);
                 in.putString("institute", list3.get(i).cinstituition);
-                in.putString("qualifications" , list3.get(i).cqualification);
-                in.putString("interests" , list3.get(i).cinterests);
-                in.putString("distance" , list3.get(i).cdistance);
+                in.putString("qualifications", list3.get(i).cqualification);
+                in.putString("interests", list3.get(i).cinterests);
+                in.putString("distance", list3.get(i).cdistance);
 
                 newFragment.setArguments(in);
 
-                transaction.replace(R.id.peoplesameInterest_container,newFragment).addToBackStack(null).commit();
+                transaction.replace(R.id.people_pager, newFragment).commit();
 
             }
         });
 
-        return  view;
+        return view;
     }
-
 
 
     class MyAdapter3 extends ArrayAdapter<EachRow3> {
@@ -111,7 +128,7 @@ public class PeopleSameInterestsFragment extends Fragment {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
-            final int pos=position;
+            final int pos = position;
 
             if (convertView == null) {
                 convertView = inflat.inflate(R.layout.listview_people, null);
@@ -122,6 +139,8 @@ public class PeopleSameInterestsFragment extends Fragment {
                 holder.textinstituition = (TextView) convertView.findViewById(R.id.people_institute);
                 holder.textdistance = (TextView) convertView.findViewById(R.id.people_distance);
                 holder.textqualification = (TextView) convertView.findViewById(R.id.people_qualification);
+                holder.userimg = (ParseImageView) convertView.findViewById(R.id.people_userimg);
+
 
                 convertView.setTag(holder);
             }
@@ -134,10 +153,42 @@ public class PeopleSameInterestsFragment extends Fragment {
             holder.textdistance.setText(row.cdistance);
             holder.textqualification.setText(row.cqualification);
 
+            Toast.makeText(getActivity(), row.cusername, Toast.LENGTH_SHORT).show();
+
+            if(row.fileObject!=null)
+            {
+                row.fileObject
+                        .getDataInBackground(new GetDataCallback() {
+
+                            public void done(byte[] data,
+                                             ParseException e) {
+                                if (e == null) {
+                                    Log.d("test",
+                                            "We've got data in data.");
+
+                                    holder.userimg.setImageBitmap(BitmapFactory
+                                            .decodeByteArray(
+                                                    data, 0,
+                                                    data.length));
+
+                                } else {
+                                    Toast.makeText(getActivity() , "error1" , Toast.LENGTH_SHORT).show();
+
+
+                                    Log.d("test",
+                                            "There was a problem downloading the data.");
+                                }
+                            }
+                        });
+            }
+
+            else
+            {
+                holder.userimg.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_person));
+            }
+
             return convertView;
         }
-
-
 
 
         private class ViewHolder {
@@ -147,6 +198,7 @@ public class PeopleSameInterestsFragment extends Fragment {
             TextView textdistance;
             TextView textinstituition;
             TextView textqualification;
+            ParseImageView userimg;
 
         }
 
@@ -159,88 +211,96 @@ public class PeopleSameInterestsFragment extends Fragment {
 
     }
 
-    private class EachRow3
-    {
+    private class EachRow3 {
         String cname;
-        String cinterests ;
-        String cdistance ;
-        String cqualification ;
-        String cinstituition ;
-
+        String cinterests;
+        String cdistance;
+        String cqualification;
+        String cinstituition;
+        String cusername;
+        Bitmap cbmp;
+        ParseFile fileObject;
     }
 
 
-    private void loaddata()
-    {
+    private void loaddata() {
 
-        for(int i  =0 ; i<list3.size(); i++)
-        {
+        for (int i = 0; i < list3.size(); i++) {
             list3.remove(each);
         }
 
-          currentuser = ParseUser.getCurrentUser().getUsername();
-        String currentuseremail = ParseUser.getCurrentUser().getString("email");
-        String currentuserinterests = ParseUser.getCurrentUser().getString("INTERESTS");
-        String currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
-        String currentusername = ParseUser.getCurrentUser().getString("NAME");
-        String currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
+
+        currentuser = ParseUser.getCurrentUser().getUsername();
+        currentuseremail = ParseUser.getCurrentUser().getString("email");
+        currentuserinterests = ParseUser.getCurrentUser().getString("INTERESTS");
+        currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
+        currentusername = ParseUser.getCurrentUser().getString("NAME");
+        currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
 
         List<String> interestslist = Arrays.asList(currentuserinterests.split(", "));
 
 
-        for( int c = 0 ; c < interestslist.size() ; c++ )
-        {
-                if (!interestslist.get(c).equals("") || !interestslist.get(c).equals(null)) {
+        for (int c = 0; c < interestslist.size(); c++) {
+            if (!interestslist.get(c).equals("") || !interestslist.get(c).equals(null)) {
 
 
-                    ParseQuery<ParseUser> query = ParseUser.getQuery();
-                    query.whereContains("INTERESTS", interestslist.get(c));
-                    query.findInBackground(new FindCallback<ParseUser>() {
-                        public void done(List<ParseUser> objects, ParseException e) {
-                            if (e == null) {
+                ParseQuery<ParseUser> query = ParseUser.getQuery();
+                query.whereContains("INTERESTS", interestslist.get(c));
+                query.findInBackground(new FindCallback<ParseUser>() {
+                    public void done(List<ParseUser> objects, ParseException e) {
+                        if (e == null) {
 
-                                for (ParseUser pu : objects) {
-                                    //access the data associated with the ParseUser using the get method
-                                    //pu.getString("key") or pu.get("key")
+                            for (ParseUser pu : objects) {
+                                //access the data associated with the ParseUser using the get method
+                                //pu.getString("key") or pu.get("key")
 
-                                    if (!pu.getUsername().equals(currentuser)) {
+                                if (!pu.getUsername().equals(currentuser)) {
 
-                                        if(!existingelement.containsKey(pu.getUsername())) {
+                                    if (!existingelement.containsKey(pu.getUsername())) {
 
-                                            each = new EachRow3();
-                                            each.cname = pu.getString("NAME");
-                                            each.cinterests = pu.getString("INTERESTS");
-                                            each.cqualification = pu.getString("QUALIFICATIONS");
-                                            each.cinstituition = pu.getString("INSTITUTE");
+                                        each = new EachRow3();
+                                        each.cname = pu.getString("NAME");
+                                        each.cinterests = pu.getString("INTERESTS");
+                                        each.cqualification = pu.getString("QUALIFICATIONS");
+                                        each.cinstituition = pu.getString("INSTITUTE");
 //                                          each.cdistance = pu.getString("NAME");
+                                        each.cusername = pu.getString("username");
+                                        try
+                                        {
+                                            each.fileObject = (ParseFile) pu.get("image");
 
-                                            list3.add(each);
-                                            existingelement.put(pu.getUsername(), true);
                                         }
+                                        catch (Exception e1 )
+                                        {
+                                            System.out.print("nahh");
+                                        }
+
+
+
+                                        list3.add(each);
+                                        existingelement.put(pu.getUsername(), true);
                                     }
                                 }
-
-                                // The query was successful.
-                            } else {
-                                // Something went wrong.
                             }
 
-                            lv.setAdapter(q);
-
+                            // The query was successful.
+                        } else {
+                            // Something went wrong.
                         }
-                    });
 
+                        lv.setAdapter(q);
+                        progressBar.setVisibility(View.GONE);
+                        lv.setVisibility(View.VISIBLE);
+                    }
+                });
 
-                }
 
             }
 
-
-
+        }
 
 
     }
-
 
 
 }

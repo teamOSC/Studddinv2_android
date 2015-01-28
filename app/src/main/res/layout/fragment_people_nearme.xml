@@ -9,15 +9,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.2"
+        android:layout_height="75dp"
         android:orientation="horizontal"
         >
 
         <in.tosc.studddin.customview.MaterialEditText
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3.5"
+            android:layout_weight="4.5"
             android:id="@+id/people_search"
             android:hint="@string/notes_search"
             android:layout_marginLeft= "5dp"
@@ -35,6 +34,11 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressbar_people"/>
+
     <ListView
         android:layout_weight="8"
         android:layout_width="match_parent"
@@ -43,7 +47,10 @@
         android:layout_gravity="center_horizontal"
         android:divider="@android:color/transparent"
         android:dividerHeight="5.0sp"
-        android:scrollbars="none"/>
+        android:scrollbars="none"
+        android:visibility="gone"
+        android:layoutAnimation="@anim/slide_in_gogo"
+        />
 
 
 
