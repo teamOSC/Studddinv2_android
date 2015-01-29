@@ -1,6 +1,5 @@
 package in.tosc.studddin;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -189,67 +188,51 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("Raghav", ""+requestCode+" "+resultCode);
+
+        super.onActivityResult(requestCode,resultCode,data);
+        Log.d("onActivityResult", "call ho raha hai" + resultCode + "   "+requestCode);
         if ((requestCode == 0) && resultCode == RESULT_OK) {
-            int targetW = ListingsUploadFragment.listing_image.getWidth();
-            int targetH = ListingsUploadFragment.listing_image.getHeight();
-
-            // Get the dimensions of the bitmap
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            bmOptions.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(ListingsUploadFragment.mCurrentPhotoPath, bmOptions);
-            int photoW = bmOptions.outWidth;
-            int photoH = bmOptions.outHeight;
-
-            // Determine how much to scale down the image
-            int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
-            // Decode the image file into a Bitmap sized to fill the View
-            bmOptions.inJustDecodeBounds = false;
-            bmOptions.inSampleSize = scaleFactor;
-            bmOptions.inPurgeable = true;
-
-            Bitmap bitmap = BitmapFactory.decodeFile(ListingsUploadFragment.mCurrentPhotoPath, bmOptions);
-            ListingsUploadFragment.listing_image.setImageBitmap(bitmap);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            ListingsUploadFragment.byteArray = stream.toByteArray();
+            if (data == null) {
+                Log.d("onActivityResult","camera");
+                compressImage(ListingsUploadFragment.mCurrentPhotoPath);
+            } else {
+                Log.d("onActivityResult","docs");
+                Uri selectedImage = data.getData();
+                String[] filePath = {MediaStore.Images.Media.DATA};
+                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String picturePath = c.getString(columnIndex);
+                c.close();
+                compressImage(picturePath);
+            }
         }
-        else if((requestCode == 1) && resultCode == RESULT_OK) {
+    }
 
-            Uri selectedImage = data.getData();
-            String[] filePath = { MediaStore.Images.Media.DATA };
-            Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-            c.moveToFirst();
-            int columnIndex = c.getColumnIndex(filePath[0]);
-            String picturePath = c.getString(columnIndex);
-            c.close();
-            Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-            ListingsUploadFragment.listing_image.setImageBitmap(thumbnail);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            thumbnail.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            ListingsUploadFragment.byteArray = stream.toByteArray();
+    private void compressImage(String path){
+        int targetW = ListingsUploadFragment.listing_image.getWidth();
+        int targetH = ListingsUploadFragment.listing_image.getHeight();
 
-        }
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
 
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
 
-        if (requestCode == 131077 && resultCode == Activity.RESULT_OK) {
-           super.onActivityResult(requestCode, resultCode, data);
-           paths = data.getStringArrayExtra("all_path");
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
 
-
-//            NotesUploadFragment notesUploadFragment = (NotesUploadFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:2131296409:1");
-//
-//            if(notesUploadFragment != null) {
-//                Toast.makeText(getApplicationContext(), "Nahi Chal raha idhar bhi", Toast.LENGTH_SHORT)
-//                        .show();
-//                notesUploadFragment.setImagePaths(all_path, true);
-//            }
-//            else
-//                Toast.makeText(getApplicationContext(), "Nahi Chal raha", Toast.LENGTH_SHORT)
-//                .show();
-
-        }
+        Bitmap bitmap = BitmapFactory.decodeFile(path, bmOptions);
+        ListingsUploadFragment.listing_image.setImageBitmap(bitmap);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream);
+        ListingsUploadFragment.byteArray = stream.toByteArray();
     }
 
 }

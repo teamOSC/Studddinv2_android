@@ -56,10 +56,4 @@ public class ListingsFragment extends Fragment {
 
 
     }
-
-
-
-
-
-
 }

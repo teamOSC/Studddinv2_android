@@ -107,8 +107,14 @@ public class ListingsSearchFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                onRefresh = true;
-                fetchListings(false);
+                if(Utilities.isNetworkAvailable(getActivity())){
+                    onRefresh = true;
+                    fetchListings(false);
+                }
+                else{
+                    swipeRefreshLayout.setRefreshing(false);
+                    Toast.makeText(getActivity(),"Please connect to the Internet",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -167,35 +173,32 @@ public class ListingsSearchFragment extends Fragment {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> parseObjects, ParseException e) {
-                if(e==null){
-                    if(cache)
+                if (e == null) {
+                    if (categories.size() == 3 && !cache) {
+                        ParseObject.unpinAllInBackground("listings", new DeleteCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                ParseObject.pinAllInBackground("listings", parseObjects);
+                                doneFetching(parseObjects);
+                            }
+                        });
+                    } else
                         doneFetching(parseObjects);
-                    else{
-                        if(categories.size()==3){
-                            ParseObject.unpinAllInBackground("listings", new DeleteCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    ParseObject.pinAllInBackground("listings", parseObjects);
-                                    doneFetching(parseObjects);
-                                }
-                            });
-                        }
-                        else
-                            doneFetching(parseObjects);
+                } else {
+                    if (onRefresh) {
+                        onRefresh = false;
+                        swipeRefreshLayout.setRefreshing(false);
                     }
-                }
-                else{
-                    Toast.makeText(getActivity(),"Please connect to the Internet",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
     }
 
     private void doneFetching(List<ParseObject> parseObjects){
         mAdapter = new ListingAdapter(parseObjects);
         mAdapter.notifyDataSetChanged();
-        if(onRefresh==true){
+        if(onRefresh){
             onRefresh=false;
             swipeRefreshLayout.setRefreshing(false);
         }
@@ -214,9 +217,7 @@ public class ListingsSearchFragment extends Fragment {
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
             CardView v = (CardView) LayoutInflater.from(viewGroup.getContext())
                     .inflate(in.tosc.studddin.R.layout.listing_card_view, viewGroup, false);
-
-            ViewHolder vh = new ViewHolder(v);
-            return vh;
+            return new ViewHolder(v);
         }
 
         @Override
@@ -228,10 +229,7 @@ public class ListingsSearchFragment extends Fragment {
             viewHolder.listing_image.setParseFile(mDataset.get(i).getParseFile("image"));
             viewHolder.listing_image.loadInBackground(new GetDataCallback() {
                 @Override
-                public void done(byte[] bytes, ParseException e) {
-                    if (e != null)
-                        e.printStackTrace();
-                }
+                public void done(byte[] bytes, ParseException e) {}
             });
             viewHolder.listing_distance.setText((int) (mDataset.get(i).getParseGeoPoint("location")).distanceInKilometersTo(new ParseGeoPoint(28.7500749,77.11766519999992)) + "km");
         }

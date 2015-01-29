@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -37,13 +37,11 @@ import in.tosc.studddin.R;
  */
 public class ListingsUploadFragment extends Fragment implements View.OnClickListener {
 
-    private ImageView camera;
     private ImageView upload;
-    private ImageView sdCard;
     private EditText listing;
     private EditText mobile;
     private Spinner category;
-    private LinearLayout uploading;
+    private ProgressBar uploading;
 
     public static ImageView listing_image;
     public static byte[] byteArray;
@@ -56,16 +54,13 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_listings_upload, container, false);
-        camera = (ImageView) rootView.findViewById(R.id.listing_camera);
         upload = (ImageView) rootView.findViewById(R.id.listing_upload);
-        sdCard = (ImageView) rootView.findViewById(R.id.listing_sdcard);
         listing = (EditText) rootView.findViewById(R.id.et_listing);
         mobile = (EditText) rootView.findViewById(R.id.et_mobile);
         listing_image = (ImageView) rootView.findViewById(R.id.listing_image);
         category = (Spinner) rootView.findViewById(R.id.listing_category);
-        uploading = (LinearLayout) rootView.findViewById(R.id.listing_uploadLayout);
+        uploading = (ProgressBar) rootView.findViewById(R.id.upload_progress);
         List<String> categoryList = new ArrayList<String>();
         categoryList.add("Book");
         categoryList.add("Apparatus");
@@ -73,9 +68,8 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item,categoryList);
         category.setAdapter(dataAdapter);
 
-        camera.setOnClickListener(this);
+        listing_image.setOnClickListener(this);
         upload.setOnClickListener(this);
-        sdCard.setOnClickListener(this);
 
         return rootView;
     }
@@ -83,8 +77,11 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-            case R.id.listing_camera:
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            case R.id.listing_image:
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 File photoFile = null;
                 try {
                     photoFile = createImageFile();
@@ -93,15 +90,17 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                 }
                 // Continue only if the File was successfully created
                 if (photoFile != null) {
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                             Uri.fromFile(photoFile));
-                    getActivity().startActivityForResult(takePictureIntent, 0);
                 }
-                break;
 
-            case R.id.listing_sdcard:
-                Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                getActivity().startActivityForResult(i,1);
+                Intent chooser = new Intent(Intent.ACTION_CHOOSER);
+                chooser.putExtra(Intent.EXTRA_INTENT, galleryIntent);
+                chooser.putExtra(Intent.EXTRA_TITLE, "Choose Photo");
+
+                Intent[] intentArray =  {cameraIntent};
+                chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
+                getActivity().startActivityForResult(chooser,0);
                 break;
 
             case R.id.listing_upload:

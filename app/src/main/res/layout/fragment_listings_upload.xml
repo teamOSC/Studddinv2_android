@@ -1,104 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
-    <ImageView
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:id="@+id/listing_camera"
-        android:src="@drawable/imageview_selector_listing_camera"
-        android:layout_marginTop="63dp"
-        android:layout_marginLeft="65dp"
-        android:layout_marginStart="65dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <ImageView
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:id="@+id/listing_sdcard"
-        android:src="@drawable/imageview_selector_listing_gallery"
-        android:layout_alignTop="@+id/listing_camera"
-        android:layout_toRightOf="@+id/listing_camera"
-        android:layout_toEndOf="@+id/listing_camera" />
 
     <EditText
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/et_listing"
-        android:hint="Listing"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:hint="Listing Name"
+        android:layout_marginTop="79dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/listing_upload"
+        android:layout_toStartOf="@+id/listing_upload" />
 
     <EditText
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/et_mobile"
         android:hint="Mobile"
-        android:layout_marginTop="44dp"
+        android:inputType="phone"
+        android:digits="0123456789+"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/et_listing"
         android:layout_alignLeft="@+id/et_listing"
         android:layout_alignStart="@+id/et_listing" />
 
-    <ImageView
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:id="@+id/listing_upload"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/et_mobile"
-        android:layout_toEndOf="@+id/et_mobile"
-        android:src="@drawable/imageview_selector_listing_upload"/>
-
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/listing_image"
-        android:layout_alignBottom="@+id/et_listing"
-        android:layout_toLeftOf="@+id/et_listing"
-        android:layout_toStartOf="@+id/et_listing"
-        android:layout_below="@+id/listing_image" />
 
     <Spinner
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/listing_category"
         android:layout_below="@+id/et_mobile"
-        android:layout_toLeftOf="@+id/listing_upload"
         android:layout_alignLeft="@+id/et_mobile"
         android:layout_alignStart="@+id/et_mobile"
-        android:spinnerMode="dialog" />
+        android:layout_marginTop="20dp"
+        android:layout_alignRight="@+id/et_mobile"
+        android:layout_alignEnd="@+id/et_mobile" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_height="50dp"
-        android:layout_width="50dp"
+    <ImageView
+        android:layout_width="92dp"
+        android:layout_height="92dp"
+        android:src="@drawable/imageview_selector_listing_upload"
+        android:id="@+id/listing_upload"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/listing_image"
-        android:layout_alignStart="@+id/listing_image"
-        android:id="@+id/listing_uploadLayout"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/listing_image"
+        android:src="@drawable/imageview_selector_listing_camera"
+        android:layout_below="@+id/listing_category"
+        android:layout_alignRight="@+id/listing_category"
+        android:layout_alignEnd="@+id/listing_category"
+        android:layout_alignLeft="@+id/listing_category"
+        android:layout_alignStart="@+id/listing_category"
+         />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/upload_progress"
         android:visibility="gone"
-        android:layout_alignRight="@+id/listing_camera"
-        android:layout_alignEnd="@+id/listing_camera">
-        <ProgressBar
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/listing_uploadProgress"
-            android:layout_weight="3"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Uploading.."
-            android:id="@+id/textView"
-            android:layout_weight="1"
-            android:gravity="center"/>
-
-
-    </LinearLayout>
+        android:layout_alignTop="@+id/listing_upload"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
