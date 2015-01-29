@@ -94,7 +94,7 @@ public class ListingsSearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                
+
             }
 
             @Override
@@ -179,11 +179,11 @@ public class ListingsSearchFragment extends Fragment {
                                 @Override
                                 public void done(ParseException e) {
                                     ParseObject.pinAllInBackground("listings", parseObjects);
-                                    doneFetching(parseObjects);
+                                    doneFetching(parseObjects,cache);
                                 }
                             });
                         } else
-                            doneFetching(parseObjects);
+                            doneFetching(parseObjects,cache);
                     } else {
                         if (onRefresh) {
                             onRefresh = false;
@@ -211,14 +211,14 @@ public class ListingsSearchFragment extends Fragment {
                 mainQuery.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));*/
             mainQuery.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> results, ParseException e) {
-                    doneFetching(results);
+                    doneFetching(results,cache);
                 }
             });
         }
     }
 
-    private void doneFetching(List<ParseObject> parseObjects){
-        mAdapter = new ListingAdapter(parseObjects);
+    private void doneFetching(List<ParseObject> parseObjects,boolean cache){
+        mAdapter = new ListingAdapter(parseObjects,cache);
         mAdapter.notifyDataSetChanged();
         if(onRefresh){
             onRefresh=false;
@@ -231,8 +231,10 @@ public class ListingsSearchFragment extends Fragment {
 
     public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ViewHolder>{
         private List<ParseObject> mDataset;
-        public ListingAdapter(List<ParseObject> dataSet) {
+        private boolean mCache;
+        public ListingAdapter(List<ParseObject> dataSet,boolean cache) {
             mDataset = dataSet;
+            mCache = cache;
         }
 
         @Override
@@ -248,7 +250,8 @@ public class ListingsSearchFragment extends Fragment {
             viewHolder.owner_name.setText(mDataset.get(i).getString("ownerName"));
             viewHolder.mobile.setText(mDataset.get(i).getString("mobile"));
             viewHolder.listing_desc.setText(mDataset.get(i).getString("listingDesc"));
-            viewHolder.listing_image.setPlaceholder(getResources().getDrawable(R.drawable.listing_placeholder));
+            if(!mCache)
+                viewHolder.listing_image.setPlaceholder(getResources().getDrawable(R.drawable.listing_placeholder));
             viewHolder.listing_image.setParseFile(mDataset.get(i).getParseFile("image"));
             viewHolder.listing_image.loadInBackground(new GetDataCallback() {
                 @Override
