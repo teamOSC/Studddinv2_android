@@ -16,11 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5"
-        android:background="@color/google_red"
+        android:background="@color/colorPrimary"
         android:text="Details"
         android:layout_gravity="center"
         android:gravity="center_vertical|center_horizontal"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="20sp"
         />
