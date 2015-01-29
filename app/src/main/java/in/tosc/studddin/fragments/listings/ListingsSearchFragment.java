@@ -159,10 +159,10 @@ public class ListingsSearchFragment extends Fragment {
         if(cache)
             query.fromLocalDatastore();
         query.whereContainedIn("category",categories);
-        /*if(filterPrefs.getString("sortby","nearest").compareTo("nearest")==0)
-            query.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));
-        else
-            query.orderByDescending("createdAt");*/
+        if(filterPrefs.getString("sortby","nearest").compareTo("recent")==0)
+            query.orderByDescending("createdAt");
+        /*else
+            query.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));*/
 
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -224,6 +224,7 @@ public class ListingsSearchFragment extends Fragment {
             viewHolder.listing_name.setText(mDataset.get(i).getString("listingName"));
             viewHolder.owner_name.setText(mDataset.get(i).getString("ownerName"));
             viewHolder.mobile.setText(mDataset.get(i).getString("mobile"));
+            viewHolder.listing_image.setPlaceholder(getResources().getDrawable(R.drawable.listing_placeholder));
             viewHolder.listing_image.setParseFile(mDataset.get(i).getParseFile("image"));
             viewHolder.listing_image.loadInBackground(new GetDataCallback() {
                 @Override
