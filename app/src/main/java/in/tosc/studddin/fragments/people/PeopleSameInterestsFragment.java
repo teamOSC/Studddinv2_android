@@ -103,7 +103,6 @@ public class PeopleSameInterestsFragment extends Fragment {
                 newFragment.setArguments(in);
 
                 transaction.replace(R.id.people_pager, newFragment).commit();
-
             }
         });
 

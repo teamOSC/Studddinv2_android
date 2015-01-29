@@ -113,8 +113,6 @@ public class PeopleNearmeFragment extends Fragment {
                 transaction.replace(R.id.container,newFragment).addToBackStack("PeopleNearMe").commit();
 
 //                transaction.replace(R.id.people_pager,newFragment).commit();
-
-
             }
         });
 
