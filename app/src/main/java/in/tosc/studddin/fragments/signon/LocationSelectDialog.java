@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.widget.RelativeLayout;
 
 
 import com.google.android.gms.common.ConnectionResult;
@@ -51,7 +52,9 @@ public class LocationSelectDialog extends DialogFragment implements OnMapReadyCa
                 .addApi(LocationServices.API)
                 .build();
 
-        builder.setView(inflater.inflate(R.layout.fragment_map, null))
+        RelativeLayout rootView = (RelativeLayout) inflater.inflate(R.layout.fragment_map, null);
+
+        builder.setView(rootView)
                 .setPositiveButton(R.string.set_location, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -59,10 +62,14 @@ public class LocationSelectDialog extends DialogFragment implements OnMapReadyCa
                     }
                 });
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
         return builder.create();
+    }
+
+    public void renderMap() {
+        SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager()
+                .findFragmentById(R.id.map_dialog);
+        mapFragment.getMapAsync(this);
     }
 
     @Override

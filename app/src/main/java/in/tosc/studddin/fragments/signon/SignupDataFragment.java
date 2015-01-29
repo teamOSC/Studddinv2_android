@@ -75,7 +75,8 @@ public class SignupDataFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 LocationSelectDialog dialog = new LocationSelectDialog();
-                dialog.show(getFragmentManager(), "LocationSelectDialog");
+                dialog.show(getChildFragmentManager(), "LocationSelectDialog");
+//                dialog.renderMap();
             }
         });
 
