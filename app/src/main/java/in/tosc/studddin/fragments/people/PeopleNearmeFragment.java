@@ -1,8 +1,10 @@
 package in.tosc.studddin.fragments.people;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
@@ -16,12 +18,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,11 +45,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import in.tosc.studddin.R;
-import in.tosc.studddin.fragments.signon.SignupDataFragment;
 
 public class PeopleNearmeFragment extends Fragment {
 
     ProgressBar progressBar ;
+    Dialog dialogPeople;
 
     String currentuseremail = "";
     String currentuserinterests= "";
@@ -88,7 +93,6 @@ public class PeopleNearmeFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
                 /*
 
                 FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
@@ -111,8 +115,6 @@ public class PeopleNearmeFragment extends Fragment {
                 transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
 
                 transaction.replace(R.id.container,newFragment).addToBackStack("PeopleNearMe").commit();
-
-//                transaction.replace(R.id.people_pager,newFragment).commit();
             }
         });
 
@@ -176,7 +178,8 @@ public class PeopleNearmeFragment extends Fragment {
                                                     data.length));
 
                                 } else {
-                                    Log.e("test",
+
+                                    Log.d("test",
                                             "There was a problem downloading the data.");
                                 }
                             }

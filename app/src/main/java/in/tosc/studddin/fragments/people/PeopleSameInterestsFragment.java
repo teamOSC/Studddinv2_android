@@ -1,8 +1,13 @@
 package in.tosc.studddin.fragments.people;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,15 +16,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -38,12 +47,10 @@ import in.tosc.studddin.R;
 
 public class PeopleSameInterestsFragment extends Fragment {
 
-    List<ParseObject> peopleob;
+    Dialog dialogPeople;
     ProgressBar progressBar;
 
     HashMap<String, Boolean> existingelement = new HashMap<String, Boolean>();
-
-    private static final String TAG = "PeopleSameInterestsFragment";
 
     String currentuseremail = "";
     String currentuserinterests = "";
@@ -86,23 +93,7 @@ public class PeopleSameInterestsFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
-
-                ViewPerson newFragment = new ViewPerson();
-
-                final Bundle in = new Bundle();
-                in.putString("name", list3.get(i).cname);
-                in.putString("institute", list3.get(i).cinstituition);
-                in.putString("qualifications", list3.get(i).cqualification);
-                in.putString("interests", list3.get(i).cinterests);
-                in.putString("distance", list3.get(i).cdistance);
-
-                newFragment.setArguments(in);
-
-                transaction.replace(R.id.people_pager, newFragment).commit();
+                //TODO: Show user profile
             }
         });
 
@@ -149,8 +140,6 @@ public class PeopleSameInterestsFragment extends Fragment {
             holder.textdistance.setText(row.cdistance);
             holder.textqualification.setText(row.cqualification);
 
-//            Toast.makeText(getActivity(), row.cusername, Toast.LENGTH_SHORT).show();
-
             if(row.fileObject!=null)
             {
                 row.fileObject
@@ -168,12 +157,16 @@ public class PeopleSameInterestsFragment extends Fragment {
                                                     data.length));
 
                                 } else {
-                                    Log.e("test",
+
+                                    Log.d("test",
                                             "There was a problem downloading the data.");
                                 }
                             }
                         });
-            } else {
+            }
+
+            else
+            {
                 holder.userimg.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_person));
             }
 
@@ -227,14 +220,12 @@ public class PeopleSameInterestsFragment extends Fragment {
         currentusername = ParseUser.getCurrentUser().getString("NAME");
         currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
 
-        if (currentuserinterests == null) {
-            currentuserinterests = "";
-        }
         List<String> interestslist = Arrays.asList(currentuserinterests.split(", "));
 
 
         for (int c = 0; c < interestslist.size(); c++) {
             if (!interestslist.get(c).equals("") || !interestslist.get(c).equals(null)) {
+
 
                 ParseQuery<ParseUser> query = ParseUser.getQuery();
                 query.whereContains("INTERESTS", interestslist.get(c));
@@ -277,7 +268,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                             // The query was successful.
                         } else {
-                            Log.e(TAG, "Query broke");
+                            // Something went wrong.
                         }
 
                         lv.setAdapter(q);
