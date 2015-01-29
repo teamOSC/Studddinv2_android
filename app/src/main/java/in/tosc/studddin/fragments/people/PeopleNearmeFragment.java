@@ -40,6 +40,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.fragments.signon.SignupDataFragment;
 
 public class PeopleNearmeFragment extends Fragment {
 
@@ -88,9 +89,11 @@ public class PeopleNearmeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                /*
+
                 FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
+                transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit); */
 
                 ViewPerson newFragment = new ViewPerson();
 
@@ -103,7 +106,13 @@ public class PeopleNearmeFragment extends Fragment {
 
                 newFragment.setArguments(in);
 
-                transaction.replace(R.id.people_pager,newFragment).commit();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
+
+                transaction.replace(R.id.container,newFragment).addToBackStack("PeopleNearMe").commit();
+
+//                transaction.replace(R.id.people_pager,newFragment).commit();
 
 
             }

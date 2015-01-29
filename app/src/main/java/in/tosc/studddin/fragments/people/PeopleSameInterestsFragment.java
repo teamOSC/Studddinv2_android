@@ -43,6 +43,8 @@ public class PeopleSameInterestsFragment extends Fragment {
 
     HashMap<String, Boolean> existingelement = new HashMap<String, Boolean>();
 
+    private static final String TAG = "PeopleSameInterestsFragment";
+
     String currentuseremail = "";
     String currentuserinterests = "";
     String currentuserinstituition = "";
@@ -172,10 +174,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                                 }
                             }
                         });
-            }
-
-            else
-            {
+            } else {
                 holder.userimg.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_person));
             }
 
@@ -279,7 +278,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                             // The query was successful.
                         } else {
-                            // Something went wrong.
+                            Log.e(TAG, "Query broke");
                         }
 
                         lv.setAdapter(q);
