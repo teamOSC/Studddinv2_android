@@ -30,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_marginTop="15dp"
         android:orientation="horizontal">
 
         <TextView
@@ -38,8 +39,11 @@
             android:text="Name : "
             android:paddingLeft="10dp"
             android:textSize="20sp"
+            android:textColor="@color/colorPrimaryDark"
+
             android:layout_gravity="center"
-            android:gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:paddingTop="5dp"
             android:textStyle="bold"
             />
 
@@ -49,8 +53,9 @@
             android:layout_height="match_parent"
             android:textSize="20sp"
             android:layout_gravity="center"
-            android:gravity="center_vertical"
-            />
+
+            android:gravity="center_horizontal"
+            android:paddingTop="5dp"            />
 
     </LinearLayout>
     <LinearLayout
@@ -63,9 +68,13 @@
             android:layout_height="match_parent"
             android:text="Institute : "
             android:paddingLeft="10dp"
+            android:textColor="@color/colorPrimaryDark"
+
             android:textSize="20sp"
             android:layout_gravity="center"
-            android:gravity="center_vertical"
+
+            android:gravity="center_horizontal"
+            android:paddingTop="5dp"
             android:textStyle="bold"
             />
         <TextView
@@ -74,8 +83,9 @@
             android:layout_height="match_parent"
             android:textSize="20sp"
             android:layout_gravity="center"
-            android:gravity="center_vertical"
-            />
+
+            android:gravity="center_horizontal"
+            android:paddingTop="5dp"            />
 
     </LinearLayout>
     <LinearLayout
@@ -91,7 +101,10 @@
             android:paddingLeft="10dp"
             android:textSize="20sp"
             android:layout_gravity="center"
-            android:gravity="center_vertical"
+            android:textColor="@color/colorPrimaryDark"
+
+            android:gravity="center_horizontal"
+            android:paddingTop="5dp"
             android:textStyle="bold"
             />
         <TextView
@@ -100,8 +113,9 @@
             android:layout_height="match_parent"
             android:textSize="20sp"
             android:layout_gravity="center"
-            android:gravity="center_vertical"
-            />
+
+            android:gravity="center_horizontal"
+            android:paddingTop="5dp"            />
 
     </LinearLayout>
     <LinearLayout
@@ -117,7 +131,10 @@
             android:paddingLeft="10dp"
             android:textSize="20sp"
             android:layout_gravity="center"
-            android:gravity="center_vertical"
+            android:textColor="@color/colorPrimaryDark"
+
+            android:gravity="center_horizontal"
+            android:paddingTop="5dp"
             android:textStyle="bold"
             />
         <TextView
@@ -126,8 +143,9 @@
             android:layout_height="match_parent"
             android:textSize="20sp"
             android:layout_gravity="center"
-            android:gravity="center_vertical"
-            />
+
+            android:gravity="center_horizontal"
+            android:paddingTop="5dp"            />
 
     </LinearLayout>
     <LinearLayout
@@ -142,7 +160,10 @@
             android:paddingLeft="10dp"
             android:textSize="20sp"
             android:layout_gravity="center"
-            android:gravity="center_vertical"
+            android:textColor="@color/colorPrimaryDark"
+
+            android:gravity="center_horizontal"
+            android:paddingTop="5dp"
             android:textStyle="bold"
             />
         <TextView
@@ -151,8 +172,9 @@
             android:layout_height="match_parent"
             android:textSize="20sp"
             android:layout_gravity="center"
-            android:gravity="center_vertical"
-            />
+
+            android:gravity="center_horizontal"
+            android:paddingTop="5dp"            />
 
     </LinearLayout>
 
