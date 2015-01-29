@@ -1,5 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/notes_upload_container"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -32,32 +33,41 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp" />
 
-        <EditText
+        <in.tosc.studddin.customview.MaterialEditText
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:id="@+id/notes_topic"
             android:hint="@string/notes_topic_name"
             android:layout_marginTop="40dp"
             android:layout_below="@+id/notes_attach"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            app:baseColor="@color/search_color"
+            app:primaryColor="@color/colorPrimaryDark"/>
 
-        <EditText
+        <in.tosc.studddin.customview.MaterialEditText
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:id="@+id/notes_subject"
             android:hint="@string/notes_subject_name"
             android:layout_marginTop="20dp"
             android:layout_below="@+id/notes_topic"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            app:baseColor="@color/search_color"
+            app:primaryColor="@color/colorPrimaryDark"/>
 
-        <EditText
+        <in.tosc.studddin.customview.MaterialEditText
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:id="@+id/notes_branch"
             android:layout_marginTop="20dp"
             android:hint = "@string/notes_branch_name"
             android:layout_below="@+id/notes_subject"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            app:baseColor="@color/search_color"
+            app:primaryColor="@color/colorPrimaryDark"/>
 
         
 

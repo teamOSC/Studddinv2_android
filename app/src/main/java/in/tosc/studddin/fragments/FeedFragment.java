@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.koushikdutta.ion.Ion;
 import com.parse.FindCallback;
@@ -32,8 +31,6 @@ import java.util.List;
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.externalapi.UserDataFields;
-import in.tosc.studddin.utils.HttpExecute;
-import in.tosc.studddin.utils.HttpExecutor;
 
 /**
  * News Feed fragment subclass

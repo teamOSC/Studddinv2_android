@@ -8,8 +8,9 @@
     <color name="app_background">#00BCD4</color>
     
     <!-- App Main colors -->
-    <color name="colorPrimary">#F44336</color>
-    <color name="colorPrimaryDark">#C62828</color><!-- #CF5C36 -->
+    <color name="colorPrimary">#D86C70</color>
+    <color name="colorPrimaryDark">#A3333D</color><!-- #CF5C36 -->
+    <color name="colorPrimaryPressed">#aaD86C70</color>
 
     <color name="pink">#e91e63</color>
     <color name="pink_pressed">#ec407a</color>
@@ -38,7 +39,7 @@
     <color name="light_black_">#33000000</color>
     <color name="light_white_">#33FFFFFF</color>
     <color name="dialog_bg">#f0f0f0</color>
-
+    <color name="grey">#757575</color>
     <drawable name="light_black_">#33000000</drawable>
     
 </resources>

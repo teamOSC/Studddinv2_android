@@ -1,5 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="in.tosc.studddin.fragments.events.EventsCreateFragment"
     android:orientation="vertical">
@@ -11,40 +13,48 @@
         android:layout_weight="1">
         
         
-    <EditText
+    <in.tosc.studddin.customview.MaterialEditText
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_weight="1"
         android:layout_margin="10dp"
         android:hint="@string/event_name"
         android:id="@+id/event_name"
-        />
+        android:textCursorDrawable="@drawable/text_cursor_cyan"
+        app:baseColor="@color/search_color"
+        app:primaryColor="@color/colorPrimaryDark"/>
 
-    <EditText
+    <in.tosc.studddin.customview.MaterialEditText
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_weight="1"
         android:layout_margin="10dp"
         android:hint="@string/event_description"
         android:id="@+id/event_description"
-        />
-    <EditText
+        android:textCursorDrawable="@drawable/text_cursor_cyan"
+        app:baseColor="@color/search_color"
+        app:primaryColor="@color/colorPrimaryDark"/>
+    <in.tosc.studddin.customview.MaterialEditText
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_weight="1"
         android:layout_margin="10dp"
         android:hint="Date"
         android:id="@+id/event_date"
-        />
+        android:textCursorDrawable="@drawable/text_cursor_cyan"
+        app:baseColor="@color/search_color"
+        app:primaryColor="@color/colorPrimaryDark"/>
 
-    <EditText
+    <in.tosc.studddin.customview.MaterialEditText
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_weight="1"
         android:layout_margin="10dp"
         android:hint="Type"
         android:id="@+id/event_type"
-        />
+        android:textCursorDrawable="@drawable/text_cursor_cyan"
+        app:baseColor="@color/search_color"
+        app:primaryColor="@color/colorPrimaryDark"/>
         </LinearLayout>
 
     <Button
@@ -55,6 +65,7 @@
     android:text="@string/submit"
     android:textColor="@android:color/white"
     android:id="@+id/submit_button"
+    android:layout_marginBottom="5dp"
     android:background="@drawable/bbuton_primary_rounded"/>
 
 

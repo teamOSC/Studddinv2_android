@@ -10,12 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.customview.MaterialEditText;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,9 +38,9 @@ public class EventsCreateFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_events_create, container, false);
         create = (Button)v.findViewById(R.id.submit_button);
-        title = (EditText)v.findViewById(R.id.event_name);
-        description = (EditText)v.findViewById(R.id.event_description);
-        type = (EditText)v.findViewById(R.id.event_type);
+        title = (MaterialEditText)v.findViewById(R.id.event_name);
+        description = (MaterialEditText)v.findViewById(R.id.event_description);
+        type = (MaterialEditText)v.findViewById(R.id.event_type);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -173,9 +173,7 @@ public class PeopleNearmeFragment extends Fragment {
                                                     data.length));
 
                                 } else {
-
-                                    Log.d("test",
-                                            "There was a problem downloading the data.");
+                                    Log.d("test","There was a problem downloading the data.");
                                 }
                             }
                         });
