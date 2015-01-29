@@ -94,7 +94,7 @@ public class ListingsSearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                //TODO
+                fetchListings(true,charSequence.toString());
             }
 
             @Override
@@ -109,7 +109,7 @@ public class ListingsSearchFragment extends Fragment {
             public void onRefresh() {
                 if(Utilities.isNetworkAvailable(getActivity())){
                     onRefresh = true;
-                    fetchListings(false);
+                    fetchListings(false,null);
                 }
                 else{
                     swipeRefreshLayout.setRefreshing(false);
@@ -119,9 +119,9 @@ public class ListingsSearchFragment extends Fragment {
         });
 
         if(Utilities.isNetworkAvailable(getActivity()))
-            fetchListings(false);
+            fetchListings(false,null);
         else
-            fetchListings(true);
+            fetchListings(true,null);
 
         return rootView;
     }
@@ -152,7 +152,7 @@ public class ListingsSearchFragment extends Fragment {
         }
     }
 
-    private void fetchListings(final boolean cache){
+    private void fetchListings(final boolean cache,String text){
         final ArrayList<String> categories = new ArrayList<>();
         if(filterPrefs.getBoolean("books",true))
             categories.add("Book");
@@ -169,6 +169,8 @@ public class ListingsSearchFragment extends Fragment {
             query.orderByDescending("createdAt");
         /*else
             query.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));*/
+        if(text!=null)
+            query.whereContains("listingName",text);
 
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -312,7 +314,7 @@ public class ListingsSearchFragment extends Fragment {
                         editor.putBoolean("misc",false);
 
                     editor.commit();
-                    fetchListings(true);
+                    fetchListings(true,null);
                 }
             });
             return filterDialog.create();
