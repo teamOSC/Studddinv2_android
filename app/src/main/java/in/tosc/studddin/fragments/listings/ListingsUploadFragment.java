@@ -100,7 +100,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
 
                 Intent[] intentArray =  {cameraIntent};
                 chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
-                getActivity().startActivityForResult(chooser,0);
+                startActivityForResult(chooser,0);
                 break;
 
             case R.id.listing_upload:
