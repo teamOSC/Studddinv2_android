@@ -25,6 +25,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.utils.FloatingActionButton;
 
 /**
@@ -77,9 +78,9 @@ public class NotesUploadFragment extends Fragment {
 
         attachButton = (Button) rootView.findViewById(R.id.notes_attach);
         uploadButton = (FloatingActionButton) rootView.findViewById(R.id.notes_upload);
-        topicNameEdTxt = (EditText) rootView.findViewById(R.id.notes_topic);
-        branchNameEdTxt = (EditText) rootView.findViewById(R.id.notes_branch);
-        subjectNameEdTxt = (EditText) rootView.findViewById(R.id.notes_subject);
+        topicNameEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_topic);
+        branchNameEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_branch);
+        subjectNameEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_subject);
 
         attachButton.setOnClickListener(new View.OnClickListener() {
             @Override

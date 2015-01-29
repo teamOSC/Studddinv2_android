@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.utils.FloatingActionButton;
 import in.tosc.studddin.utils.FloatingActionsMenu;
 
@@ -64,8 +65,8 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         //camera = (ImageView) rootView.findViewById(R.id.listing_camera);
         //upload = (ImageView) rootView.findViewById(R.id.listing_upload);
         //sdCard = (ImageView) rootView.findViewById(R.id.listing_sdcard);
-        listing = (EditText) rootView.findViewById(R.id.et_listing);
-        mobile = (EditText) rootView.findViewById(R.id.et_mobile);
+        listing = (MaterialEditText) rootView.findViewById(R.id.et_listing);
+        mobile = (MaterialEditText) rootView.findViewById(R.id.et_mobile);
         listing_image = (ImageView) rootView.findViewById(R.id.listing_image);
         category = (Spinner) rootView.findViewById(R.id.listing_category);
         uploading = (LinearLayout) rootView.findViewById(R.id.listing_uploadLayout);

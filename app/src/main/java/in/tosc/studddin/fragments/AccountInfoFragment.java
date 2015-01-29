@@ -5,8 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -17,47 +15,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
-import com.facebook.widget.ProfilePictureView;
-import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.entity.BufferedHttpEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.customview.MaterialEditText;
 
 
 public class AccountInfoFragment extends Fragment {
@@ -144,20 +125,20 @@ public class AccountInfoFragment extends Fragment {
         tFullName = (TextView) rootView.findViewById(R.id.account_info_fullname);
         tEmail = (TextView)rootView.findViewById(R.id.account_info_email);
 
-        ePassword = (EditText) rootView.findViewById(R.id.account_info_password);
+        ePassword = (MaterialEditText) rootView.findViewById(R.id.account_info_password);
         editPassword = (ImageButton) rootView.findViewById(R.id.edit_password_button);
 
-        eInstitute = (EditText) rootView.findViewById(R.id.account_info_institute);
+        eInstitute = (MaterialEditText) rootView.findViewById(R.id.account_info_institute);
         editInstitute = (ImageButton) rootView.findViewById(R.id.edit_institute_button);
 
 
-        eQualificaton = (EditText) rootView.findViewById(R.id.account_info_qualification);
+        eQualificaton = (MaterialEditText) rootView.findViewById(R.id.account_info_qualification);
         editQualification = (ImageButton) rootView.findViewById(R.id.edit_qualification_button);
 
         newpassFormContainer = rootView.findViewById(R.id.new_password_form_container);
 
-        eNewPassword = (EditText) rootView.findViewById(R.id.account_info_new_password);
-        eConfirmPassword = (EditText) rootView.findViewById(R.id.account_info_confirm_password);
+        eNewPassword = (MaterialEditText) rootView.findViewById(R.id.account_info_new_password);
+        eConfirmPassword = (MaterialEditText) rootView.findViewById(R.id.account_info_confirm_password);
 
 
         passwordContainer = (LinearLayout)rootView.findViewById(R.id.account_info_container_password);
