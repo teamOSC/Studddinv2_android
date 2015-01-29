@@ -13,6 +13,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.luminous.pick.Action;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.utils.FloatingActionButton;
@@ -23,37 +33,41 @@ import in.tosc.studddin.utils.FloatingActionButton;
 public class NotesUploadFragment extends Fragment {
 
 
-    Button attachButton;
-    FloatingActionButton uploadButton;
-    EditText topicNameEdTxt, branchNameEdTxt, subjectNameEdTxt;
-    String topicNameString = "", branchNameString = "", subjectNameString = "";
+    private Button attachButton;
+    private FloatingActionButton uploadButton;
+    private EditText topicNameEdTxt, branchNameEdTxt, subjectNameEdTxt;
+    private String topicNameString = "", branchNameString = "", subjectNameString = "";
 
+    static byte[] byteArray;
 
-    static String[] imagePaths;
+    static String[] imagePaths = new String[0];
 
     String zipFileName = "/mnt/sdcard/noteszipfile.zip";
-
 
     public void setImagePaths(String[] paths, Boolean isSelected) {
         if (isSelected)
             Toast.makeText(getActivity(), getString(R.string.notes_files_selected), Toast.LENGTH_SHORT)
                     .show();
+
         else
             Toast.makeText(getActivity(), getString(R.string.notes_files_not_selected), Toast.LENGTH_SHORT)
                     .show();
 
         imagePaths = paths;
+
     }
 
-
     public NotesUploadFragment() {
+
         // Required empty public constructor
+
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         String[] paths = data.getStringArrayExtra("all_path");
         Log.d("Raghav", "Req = " + requestCode + "res = " + resultCode + "NotesUploadFragment");
+
     }
 
     @Override
@@ -90,7 +104,7 @@ public class NotesUploadFragment extends Fragment {
                 branchNameString = branchNameEdTxt.getText().toString();
                 subjectNameString = subjectNameEdTxt.getText().toString();
 
-                topicNameEdTxt.setText(imagePaths[0]);
+
 
                 if (topicNameString.length() < 1) {
                     Toast.makeText(getActivity(), getString(R.string.enter_topic_name),
@@ -107,14 +121,64 @@ public class NotesUploadFragment extends Fragment {
                         MakeZip makeZip = new MakeZip(imagePaths, zipFileName);
 
                         makeZip.zip();
+
+                        File file = new File("/mnt/sdcard/noteszipfile.zip");
+
+                        byte[] zipByte = new byte[(int) file.length()];
+                        try {
+                            Log.d("Raghav", "File Found");
+                            FileInputStream fileInputStream = new FileInputStream(file);
+                            fileInputStream.read(zipByte);
+
+                        } catch (FileNotFoundException e) {
+                            Log.d("Raghav", "File Not Found.");
+
+                        } catch (IOException e1) {
+                            Log.d("Raghav", "Error Reading The File.");
+
+                        }
+
+
+                        ParseFile parseFile = new ParseFile("notes.zip", zipByte);
+                        parseFile.saveInBackground();
+
+                        ParseObject uploadNotes = new ParseObject("Notes");
+
+                        uploadNotes.put("imageZip", parseFile);
+                        uploadNotes.put("userName", ParseUser.getCurrentUser().getString("NAME"));
+                        uploadNotes.put("subjectName", subjectNameString);
+                        uploadNotes.put("topicName", topicNameString);
+                        uploadNotes.put("branchName", branchNameString);
+                        uploadNotes.put("collegeName", "DTU");
+
+
+
+
+                        uploadNotes.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                // uploading.setVisibility(View.GONE);
+                                Log.d("Raghav", "File Uploaded");
+                                Toast.makeText(getActivity(), getString(R.string.upload_complete),
+                                        Toast.LENGTH_SHORT).show();
+
+
+                            }
+                        });
+                    } else {
+                        Toast.makeText(getActivity(), "Please select an Image to upload", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
+
+
+
         });
 
 
         return rootView;
-    }
 
+
+    }
 
 }
