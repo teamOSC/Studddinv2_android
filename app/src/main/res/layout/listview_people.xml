@@ -45,9 +45,11 @@
                 android:id="@+id/people_name"
                 android:layout_weight="1.5"
                 android:text="Name"
+                android:textColor="@color/colorPrimaryDark"
 
 
-                android:textSize="15sp"
+
+                android:textSize="17sp"
                 android:layout_marginTop="3dp"
                 />
 
@@ -56,6 +58,8 @@
                 android:layout_height="0dp"
                 android:id="@+id/people_institute"
                 android:layout_weight="1.25"
+                android:textColor="@color/colorPrimary"
+
                 android:textSize="14sp"
                 android:text="Institute"
 
@@ -66,6 +70,8 @@
                 android:layout_height="0dp"
                 android:id="@+id/people_qualification"
                 android:layout_weight="1.25"
+                android:textColor="@color/colorPrimary"
+
                 android:textSize="14sp"
                 android:text="Qualification"
 
@@ -77,6 +83,8 @@
                 android:id="@+id/people_interests"
                 android:layout_weight="1.25"
                 android:text="Interests"
+                android:textColor="@color/colorPrimary"
+
 
                 android:textSize="14sp"
                 />
@@ -111,7 +119,7 @@
                 android:layout_height="0dp"
                 android:gravity="center"
 
-                android:layout_weight="0.7"
+                android:layout_weight="0.6"
                 android:background="@android:drawable/ic_menu_compass"
                 android:layout_marginTop="8dp"
                 />
