@@ -10,13 +10,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="75dp">
+        android:layout_height="110dp">
 
 
         <com.parse.ParseImageView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:id="@+id/listing_image"
+            android:layout_margin="10dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -27,49 +28,71 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
             android:id="@+id/listing_name"
-            android:layout_alignParentTop="true"
+            android:layout_alignTop="@+id/listing_image"
             android:layout_toRightOf="@+id/listing_image"
-            android:layout_toEndOf="@+id/listing_image" />
+            android:layout_toLeftOf="@+id/relativeLayout"
+            android:layout_toStartOf="@+id/relativeLayout" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:layout_marginTop="2dp"
+            android:id="@+id/listing_desc"
+            android:layout_below="@+id/listing_name"
+            android:layout_toRightOf="@+id/listing_image"
+            android:layout_alignRight="@+id/listing_name"
+            android:layout_alignEnd="@+id/listing_name" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
             android:id="@+id/owner_name"
-            android:layout_below="@+id/listing_name"
+            android:layout_marginTop="2dp"
+            android:layout_below="@+id/listing_desc"
             android:layout_toRightOf="@+id/listing_image"
-            android:layout_toEndOf="@+id/listing_image" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/mobile"
-            android:layout_below="@+id/owner_name"
-            android:layout_toRightOf="@+id/listing_image"
-            android:layout_toEndOf="@+id/listing_image"
-            android:text="New Text" />
-
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@android:drawable/ic_menu_compass"
-            android:id="@+id/distance_image"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignBottom="@+id/mobile" />
+            android:layout_toLeftOf="@+id/relativeLayout"
+            android:layout_toStartOf="@+id/relativeLayout" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/listing_distance"
-            android:layout_alignParentBottom="true"
-            android:layout_alignLeft="@+id/distance_image"
-            android:layout_alignStart="@+id/distance_image"
+            android:layout_marginTop="2dp"
+            android:id="@+id/mobile"
+            android:layout_below="@+id/owner_name"
+            android:layout_alignLeft="@+id/owner_name"
+            android:layout_alignStart="@+id/owner_name"
+            android:layout_alignRight="@+id/owner_name"
+            android:layout_alignEnd="@+id/owner_name" />
+
+        <RelativeLayout
+            android:layout_width="80dp"
+            android:layout_height="fill_parent"
+            android:layout_alignTop="@+id/listing_name"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:gravity="center_horizontal" />
+            android:id="@+id/relativeLayout">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:src="@android:drawable/ic_menu_compass"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/listing_distance"
+                android:layout_below="@+id/imageView"
+                android:layout_centerHorizontal="true"
+                android:gravity="center" />
+        </RelativeLayout>
+
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

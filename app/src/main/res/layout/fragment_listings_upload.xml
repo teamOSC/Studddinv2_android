@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/et_listing"
         android:hint="Listing Name"
-        android:layout_marginTop="79dp"
+        android:layout_marginTop="20dp"
+        android:maxLength="30"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/listing_upload"
         android:layout_toStartOf="@+id/listing_upload" />
@@ -18,26 +19,37 @@
     <EditText
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:id="@+id/et_mobile"
-        android:hint="Mobile"
-        android:inputType="phone"
-        android:digits="0123456789+"
+        android:id="@+id/listing_desc"
+        android:hint="Listing Description"
+        android:inputType="textMultiLine"
+        android:maxLength="160"
+        android:maxLines="3"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/et_listing"
         android:layout_alignLeft="@+id/et_listing"
         android:layout_alignStart="@+id/et_listing" />
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_mobile"
+        android:hint="Mobile"
+        android:layout_marginTop="20dp"
+        android:inputType="phone"
+        android:digits="0123456789+"
+        android:layout_below="@+id/listing_desc"
+        android:layout_alignLeft="@+id/listing_desc"
+        android:layout_alignStart="@+id/listing_desc" />
 
 
     <Spinner
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/listing_category"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/et_mobile"
         android:layout_alignLeft="@+id/et_mobile"
-        android:layout_alignStart="@+id/et_mobile"
-        android:layout_marginTop="20dp"
-        android:layout_alignRight="@+id/et_mobile"
-        android:layout_alignEnd="@+id/et_mobile" />
+        android:layout_alignStart="@+id/et_mobile" />
 
     <ImageView
         android:layout_width="92dp"
@@ -48,24 +60,34 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:id="@+id/listing_image"
-        android:src="@drawable/imageview_selector_listing_camera"
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_below="@+id/listing_category"
-        android:layout_alignRight="@+id/listing_category"
-        android:layout_alignEnd="@+id/listing_category"
         android:layout_alignLeft="@+id/listing_category"
         android:layout_alignStart="@+id/listing_category"
-         />
+        android:layout_alignRight="@+id/listing_category"
+        android:layout_alignEnd="@+id/listing_category"
+        android:layout_above="@+id/listing_upload"
+        android:layout_marginTop="20dp"
+        android:id="@+id/frameLayout">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/listing_image"
+            android:src="@drawable/imageview_selector_listing_camera"
+            android:layout_gravity="center" />
+    </FrameLayout>
 
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/upload_progress"
         android:visibility="gone"
-        android:layout_alignTop="@+id/listing_upload"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_below="@+id/listing_category"
         android:layout_centerHorizontal="true" />
 
 

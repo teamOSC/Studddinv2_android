@@ -227,6 +227,7 @@ public class ListingsSearchFragment extends Fragment {
             viewHolder.listing_name.setText(mDataset.get(i).getString("listingName"));
             viewHolder.owner_name.setText(mDataset.get(i).getString("ownerName"));
             viewHolder.mobile.setText(mDataset.get(i).getString("mobile"));
+            viewHolder.listing_desc.setText(mDataset.get(i).getString("listingDesc"));
             viewHolder.listing_image.setPlaceholder(getResources().getDrawable(R.drawable.listing_placeholder));
             viewHolder.listing_image.setParseFile(mDataset.get(i).getParseFile("image"));
             viewHolder.listing_image.loadInBackground(new GetDataCallback() {
@@ -245,6 +246,7 @@ public class ListingsSearchFragment extends Fragment {
             TextView listing_name;
             TextView owner_name;
             TextView mobile;
+            TextView listing_desc;
             ParseImageView listing_image;
             TextView listing_distance;
 
@@ -255,6 +257,7 @@ public class ListingsSearchFragment extends Fragment {
                 this.mobile = (TextView) v.findViewById(R.id.mobile);
                 this.listing_distance = (TextView) v.findViewById(R.id.listing_distance);
                 this.listing_image = (ParseImageView) v.findViewById(R.id.listing_image);
+                this.listing_desc = (TextView) v.findViewById(R.id.listing_desc);
             }
         }
     }

@@ -42,6 +42,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
     private EditText mobile;
     private Spinner category;
     private ProgressBar uploading;
+    private EditText listing_desc;
 
     public static ImageView listing_image;
     public static byte[] byteArray;
@@ -58,6 +59,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         upload = (ImageView) rootView.findViewById(R.id.listing_upload);
         listing = (EditText) rootView.findViewById(R.id.et_listing);
         mobile = (EditText) rootView.findViewById(R.id.et_mobile);
+        listing_desc = (EditText) rootView.findViewById(R.id.listing_desc);
         listing_image = (ImageView) rootView.findViewById(R.id.listing_image);
         category = (Spinner) rootView.findViewById(R.id.listing_category);
         uploading = (ProgressBar) rootView.findViewById(R.id.upload_progress);
@@ -100,7 +102,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
 
                 Intent[] intentArray =  {cameraIntent};
                 chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
-                startActivityForResult(chooser,0);
+                startActivityForResult(chooser, 0);
                 break;
 
             case R.id.listing_upload:
@@ -114,6 +116,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                 upload.put("image", file);
                 upload.put("ownerName", ParseUser.getCurrentUser().getString("NAME"));
                 upload.put("listingName", listing.getText().toString());
+                upload.put("listingDesc", listing_desc.getText().toString());
                 upload.put("mobile", mobile.getText().toString());
                 upload.put("location", point);
                 upload.put("category",category.getSelectedItem().toString());
