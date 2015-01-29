@@ -17,7 +17,10 @@
             android:layout_width="100dp"
             android:layout_height="110dp"
             android:id="@+id/listing_image"
-            android:layout_margin="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -28,7 +31,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
             android:id="@+id/listing_name"
-            android:layout_alignTop="@+id/listing_image"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="2dp"
             android:layout_toRightOf="@+id/listing_image"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
@@ -62,7 +66,8 @@
             android:layout_below="@+id/owner_name"
             android:layout_toRightOf="@+id/listing_image"
             android:layout_toLeftOf="@+id/relativeLayout"
-            android:layout_toStartOf="@+id/relativeLayout" />
+            android:layout_toStartOf="@+id/relativeLayout"
+            android:autoLink="phone" />
 
         <RelativeLayout
             android:layout_width="60dp"

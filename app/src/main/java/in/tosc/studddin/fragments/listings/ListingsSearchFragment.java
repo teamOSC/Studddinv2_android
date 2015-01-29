@@ -99,7 +99,7 @@ public class ListingsSearchFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                fetchListings(true,editable.toString());
+                fetchListings(true, editable.toString());
             }
         });
 
@@ -160,7 +160,7 @@ public class ListingsSearchFragment extends Fragment {
             categories.add("Apparatus");
         if(filterPrefs.getBoolean("misc",true))
             categories.add("Misc.");
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+        ParseQuery<ParseObject> query = new ParseQuery<>(
                 "Listings");
         if(cache)
             query.fromLocalDatastore();
@@ -195,13 +195,13 @@ public class ListingsSearchFragment extends Fragment {
             });
         }
         if(text!=null){
-            query.whereContains("listingName",text);
-            ParseQuery<ParseObject> descQuery = new ParseQuery<ParseObject>(
+            query.whereMatches("listingName", "("+text+")", "i");
+            ParseQuery<ParseObject> descQuery = new ParseQuery<>(
                     "Listings");
             descQuery.fromLocalDatastore();
             descQuery.whereContainedIn("category",categories);
-            descQuery.whereContains("listingDesc",text);
-            List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
+            descQuery.whereMatches("listingDesc", "(" + text + ")", "i");
+            List<ParseQuery<ParseObject>> queries = new ArrayList<>();
             queries.add(query);
             queries.add(descQuery);
             ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
@@ -245,7 +245,7 @@ public class ListingsSearchFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int i) {
+        public void onBindViewHolder(final ViewHolder viewHolder, int i) {
             viewHolder.listing_name.setText(mDataset.get(i).getString("listingName"));
             viewHolder.owner_name.setText(mDataset.get(i).getString("ownerName"));
             viewHolder.mobile.setText(mDataset.get(i).getString("mobile"));
@@ -257,7 +257,8 @@ public class ListingsSearchFragment extends Fragment {
                 @Override
                 public void done(byte[] bytes, ParseException e) {}
             });
-            viewHolder.listing_distance.setText((int) (mDataset.get(i).getParseGeoPoint("location")).distanceInKilometersTo(new ParseGeoPoint(28.7500749,77.11766519999992)) + "km");
+            viewHolder.listing_distance.setText((int) (mDataset.get(i).getParseGeoPoint("location")).distanceInKilometersTo(new ParseGeoPoint(28.7500749,77.11766519999992)) + " km");
+
         }
 
         @Override
@@ -272,9 +273,11 @@ public class ListingsSearchFragment extends Fragment {
             TextView listing_desc;
             ParseImageView listing_image;
             TextView listing_distance;
+            View view;
 
             public ViewHolder(CardView v) {
                 super(v);
+                this.view = v;
                 this.listing_name = (TextView) v.findViewById(R.id.listing_name);
                 this.owner_name = (TextView) v.findViewById(R.id.owner_name);
                 this.mobile = (TextView) v.findViewById(R.id.mobile);
@@ -298,10 +301,10 @@ public class ListingsSearchFragment extends Fragment {
 
             filterPrefs = getActivity().getSharedPreferences("filterdetails", 0);
             editor = filterPrefs.edit();
-            List<String> spinnerList = new ArrayList<String>();
+            List<String> spinnerList = new ArrayList<>();
             spinnerList.add("Nearest");
             spinnerList.add("Recent");
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,spinnerList);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item,spinnerList);
             AlertDialog.Builder filterDialog = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater = getActivity().getLayoutInflater();
             v = inflater.inflate(R.layout.listing_filter_dialog, null);

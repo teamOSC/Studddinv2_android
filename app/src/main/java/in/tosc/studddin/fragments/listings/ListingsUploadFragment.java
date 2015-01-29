@@ -63,7 +63,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         listing_image = (ImageView) rootView.findViewById(R.id.listing_image);
         category = (Spinner) rootView.findViewById(R.id.listing_category);
         uploading = (ProgressBar) rootView.findViewById(R.id.upload_progress);
-        List<String> categoryList = new ArrayList<String>();
+        List<String> categoryList = new ArrayList<>();
         categoryList.add("Book");
         categoryList.add("Apparatus");
         categoryList.add("Misc.");
@@ -82,7 +82,6 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
 
             case R.id.listing_image:
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 File photoFile = null;
                 try {
@@ -98,7 +97,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
 
                 Intent chooser = new Intent(Intent.ACTION_CHOOSER);
                 chooser.putExtra(Intent.EXTRA_INTENT, galleryIntent);
-                chooser.putExtra(Intent.EXTRA_TITLE, "Choose Photo");
+                chooser.putExtra(Intent.EXTRA_TITLE, "Upload Listing Photo");
 
                 Intent[] intentArray =  {cameraIntent};
                 chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
