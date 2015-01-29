@@ -237,18 +237,6 @@ public class MainActivity extends ActionBarActivity
            super.onActivityResult(requestCode, resultCode, data);
            paths = data.getStringArrayExtra("all_path");
 
-
-//            NotesUploadFragment notesUploadFragment = (NotesUploadFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:2131296409:1");
-//
-//            if(notesUploadFragment != null) {
-//                Toast.makeText(getApplicationContext(), "Nahi Chal raha idhar bhi", Toast.LENGTH_SHORT)
-//                        .show();
-//                notesUploadFragment.setImagePaths(all_path, true);
-//            }
-//            else
-//                Toast.makeText(getApplicationContext(), "Nahi Chal raha", Toast.LENGTH_SHORT)
-//                .show();
-
         }
     }
 
