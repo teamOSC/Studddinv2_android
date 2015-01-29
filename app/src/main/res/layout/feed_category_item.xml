@@ -30,10 +30,11 @@
                 android:id="@+id/feed_item_text_view"
                 android:layout_weight="4"
                 android:layout_width="0dp"
-                android:maxLines="2"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:maxLines="3"
+                android:layout_height="match_parent"
+                android:textSize="15sp"
                 android:layout_margin="5dp"
+                android:ellipsize="end"
                 android:text="test" />
         </LinearLayout>
 

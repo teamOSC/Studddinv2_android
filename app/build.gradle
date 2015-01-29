@@ -19,7 +19,7 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('/home/yogesh/.android/debug.jks')
+            storeFile file("${System.getenv('HOME')}/.android/debug.jks")
             keyAlias 'omerjerk'
             keyPassword 'umairisback'
             storePassword 'umairisback'
