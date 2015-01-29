@@ -27,13 +27,13 @@
         android:layout_marginRight="5dp"/>
         </LinearLayout>
 
-    <ProgressBar
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <in.tosc.studddin.utils.ProgressBarCircular
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:textSize="24sp"
+        android:layout_gravity="center_horizontal"
         android:id="@+id/progressBar"
-        android:indeterminate="true"
-        android:layout_gravity="center" />
+        android:indeterminate="true" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"

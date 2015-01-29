@@ -28,7 +28,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.utils.ProgressBarCircular;
 import in.tosc.studddin.utils.Utilities;
 
 public class ListingsSearchFragment extends Fragment {
@@ -53,7 +53,7 @@ public class ListingsSearchFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ProgressBar loader;
+    private ProgressBarCircular loader;
     private SwipeRefreshLayout swipeRefreshLayout;
     private View rootView;
     private boolean onRefresh = false;
@@ -74,7 +74,8 @@ public class ListingsSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_listings, container, false);
-        loader = (ProgressBar) rootView.findViewById(R.id.progressBar);
+        loader = (ProgressBarCircular) rootView.findViewById(R.id.progressBar);
+        loader.setBackgroundColor(getResources().getColor(R.color.pink));
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listing_recycler_view);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
