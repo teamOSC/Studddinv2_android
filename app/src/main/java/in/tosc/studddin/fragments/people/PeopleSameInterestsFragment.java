@@ -173,7 +173,6 @@ public class PeopleSameInterestsFragment extends Fragment {
             {
                 row.fileObject
                         .getDataInBackground(new GetDataCallback() {
-
                             public void done(byte[] data,
                                              ParseException e) {
                                 if (e == null) {
@@ -307,14 +306,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                         lv.setVisibility(View.VISIBLE);
                     }
                 });
-
-
             }
-
         }
-
-
     }
-
-
 }
