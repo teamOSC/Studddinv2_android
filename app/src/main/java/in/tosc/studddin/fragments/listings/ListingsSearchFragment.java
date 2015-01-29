@@ -94,12 +94,12 @@ public class ListingsSearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                fetchListings(true,charSequence.toString());
+                
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                fetchListings(true,editable.toString());
             }
         });
 
@@ -165,36 +165,56 @@ public class ListingsSearchFragment extends Fragment {
         if(cache)
             query.fromLocalDatastore();
         query.whereContainedIn("category",categories);
-        if(filterPrefs.getString("sortby","nearest").compareTo("recent")==0)
-            query.orderByDescending("createdAt");
+        if(text==null){
+            if(filterPrefs.getString("sortby","nearest").compareTo("recent")==0)
+                query.orderByDescending("createdAt");
         /*else
             query.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));*/
-        if(text!=null)
-            query.whereContains("listingName",text);
-
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(final List<ParseObject> parseObjects, ParseException e) {
-                if (e == null) {
-                    if (categories.size() == 3 && !cache) {
-                        ParseObject.unpinAllInBackground("listings", new DeleteCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                ParseObject.pinAllInBackground("listings", parseObjects);
-                                doneFetching(parseObjects);
-                            }
-                        });
-                    } else
-                        doneFetching(parseObjects);
-                } else {
-                    if (onRefresh) {
-                        onRefresh = false;
-                        swipeRefreshLayout.setRefreshing(false);
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(final List<ParseObject> parseObjects, ParseException e) {
+                    if (e == null) {
+                        if (categories.size() == 3 && !cache) {
+                            ParseObject.unpinAllInBackground("listings", new DeleteCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    ParseObject.pinAllInBackground("listings", parseObjects);
+                                    doneFetching(parseObjects);
+                                }
+                            });
+                        } else
+                            doneFetching(parseObjects);
+                    } else {
+                        if (onRefresh) {
+                            onRefresh = false;
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                        Toast.makeText(getActivity(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(getActivity(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
+            });
+        }
+        if(text!=null){
+            query.whereContains("listingName",text);
+            ParseQuery<ParseObject> descQuery = new ParseQuery<ParseObject>(
+                    "Listings");
+            descQuery.fromLocalDatastore();
+            descQuery.whereContainedIn("category",categories);
+            descQuery.whereContains("listingDesc",text);
+            List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
+            queries.add(query);
+            queries.add(descQuery);
+            ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
+            if(filterPrefs.getString("sortby","nearest").compareTo("recent")==0)
+                mainQuery.orderByDescending("createdAt");
+            /*else
+                mainQuery.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));*/
+            mainQuery.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> results, ParseException e) {
+                    doneFetching(results);
+                }
+            });
+        }
     }
 
     private void doneFetching(List<ParseObject> parseObjects){
