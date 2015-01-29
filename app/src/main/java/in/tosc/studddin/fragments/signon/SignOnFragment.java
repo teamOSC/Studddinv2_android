@@ -38,12 +38,11 @@ import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.externalapi.FacebookApi;
 import in.tosc.studddin.externalapi.UserDataFields;
 import in.tosc.studddin.utils.FloatingActionButton;
+import in.tosc.studddin.utils.Utilities;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link SignOnFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * SignOnFragment
  */
 public class SignOnFragment extends Fragment {
 
@@ -58,6 +57,8 @@ public class SignOnFragment extends Fragment {
     private FloatingActionButton googleLoginButton;
     private Button signUpButton, signInButton;
     private TextView guestContinue;
+    private MaterialEditText emailEditText;
+    private MaterialEditText passwordEditText;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -90,8 +91,6 @@ public class SignOnFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
-
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
@@ -118,27 +117,22 @@ public class SignOnFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_sign_on, container, false);
 
-
         displayInit();
 
         return rootView;
     }
 
-    private void displayInit()
-    {
-        int screenWidth, screenHeight;
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        screenHeight = displayMetrics.heightPixels;
-        screenWidth = displayMetrics.widthPixels;
+    private void displayInit() {
         facebookLoginButton = (FloatingActionButton) rootView.findViewById(R.id.signon_button_facebook);
         twitterLoginButton = (FloatingActionButton) rootView.findViewById(R.id.signon_button_twitter);
         googleLoginButton = (FloatingActionButton) rootView.findViewById(R.id.signon_button_google);
         signUpButton = (Button) rootView.findViewById(R.id.signon_button_signup);
         signInButton = (Button) rootView.findViewById(R.id.signon_button_signin);
         guestContinue = (TextView) rootView.findViewById(R.id.sign_in_guest);
+        emailEditText = (MaterialEditText) rootView.findViewById(R.id.sign_in_user_name);
+        passwordEditText = (MaterialEditText) rootView.findViewById(R.id.sign_in_user_password);
 
+        emailEditText.setText(Utilities.getUserEmail(getActivity()));
 
         guestContinue.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,16 +140,12 @@ public class SignOnFragment extends Fragment {
                 //Put stuff here
             }
         });
-
-
         facebookLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 doFacebookSignOn(v);
             }
         });
-
-
         twitterLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,28 +153,24 @@ public class SignOnFragment extends Fragment {
             }
         });
         //googleLoginButton.setOnClickListener(signUpListener);
-
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 doSignUp(v);
             }
         });
-
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 doSignIn(v);
             }
         });
-
-
     }
 
     public void doSignIn (View v) {
         ParseUser.logInInBackground(
-                ((MaterialEditText)rootView.findViewById(R.id.sign_in_user_name)).getText().toString(),
-                ((MaterialEditText)rootView.findViewById(R.id.sign_in_user_password)).getText().toString(),
+                emailEditText.getText().toString(),
+                passwordEditText.getText().toString(),
                 new LogInCallback() {
                     @Override
                     public void done(ParseUser parseUser, ParseException e) {
@@ -227,7 +213,7 @@ public class SignOnFragment extends Fragment {
                     Log.w(TAG, "user = " + user.getUsername());
                     Log.w(TAG, "pe = " + err.getCode() + err.getMessage());
                 } catch (Exception e) {
-                    // Do nothing
+                    e.printStackTrace();
                 }
                 if (user == null) {
                     Log.w(TAG, "Uh oh. The user cancelled the Facebook login.");
@@ -248,12 +234,9 @@ public class SignOnFragment extends Fragment {
                             transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
                             SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
                             transaction.replace(R.id.signon_container, newFragment).addToBackStack("SignIn").commit();
-
                         }
                     });
-
                 } else {
-
                     Log.w(TAG, "User logged in through Facebook!");
                     Log.w(TAG,
                             "FBSHIT \n" +

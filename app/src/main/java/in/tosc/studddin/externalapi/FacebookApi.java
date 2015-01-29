@@ -2,6 +2,7 @@ package in.tosc.studddin.externalapi;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.facebook.HttpMethod;
 import com.facebook.Request;
@@ -26,6 +27,8 @@ public class FacebookApi {
         session = s;
     }
 
+    private static final String TAG = "FacebookApi";
+
     public static void getFacebookData (final FbGotDataCallback fgdc) {
         Request req = Request.newMeRequest(session, new Request.GraphUserCallback() {
             @Override
@@ -39,7 +42,7 @@ public class FacebookApi {
                         FbDataBundle.putDouble(UserDataFields.USER_LAT, gu.getLocation().getLocation().getLatitude());
                         FbDataBundle.putDouble(UserDataFields.USER_LONG, gu.getLocation().getLocation().getLongitude());
                     } catch (Exception e) {
-                        // Bakchodi
+                        e.printStackTrace();
                     }
                     FbDataBundle.putString(UserDataFields.USER_DOB, gu.getBirthday());
                     fgdc.gotData(FbDataBundle);
