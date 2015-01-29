@@ -22,7 +22,7 @@
         android:id="@+id/listing_desc"
         android:hint="Listing Description"
         android:inputType="textMultiLine"
-        android:maxLength="160"
+        android:maxLength="100"
         android:maxLines="3"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/et_listing"

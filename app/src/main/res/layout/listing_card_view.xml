@@ -10,14 +10,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="110dp">
+        android:layout_height="120dp">
 
 
         <com.parse.ParseImageView
             android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_height="110dp"
             android:id="@+id/listing_image"
-            android:layout_margin="10dp"
+            android:layout_margin="2dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -30,14 +30,13 @@
             android:id="@+id/listing_name"
             android:layout_alignTop="@+id/listing_image"
             android:layout_toRightOf="@+id/listing_image"
-            android:layout_toLeftOf="@+id/relativeLayout"
-            android:layout_toStartOf="@+id/relativeLayout" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:layout_marginTop="2dp"
             android:id="@+id/listing_desc"
             android:layout_below="@+id/listing_name"
             android:layout_toRightOf="@+id/listing_image"
@@ -49,9 +48,9 @@
             android:layout_height="wrap_content"
             android:text="New Text"
             android:id="@+id/owner_name"
-            android:layout_marginTop="2dp"
             android:layout_below="@+id/listing_desc"
-            android:layout_toRightOf="@+id/listing_image"
+            android:layout_alignLeft="@+id/listing_desc"
+            android:layout_alignStart="@+id/listing_desc"
             android:layout_toLeftOf="@+id/relativeLayout"
             android:layout_toStartOf="@+id/relativeLayout" />
 
@@ -59,18 +58,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:layout_marginTop="2dp"
             android:id="@+id/mobile"
             android:layout_below="@+id/owner_name"
-            android:layout_alignLeft="@+id/owner_name"
-            android:layout_alignStart="@+id/owner_name"
-            android:layout_alignRight="@+id/owner_name"
-            android:layout_alignEnd="@+id/owner_name" />
+            android:layout_toRightOf="@+id/listing_image"
+            android:layout_toLeftOf="@+id/relativeLayout"
+            android:layout_toStartOf="@+id/relativeLayout" />
 
         <RelativeLayout
-            android:layout_width="80dp"
-            android:layout_height="fill_parent"
-            android:layout_alignTop="@+id/listing_name"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:id="@+id/relativeLayout">
@@ -80,16 +77,18 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/imageView"
                 android:src="@android:drawable/ic_menu_compass"
-                android:layout_centerVertical="true"
+                android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true" />
 
             <TextView
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="New Text"
                 android:id="@+id/listing_distance"
                 android:layout_below="@+id/imageView"
-                android:layout_centerHorizontal="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
                 android:gravity="center" />
         </RelativeLayout>
 
