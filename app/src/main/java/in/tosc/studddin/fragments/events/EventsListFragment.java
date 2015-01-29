@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -154,7 +155,7 @@ public class EventsListFragment extends Fragment {
             TextView event_date;
             TextView event_description;
             TextView event_type;
-            LinearLayout expanded_area;
+            RelativeLayout expanded_area;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -162,7 +163,7 @@ public class EventsListFragment extends Fragment {
                 this.event_date = (TextView) itemView.findViewById(R.id.event_date);
                 this.event_description = (TextView) itemView.findViewById(R.id.event_description);
                 this.event_type = (TextView) itemView.findViewById(R.id.event_type);
-                this.expanded_area = (LinearLayout) itemView.findViewById(R.id.expanded_area);
+                this.expanded_area = (RelativeLayout) itemView.findViewById(R.id.expanded_area);
             }
         }
     }
