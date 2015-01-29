@@ -83,6 +83,8 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="old_password">Old Password</string>
     <string name="password">Password</string>
+    <string name="notes_files_selected">Images Selected</string>
+    <string name="notes_files_not_selected">No File Selected</string>
 
     <!-- Listings -->
     <string name="upload_complete">Upload complete</string>
