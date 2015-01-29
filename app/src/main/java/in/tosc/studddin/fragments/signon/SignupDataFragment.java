@@ -241,6 +241,4 @@ public class SignupDataFragment extends Fragment {
             act.startActivity(i);
         }
         act.finish();}
-
-
 }

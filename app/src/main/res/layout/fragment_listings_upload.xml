@@ -111,7 +111,8 @@
         android:layout_toLeftOf="@+id/listing_upload"
         android:layout_alignLeft="@+id/et_mobile"
         android:layout_alignStart="@+id/et_mobile"
-        android:spinnerMode="dialog" />
+        android:spinnerMode="dialog"
+        android:layout_marginTop="30dp"/>
 
     <LinearLayout
         android:orientation="horizontal"

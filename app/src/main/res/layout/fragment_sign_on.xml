@@ -19,13 +19,13 @@
             android:layout_height="0dp"
             android:layout_weight="2" />
 
-
         <in.tosc.studddin.customview.MaterialEditText
             android:id="@+id/sign_in_user_name"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
+            android:inputType="textEmailAddress"
             app:baseColor="@color/search_color"
             app:primaryColor="@color/colorPrimaryDark"
             android:hint="@string/user_username"
@@ -43,9 +43,7 @@
             android:inputType="textWebPassword"
             android:textAlignment="center" />
 
-
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -155,6 +153,5 @@
             android:textColor="@color/signin_guest"
             android:textSize="15sp" />
     </LinearLayout>
-
 
 </LinearLayout>

@@ -1,8 +1,13 @@
 package in.tosc.studddin.fragments.people;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,15 +16,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -38,7 +47,6 @@ import in.tosc.studddin.R;
 
 public class PeopleSameInterestsFragment extends Fragment {
 
-    List<ParseObject> peopleob;
     ProgressBar progressBar;
 
     HashMap<String, Boolean> existingelement = new HashMap<String, Boolean>();
@@ -70,11 +78,8 @@ public class PeopleSameInterestsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_people_same_interests, container, false);
 
         progressBar = (ProgressBar) view.findViewById(R.id.progressbar_people);
-
         search = (EditText) view.findViewById(R.id.people_search);
-
         lv = (ListView) view.findViewById(R.id.listviewpeople);
-
 
         q = new MyAdapter3(getActivity(), 0, list3);
         q.setNotifyOnChange(true);
@@ -85,23 +90,39 @@ public class PeopleSameInterestsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
-
                 ViewPerson newFragment = new ViewPerson();
 
+                String tname = list3.get(i).cname;
+                String tinterests = list3.get(i).cinterests;
+                String tinstitute =  list3.get(i).cinstituition;
+                String tqualifications = list3.get(i).cqualification;
+                String tdistance = list3.get(i).cdistance;
+
+                if(tname==null)
+                    tname= " - " ;
+                if(tinterests==null)
+                    tinterests= " - " ;
+                if(tinstitute==null)
+                    tinstitute= " - " ;
+                if(tqualifications==null)
+                    tqualifications= " - " ;
+                if(tdistance==null)
+                    tdistance= " - " ;
+
                 final Bundle in = new Bundle();
-                in.putString("name", list3.get(i).cname);
-                in.putString("institute", list3.get(i).cinstituition);
-                in.putString("qualifications", list3.get(i).cqualification);
-                in.putString("interests", list3.get(i).cinterests);
-                in.putString("distance", list3.get(i).cdistance);
+                in.putString("name", tname);
+                in.putString("institute", tinterests);
+                in.putString("qualifications" , tinstitute);
+                in.putString("interests" , tqualifications);
+                in.putString("distance" , tdistance);
 
                 newFragment.setArguments(in);
 
-                transaction.replace(R.id.people_pager, newFragment).commit();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
 
+                transaction.replace(R.id.container,newFragment).addToBackStack("PeopleNearMe").commit();
             }
         });
 
@@ -148,13 +169,13 @@ public class PeopleSameInterestsFragment extends Fragment {
             holder.textdistance.setText(row.cdistance);
             holder.textqualification.setText(row.cqualification);
 
+
 //            Toast.makeText(getActivity(), row.cusername, Toast.LENGTH_SHORT).show();
 
             if(row.fileObject!=null)
             {
                 row.fileObject
                         .getDataInBackground(new GetDataCallback() {
-
                             public void done(byte[] data,
                                              ParseException e) {
                                 if (e == null) {
@@ -167,8 +188,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                                                     data.length));
 
                                 } else {
-                                    Log.e("test",
-                                            "There was a problem downloading the data.");
+                                    Log.e("test","There was a problem downloading the data.");
                                 }
                             }
                         });
@@ -234,9 +254,9 @@ public class PeopleSameInterestsFragment extends Fragment {
         }
         List<String> interestslist = Arrays.asList(currentuserinterests.split(", "));
 
-
         for (int c = 0; c < interestslist.size(); c++) {
             if (!interestslist.get(c).equals("") || !interestslist.get(c).equals(null)) {
+
 
                 ParseQuery<ParseUser> query = ParseUser.getQuery();
                 query.whereContains("INTERESTS", interestslist.get(c));
@@ -287,14 +307,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                         lv.setVisibility(View.VISIBLE);
                     }
                 });
-
-
             }
-
         }
-
-
     }
-
-
 }

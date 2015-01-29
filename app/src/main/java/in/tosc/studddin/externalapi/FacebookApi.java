@@ -2,6 +2,7 @@ package in.tosc.studddin.externalapi;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.facebook.HttpMethod;
 import com.facebook.Request;
@@ -16,7 +17,7 @@ import org.json.JSONObject;
 /**
  * Created by championswimmer on 26/1/15.
  */
-public class FbApi {
+public class FacebookApi {
     public static final String APP_ID = "903137443064438";
     public static String USER_ID = "";
 
@@ -25,6 +26,8 @@ public class FbApi {
     public static void setSession (Session s) {
         session = s;
     }
+
+    private static final String TAG = "FacebookApi";
 
     public static void getFacebookData (final FbGotDataCallback fgdc) {
         Request req = Request.newMeRequest(session, new Request.GraphUserCallback() {
@@ -39,7 +42,7 @@ public class FbApi {
                         FbDataBundle.putDouble(UserDataFields.USER_LAT, gu.getLocation().getLocation().getLatitude());
                         FbDataBundle.putDouble(UserDataFields.USER_LONG, gu.getLocation().getLocation().getLongitude());
                     } catch (Exception e) {
-                        // Bakchodi
+                        e.printStackTrace();
                     }
                     FbDataBundle.putString(UserDataFields.USER_DOB, gu.getBirthday());
                     fgdc.gotData(FbDataBundle);
