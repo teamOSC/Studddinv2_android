@@ -4,39 +4,75 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:weightSum="6"
     android:layout_marginTop="?attr/actionBarSize"
     android:layout_marginLeft="15dp"
     android:layout_marginRight="15dp"
 
     tools:context="in.tosc.studddin.fragments.AccountInfoFragment">
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:background="@color/google_red"
+        android:text="Details"
+        android:layout_gravity="center"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        />
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
+
         <TextView
-            android:id="@+id/person_name"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="8"
-            android:textSize="15sp"
+            android:text="Name : "
+            android:paddingLeft="10dp"
+            android:textSize="20sp"
             android:layout_gravity="center"
             android:gravity="center_vertical"
             android:textStyle="bold"
             />
 
+        <TextView
+            android:id="@+id/person_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            />
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Institute : "
+            android:paddingLeft="10dp"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            />
         <TextView
             android:id="@+id/person_institute"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="8"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:layout_gravity="center"
             android:gravity="center_vertical"
             />
@@ -47,12 +83,22 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Qualifications : "
+            android:paddingLeft="10dp"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            />
         <TextView
             android:id="@+id/person_qualifications"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="8"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:layout_gravity="center"
             android:gravity="center_vertical"
             />
@@ -63,12 +109,22 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Interests : "
+            android:paddingLeft="10dp"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            />
         <TextView
             android:id="@+id/person_interests"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="8"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:layout_gravity="center"
             android:gravity="center_vertical"
             />
@@ -80,11 +136,20 @@
         android:layout_weight="1"
         android:orientation="horizontal">
         <TextView
-            android:id="@+id/person_area"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="8"
-            android:textSize="15sp"
+            android:text="Distance : "
+            android:paddingLeft="10dp"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:id="@+id/person_area"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
             android:layout_gravity="center"
             android:gravity="center_vertical"
             />
