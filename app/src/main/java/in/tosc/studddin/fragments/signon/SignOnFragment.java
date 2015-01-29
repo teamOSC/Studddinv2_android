@@ -29,15 +29,13 @@ import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.twitter.Twitter;
 
-import org.json.JSONArray;
-
 import java.util.Arrays;
 import java.util.List;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
-import in.tosc.studddin.externalapi.FbApi;
+import in.tosc.studddin.externalapi.FacebookApi;
 import in.tosc.studddin.externalapi.UserDataFields;
 import in.tosc.studddin.utils.FloatingActionButton;
 
@@ -241,8 +239,8 @@ public class SignOnFragment extends Fragment {
                                     ParseFacebookUtils.getSession().getAccessToken() + " \n" +
                                     ParseFacebookUtils.getFacebook().getAppId()
                     );
-                    FbApi.setSession(ParseFacebookUtils.getSession());
-                    FbApi.getFacebookData(new FbApi.FbGotDataCallback() {
+                    FacebookApi.setSession(ParseFacebookUtils.getSession());
+                    FacebookApi.getFacebookData(new FacebookApi.FbGotDataCallback() {
                         @Override
                         public void gotData(Bundle b) {
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

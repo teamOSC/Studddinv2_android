@@ -16,7 +16,7 @@ import org.json.JSONObject;
 /**
  * Created by championswimmer on 26/1/15.
  */
-public class FbApi {
+public class FacebookApi {
     public static final String APP_ID = "903137443064438";
     public static String USER_ID = "";
 
