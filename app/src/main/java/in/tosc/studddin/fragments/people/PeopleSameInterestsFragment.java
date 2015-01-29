@@ -47,7 +47,6 @@ import in.tosc.studddin.R;
 
 public class PeopleSameInterestsFragment extends Fragment {
 
-    Dialog dialogPeople;
     ProgressBar progressBar;
 
     HashMap<String, Boolean> existingelement = new HashMap<String, Boolean>();
@@ -79,11 +78,8 @@ public class PeopleSameInterestsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_people_same_interests, container, false);
 
         progressBar = (ProgressBar) view.findViewById(R.id.progressbar_people);
-
         search = (EditText) view.findViewById(R.id.people_search);
-
         lv = (ListView) view.findViewById(R.id.listviewpeople);
-
 
         q = new MyAdapter3(getActivity(), 0, list3);
         q.setNotifyOnChange(true);
@@ -93,7 +89,40 @@ public class PeopleSameInterestsFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //TODO: Show user profile
+
+                ViewPerson newFragment = new ViewPerson();
+
+                String tname = list3.get(i).cname;
+                String tinterests = list3.get(i).cinterests;
+                String tinstitute =  list3.get(i).cinstituition;
+                String tqualifications = list3.get(i).cqualification;
+                String tdistance = list3.get(i).cdistance;
+
+                if(tname==null)
+                    tname= " - " ;
+                if(tinterests==null)
+                    tinterests= " - " ;
+                if(tinstitute==null)
+                    tinstitute= " - " ;
+                if(tqualifications==null)
+                    tqualifications= " - " ;
+                if(tdistance==null)
+                    tdistance= " - " ;
+
+                final Bundle in = new Bundle();
+                in.putString("name", tname);
+                in.putString("institute", tinterests);
+                in.putString("qualifications" , tinstitute);
+                in.putString("interests" , tqualifications);
+                in.putString("distance" , tdistance);
+
+                newFragment.setArguments(in);
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
+
+                transaction.replace(R.id.container,newFragment).addToBackStack("PeopleNearMe").commit();
             }
         });
 
@@ -220,8 +249,10 @@ public class PeopleSameInterestsFragment extends Fragment {
         currentusername = ParseUser.getCurrentUser().getString("NAME");
         currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
 
+        if (currentuserinterests == null) {
+            currentuserinterests = "";
+        }
         List<String> interestslist = Arrays.asList(currentuserinterests.split(", "));
-
 
         for (int c = 0; c < interestslist.size(); c++) {
             if (!interestslist.get(c).equals("") || !interestslist.get(c).equals(null)) {

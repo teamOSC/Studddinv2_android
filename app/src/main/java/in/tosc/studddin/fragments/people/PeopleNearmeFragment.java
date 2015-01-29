@@ -93,11 +93,6 @@ public class PeopleNearmeFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                /*
-
-                FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit); */
 
                 ViewPerson newFragment = new ViewPerson();
 

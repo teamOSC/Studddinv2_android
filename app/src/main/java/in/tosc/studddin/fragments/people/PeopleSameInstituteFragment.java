@@ -74,38 +74,18 @@ public class PeopleSameInstituteFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_people_same_institute, container, false);
         progressBar=(ProgressBar)view.findViewById(R.id.progressbar_people);
-
         search = (EditText) view.findViewById(R.id.people_search);
-
         lv = (ListView)view.findViewById(R.id.listviewpeople);
-
-
 
         q = new MyAdapter3(getActivity(), 0, list3);
         q.setNotifyOnChange(true);
 
         loaddata();
 
-
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-
-                dialogPeople = new Dialog(getActivity());
-                dialogPeople.setContentView(R.layout.view_person);
-                dialogPeople.setTitle(list3.get(i).cname);
-                ScrollView scroll1 = new ScrollView(getActivity());
-                scroll1.setBackgroundColor(Color.TRANSPARENT);
-                scroll1.setLayoutParams(new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
-                        WindowManager.LayoutParams.MATCH_PARENT));
-                // set the custom dialog components - text, image and button
-
-                TextView name = (TextView)dialogPeople.findViewById(R.id.person_name);
-                TextView institute = (TextView)dialogPeople.findViewById(R.id.person_institute);
-                TextView interests = (TextView)dialogPeople.findViewById(R.id.person_interests);
-                TextView qualifications = (TextView)dialogPeople.findViewById(R.id.person_qualifications);
-                TextView distance = (TextView)dialogPeople.findViewById(R.id.person_area);
+                ViewPerson newFragment = new ViewPerson();
 
                 String tname = list3.get(i).cname;
                 String tinterests = list3.get(i).cinterests;
@@ -124,13 +104,20 @@ public class PeopleSameInstituteFragment extends Fragment {
                 if(tdistance==null)
                     tdistance= " - " ;
 
-                name.setText("Name : " + tname);
-                interests.setText("Interests : " +  tinterests);
-                institute.setText("Institute : " + tinstitute);
-                qualifications.setText("Qualifications : " + tqualifications);
-                distance.setText("Distance : " + tdistance);
+                final Bundle in = new Bundle();
+                in.putString("name", tname);
+                in.putString("institute", tinterests);
+                in.putString("qualifications" , tinstitute);
+                in.putString("interests" , tqualifications);
+                in.putString("distance" , tdistance);
 
-                dialogPeople.show();
+                newFragment.setArguments(in);
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
+
+                transaction.replace(R.id.container,newFragment).addToBackStack("PeopleNearMe").commit();
             }
         });
 
@@ -199,10 +186,7 @@ public class PeopleSameInstituteFragment extends Fragment {
                                 }
                             }
                         });
-            }
-
-            else
-            {
+            } else {
                 holder.userimg.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_person));
             }
 
