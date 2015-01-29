@@ -37,10 +37,7 @@ import in.tosc.studddin.externalapi.UserDataFields;
  */
 public class SignupDataFragment extends Fragment {
 
-
     Bundle userDataBundle;
-    
-
 
     View rootView;
 
@@ -72,6 +69,15 @@ public class SignupDataFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_sign_up, container, false);
+
+        Button locationEditText = (Button) rootView.findViewById(R.id.user_location);
+        locationEditText.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LocationSelectDialog dialog = new LocationSelectDialog();
+                dialog.show(getFragmentManager(), "LocationSelectDialog");
+            }
+        });
 
         if (userDataBundle != null) {
             autoFillData();
@@ -124,7 +130,6 @@ public class SignupDataFragment extends Fragment {
         setDataToFields(R.id.user_name, UserDataFields.USER_NAME);
         setDataToFields(R.id.user_dob, UserDataFields.USER_DOB);
         setDataToFields(R.id.user_institute, UserDataFields.USER_INSTITUTE);
-        setDataToFields(R.id.user_city, UserDataFields.USER_CITY);
         setDataToFields(R.id.user_email, UserDataFields.USER_EMAIL);
     }
 
@@ -133,7 +138,6 @@ public class SignupDataFragment extends Fragment {
         input.put(UserDataFields.USER_PASSWORD, getStringFromEditText(R.id.user_password));
         input.put(UserDataFields.USER_DOB, getStringFromEditText(R.id.user_dob));
         input.put(UserDataFields.USER_INSTITUTE, getStringFromEditText(R.id.user_institute));
-        input.put(UserDataFields.USER_CITY, getStringFromEditText(R.id.user_city));
         input.put(UserDataFields.USER_EMAIL, getStringFromEditText(R.id.user_email));
         input.put(UserDataFields.USER_INTERESTS, getStringFromEditText(R.id.user_interests));
         input.put(UserDataFields.USER_QUALIFICATIONS, getStringFromEditText(R.id.user_qualifications));
@@ -181,7 +185,6 @@ public class SignupDataFragment extends Fragment {
 
     private void startNextActivity() {
         //get to next activity and set flags etc in shared preferences
-
     }
 
     private void pushInputToParse() {
@@ -224,10 +227,6 @@ public class SignupDataFragment extends Fragment {
                 }
             });
         }
-
-
-
-
     }
 
     public static void goToMainActivity (Activity act) {
@@ -240,5 +239,6 @@ public class SignupDataFragment extends Fragment {
         }else{
             act.startActivity(i);
         }
-        act.finish();}
+        act.finish();
+    }
 }

@@ -17,6 +17,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    signingConfigs {
+        debug {
+            storeFile file("/home/omerjerk/.android/debug.jks")
+            keyAlias 'omerjerk'
+            keyPassword 'umairisback'
+            storePassword 'umairisback'
+        }
+    }
 }
 
 dependencies {
@@ -29,4 +37,5 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:3.21.1'
     compile 'com.koushikdutta.ion:ion:2.+'
     compile 'com.google.android.gms:play-services-maps:6.5.87'
+    compile 'com.google.android.gms:play-services-location:6.5.87'
 }

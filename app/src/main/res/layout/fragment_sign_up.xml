@@ -84,21 +84,18 @@
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
                     android:textAlignment="center" />
 
-                <in.tosc.studddin.customview.MaterialEditText
+                <Button
                     android:layout_below="@id/user_institute"
-                    android:id="@+id/user_city"
+                    android:id="@+id/user_location"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:hint="@string/user_location"
-                    app:baseColor="@color/search_color"
-                    app:primaryColor="@color/colorPrimaryDark"
-                    app:floatingLabel="highlight"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
                     android:textAlignment="center" />
 
                 <in.tosc.studddin.customview.MaterialEditText
-                    android:layout_below="@id/user_city"
+                    android:layout_below="@id/user_location"
                     android:id="@+id/user_email"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
