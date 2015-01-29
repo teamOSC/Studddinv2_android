@@ -1,6 +1,9 @@
 package in.tosc.studddin.fragments.listings;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,6 +26,7 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -105,29 +109,38 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                 break;
 
             case R.id.listing_upload:
-                uploading.setVisibility(View.VISIBLE);
-                ParseFile file = new ParseFile("listing.png", byteArray);
-                file.saveInBackground();
+                boolean validate = validateInput();
 
-                ParseObject upload = new ParseObject("Listings");
-                ParseGeoPoint point = new ParseGeoPoint(28.7500749,77.11766519999992);
-
-                upload.put("image", file);
-                upload.put("ownerName", ParseUser.getCurrentUser().getString("NAME"));
-                upload.put("listingName", listing.getText().toString());
-                upload.put("listingDesc", listing_desc.getText().toString());
-                upload.put("mobile", mobile.getText().toString());
-                upload.put("location", point);
-                upload.put("category",category.getSelectedItem().toString());
-
-                upload.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        uploading.setVisibility(View.GONE);
-                        Toast.makeText(getActivity(), getString(R.string.upload_complete),
-                                Toast.LENGTH_SHORT).show();
+                if(validate){
+                    uploading.setVisibility(View.VISIBLE);
+                    ParseObject upload = new ParseObject("Listings");
+                    ParseGeoPoint point = new ParseGeoPoint(28.7500749,77.11766519999992);
+                    if(byteArray==null){
+                        Drawable drawable = getResources().getDrawable(R.drawable.listing_placeholder);
+                        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream);
+                        byteArray = stream.toByteArray();
                     }
-                });
+                    ParseFile file = new ParseFile("listing.png", byteArray);
+                    file.saveInBackground();
+                    upload.put("image", file);
+                    upload.put("ownerName", ParseUser.getCurrentUser().getString("NAME"));
+                    upload.put("listingName", listing.getText().toString());
+                    upload.put("listingDesc", listing_desc.getText().toString());
+                    upload.put("mobile", mobile.getText().toString());
+                    upload.put("location", point);
+                    upload.put("category",category.getSelectedItem().toString());
+
+                    upload.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            uploading.setVisibility(View.GONE);
+                            Toast.makeText(getActivity(), getString(R.string.upload_complete),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
                 break;
         }
     }
@@ -146,5 +159,14 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
+    }
+
+    private boolean validateInput(){
+        boolean validate = true;
+        if(listing.getText().toString().isEmpty() || listing_desc.getText().toString().isEmpty() || mobile.getText().toString().isEmpty()){
+            validate = false;
+            Toast.makeText(getActivity(),"All fields are mandatory",Toast.LENGTH_SHORT).show();
+        }
+        return validate;
     }
 }

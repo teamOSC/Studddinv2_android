@@ -54,9 +54,7 @@
             android:id="@+id/owner_name"
             android:layout_below="@+id/listing_desc"
             android:layout_alignLeft="@+id/listing_desc"
-            android:layout_alignStart="@+id/listing_desc"
-            android:layout_toLeftOf="@+id/relativeLayout"
-            android:layout_toStartOf="@+id/relativeLayout" />
+            android:layout_alignStart="@+id/listing_desc" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,37 +63,37 @@
             android:id="@+id/mobile"
             android:layout_below="@+id/owner_name"
             android:layout_toRightOf="@+id/listing_image"
-            android:layout_toLeftOf="@+id/relativeLayout"
-            android:layout_toStartOf="@+id/relativeLayout"
             android:autoLink="phone" />
 
-        <RelativeLayout
-            android:layout_width="60dp"
-            android:layout_height="50dp"
+        <FrameLayout
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:id="@+id/relativeLayout">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/compass"
-                android:src="@android:drawable/ic_menu_compass"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" />
+            android:id="@+id/frameLayout2">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="New Text"
                 android:id="@+id/listing_distance"
-                android:layout_below="@+id/compass"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentStart="true"
+                android:layout_gravity="right|bottom"
                 android:gravity="center" />
-        </RelativeLayout>
+
+        </FrameLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/compass"
+            android:src="@android:drawable/ic_menu_compass"
+            android:layout_marginRight="18dp"
+            android:layout_marginEnd="18dp"
+            android:layout_gravity="center"
+            android:layout_above="@+id/frameLayout2"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
 
     </RelativeLayout>
