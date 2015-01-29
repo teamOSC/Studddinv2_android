@@ -59,6 +59,7 @@ public class ListingsSearchFragment extends Fragment {
     private boolean onRefresh = false;
 
     private SharedPreferences filterPrefs;
+    private SharedPreferences.Editor editor;
     public ListingsSearchFragment() {
         // Required empty public constructor
     }
@@ -68,6 +69,12 @@ public class ListingsSearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         filterPrefs = getActivity().getSharedPreferences("filterdetails", 0);
+        editor = filterPrefs.edit();
+        editor.putBoolean("books",true);
+        editor.putBoolean("apparatus",true);
+        editor.putBoolean("misc",true);
+        editor.putString("sortby","nearest");
+        editor.commit();
     }
 
     @Override
@@ -140,22 +147,23 @@ public class ListingsSearchFragment extends Fragment {
     }
 
     private void fetchListings(final boolean cache){
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
-                "Listings");
-        ArrayList<String> categories = new ArrayList<>();
+        final ArrayList<String> categories = new ArrayList<>();
         if(filterPrefs.getBoolean("books",true))
             categories.add("Book");
         if(filterPrefs.getBoolean("apparatus",true))
             categories.add("Apparatus");
         if(filterPrefs.getBoolean("misc",true))
             categories.add("Misc.");
-        query.whereContainedIn("category",categories);
-        if(filterPrefs.getString("sortby","nearest").compareTo("nearest")==0)
-            query.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));
-        else
-            query.orderByDescending("createdAt");
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+                "Listings");
         if(cache)
             query.fromLocalDatastore();
+        query.whereContainedIn("category",categories);
+        /*if(filterPrefs.getString("sortby","nearest").compareTo("nearest")==0)
+            query.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));
+        else
+            query.orderByDescending("createdAt");*/
+
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> parseObjects, ParseException e) {
@@ -163,18 +171,21 @@ public class ListingsSearchFragment extends Fragment {
                     if(cache)
                         doneFetching(parseObjects);
                     else{
-                        ParseObject.unpinAllInBackground("listings",new DeleteCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                ParseObject.pinAllInBackground("listings",parseObjects);
-                                doneFetching(parseObjects);
-                            }
-                        });
+                        if(categories.size()==3){
+                            ParseObject.unpinAllInBackground("listings", new DeleteCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    ParseObject.pinAllInBackground("listings", parseObjects);
+                                    doneFetching(parseObjects);
+                                }
+                            });
+                        }
+                        else
+                            doneFetching(parseObjects);
                     }
                 }
                 else{
-                    if(!cache)
-                        Toast.makeText(getActivity(),"Please connect to the Internet",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),"Please connect to the Internet",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -253,7 +264,6 @@ public class ListingsSearchFragment extends Fragment {
         private CheckBox books;
         private CheckBox apparatus;
         private CheckBox misc;
-        private SharedPreferences.Editor editor;
 
         @NonNull
         @Override
