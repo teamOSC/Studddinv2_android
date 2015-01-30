@@ -3,19 +3,13 @@ package in.tosc.studddin.fragments.signon;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.transition.Explode;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,14 +94,8 @@ public class SignOnFragment extends Fragment {
         if ((pUser != null) && (pUser.isAuthenticated()) && (pUser.getSessionToken() != null)) {
             Log.d("SignOnFragment", pUser.getUsername() + pUser.getSessionToken());
             Intent i = new Intent(getActivity(), MainActivity.class);
-            if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-                Activity activity = getActivity();
-                Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
-                activity.getWindow().setExitTransition(new Explode());
-                ActivityCompat.startActivityForResult(activity, i, 0, options);
-            }else{
                 startActivity(i);
-            }
+
             getActivity().finish();
         }
     }
