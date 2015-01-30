@@ -88,16 +88,14 @@ public class FacebookApi {
                     @Override
                     protected Void doInBackground(Void... params) {
                         try {
-                            JSONObject jsonObject = response.getGraphObject().getInnerJSONObject();
-                            jsonObject = jsonObject.getJSONObject("picture");
-                            jsonObject = jsonObject.getJSONObject("data");
-                            URL url = new URL(jsonObject.getString("url"));
+                            String objectId = response.getGraphObject().getInnerJSONObject().getString("id");
+                            String sUrl = "https://graph.facebook.com/" + objectId + "/picture?type=large";
+                            URL url = new URL(sUrl);
                             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                             connection.setDoInput(true);
                             connection.connect();
                             InputStream input = connection.getInputStream();
                             Bitmap bitmap = BitmapFactory.decodeStream(input);
-                            Log.d(TAG, "picture = " + jsonObject.getString("url"));
                             listener.gotProfilePicture(bitmap);
                         } catch (IOException e) {
                             e.printStackTrace();

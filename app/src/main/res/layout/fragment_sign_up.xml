@@ -38,6 +38,7 @@
 
                 <in.tosc.studddin.customview.MaterialEditText
                     android:id="@+id/user_name"
+                    android:layout_below="@id/sign_up_profile_picture"
                     android:layout_alignParentTop="true"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
