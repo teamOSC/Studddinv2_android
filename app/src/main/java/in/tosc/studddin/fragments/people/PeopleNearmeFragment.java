@@ -82,12 +82,29 @@ public class PeopleNearmeFragment extends Fragment {
 
                 ViewPerson newFragment = new ViewPerson();
 
+                String tname = list3.get(i).cname;
+                String tinterests = list3.get(i).cinterests;
+                String tinstitute =  list3.get(i).cinstituition;
+                String tqualifications = list3.get(i).cqualification;
+                String tdistance = list3.get(i).cdistance;
+
+                if(tname==null)
+                    tname= " - " ;
+                if(tinterests==null)
+                    tinterests= " - " ;
+                if(tinstitute==null)
+                    tinstitute= " - " ;
+                if(tqualifications==null)
+                    tqualifications= " - " ;
+                if(tdistance==null)
+                    tdistance= " - " ;
+
                 final Bundle in = new Bundle();
-                in.putString("name", list3.get(i).cname);
-                in.putString("institute", list3.get(i).cinstituition);
-                in.putString("qualifications" , list3.get(i).cqualification);
-                in.putString("interests" , list3.get(i).cinterests);
-                in.putString("distance" , list3.get(i).cdistance);
+                in.putString("name", tname);
+                in.putString("institute", tinstitute);
+                in.putString("qualifications" , tqualifications);
+                in.putString("interests" , tinterests);
+                in.putString("distance" , tdistance);
 
                 newFragment.setArguments(in);
 
