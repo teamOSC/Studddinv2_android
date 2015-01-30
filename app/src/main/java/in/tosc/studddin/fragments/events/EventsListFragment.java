@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,9 @@ public class EventsListFragment extends Fragment {
     ArrayList<Parent> parents;
     List<ParseObject> listings;
     RecyclerView.Adapter adapter;
+    FetchData f;
+    private boolean refresh = false;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public EventsListFragment() {
 
@@ -50,7 +55,16 @@ public class EventsListFragment extends Fragment {
         eventlist = (RecyclerView)v.findViewById(R.id.listviewevents);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         eventlist.setLayoutManager(layoutManager);
-        FetchData f = new FetchData();
+        swipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh = true;
+                f = new FetchData();
+                f.execute();
+            }
+        });
+        f = new FetchData();
         f.execute();
         return v;
     }
@@ -154,7 +168,7 @@ public class EventsListFragment extends Fragment {
             TextView event_date;
             TextView event_description;
             TextView event_type;
-            LinearLayout expanded_area;
+            RelativeLayout expanded_area;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -162,7 +176,7 @@ public class EventsListFragment extends Fragment {
                 this.event_date = (TextView) itemView.findViewById(R.id.event_date);
                 this.event_description = (TextView) itemView.findViewById(R.id.event_description);
                 this.event_type = (TextView) itemView.findViewById(R.id.event_type);
-                this.expanded_area = (LinearLayout) itemView.findViewById(R.id.expanded_area);
+                this.expanded_area = (RelativeLayout) itemView.findViewById(R.id.expanded_area);
             }
         }
     }
@@ -172,28 +186,30 @@ public class EventsListFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             adapter = new EventAdapter(parents);
             eventlist.setAdapter(adapter);
+            if(refresh == true){
+                swipeRefreshLayout.setRefreshing(false);
+                refresh = false;
+            }
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             parents = new ArrayList<Parent>();
+            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+                    "Events");
+            query.orderByAscending("createdAt");
             try {
-                ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
-                        "Events");
-                query.orderByAscending("createdAt");
                 listings = query.find();
-                for(ParseObject listing : listings){
-                    Parent parent = new Parent();
-                    parent.setEventName((String) listing.get("title"));
-                    parent.setEventDate((Date) listing.get("createdAt"));
-                    parent.setEventDescription((String) listing.get("description"));
-                    parent.setEventType((String) listing.get("type"));
-                    parents.add(parent);
-                }
-            }
-            catch (ParseException e) {
-                Log.e("Error", e.getMessage());
+            } catch (ParseException e) {
                 e.printStackTrace();
+            }
+            for (ParseObject listing : listings) {
+                Parent parent = new Parent();
+                parent.setEventName((String) listing.get("title"));
+                parent.setEventDate((Date) listing.get("createdAt"));
+                parent.setEventDescription((String) listing.get("description"));
+                parent.setEventType((String) listing.get("type"));
+                parents.add(parent);
             }
             return null;
         }
