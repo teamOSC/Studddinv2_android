@@ -62,17 +62,17 @@
     </LinearLayout>
 
 
-    <in.tosc.studddin.utils.AddFloatingActionButton
-        style="?android:attr/buttonStyleSmall"
+    <in.tosc.studddin.utils.FloatingActionButton
         android:layout_gravity="bottom|right"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/notes_button_add"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight ="true"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:onClick="jumpToPage"
+        fab:fab_icon="@drawable/ic_file_upload_white_48dp"
         fab:fab_colorNormal="@color/note_button"
         fab:fab_colorPressed="@color/note_button_pressed"/>
     

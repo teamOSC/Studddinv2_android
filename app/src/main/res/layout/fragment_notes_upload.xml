@@ -77,7 +77,7 @@
 
     </RelativeLayout>
     </ScrollView>
-    <in.tosc.studddin.utils.AddFloatingActionButton
+    <in.tosc.studddin.utils.FloatingActionButton
         style="?android:attr/buttonStyleSmall"
         android:layout_gravity="bottom|right"
         android:layout_width="40dp"
@@ -89,6 +89,7 @@
         android:layout_below="@+id/notes_branch"
         fab:fab_colorNormal="@color/pink"
         fab:fab_colorPressed="@color/pink_pressed"
+        fab:fab_icon="@drawable/ic_file_upload_white_48dp"
         />
 
 </FrameLayout>

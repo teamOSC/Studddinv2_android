@@ -83,7 +83,6 @@ public class MainActivity extends ActionBarActivity
             default:
                 Log.d("Studdd.in", "feed fragment");
                 mTitle = "Feeds";
-
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, FeedFragment.newInstance())
                         .commit();
