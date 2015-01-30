@@ -101,9 +101,9 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                 final Bundle in = new Bundle();
                 in.putString("name", tname);
-                in.putString("institute", tinterests);
-                in.putString("qualifications" , tinstitute);
-                in.putString("interests" , tqualifications);
+                in.putString("institute", tinstitute);
+                in.putString("qualifications" , tqualifications);
+                in.putString("interests" , tinterests);
                 in.putString("distance" , tdistance);
 
                 newFragment.setArguments(in);

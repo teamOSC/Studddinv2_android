@@ -127,6 +127,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
             case R.id.uploadfab:
                 uploading.setVisibility(View.VISIBLE);
                 ParseFile file = new ParseFile("listing.png", byteArray);
+
                 file.saveInBackground();
 
                 ParseObject upload = new ParseObject("Listings");

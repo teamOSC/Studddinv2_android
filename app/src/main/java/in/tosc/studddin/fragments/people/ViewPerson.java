@@ -48,11 +48,11 @@ public class ViewPerson extends Fragment {
         qualifications = (TextView)rootView.findViewById(R.id.person_qualifications);
         distance = (TextView)rootView.findViewById(R.id.person_area);
 
-        name.setText("Name : " + sname);
-        interests.setText("Interests : " + sinterests);
-        institute.setText("Institute : " + sinstitute);
-        qualifications.setText("Qualifications : " + squalifications);
-        distance.setText("Distance : " + sdistance);
+        name.setText(" " + sname);
+        interests.setText(" " + sinterests);
+        institute.setText(" " + sinstitute);
+        qualifications.setText(" " + squalifications);
+        distance.setText(" " + sdistance);
 
         return rootView;
 
