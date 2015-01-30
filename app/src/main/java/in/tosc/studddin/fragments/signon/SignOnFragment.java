@@ -191,6 +191,7 @@ public class SignOnFragment extends Fragment {
 
     public void doFacebookSignOn (View v) {
         List<String> permissions = Arrays.asList("public_profile", "user_friends",
+                ParseFacebookUtils.Permissions.User.EMAIL,
                 ParseFacebookUtils.Permissions.User.ABOUT_ME,
                 ParseFacebookUtils.Permissions.User.RELATIONSHIPS,
                 ParseFacebookUtils.Permissions.User.BIRTHDAY,
