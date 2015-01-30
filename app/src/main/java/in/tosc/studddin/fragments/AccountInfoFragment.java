@@ -61,19 +61,11 @@ public class AccountInfoFragment extends Fragment {
         // Required empty public constructor
     }
 
-    private static final String USER_FULLNAME = "NAME";
     private static final String USER_UID = "USERNAME";
     private static final String USER_PASSWORD = "xxxxxxxxx";
-    private static final String USER_INSTITUTE = "INSTITUTE";
-    private static final String USER_EMAIL = "EMAIL";
-    private static final String USER_INTERESTS = "INTERESTS";
     private static final String USER_QUALIFICATIONS = "QUALIFICATIONS";
     private static final String USER_AUTH = "authData";
     private static final String FB_APP_ID = "90313744064438";
-
-
-    private ParseFacebookUtils fUtils;
-    private Bitmap fbBitmap;
 
     private HashMap<String,String> userInfo;
 
@@ -100,14 +92,14 @@ public class AccountInfoFragment extends Fragment {
         if(currentUser != null)
         {
             if ( currentUser.get(UserDataFields.USER_EMAIL)!=null)
-                tEmail.setText(currentUser.getEmail());
+                tEmail.setText(currentUser.getString(UserDataFields.USER_EMAIL));
 
             if (  currentUser.get(UserDataFields.USER_INSTITUTE)!=null ) {
-                eInstitute.setText(currentUser.getString(USER_INSTITUTE));
+                eInstitute.setText(currentUser.getString(UserDataFields.USER_INSTITUTE));
             }
 
             if (  currentUser.get(UserDataFields.USER_NAME)!=null )
-                tFullName.setText(currentUser.getString(USER_FULLNAME));
+                tFullName.setText(currentUser.getString(UserDataFields.USER_NAME));
 
             if ( currentUser.get(UserDataFields.USER_QUALIFICATIONS)!=null )
                 eQualificaton.setText(currentUser.getString(USER_QUALIFICATIONS));
@@ -124,7 +116,6 @@ public class AccountInfoFragment extends Fragment {
 
     private void init() {
 
-
         tFullName = (TextView) rootView.findViewById(R.id.account_info_fullname);
         tEmail = (TextView)rootView.findViewById(R.id.account_info_email);
 
@@ -133,7 +124,6 @@ public class AccountInfoFragment extends Fragment {
 
         eInstitute = (MaterialEditText) rootView.findViewById(R.id.account_info_institute);
         editInstitute = (ImageButton) rootView.findViewById(R.id.edit_institute_button);
-
 
         eQualificaton = (MaterialEditText) rootView.findViewById(R.id.account_info_qualification);
         editQualification = (ImageButton) rootView.findViewById(R.id.edit_qualification_button);
@@ -191,7 +181,7 @@ public class AccountInfoFragment extends Fragment {
 
                 switch (v.getId()) {
                     case R.id.edit_institute_button:
-                        changeAttribute(eInstitute,USER_INSTITUTE);
+                        changeAttribute(eInstitute,UserDataFields.USER_INSTITUTE);
                         break;
                     case R.id.edit_qualification_button:
                         changeAttribute(eQualificaton,USER_QUALIFICATIONS);
@@ -256,7 +246,7 @@ public class AccountInfoFragment extends Fragment {
 
     private void changeAttribute(EditText e, final String attr)
     {
-        if(attr.equals(USER_INSTITUTE) || attr.equals(USER_FULLNAME))
+        if(attr.equals(UserDataFields.USER_INSTITUTE) || attr.equals(UserDataFields.USER_NAME))
         {
             if(e.getText().toString().isEmpty())
             Toast.makeText(getActivity(),attr + "cannot be empty",Toast.LENGTH_LONG).show();

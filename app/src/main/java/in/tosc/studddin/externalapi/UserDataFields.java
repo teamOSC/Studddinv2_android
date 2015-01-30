@@ -10,7 +10,7 @@ public class UserDataFields {
     public static final String USER_DOB= "DOB";
     public static final String USER_INSTITUTE = "INSTITUTE";
     public static final String USER_CITY = "CITY";
-    public static final String USER_EMAIL = "EMAIL";
+    public static final String USER_EMAIL = "email";
     public static final String USER_INTERESTS = "INTERESTS";
     public static final String USER_QUALIFICATIONS = "QUALIFICATIONS";
     public static final String USER_LAT = "LAT";
