@@ -3,6 +3,7 @@ package in.tosc.studddin.fragments.signon;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.parse.LocationCallback;
@@ -31,9 +33,7 @@ import in.tosc.studddin.externalapi.UserDataFields;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link SignupDataFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * SignupDataFragment
  */
 public class SignupDataFragment extends Fragment {
 
@@ -44,6 +44,10 @@ public class SignupDataFragment extends Fragment {
     private HashMap<String, String> input;
     private Button submitButton;
 
+    private ImageView profileImageView;
+
+    public boolean viewReady = false, bitmapReady = false;
+    public Bitmap profileBitmap;
 
     public SignupDataFragment() {
         // Required empty public constructor
@@ -79,6 +83,7 @@ public class SignupDataFragment extends Fragment {
 //                dialog.renderMap();
             }
         });
+        profileImageView = (ImageView) rootView.findViewById(R.id.sign_up_profile_picture);
 
         if (userDataBundle != null) {
             autoFillData();
@@ -108,6 +113,8 @@ public class SignupDataFragment extends Fragment {
             }
         });
 
+        viewReady = true;
+        setProfilePicture();
         return rootView;
     }
 
@@ -123,7 +130,7 @@ public class SignupDataFragment extends Fragment {
         try {
             ((MaterialEditText) rootView.findViewById(id)).setText(userDataBundle.getString(fieldName));
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -214,6 +221,7 @@ public class SignupDataFragment extends Fragment {
                         // Hooray! Let them use the app now.
                         goToMainActivity(getActivity());
                     } else {
+                        e.printStackTrace();
                     }
                 }
             });
@@ -228,6 +236,17 @@ public class SignupDataFragment extends Fragment {
                 }
             });
         }
+    }
+
+    public void setProfilePicture() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (viewReady && bitmapReady) {
+                    profileImageView.setImageBitmap(profileBitmap);
+                }
+            }
+        });
     }
 
     public static void goToMainActivity (Activity act) {

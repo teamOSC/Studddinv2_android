@@ -230,18 +230,16 @@ public class SignOnFragment extends Fragment {
                     FacebookApi.setSession(ParseFacebookUtils.getSession());
                     FacebookApi.getFacebookData(new FacebookApi.FbGotDataCallback() {
                         @Override
-                        public void gotData(Bundle b) {
+                        public void gotData(final Bundle bundle) {
+                            final SignupDataFragment fragment = showSignupDataFragment(bundle);
                             FacebookApi.getProfilePicture(new FacebookApi.FbGotProfilePictureCallback() {
                                 @Override
                                 public void gotProfilePicture(Bitmap profilePicture) {
-
+                                    fragment.bitmapReady = true;
+                                    fragment.profileBitmap = profilePicture;
+                                    fragment.setProfilePicture();
                                 }
                             });
-                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                            FragmentTransaction transaction = fragmentManager.beginTransaction();
-                            transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
-                            SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
-                            transaction.replace(R.id.signon_container, newFragment).addToBackStack("SignIn").commit();
                         }
                     });
                 } else {
@@ -299,7 +297,7 @@ public class SignOnFragment extends Fragment {
     public void doGoogleSignOn (View v) {
     }
 
-    public void showSignupDataFragment(Bundle b) {
+    public SignupDataFragment showSignupDataFragment(Bundle b) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
@@ -307,5 +305,6 @@ public class SignOnFragment extends Fragment {
         SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
 
         transaction.replace(R.id.signon_container,newFragment).addToBackStack("SignIn").commit();
+        return newFragment;
     }
 }

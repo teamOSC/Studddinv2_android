@@ -30,6 +30,12 @@
                 android:layout_height="fill_parent"
                 android:orientation="vertical">
 
+                <ImageView
+                    android:id="@+id/sign_up_profile_picture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true" />
+
                 <in.tosc.studddin.customview.MaterialEditText
                     android:id="@+id/user_name"
                     android:layout_alignParentTop="true"

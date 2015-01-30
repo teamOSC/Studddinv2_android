@@ -2,6 +2,8 @@ package in.tosc.studddin.externalapi;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -14,6 +16,11 @@ import com.facebook.model.GraphUser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by championswimmer on 26/1/15.
@@ -76,9 +83,30 @@ public class FacebookApi {
         new Request(session, "me",bundle,
                 HttpMethod.GET, new Request.Callback() {
             @Override
-            public void onCompleted(Response response) {
-                Log.d(TAG, "Url = " + response.getGraphObject().getInnerJSONObject().toString());
-                listener.gotProfilePicture(null);
+            public void onCompleted(final Response response) {
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        try {
+                            JSONObject jsonObject = response.getGraphObject().getInnerJSONObject();
+                            jsonObject = jsonObject.getJSONObject("picture");
+                            jsonObject = jsonObject.getJSONObject("data");
+                            URL url = new URL(jsonObject.getString("url"));
+                            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                            connection.setDoInput(true);
+                            connection.connect();
+                            InputStream input = connection.getInputStream();
+                            Bitmap bitmap = BitmapFactory.decodeStream(input);
+                            Log.d(TAG, "picture = " + jsonObject.getString("url"));
+                            listener.gotProfilePicture(bitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                }.execute();
             }
         }).executeAsync();
     }
