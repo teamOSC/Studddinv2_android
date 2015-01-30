@@ -1,6 +1,7 @@
 package in.tosc.studddin.externalapi;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -30,7 +31,7 @@ public class FacebookApi {
     private static final String TAG = "FacebookApi";
 
     public static void getFacebookData (final FbGotDataCallback fgdc) {
-        Request req = Request.newMeRequest(session, new Request.GraphUserCallback() {
+        Request.newMeRequest(session, new Request.GraphUserCallback() {
             @Override
             public void onCompleted(GraphUser gu, Response response) {
                 if (gu != null) {
@@ -48,8 +49,7 @@ public class FacebookApi {
                     fgdc.gotData(FbDataBundle);
                 }
             }
-        });
-        req.executeAsync();
+        }).executeAsync();
         return;
     }
 
@@ -69,8 +69,26 @@ public class FacebookApi {
         r.executeAsync();
     }
 
+    public static void getProfilePicture (final FbGotProfilePictureCallback listener) {
+        Log.d(TAG, "getting profile picture");
+        Bundle bundle = new Bundle();
+        bundle.putString("fields", "picture");
+        new Request(session, "me",bundle,
+                HttpMethod.GET, new Request.Callback() {
+            @Override
+            public void onCompleted(Response response) {
+                Log.d(TAG, "Url = " + response.getGraphObject().getInnerJSONObject().toString());
+                listener.gotProfilePicture(null);
+            }
+        }).executeAsync();
+    }
+
     public interface FbGotDataCallback {
         public void gotData (Bundle b);
+    }
+
+    public interface FbGotProfilePictureCallback {
+        public void gotProfilePicture (Bitmap profilePicture);
     }
 
     public interface FbGotEventDataCallback {

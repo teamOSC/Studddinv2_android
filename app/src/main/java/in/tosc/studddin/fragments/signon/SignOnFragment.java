@@ -6,6 +6,7 @@ import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -205,7 +206,8 @@ public class SignOnFragment extends Fragment {
                 ParseFacebookUtils.Permissions.User.ABOUT_ME,
                 ParseFacebookUtils.Permissions.User.RELATIONSHIPS,
                 ParseFacebookUtils.Permissions.User.BIRTHDAY,
-                ParseFacebookUtils.Permissions.User.LOCATION);
+                ParseFacebookUtils.Permissions.User.LOCATION,
+                ParseFacebookUtils.Permissions.User.PHOTOS);
         ParseFacebookUtils.logIn(permissions, getActivity(), new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException err) {
@@ -229,6 +231,12 @@ public class SignOnFragment extends Fragment {
                     FacebookApi.getFacebookData(new FacebookApi.FbGotDataCallback() {
                         @Override
                         public void gotData(Bundle b) {
+                            FacebookApi.getProfilePicture(new FacebookApi.FbGotProfilePictureCallback() {
+                                @Override
+                                public void gotProfilePicture(Bitmap profilePicture) {
+
+                                }
+                            });
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                             FragmentTransaction transaction = fragmentManager.beginTransaction();
                             transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);

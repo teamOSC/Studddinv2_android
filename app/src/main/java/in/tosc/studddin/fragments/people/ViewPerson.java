@@ -22,19 +22,15 @@ public class ViewPerson extends Fragment {
     TextView name , interests , qualifications , distance , institute;
     String sname , sinterests , squalifications , sdistance , sinstitute;
 
-
-
     public ViewPerson() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.view_person, container, false);
-
 
         Bundle i = getArguments();
         if (i  != null )
