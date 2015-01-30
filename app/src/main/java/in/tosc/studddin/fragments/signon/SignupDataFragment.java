@@ -19,11 +19,13 @@ import android.widget.Toast;
 
 import com.parse.LocationCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
 import in.tosc.studddin.MainActivity;
@@ -207,6 +209,9 @@ public class SignupDataFragment extends Fragment {
         user.put(UserDataFields.USER_INSTITUTE, input.get(UserDataFields.USER_INSTITUTE));
         user.put(UserDataFields.USER_QUALIFICATIONS, input.get(UserDataFields.USER_QUALIFICATIONS));
         user.put(UserDataFields.USER_INTERESTS, input.get(UserDataFields.USER_INTERESTS));
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        profileBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        user.put(UserDataFields.USER_IMAGE, new ParseFile("profilePicture.png", stream.toByteArray()));
         try {
             user.put(UserDataFields.USER_LAT, input.get(UserDataFields.USER_LAT));
             user.put(UserDataFields.USER_LONG, input.get(UserDataFields.USER_LONG));
@@ -239,14 +244,14 @@ public class SignupDataFragment extends Fragment {
     }
 
     public void setProfilePicture() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (viewReady && bitmapReady) {
-                    profileImageView.setImageBitmap(profileBitmap);
+        if (viewReady && bitmapReady) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                        profileImageView.setImageBitmap(profileBitmap);
                 }
-            }
-        });
+            });
+        }
     }
 
     public static void goToMainActivity (Activity act) {

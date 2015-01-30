@@ -89,7 +89,7 @@ public class FacebookApi {
                     protected Void doInBackground(Void... params) {
                         try {
                             String objectId = response.getGraphObject().getInnerJSONObject().getString("id");
-                            String sUrl = "https://graph.facebook.com/" + objectId + "/picture?type=large";
+                            String sUrl = "https://graph.facebook.com/" + objectId + "/picture??width=300&&height=300";
                             URL url = new URL(sUrl);
                             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                             connection.setDoInput(true);
@@ -120,6 +120,4 @@ public class FacebookApi {
     public interface FbGotEventDataCallback {
         public void gotEventData (JSONArray jArray);
     }
-
-
 }
