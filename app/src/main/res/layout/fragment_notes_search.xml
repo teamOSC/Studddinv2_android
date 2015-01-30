@@ -74,7 +74,6 @@
         android:layout_marginBottom="20dp"
         android:onClick="jumpToPage"
         fab:fab_colorNormal="@color/note_button"
-        fab:fab_colorPressed="@color/note_button_pressed"
-        />
+        fab:fab_colorPressed="@color/note_button_pressed"/>
     
 </FrameLayout>

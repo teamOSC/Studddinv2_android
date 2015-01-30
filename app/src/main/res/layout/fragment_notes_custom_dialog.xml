@@ -110,7 +110,9 @@
             android:layout_centerHorizontal="true"
             android:id="@+id/notes_button_download"
             android:text="Download All"
-            android:clickable="true"/>
+            android:textColor="@color/white"
+            android:clickable="true"
+            android:background="@drawable/btn_sel"/>
 
         </RelativeLayout>
 

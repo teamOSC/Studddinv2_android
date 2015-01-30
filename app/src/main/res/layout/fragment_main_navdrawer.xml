@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="in.tosc.studddin.NavigationDrawerFragment"
-    >
+    tools:context="in.tosc.studddin.NavigationDrawerFragment">
     <View
         android:background="@drawable/ic_abstract"
         android:layout_width="fill_parent"
@@ -19,7 +18,7 @@
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
-        android:background="#cccc"
+        android:background="#ccc"
         android:listSelector="@drawable/item_bg"/>
 
 </LinearLayout>
