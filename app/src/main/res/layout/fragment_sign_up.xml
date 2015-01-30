@@ -34,7 +34,8 @@
                     android:id="@+id/sign_up_profile_picture"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/image_default" />
 
                 <in.tosc.studddin.customview.MaterialEditText
                     android:id="@+id/user_name"

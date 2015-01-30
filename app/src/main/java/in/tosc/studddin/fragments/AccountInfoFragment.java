@@ -344,13 +344,10 @@ public class AccountInfoFragment extends Fragment {
                                 public void done(ParseException e) {
                                     if(e == null) {
                                         Toast.makeText(getActivity(),"Updated Password Successfully",Toast.LENGTH_LONG).show();
-                                    }
-                                    else {
+                                    } else {
                                         Toast.makeText(getActivity(),"Unable to update password : " + e.getMessage(),
                                         Toast.LENGTH_LONG);
                                     }
-
-
                                 }
                             });
                         } else {
