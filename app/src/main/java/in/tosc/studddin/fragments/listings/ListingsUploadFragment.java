@@ -2,6 +2,7 @@ package in.tosc.studddin.fragments.listings;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -61,10 +62,15 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView =  inflater.inflate(R.layout.fragment_listings_upload, container, false);
-        //camera = (ImageView) rootView.findViewById(R.id.listing_camera);
-        //upload = (ImageView) rootView.findViewById(R.id.listing_upload);
-        //sdCard = (ImageView) rootView.findViewById(R.id.listing_sdcard);
+        View rootView;
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB){
+            rootView = inflater.inflate(R.layout.fragment_listings_upload, container, false);
+            FloatingActionsMenu myMenu = (FloatingActionsMenu) rootView.findViewById(R.id.multiple_actions);
+        }else {
+            rootView = inflater.inflate(R.layout.fragment_listing_upload_gingerbread, container, false);
+        }
+
+        
         listing = (MaterialEditText) rootView.findViewById(R.id.et_listing);
         mobile = (MaterialEditText) rootView.findViewById(R.id.et_mobile);
         listing_image = (ImageView) rootView.findViewById(R.id.listing_image);
@@ -85,8 +91,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         gallery = (FloatingActionButton) rootView.findViewById(R.id.galleryfab);
         upload  = (FloatingActionButton) rootView.findViewById(R.id.uploadfab);
 
-        FloatingActionsMenu myMenu = (FloatingActionsMenu) rootView.findViewById(R.id.multiple_actions);
-        myMenu.getContext();
+        
 
         camera.setOnClickListener(this);
         gallery.setOnClickListener(this);

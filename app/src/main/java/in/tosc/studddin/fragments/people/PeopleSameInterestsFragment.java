@@ -1,13 +1,8 @@
 package in.tosc.studddin.fragments.people;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,24 +11,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -43,11 +31,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.utils.ProgressBarCircular;
 
 
 public class PeopleSameInterestsFragment extends Fragment {
 
-    ProgressBar progressBar;
+    ProgressBarCircular progressBar;
 
     HashMap<String, Boolean> existingelement = new HashMap<String, Boolean>();
 
@@ -77,7 +66,8 @@ public class PeopleSameInterestsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_people_same_interests, container, false);
 
-        progressBar = (ProgressBar) view.findViewById(R.id.progressbar_people);
+        progressBar = (ProgressBarCircular) view.findViewById(R.id.progressbar_people);
+        progressBar.setBackgroundColor(getResources().getColor(R.color.pink));
         search = (EditText) view.findViewById(R.id.people_search);
         lv = (ListView) view.findViewById(R.id.listviewpeople);
 

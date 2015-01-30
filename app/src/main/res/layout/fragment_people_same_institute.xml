@@ -28,10 +28,12 @@
 
     </LinearLayout>
 
-    <ProgressBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressbar_people"/>
+    <in.tosc.studddin.utils.ProgressBarCircular
+        android:id="@+id/progressbar_people"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:textSize="24sp"
+        android:layout_gravity="center_horizontal"/>
 
     <ListView
         android:layout_weight="1"

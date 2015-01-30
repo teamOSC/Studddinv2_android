@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <LinearLayout
+        android:layout_below="@+id/upper_layer"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom|center_horizontal">
+
+        <in.tosc.studddin.utils.FloatingActionButton
+            android:id="@+id/camerafab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/white"
+            fab:fab_title="camera"
+            fab:fab_icon="@drawable/ic_camera_alt_grey600_48dp"
+            fab:fab_colorPressed="@color/note_button_pressed"/>
+
+        <in.tosc.studddin.utils.FloatingActionButton
+            android:id="@+id/galleryfab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/white"
+            fab:fab_title="gallery"
+            fab:fab_icon="@drawable/ic_collections_grey600_48dp"
+            fab:fab_colorPressed="@color/note_button_pressed"/>
+
+        <in.tosc.studddin.utils.FloatingActionButton
+            android:id="@+id/uploadfab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/white"
+            fab:fab_title="upload"
+            fab:fab_icon="@drawable/ic_file_upload_grey600_48dp"
+            fab:fab_colorPressed="@color/note_button_pressed"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/upper_layer"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp">
+        <in.tosc.studddin.customview.MaterialEditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_listing"
+            android:hint="Listing"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="50dp"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            app:baseColor="@color/search_color"
+            app:primaryColor="@color/colorPrimaryDark"/>
+
+        <in.tosc.studddin.customview.MaterialEditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_mobile"
+            android:hint="Mobile"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/et_listing"
+            android:layout_alignLeft="@+id/et_listing"
+            android:layout_alignStart="@+id/et_listing"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            app:baseColor="@color/search_color"
+            app:primaryColor="@color/colorPrimaryDark"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/listing_image"
+            android:layout_gravity="left|bottom"
+            android:layout_alignBottom="@+id/et_listing"
+            android:layout_toLeftOf="@+id/et_listing"
+            android:layout_toStartOf="@+id/et_listing"
+            android:layout_below="@+id/listing_image" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listing_category"
+            android:layout_below="@+id/et_mobile"
+            android:layout_toLeftOf="@+id/listing_upload"
+            android:layout_alignLeft="@+id/et_mobile"
+            android:layout_alignStart="@+id/et_mobile"
+            android:spinnerMode="dialog"
+            android:layout_marginTop="30dp"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="50dp"
+            android:layout_width="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/listing_image"
+            android:layout_alignStart="@+id/listing_image"
+            android:id="@+id/listing_uploadLayout"
+            android:visibility="gone"
+            android:layout_alignRight="@+id/listing_camera"
+            android:layout_alignEnd="@+id/listing_camera">
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/listing_uploadProgress"
+                android:layout_weight="3"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Uploading.."
+                android:id="@+id/textView"
+                android:layout_weight="1"
+                android:gravity="center"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

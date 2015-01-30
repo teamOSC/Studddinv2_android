@@ -90,8 +90,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:hint="@string/user_location"
-                    android:textCursorDrawable="@drawable/text_cursor_cyan"
+                    android:text="@string/user_location"
+                    android:textColor="@color/white"
+                    android:background="@drawable/bbuton_primary_rounded"
                     android:textAlignment="center" />
 
                 <in.tosc.studddin.customview.MaterialEditText
