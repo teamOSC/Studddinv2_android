@@ -1,6 +1,7 @@
 package in.tosc.studddin.fragments.notes;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -141,6 +142,12 @@ public class NotesUploadFragment extends Fragment {
 
                         ParseFile parseFile = new ParseFile("notes.zip", zipByte);
                         parseFile.saveInBackground();
+                        final ProgressDialog notesUploadProgress = new ProgressDialog(getActivity());
+                        notesUploadProgress.setMessage(getString(R.string.notes_uploading));
+                        notesUploadProgress.setCancelable(true);
+                        notesUploadProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        notesUploadProgress.show();
+
 
                         ParseObject uploadNotes = new ParseObject("Notes");
 
@@ -152,13 +159,12 @@ public class NotesUploadFragment extends Fragment {
                         uploadNotes.put("collegeName", "DTU");
 
 
-
-
                         uploadNotes.saveInBackground(new SaveCallback() {
                             @Override
                             public void done(ParseException e) {
                                 // uploading.setVisibility(View.GONE);
                                 Log.d("Raghav", "File Uploaded");
+                                notesUploadProgress.dismiss();
                                 Toast.makeText(getActivity(), getString(R.string.upload_complete),
                                         Toast.LENGTH_SHORT).show();
 
@@ -166,6 +172,7 @@ public class NotesUploadFragment extends Fragment {
                             }
                         });
                     } else {
+
                         Toast.makeText(getActivity(), "Please select an Image to upload", Toast.LENGTH_SHORT).show();
                     }
                 }
