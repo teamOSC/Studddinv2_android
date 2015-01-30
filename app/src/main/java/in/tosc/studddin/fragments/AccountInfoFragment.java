@@ -29,6 +29,8 @@ import com.facebook.model.GraphUser;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseFile;
+import com.parse.ParseImageView;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -39,6 +41,7 @@ import java.util.HashMap;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.externalapi.UserDataFields;
 
 
 public class AccountInfoFragment extends Fragment {
@@ -50,7 +53,7 @@ public class AccountInfoFragment extends Fragment {
     private View rootView;
     private LinearLayout passwordContainer;
     private View newpassFormContainer;
-    private ImageView imageProfile;
+    private ParseImageView imageProfile;
     private Bundle fbParams;
 
 
@@ -96,17 +99,17 @@ public class AccountInfoFragment extends Fragment {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if(currentUser != null)
         {
-            if ( currentUser.get(USER_EMAIL)!=null)
+            if ( currentUser.get(UserDataFields.USER_EMAIL)!=null)
                 tEmail.setText(currentUser.getEmail());
 
-            if (  currentUser.get(USER_INSTITUTE)!=null ) {
+            if (  currentUser.get(UserDataFields.USER_INSTITUTE)!=null ) {
                 eInstitute.setText(currentUser.getString(USER_INSTITUTE));
             }
 
-            if (  currentUser.get(USER_FULLNAME)!=null )
+            if (  currentUser.get(UserDataFields.USER_NAME)!=null )
                 tFullName.setText(currentUser.getString(USER_FULLNAME));
 
-            if ( currentUser.get(USER_QUALIFICATIONS)!=null )
+            if ( currentUser.get(UserDataFields.USER_QUALIFICATIONS)!=null )
                 eQualificaton.setText(currentUser.getString(USER_QUALIFICATIONS));
         }
         else
@@ -114,9 +117,9 @@ public class AccountInfoFragment extends Fragment {
             //TODO: handle errors if any generated
         }
 
-        ParseFacebookUtils.initialize(FB_APP_ID);
-        Task1 asyncRequest = new Task1();
-        asyncRequest.doInBackground();
+        ParseFile profileFile = currentUser.getParseFile(UserDataFields.USER_IMAGE);
+        imageProfile.setParseFile(profileFile);
+        imageProfile.loadInBackground();
     }
 
     private void init() {
@@ -150,7 +153,7 @@ public class AccountInfoFragment extends Fragment {
         eConfirmPassword.setEnabled(false);
         eInstitute.setSelected(false);
 
-        imageProfile = (ImageView)rootView.findViewById(R.id.account_info_picture);
+        imageProfile = (ParseImageView)rootView.findViewById(R.id.account_info_picture);
 
         oclEdit = new View.OnClickListener() {
             @Override
@@ -361,76 +364,6 @@ public class AccountInfoFragment extends Fragment {
                 }
         );
     }
-
-    private void makeMeRequest() {
-        final Session session = fUtils.getSession();
-        Request request = Request.newMeRequest(session,
-                new Request.GraphUserCallback() {
-
-                    @Override
-                    public void onCompleted(GraphUser user, Response response) {
-                        // If the response is successful
-                        if (session == Session.getActiveSession()) {
-                            if (user != null) {
-                                String facebookId = user.getId();
-                                Log.d("facebookId",facebookId);
-
-                                URL img_value = null;
-                                try {
-
-                                    Bitmap bitmap;
-                                    img_value = new URL("https://graph.facebook.com/"+facebookId+"/picture?width=300&&height=300");
-                                    HttpURLConnection connection = (HttpURLConnection) img_value.openConnection();
-                                    connection.setDoInput(true);
-                                    connection.setInstanceFollowRedirects( true );
-                                    connection.connect();
-                                    InputStream inputStream = connection.getInputStream();
-//                                    img_value.openConnection().setInstanceFollowRedirects(true).getInputStream()
-                                    bitmap = BitmapFactory.decodeStream(inputStream);
-                                    imageProfile.setImageBitmap(bitmap);
-                                    Log.d("image","got image");
-
-                                }
-                                catch (Exception e)
-                                {
-                                    Log.d("Exception profile pic",e.toString());
-                                }
-
-                            }
-                        }
-                        if (response.getError() != null) {
-                            // Handle error
-                        }
-                    }
-                });
-        request.executeAsync();
-    }
-
-
-    class Task1 extends AsyncTask<Void, Void, String> {
-
-        @Override
-        protected void onPreExecute()
-        {
-            super.onPreExecute();
-        }
-        @Override
-        protected String doInBackground(Void... arg0)
-        {
-            //Record method
-            makeMeRequest();
-            return "X";
-
-        }
-
-        @Override
-        protected void onPostExecute(String result)
-        {
-            super.onPostExecute(result);
-
-        }
-    }
-
 }
 
 

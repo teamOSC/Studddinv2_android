@@ -33,7 +33,6 @@ import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.externalapi.UserDataFields;
 
-
 /**
  * SignupDataFragment
  */
@@ -216,7 +215,7 @@ public class SignupDataFragment extends Fragment {
             user.put(UserDataFields.USER_LAT, input.get(UserDataFields.USER_LAT));
             user.put(UserDataFields.USER_LONG, input.get(UserDataFields.USER_LONG));
         } catch (Exception e) {
-            // Nothing now
+            e.printStackTrace();
         }
         if (user.getSessionToken() != null) {
             user.saveInBackground(new SaveCallback() {
