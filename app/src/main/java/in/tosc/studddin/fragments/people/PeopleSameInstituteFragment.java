@@ -248,7 +248,6 @@ public class PeopleSameInstituteFragment extends Fragment {
             public void done(List<ParseUser> objects, ParseException e) {
                 if (e == null) {
 
-                    int i=10;
 
                     for (ParseUser pu : objects) {
                         //access the data associated with the ParseUser using the get method
@@ -292,7 +291,6 @@ public class PeopleSameInstituteFragment extends Fragment {
 
 
                             list3.add(each);
-                            i=i+12;
 
                         }
 
