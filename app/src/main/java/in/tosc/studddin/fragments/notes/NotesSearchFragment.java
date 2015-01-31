@@ -17,6 +17,7 @@ import java.util.List;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.fragments.NotesFragment;
 import in.tosc.studddin.utils.FloatingActionButton;
 
 /**
@@ -142,34 +143,11 @@ public class NotesSearchFragment extends Fragment {
         addNotesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Fragment viewPagerOfNotesFragment = getParentFragment();
-
-                List<Fragment> currFragment = viewPagerOfNotesFragment.getChildFragmentManager().getFragments();
-                FragmentTransaction fragmentTransaction = viewPagerOfNotesFragment.getFragmentManager().beginTransaction();
-                fragmentTransaction.show(currFragment.get(0));
-
-                fragmentTransaction.hide(currFragment.get(1));
-
-
-
-
-
+                NotesFragment notesFragment = (NotesFragment) getParentFragment();
+                if (notesFragment != null) {
+                    notesFragment.goToUploadFragment();
+                }
             }
-
-//                FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
-////                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager(); //getFragmentManager().beginTransaction();
-//
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.setCustomAnimations(R.anim.notes_slide_entry, R.anim.notes_slide_exit);
-//
-//                NotesUploadFragment newFragment = new NotesUploadFragment();
-//
-//                fragmentTransaction.replace(R.id.notes_pager, newFragment).addToBackStack(null).commit();
-
-            // Start the animated transition.
-
-
         });
 
         return rootView;
