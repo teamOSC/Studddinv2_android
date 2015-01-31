@@ -12,10 +12,12 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.transition.Explode;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -52,6 +54,7 @@ public class SignupDataFragment extends Fragment implements
     View rootView;
 
     private HashMap<String, String> input;
+    private SparseArray<EditText> editTextArray = new SparseArray<>();
     private Button submitButton;
 
     private ImageView profileImageView;
@@ -97,11 +100,13 @@ public class SignupDataFragment extends Fragment implements
         locationEditText.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle b = new Bundle();
-                b.putDouble("lat", currentUserLoc.getLatitude());
-                b.putDouble("lon", currentUserLoc.getLongitude());
                 LocationSelectDialog dialog = new LocationSelectDialog();
-                dialog.setArguments(b);
+                if (currentUserLoc != null) {
+                    Bundle b = new Bundle();
+                    b.putDouble("lat", currentUserLoc.getLatitude());
+                    b.putDouble("lon", currentUserLoc.getLongitude());
+                    dialog.setArguments(b);
+                }
                 dialog.setLocationSetCallback(new LocationSelectDialog.LocationSetCallback() {
                     @Override
                     public void gotLocation(LatLng latLng) {
@@ -114,6 +119,14 @@ public class SignupDataFragment extends Fragment implements
             }
         });
         profileImageView = (ImageView) rootView.findViewById(R.id.sign_up_profile_picture);
+
+        initializeEditTexts(R.id.user_name);
+        initializeEditTexts(R.id.user_password);
+        initializeEditTexts(R.id.user_dob);
+        initializeEditTexts(R.id.user_institute);
+        initializeEditTexts(R.id.user_email);
+        initializeEditTexts(R.id.user_interests);
+        initializeEditTexts(R.id.user_qualifications);
 
         if (userDataBundle != null) {
             autoFillData();
@@ -151,15 +164,16 @@ public class SignupDataFragment extends Fragment implements
 
     private String getStringFromEditText(int id) {
         try {
-            return ((MaterialEditText) rootView.findViewById(id)).getText().toString();
+            return editTextArray.get(id).getText().toString();
         } catch (Exception e) {
+            e.printStackTrace();
             return " ";
         }
     }
 
     private void setDataToFields (int id, String fieldName) {
         try {
-            ((MaterialEditText) rootView.findViewById(id)).setText(userDataBundle.getString(fieldName));
+            editTextArray.get(id).setText(userDataBundle.getString(fieldName));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -170,6 +184,14 @@ public class SignupDataFragment extends Fragment implements
         setDataToFields(R.id.user_dob, UserDataFields.USER_DOB);
         setDataToFields(R.id.user_institute, UserDataFields.USER_INSTITUTE);
         setDataToFields(R.id.user_email, UserDataFields.USER_EMAIL);
+    }
+
+    private void initializeEditTexts(int id) {
+        EditText mEditText = (EditText) rootView.findViewById(id);
+        if (mEditText == null) {
+            Log.e(TAG, "edit text is null");
+        }
+        editTextArray.put(id, mEditText);
     }
 
     private void getInput() {
@@ -243,8 +265,10 @@ public class SignupDataFragment extends Fragment implements
         ParseFile profile = new ParseFile("profilePicture.png", stream.toByteArray());
         profile.save();
         user.put(UserDataFields.USER_IMAGE, profile);
-        ParseGeoPoint geoPoint = new ParseGeoPoint(currentUserLoc.getLatitude(), currentUserLoc.getLongitude());
-        user.put(UserDataFields.USER_LOCATION, geoPoint);
+        if (currentUserLoc != null) {
+            ParseGeoPoint geoPoint = new ParseGeoPoint(currentUserLoc.getLatitude(), currentUserLoc.getLongitude());
+            user.put(UserDataFields.USER_LOCATION, geoPoint);
+        }
         /*
         try {
             user.put(UserDataFields.USER_LAT, input.get(UserDataFields.USER_LAT));
@@ -309,8 +333,6 @@ public class SignupDataFragment extends Fragment implements
     public void onConnected(Bundle bundle) {
         currentUserLoc = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
-        Log.d(TAG, "location = " + currentUserLoc);
-        input.put(UserDataFields.USER_LOCATION, currentUserLoc.getLatitude() + "," + currentUserLoc.getLongitude());
     }
 
     @Override
