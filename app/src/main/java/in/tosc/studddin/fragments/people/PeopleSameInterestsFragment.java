@@ -250,7 +250,7 @@ public class PeopleSameInterestsFragment extends Fragment {
         if (currentuserinterests == null) {
             currentuserinterests = "";
         }
-        List<String> interestslist = Arrays.asList(currentuserinterests.split(", "));
+        List<String> interestslist = Arrays.asList(currentuserinterests.split(","));
 
         for (int c = 0; c < interestslist.size(); c++) {
             if (!interestslist.get(c).equals("") || !interestslist.get(c).equals(null)) {
