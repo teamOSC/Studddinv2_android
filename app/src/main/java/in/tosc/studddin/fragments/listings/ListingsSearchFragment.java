@@ -3,8 +3,11 @@ package in.tosc.studddin.fragments.listings;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -28,6 +31,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +50,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.tosc.studddin.R;
-import in.tosc.studddin.utils.ProgressBarCircular;
 import in.tosc.studddin.utils.Utilities;
 
 public class ListingsSearchFragment extends Fragment {
@@ -53,12 +57,13 @@ public class ListingsSearchFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ProgressBarCircular loader;
+    private ProgressBar loader;
     private SwipeRefreshLayout swipeRefreshLayout;
     private View rootView;
     private boolean onRefresh = false;
 
     private SharedPreferences filterPrefs;
+    private SharedPreferences.Editor editor;
     public ListingsSearchFragment() {
         // Required empty public constructor
     }
@@ -68,14 +73,19 @@ public class ListingsSearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         filterPrefs = getActivity().getSharedPreferences("filterdetails", 0);
+        editor = filterPrefs.edit();
+        editor.putBoolean("books",true);
+        editor.putBoolean("apparatus",true);
+        editor.putBoolean("misc",true);
+        editor.putString("sortby","nearest");
+        editor.commit();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_listings, container, false);
-        loader = (ProgressBarCircular) rootView.findViewById(R.id.progressBar);
-        loader.setBackgroundColor(getResources().getColor(R.color.pink));
+        loader = (ProgressBar) rootView.findViewById(R.id.progressBar);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listing_recycler_view);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -88,12 +98,12 @@ public class ListingsSearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                //TODO
+
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                fetchListings(true, editable.toString());
             }
         });
 
@@ -101,15 +111,21 @@ public class ListingsSearchFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                onRefresh = true;
-                fetchListings(false);
+                if(Utilities.isNetworkAvailable(getActivity())){
+                    onRefresh = true;
+                    fetchListings(false,null);
+                }
+                else{
+                    swipeRefreshLayout.setRefreshing(false);
+                    Toast.makeText(getActivity(),"Please connect to the Internet",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         if(Utilities.isNetworkAvailable(getActivity()))
-            fetchListings(false);
+            fetchListings(false,null);
         else
-            fetchListings(true);
+            fetchListings(true,null);
 
         return rootView;
     }
@@ -140,52 +156,75 @@ public class ListingsSearchFragment extends Fragment {
         }
     }
 
-    private void fetchListings(final boolean cache){
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
-                "Listings");
-        ArrayList<String> categories = new ArrayList<>();
+    private void fetchListings(final boolean cache,String text){
+        final ArrayList<String> categories = new ArrayList<>();
         if(filterPrefs.getBoolean("books",true))
             categories.add("Book");
         if(filterPrefs.getBoolean("apparatus",true))
             categories.add("Apparatus");
         if(filterPrefs.getBoolean("misc",true))
             categories.add("Misc.");
-        query.whereContainedIn("category",categories);
-        if(filterPrefs.getString("sortby","nearest").compareTo("nearest")==0)
-            query.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));
-        else
-            query.orderByDescending("createdAt");
+        ParseQuery<ParseObject> query = new ParseQuery<>(
+                "Listings");
         if(cache)
             query.fromLocalDatastore();
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(final List<ParseObject> parseObjects, ParseException e) {
-                if(e==null){
-                    if(cache)
-                        doneFetching(parseObjects);
-                    else{
-                        ParseObject.unpinAllInBackground("listings",new DeleteCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                ParseObject.pinAllInBackground("listings",parseObjects);
-                                doneFetching(parseObjects);
-                            }
-                        });
+        query.whereContainedIn("category",categories);
+        if(text==null){
+            if(filterPrefs.getString("sortby","nearest").compareTo("recent")==0)
+                query.orderByDescending("createdAt");
+        /*else
+            query.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));*/
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(final List<ParseObject> parseObjects, ParseException e) {
+                    if (e == null) {
+                        if (categories.size() == 3 && !cache) {
+                            ParseObject.unpinAllInBackground("listings", new DeleteCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    ParseObject.pinAllInBackground("listings", parseObjects);
+                                    doneFetching(parseObjects,cache);
+                                }
+                            });
+                        } else
+                            doneFetching(parseObjects,cache);
+                    } else {
+                        if (onRefresh) {
+                            onRefresh = false;
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                        Toast.makeText(getActivity(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
                     }
                 }
-                else{
-                    if(!cache)
-                        Toast.makeText(getActivity(),"Please connect to the Internet",Toast.LENGTH_SHORT).show();
+            });
+        }
+        if(text!=null){
+            query.whereMatches("listingName", "("+text+")", "i");
+            ParseQuery<ParseObject> descQuery = new ParseQuery<>(
+                    "Listings");
+            descQuery.fromLocalDatastore();
+            descQuery.whereContainedIn("category",categories);
+            descQuery.whereMatches("listingDesc", "(" + text + ")", "i");
+            List<ParseQuery<ParseObject>> queries = new ArrayList<>();
+            queries.add(query);
+            queries.add(descQuery);
+            ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
+            if(filterPrefs.getString("sortby","nearest").compareTo("recent")==0)
+                mainQuery.orderByDescending("createdAt");
+            /*else
+                mainQuery.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));*/
+            mainQuery.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> results, ParseException e) {
+                    doneFetching(results,cache);
                 }
-            }
-        });
-
+            });
+        }
     }
 
-    private void doneFetching(List<ParseObject> parseObjects){
-        mAdapter = new ListingAdapter(parseObjects);
+    private void doneFetching(List<ParseObject> parseObjects,boolean cache){
+        mAdapter = new ListingAdapter(parseObjects,cache);
         mAdapter.notifyDataSetChanged();
-        if(onRefresh==true){
+        if(onRefresh){
             onRefresh=false;
             swipeRefreshLayout.setRefreshing(false);
         }
@@ -196,33 +235,52 @@ public class ListingsSearchFragment extends Fragment {
 
     public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ViewHolder>{
         private List<ParseObject> mDataset;
-        public ListingAdapter(List<ParseObject> dataSet) {
+        private boolean mCache;
+        public ListingAdapter(List<ParseObject> dataSet,boolean cache) {
             mDataset = dataSet;
+            mCache = cache;
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
             CardView v = (CardView) LayoutInflater.from(viewGroup.getContext())
                     .inflate(in.tosc.studddin.R.layout.listing_card_view, viewGroup, false);
-
-            ViewHolder vh = new ViewHolder(v);
-            return vh;
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int i) {
+        public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
             viewHolder.listing_name.setText(mDataset.get(i).getString("listingName"));
             viewHolder.owner_name.setText(mDataset.get(i).getString("ownerName"));
             viewHolder.mobile.setText(mDataset.get(i).getString("mobile"));
+            viewHolder.listing_desc.setText(mDataset.get(i).getString("listingDesc"));
+            if(!mCache)
+                viewHolder.listing_image.setPlaceholder(getResources().getDrawable(R.drawable.listing_placeholder));
             viewHolder.listing_image.setParseFile(mDataset.get(i).getParseFile("image"));
             viewHolder.listing_image.loadInBackground(new GetDataCallback() {
                 @Override
-                public void done(byte[] bytes, ParseException e) {
-                    if (e != null)
-                        e.printStackTrace();
+                public void done(byte[] bytes, ParseException e) {}
+            });
+            double distance = mDataset.get(i).getParseGeoPoint("location").distanceInKilometersTo(new ParseGeoPoint(28.7500749,77.11766519999992));
+            if(distance<10 && distance!=0)
+                viewHolder.listing_distance.setText(String.format("%.1f",distance) + " km away");
+            else
+                viewHolder.listing_distance.setText((int) distance + " km");
+            final String latitude = Double.toString(mDataset.get(i).getParseGeoPoint("location").getLatitude());
+            final String longitude = Double.toString(mDataset.get(i).getParseGeoPoint("location").getLongitude());
+            viewHolder.compass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try{
+                        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                            Uri.parse("geo:0,0?q="+latitude+","+longitude+"("+mDataset.get(i).getString("ownerName") +")"));
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                       startActivity(new Intent(Intent.ACTION_VIEW,
+                               Uri.parse("http://maps.google.com/maps?q=loc:" + latitude + "," + longitude)));
+                        }
                 }
             });
-            viewHolder.listing_distance.setText((int) (mDataset.get(i).getParseGeoPoint("location")).distanceInKilometersTo(new ParseGeoPoint(28.7500749,77.11766519999992)) + "km");
         }
 
         @Override
@@ -234,16 +292,20 @@ public class ListingsSearchFragment extends Fragment {
             TextView listing_name;
             TextView owner_name;
             TextView mobile;
+            TextView listing_desc;
             ParseImageView listing_image;
             TextView listing_distance;
+            ImageView compass;
 
             public ViewHolder(CardView v) {
                 super(v);
                 this.listing_name = (TextView) v.findViewById(R.id.listing_name);
+                this.compass = (ImageView) v.findViewById(R.id.compass);
                 this.owner_name = (TextView) v.findViewById(R.id.owner_name);
                 this.mobile = (TextView) v.findViewById(R.id.mobile);
                 this.listing_distance = (TextView) v.findViewById(R.id.listing_distance);
                 this.listing_image = (ParseImageView) v.findViewById(R.id.listing_image);
+                this.listing_desc = (TextView) v.findViewById(R.id.listing_desc);
             }
         }
     }
@@ -254,7 +316,6 @@ public class ListingsSearchFragment extends Fragment {
         private CheckBox books;
         private CheckBox apparatus;
         private CheckBox misc;
-        private SharedPreferences.Editor editor;
 
         @NonNull
         @Override
@@ -262,10 +323,10 @@ public class ListingsSearchFragment extends Fragment {
 
             filterPrefs = getActivity().getSharedPreferences("filterdetails", 0);
             editor = filterPrefs.edit();
-            List<String> spinnerList = new ArrayList<String>();
+            List<String> spinnerList = new ArrayList<>();
             spinnerList.add("Nearest");
             spinnerList.add("Recent");
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item,spinnerList);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item,spinnerList);
             AlertDialog.Builder filterDialog = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater = getActivity().getLayoutInflater();
             v = inflater.inflate(R.layout.listing_filter_dialog, null);
@@ -304,7 +365,7 @@ public class ListingsSearchFragment extends Fragment {
                         editor.putBoolean("misc",false);
 
                     editor.commit();
-                    fetchListings(true);
+                    fetchListings(true,null);
                 }
             });
             return filterDialog.create();
