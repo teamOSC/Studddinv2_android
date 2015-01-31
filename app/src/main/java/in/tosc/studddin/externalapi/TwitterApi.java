@@ -1,6 +1,8 @@
 package in.tosc.studddin.externalapi;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.parse.ParseTwitterUtils;
 import com.parse.twitter.Twitter;
@@ -15,33 +17,43 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import in.tosc.studddin.utils.Utilities;
+
 /**
  * Created by championswimmer on 26/1/15.
  */
 public class TwitterApi {
+    private static final String TAG = "TwitterApi";
+
     private static final String infoGetUrl = "https://api.twitter.com/1.1/users/show.json?screen_name=%s";
 
     public static void getUserInfo(final TwitterInfoCallback callback) {
-        new AsyncTask<Void, Void, String>() {
+        new AsyncTask<Void, Void, JSONObject>() {
+            Bitmap bitmap = null;
             @Override
-            protected String doInBackground(Void... params) {
+            protected JSONObject doInBackground(Void... params) {
                 Twitter twitter = ParseTwitterUtils.getTwitter();
                 HttpClient client = new DefaultHttpClient();
                 HttpGet verifyGet = new HttpGet(String.format(infoGetUrl, twitter.getScreenName()));
                 twitter.signRequest(verifyGet);
                 try {
                     HttpResponse response = client.execute(verifyGet);
-                    return EntityUtils.toString(response.getEntity());
+                    JSONObject object = new JSONObject(EntityUtils.toString(response.getEntity()));
+                    bitmap = Utilities.downloadBitmap(object.getString("profile_image_url").replace("_normal", ""));
+                    Log.d(TAG, "twitter profile url = " + object.getString("profile_image_url").replace("_normal", ""));
+                    return object;
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                return "";
+                return null;
             }
 
             @Override
-            protected void onPostExecute(String result) {
+            protected void onPostExecute(JSONObject object) {
                 try {
-                    callback.gotInfo(new JSONObject(result));
+                    callback.gotInfo(object, bitmap);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -50,6 +62,6 @@ public class TwitterApi {
     }
 
     public interface TwitterInfoCallback {
-        public void gotInfo(JSONObject object);
+        public void gotInfo(JSONObject object, Bitmap bitmap) throws JSONException;
     }
 }
