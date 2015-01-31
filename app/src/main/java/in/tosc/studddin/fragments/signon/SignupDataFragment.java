@@ -257,8 +257,9 @@ public class SignupDataFragment extends Fragment implements
         user.put(UserDataFields.USER_IMAGE, profile);
         ParseGeoPoint geoPoint = new ParseGeoPoint(currentUserLoc.getLatitude(), currentUserLoc.getLongitude());
         user.put(UserDataFields.USER_LOCATION, geoPoint);
+        user.put(UserDataFields.USER_FULLY_REGISTERED, true);
 
-        
+
         if (user.getSessionToken() != null) {
             Log.d(TAG, "saving user in background");
             user.saveInBackground(new SaveCallback() {

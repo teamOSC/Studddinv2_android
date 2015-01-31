@@ -212,7 +212,7 @@ public class SignOnFragment extends Fragment {
                 }
                 if (user == null) {
                     Log.w(TAG, "Uh oh. The user cancelled the Facebook login.");
-                } else if (user.isNew()) {
+                } else if (user.isNew() || (user.getBoolean(UserDataFields.USER_FULLY_REGISTERED) != true)) {
                     Log.w(TAG, "User signed up and logged in through Facebook!");
 
                     Log.w(TAG,
@@ -266,7 +266,7 @@ public class SignOnFragment extends Fragment {
                 }
                 if (user == null) {
                     Log.w(TAG, "Uh oh. The user cancelled the Twitter login.");
-                } else if (user.isNew()) {
+                } else if (user.isNew() || (user.getBoolean(UserDataFields.USER_FULLY_REGISTERED) != true)) {
                     Log.w(TAG, "User signed up and logged in through Twitter!" + ParseTwitterUtils.getTwitter().getScreenName());
                     final Bundle b = new Bundle();
                     b.putString(UserDataFields.USER_NAME, ParseTwitterUtils.getTwitter().getScreenName());
