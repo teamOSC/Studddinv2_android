@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/listing_filter"
@@ -8,8 +8,7 @@
         android:title="Filter"
         app:showAsAction="always"
 
-        >
-    </item>
+        ></item>
 
     <item
         android:id="@+id/listing_upload"
@@ -17,9 +16,7 @@
         android:title="Upload"
         app:showAsAction="always"
 
-        >
-    </item>
-
+        ></item>
 
 
 </menu>

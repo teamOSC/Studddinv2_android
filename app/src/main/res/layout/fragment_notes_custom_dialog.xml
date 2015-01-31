@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="20dp"
-        >
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginLeft="20dp"
+            android:layout_weight="1"
             android:text="@string/notes_uploadedby"
 
             />
+
         <TextView
+            android:id="@+id/notes_details_uploadedby"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/notes_details_uploadedby"/>
+            android:layout_weight="1" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -32,88 +34,96 @@
         android:orientation="horizontal"
 
         >
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
-            android:text="Topic:"/>
+            android:text="Topic:" />
+
         <TextView
+            android:id="@+id/notes_details_topicname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/notes_details_topicname"/>
+            android:layout_weight="1" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="10dp"
-        >
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
             android:layout_marginLeft="20dp"
-            android:text="Branch: "
-            />
+            android:layout_weight="1"
+            android:text="Branch: " />
+
         <TextView
+            android:id="@+id/notes_details_branchname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/notes_details_branchname"/>
+            android:layout_weight="1" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginLeft="20dp"
-            android:text="Subject:"/>
+            android:layout_weight="1"
+            android:text="Subject:" />
+
         <TextView
+            android:id="@+id/notes_details_subjectname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/notes_details_subjectname"/>
+            android:layout_weight="1" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginLeft="20dp"
-            android:text="College:"/>
+            android:layout_weight="1"
+            android:text="College:" />
+
         <TextView
+            android:id="@+id/notes_details_collegename"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/notes_details_collegename"/>
+            android:layout_weight="1" />
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginTop="20dp">
 
         <Button
+            android:id="@+id/notes_button_download"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:id="@+id/notes_button_download"
-            android:text="Download All"
-            android:textColor="@color/white"
+            android:background="@drawable/btn_sel"
             android:clickable="true"
-            android:background="@drawable/btn_sel"/>
+            android:text="Download All"
+            android:textColor="@color/white" />
 
-        </RelativeLayout>
+    </RelativeLayout>
 
 </LinearLayout>

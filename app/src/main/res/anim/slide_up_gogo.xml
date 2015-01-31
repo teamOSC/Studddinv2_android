@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layoutAnimation xmlns:android="http://schemas.android.com/apk/res/android"
-    android:delay="30%"
     android:animation="@anim/slide_down"
-    android:interpolator="@android:anim/accelerate_interpolator"/>
+    android:delay="30%"
+    android:interpolator="@android:anim/accelerate_interpolator" />

@@ -1,175 +1,173 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="7"
     android:orientation="vertical"
+    android:weightSum="7"
     tools:context="in.tosc.studddin.fragments.signon.SignupDataFragment">
 
     <LinearLayout
-        android:layout_gravity="bottom"
-        android:gravity="bottom"
-        android:layout_marginTop="40dp"
-        android:orientation="vertical"
-        android:layout_weight="6"
         android:layout_width="fill_parent"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="40dp"
+        android:layout_weight="6"
+        android:gravity="bottom"
+        android:orientation="vertical">
 
         <ScrollView
-            android:layout_weight="8"
-            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_weight="8"
             android:orientation="vertical">
 
             <RelativeLayout
-                android:layout_margin="10dp"
-                android:layout_gravity="top"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
+                android:layout_gravity="top"
+                android:layout_margin="10dp"
                 android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/sign_up_profile_picture"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
                     android:maxHeight="200dp"
                     android:maxWidth="300dp"
                     android:minHeight="100dp"
                     android:minWidth="130dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentTop="true"
                     android:src="@drawable/image_default" />
 
                 <in.tosc.studddin.customview.MaterialEditText
                     android:id="@+id/user_name"
-                    android:layout_below="@id/sign_up_profile_picture"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/sign_up_profile_picture"
                     android:layout_margin="10dp"
                     android:hint="@string/user_name"
-                    app:baseColor="@color/search_color"
-                    app:primaryColor="@color/colorPrimaryDark"
-                    app:floatingLabel="highlight"
+                    android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    android:textAlignment="center" />
+                    app:baseColor="@color/search_color"
+                    app:floatingLabel="highlight"
+                    app:primaryColor="@color/colorPrimaryDark" />
 
                 <in.tosc.studddin.customview.MaterialEditText
-                    android:layout_below="@id/user_name"
                     android:id="@+id/user_password"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/user_name"
                     android:layout_margin="10dp"
                     android:hint="@string/user_password"
                     android:inputType="textWebPassword"
-                    app:baseColor="@color/search_color"
-                    app:primaryColor="@color/colorPrimaryDark"
-                    app:floatingLabel="highlight"
+                    android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    android:textAlignment="center" />
+                    app:baseColor="@color/search_color"
+                    app:floatingLabel="highlight"
+                    app:primaryColor="@color/colorPrimaryDark" />
 
                 <in.tosc.studddin.customview.MaterialEditText
-                    android:layout_below="@id/user_password"
                     android:id="@+id/user_dob"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/user_password"
                     android:layout_margin="10dp"
                     android:hint="@string/user_dob"
                     android:inputType="date"
-                    app:baseColor="@color/search_color"
-                    app:primaryColor="@color/colorPrimaryDark"
-                    app:floatingLabel="highlight"
+                    android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    android:textAlignment="center" />
+                    app:baseColor="@color/search_color"
+                    app:floatingLabel="highlight"
+                    app:primaryColor="@color/colorPrimaryDark" />
 
                 <in.tosc.studddin.customview.MaterialEditText
-                    android:layout_below="@id/user_dob"
                     android:id="@+id/user_institute"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/user_dob"
                     android:layout_margin="10dp"
                     android:hint="@string/institute_name"
-                    app:baseColor="@color/search_color"
-                    app:primaryColor="@color/colorPrimaryDark"
-                    app:floatingLabel="highlight"
+                    android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    android:textAlignment="center" />
+                    app:baseColor="@color/search_color"
+                    app:floatingLabel="highlight"
+                    app:primaryColor="@color/colorPrimaryDark" />
 
                 <Button
-                    android:layout_below="@id/user_institute"
                     android:id="@+id/user_location"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/user_institute"
                     android:layout_margin="10dp"
-                    android:text="@string/user_location"
-                    android:textColor="@color/white"
                     android:background="@drawable/bbuton_primary_rounded"
-                    android:textAlignment="center" />
+                    android:text="@string/user_location"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
 
                 <in.tosc.studddin.customview.MaterialEditText
-                    android:layout_below="@id/user_location"
                     android:id="@+id/user_email"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/user_location"
                     android:layout_margin="10dp"
                     android:hint="@string/email_id"
-                    app:baseColor="@color/search_color"
-                    app:primaryColor="@color/colorPrimaryDark"
-                    app:floatingLabel="highlight"
+                    android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    android:textAlignment="center" />
+                    app:baseColor="@color/search_color"
+                    app:floatingLabel="highlight"
+                    app:primaryColor="@color/colorPrimaryDark" />
 
                 <in.tosc.studddin.customview.MaterialEditText
-                    android:layout_below="@id/user_email"
                     android:id="@+id/user_qualifications"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/user_email"
                     android:layout_margin="10dp"
                     android:hint="@string/qualifications"
-                    app:baseColor="@color/search_color"
-                    app:primaryColor="@color/colorPrimaryDark"
-                    app:floatingLabel="highlight"
+                    android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    android:textAlignment="center" />
+                    app:baseColor="@color/search_color"
+                    app:floatingLabel="highlight"
+                    app:primaryColor="@color/colorPrimaryDark" />
 
                 <in.tosc.studddin.customview.MaterialEditText
-                    android:layout_below="@id/user_qualifications"
                     android:id="@+id/user_interests"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/user_qualifications"
                     android:layout_margin="10dp"
                     android:hint="@string/interests"
-                    app:baseColor="@color/search_color"
-                    app:primaryColor="@color/colorPrimaryDark"
-                    app:floatingLabel="highlight"
+                    android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    android:textAlignment="center" />
+                    app:baseColor="@color/search_color"
+                    app:floatingLabel="highlight"
+                    app:primaryColor="@color/colorPrimaryDark" />
 
             </RelativeLayout>
         </ScrollView>
 
-        </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_weight="1"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp">
-            <Button
-                android:id="@+id/submit_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="@string/submit"
-                android:textColor="@color/white"
-                android:background="@drawable/bbuton_primary_rounded"/>
-
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/bbuton_primary_rounded"
+            android:gravity="center"
+            android:text="@string/submit"
+            android:textColor="@color/white" />
 
-
+    </LinearLayout>
 
 
 </LinearLayout>

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,86 +12,86 @@
 
 
         <com.parse.ParseImageView
+            android:id="@+id/listing_image"
             android:layout_width="100dp"
             android:layout_height="110dp"
-            android:id="@+id/listing_image"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_marginTop="5dp" />
 
         <TextView
+            android:id="@+id/listing_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/listing_name"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="2dp"
             android:layout_toRightOf="@+id/listing_image"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
+            android:id="@+id/listing_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/listing_desc"
+            android:layout_alignEnd="@+id/listing_name"
+            android:layout_alignRight="@+id/listing_name"
             android:layout_below="@+id/listing_name"
             android:layout_toRightOf="@+id/listing_image"
-            android:layout_alignRight="@+id/listing_name"
-            android:layout_alignEnd="@+id/listing_name" />
+            android:text="New Text" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
             android:id="@+id/owner_name"
-            android:layout_below="@+id/listing_desc"
-            android:layout_alignLeft="@+id/listing_desc"
-            android:layout_alignStart="@+id/listing_desc" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:layout_alignLeft="@+id/listing_desc"
+            android:layout_alignStart="@+id/listing_desc"
+            android:layout_below="@+id/listing_desc"
+            android:text="New Text" />
+
+        <TextView
             android:id="@+id/mobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/owner_name"
             android:layout_toRightOf="@+id/listing_image"
-            android:autoLink="phone" />
+            android:autoLink="phone"
+            android:text="New Text" />
 
         <FrameLayout
+            android:id="@+id/frameLayout2"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:id="@+id/frameLayout2">
+            android:layout_alignParentRight="true">
 
             <TextView
+                android:id="@+id/listing_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/listing_distance"
                 android:layout_gravity="right|bottom"
-                android:gravity="center" />
+                android:gravity="center"
+                android:text="New Text" />
 
         </FrameLayout>
 
         <ImageView
+            android:id="@+id/compass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/compass"
-            android:src="@android:drawable/ic_menu_compass"
-            android:layout_marginRight="18dp"
-            android:layout_marginEnd="18dp"
-            android:layout_gravity="center"
             android:layout_above="@+id/frameLayout2"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_gravity="center"
+            android:layout_marginEnd="18dp"
+            android:layout_marginRight="18dp"
+            android:src="@android:drawable/ic_menu_compass" />
 
 
     </RelativeLayout>

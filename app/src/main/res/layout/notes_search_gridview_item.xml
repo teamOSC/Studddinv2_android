@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/abc_popup_background_mtrl_mult">
 
     <TextView
+        android:id="@+id/notes_gridview_topicname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/notes_gridview_topicname"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-         />
+        android:text="New Text" />
 
     <TextView
+        android:id="@+id/notes_gridview_subjectname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/notes_gridview_subjectname"
         android:layout_below="@+id/notes_gridview_topicname"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="New Text" />
 
     <TextView
-        android:layout_width = "wrap_content"
-        android:layout_height = "wrap_content"
-        android:text = "New Text"
-        android:id = "@+id/notes_gridview_branchname"
-        android:layout_below = "@+id/notes_gridview_subjectname"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/notes_gridview_branchname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/notes_gridview_subjectname"
+        android:layout_centerHorizontal="true"
+        android:text="New Text" />
 
 
 </RelativeLayout>

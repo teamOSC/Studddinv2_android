@@ -1,8 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/notes_upload_container"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/notes_upload_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
@@ -12,84 +12,84 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/notes_selected_image"
-        android:layout_alignParentBottom="true"/>
-        <Button
-            android:layout_width="128dp"
-            android:layout_height="128dp"
-            android:id="@+id/notes_attach"
-            android:background="@drawable/attachpin"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp" />
 
-        <in.tosc.studddin.customview.MaterialEditText
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/notes_topic"
-            android:hint="@string/notes_topic_name"
-            android:imeOptions="actionNext"
-            android:layout_marginTop="40dp"
-            android:layout_below="@+id/notes_attach"
-            android:layout_centerHorizontal="true"
-            android:textCursorDrawable="@drawable/text_cursor_cyan"
-            app:baseColor="@color/search_color"
-            app:primaryColor="@color/colorPrimaryDark"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <in.tosc.studddin.customview.MaterialEditText
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/notes_subject"
-            android:hint="@string/notes_subject_name"
-            android:imeOptions="actionNext"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/notes_topic"
-            android:layout_centerHorizontal="true"
-            android:textCursorDrawable="@drawable/text_cursor_cyan"
-            app:baseColor="@color/search_color"
-            app:primaryColor="@color/colorPrimaryDark"/>
+            <ImageView
+                android:id="@+id/notes_selected_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentBottom="true" />
 
-        <in.tosc.studddin.customview.MaterialEditText
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/notes_branch"
-            android:imeOptions="actionDone"
-            android:layout_marginTop="20dp"
-            android:hint = "@string/notes_branch_name"
-            android:layout_below="@+id/notes_subject"
-            android:layout_centerHorizontal="true"
-            android:textCursorDrawable="@drawable/text_cursor_cyan"
-            app:baseColor="@color/search_color"
-            app:primaryColor="@color/colorPrimaryDark"/>
+            <Button
+                android:id="@+id/notes_attach"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/attachpin" />
 
-        
+            <in.tosc.studddin.customview.MaterialEditText
+                android:id="@+id/notes_topic"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/notes_attach"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:hint="@string/notes_topic_name"
+                android:imeOptions="actionNext"
+                android:textCursorDrawable="@drawable/text_cursor_cyan"
+                app:baseColor="@color/search_color"
+                app:primaryColor="@color/colorPrimaryDark" />
+
+            <in.tosc.studddin.customview.MaterialEditText
+                android:id="@+id/notes_subject"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/notes_topic"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:hint="@string/notes_subject_name"
+                android:imeOptions="actionNext"
+                android:textCursorDrawable="@drawable/text_cursor_cyan"
+                app:baseColor="@color/search_color"
+                app:primaryColor="@color/colorPrimaryDark" />
+
+            <in.tosc.studddin.customview.MaterialEditText
+                android:id="@+id/notes_branch"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/notes_subject"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:hint="@string/notes_branch_name"
+                android:imeOptions="actionDone"
+                android:textCursorDrawable="@drawable/text_cursor_cyan"
+                app:baseColor="@color/search_color"
+                app:primaryColor="@color/colorPrimaryDark" />
 
 
-    </RelativeLayout>
+        </RelativeLayout>
     </ScrollView>
+
     <in.tosc.studddin.utils.FloatingActionButton
+        android:id="@+id/notes_upload"
         style="?android:attr/buttonStyleSmall"
-        android:layout_gravity="bottom|right"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:id="@+id/notes_upload"
-        android:layout_alignParentRight ="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/notes_branch"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
         fab:fab_colorNormal="@color/pink"
         fab:fab_colorPressed="@color/pink_pressed"
-        fab:fab_icon="@drawable/ic_file_upload_white_48dp"
-        />
+        fab:fab_icon="@drawable/ic_file_upload_white_48dp" />
 
 </FrameLayout>

@@ -1,145 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
 
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="110dp"
-        android:orientation="horizontal"
         android:background="@drawable/abc_popup_background_mtrl_mult"
-        >
+        android:orientation="horizontal">
 
 
         <com.parse.ParseImageView
-            android:visibility="visible"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
+            android:id="@+id/people_userimg"
             android:layout_width="0sp"
             android:layout_height="match_parent"
-            android:layout_weight="0.35"
-            android:id="@+id/people_userimg"
-            android:src="@drawable/ic_action_person"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.35"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_action_person"
+            android:visibility="visible"
 
             />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1"
             android:layout_marginRight="5dp"
-            >
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/people_name"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:textStyle="bold"
-                android:id="@+id/people_name"
+                android:layout_marginTop="3dp"
                 android:layout_weight="1.5"
                 android:text="Name"
                 android:textColor="@color/colorPrimaryDark"
 
 
-
                 android:textSize="17sp"
-                android:layout_marginTop="3dp"
-                />
+                android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/people_institute"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:id="@+id/people_institute"
                 android:layout_weight="1.25"
-                android:textColor="@color/colorPrimary"
-
-                android:textSize="14sp"
                 android:text="Institute"
 
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp"
+
                 />
 
             <TextView
+                android:id="@+id/people_qualification"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:id="@+id/people_qualification"
                 android:layout_weight="1.25"
-                android:textColor="@color/colorPrimary"
-
-                android:textSize="14sp"
                 android:text="Qualification"
 
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp"
+
                 />
 
             <TextView
+                android:id="@+id/people_interests"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:id="@+id/people_interests"
                 android:layout_weight="1.25"
                 android:text="Interests"
                 android:textColor="@color/colorPrimary"
 
 
-                android:textSize="14sp"
-                />
+                android:textSize="14sp" />
 
 
-
-
-
-
-
-            </LinearLayout>
-
-
-
-
+        </LinearLayout>
 
 
         <LinearLayout
             android:layout_width="0sp"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="0.12"
-            android:orientation="vertical"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="5dp"
             android:layout_marginLeft="10dp"
-            >
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="0.12"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:gravity="center"
+                android:layout_marginTop="8dp"
 
                 android:layout_weight="0.6"
                 android:background="@android:drawable/ic_menu_compass"
-                android:layout_marginTop="8dp"
-                />
+                android:gravity="center" />
 
             <TextView
+                android:id="@+id/people_distance"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:id="@+id/people_distance"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:textSize="10sp"
-
                 android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:gravity="center"
+
                 android:text="Status"
-                />
+                android:textSize="10sp" />
 
-            </LinearLayout>
-
-    </LinearLayout>
-
-
+        </LinearLayout>
 
     </LinearLayout>
+
+
+</LinearLayout>

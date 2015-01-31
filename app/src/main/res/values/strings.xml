@@ -57,9 +57,9 @@
     <string name="enter_branch_name">Please enter the Branch Name</string>
 
     <!-- Feed -->
-    <string name="feed_category_interests" >Your Interests</string>
-    <string name="feed_category_college" >Your College</string>
-    <string name="feed_category_around" >Your Locality</string>
+    <string name="feed_category_interests">Your Interests</string>
+    <string name="feed_category_college">Your College</string>
+    <string name="feed_category_around">Your Locality</string>
     <string name="feed_search_hint">Search</string>
     <string name="user_password">Password</string>
     <string name="sign_in_reset">Reset</string>

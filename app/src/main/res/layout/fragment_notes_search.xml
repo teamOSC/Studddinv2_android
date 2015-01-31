@@ -1,7 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="in.tosc.studddin.fragments.notes.NotesSearchFragment">
@@ -11,69 +11,71 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/feed_search_frame"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/selector_card_background">
-            <in.tosc.studddin.customview.MaterialEditText
-                android:id="@+id/notes_search"
+            android:layout_gravity="center">
+
+            <FrameLayout
+                android:id="@+id/feed_search_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionSearch"
-                android:hint="@string/feed_search_hint"
-                android:textCursorDrawable="@drawable/text_cursor_cyan"
-                android:layout_marginTop="5dp"
-                app:baseColor="@color/search_color"
-                app:primaryColor="@color/colorPrimaryDark"
-                app:floatingLabel="highlight"
-                app:maxCharacters="25"
-                app:singleLineEllipsis="true"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"/>
-        
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/selector_card_background">
 
-        </FrameLayout>
+                <in.tosc.studddin.customview.MaterialEditText
+                    android:id="@+id/notes_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:hint="@string/feed_search_hint"
+                    android:imeOptions="actionSearch"
+                    android:textCursorDrawable="@drawable/text_cursor_cyan"
+                    app:baseColor="@color/search_color"
+                    app:floatingLabel="highlight"
+                    app:maxCharacters="25"
+                    app:primaryColor="@color/colorPrimaryDark"
+                    app:singleLineEllipsis="true" />
 
-    </RelativeLayout>
-    <GridView
-        android:layout_marginTop="10dp"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:numColumns="2"
-        android:gravity="center"
-        android:columnWidth="320dp"
-        android:stretchMode="columnWidth"
-        android:id="@+id/notes_gridview"
-        android:layoutAnimation="@anim/slide_up_gogo">
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+        <GridView
+            android:id="@+id/notes_gridview"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="2"
+            android:columnWidth="320dp"
+            android:gravity="center"
+            android:layoutAnimation="@anim/slide_up_gogo"
+            android:numColumns="2"
+            android:stretchMode="columnWidth">
 
         </GridView>
     </LinearLayout>
 
 
     <in.tosc.studddin.utils.AddFloatingActionButton
-        android:layout_gravity="bottom|right"
+        android:id="@+id/notes_button_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/notes_button_add"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight ="true"
-        android:layout_marginRight="20dp"
+        android:layout_gravity="bottom|right"
         android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
         android:onClick="jumpToPage"
         fab:fab_addButtonPlusIconColor="@color/white"
         fab:fab_colorNormal="@color/note_button"
-        fab:fab_colorPressed="@color/note_button_pressed"/>
-    
+        fab:fab_colorPressed="@color/note_button_pressed" />
+
 </FrameLayout>
