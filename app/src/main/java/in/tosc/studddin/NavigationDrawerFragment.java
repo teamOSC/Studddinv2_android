@@ -3,6 +3,7 @@ package in.tosc.studddin;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,8 +21,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+
+import com.parse.GetDataCallback;
+import com.parse.ParseException;
+import com.parse.ParseImageView;
+import com.parse.ParseUser;
+
+import in.tosc.studddin.externalapi.UserDataFields;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -55,6 +64,7 @@ public class NavigationDrawerFragment extends Fragment {
     private LinearLayout mDrawerLinearLayout;
     private ListView mDrawerListView;
     private View mFragmentContainerView;
+    private ParseImageView mProfilePic;
 
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
@@ -119,6 +129,13 @@ public class NavigationDrawerFragment extends Fragment {
                         "Account"
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+
+
+        mProfilePic = ((ParseImageView) mDrawerLinearLayout.findViewById(R.id.nav_drawer_profile_pic));
+        mProfilePic.setPlaceholder(getResources().getDrawable(R.drawable.com_facebook_profile_default_icon));
+        mProfilePic.setParseFile(ParseUser.getCurrentUser().getParseFile(UserDataFields.USER_IMAGE));
+
+
         return mDrawerLinearLayout;
     }
 
@@ -177,7 +194,7 @@ public class NavigationDrawerFragment extends Fragment {
                             .getDefaultSharedPreferences(getActivity());
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
                 }
-
+                mProfilePic.loadInBackground();
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
         };

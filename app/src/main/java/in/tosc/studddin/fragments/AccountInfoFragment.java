@@ -14,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,8 +37,8 @@ public class AccountInfoFragment extends Fragment {
 
     private EditText ePassword,eQualificaton,eInstitute,eNewPassword,eConfirmPassword;//eInterests
     private TextView tEmail,tFullName;
-    private ImageButton editPassword,editQualification,editInstitute; //editInterest
-    private View.OnClickListener oclEdit,oclSubmit,oclPasswordEdit,oclPasswordSubmit;
+    private ImageButton editPassword,editQualification,editInstitute,canEditInstitute,canEditQualifiacaton,canEditPassword; //editInterest
+    private View.OnClickListener oclEdit,oclSubmit,oclCancelEdit,oclPasswordEdit,oclPasswordSubmit,oclCancelPasswordEdit;
     private View rootView;
     private LinearLayout passwordContainer;
     private View newpassFormContainer;
@@ -124,6 +125,10 @@ public class AccountInfoFragment extends Fragment {
 
         passwordContainer = (LinearLayout)rootView.findViewById(R.id.account_info_container_password);
 
+        canEditInstitute = (ImageButton) rootView.findViewById(R.id.cancel_edit_institute_button);
+        canEditQualifiacaton = (ImageButton) rootView.findViewById(R.id.cancel_edit_qualification_button);
+        canEditPassword = (ImageButton)  rootView.findViewById(R.id.cancel_edit_password_button);
+
         ePassword.setEnabled(false);
         eQualificaton.setEnabled(false);
         eInstitute.setEnabled(false);
@@ -133,7 +138,7 @@ public class AccountInfoFragment extends Fragment {
 
         imageProfile = (ParseImageView)rootView.findViewById(R.id.account_info_picture);
 
-        oclEdit = new View.OnClickListener() {
+        oclEdit = new ImageButton.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId())
@@ -144,48 +149,77 @@ public class AccountInfoFragment extends Fragment {
                         eInstitute.setFocusable(true);
                         eInstitute.setEnabled(true);
                         eInstitute.setFocusableInTouchMode(true);
+                        canEditInstitute.setVisibility(View.VISIBLE);
                         break;
 
                     case R.id.edit_qualification_button:
                         eQualificaton.setSelected(true);
+                        eQualificaton.setSelection(0,eQualificaton.getText().length());
                         eQualificaton.setFocusable(true);
                         eQualificaton.setEnabled(true);
                         eQualificaton.setFocusableInTouchMode(true);
+                        canEditQualifiacaton.setVisibility(View.VISIBLE);
+
                         break;
                 }
 
-                //TODO: change image on click
+
                 //v.setBackground();
-                ImageButton clicked = (ImageButton)rootView.findViewById(v.getId());
-                clicked.setImageResource(R.drawable.tick);
+                ((ImageButton) v).setImageResource(R.drawable.tick);
 
                 v.setOnClickListener(oclSubmit);
             }
         };
 
-        oclSubmit = new View.OnClickListener() {
+        oclSubmit = new ImageButton.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 switch (v.getId()) {
                     case R.id.edit_institute_button:
                         changeAttribute(eInstitute,UserDataFields.USER_INSTITUTE);
+                        canEditInstitute.setVisibility(View.INVISIBLE);
                         break;
                     case R.id.edit_qualification_button:
                         changeAttribute(eQualificaton,USER_QUALIFICATIONS);
+                        canEditQualifiacaton.setVisibility(View.INVISIBLE);
                         break;
                 }
 
-                //TODO: change background image
-                ImageButton clicked = (ImageButton)rootView.findViewById(v.getId());
-                clicked.setImageResource(R.drawable.pencil);
+                //v.setBackground
+                ((ImageButton) v).setImageResource(R.drawable.pencil);
 
                 v.setOnClickListener(oclEdit);
             }
         };
 
+        oclCancelEdit = new ImageButton.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setVisibility(View.INVISIBLE);
+                switch (v.getId())
+                {
+                    case R.id.cancel_edit_institute_button:
+                        editInstitute.setImageResource(R.drawable.pencil);
+                        editInstitute.setOnClickListener(oclEdit);
+                        eInstitute.setEnabled(false);
+                        eInstitute.setFocusable(false);
+                        break;
+                    case R.id.cancel_edit_qualification_button:
+                        editQualification.setImageResource(R.drawable.pencil);
+                        editQualification.setOnClickListener(oclEdit);
+                        eQualificaton.setEnabled(false);
+                        eQualificaton.setFocusable(false);
+                        break;
+                }
+            }
+        };
+
+
         editQualification.setOnClickListener(oclEdit);
         editInstitute.setOnClickListener(oclEdit);
+        canEditQualifiacaton.setOnClickListener(oclCancelEdit);
+        canEditInstitute.setOnClickListener(oclCancelEdit);
 
         oclPasswordEdit = new View.OnClickListener() {
             @Override
@@ -196,6 +230,7 @@ public class AccountInfoFragment extends Fragment {
                 ePassword.setFocusable(true);
                 ePassword.setFocusableInTouchMode(true);
                 ePassword.setHint(getActivity().getString(R.string.old_password));
+                canEditPassword.setVisibility(View.VISIBLE);
                 slide_down(getActivity(), newpassFormContainer);
                 ImageButton clicked = (ImageButton)rootView.findViewById(v.getId());
                 clicked.setImageResource(R.drawable.tick);
@@ -206,7 +241,7 @@ public class AccountInfoFragment extends Fragment {
         oclPasswordSubmit = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                    canEditPassword.setVisibility(View.INVISIBLE);
                     ePassword.setFocusable(false);
                     ePassword.setEnabled(false);
                     ePassword.setFocusableInTouchMode(false);
@@ -215,14 +250,32 @@ public class AccountInfoFragment extends Fragment {
                     ePassword.setHint(getActivity().getString(R.string.password));
                     changePassword();
                     slide_up(getActivity(), newpassFormContainer);
-                    ImageButton clicked = (ImageButton) rootView.findViewById(v.getId());
-                    clicked.setImageResource(R.drawable.pencil);
+                    ((ImageButton) v).setImageResource(R.drawable.pencil);
                     editPassword.setOnClickListener(oclPasswordEdit);
 
             }
         };
 
+        oclCancelPasswordEdit = new ImageButton.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setVisibility(View.INVISIBLE);
+                editPassword.setImageResource(R.drawable.pencil);
+                ePassword.setFocusable(false);
+                ePassword.setEnabled(false);
+                ePassword.setFocusableInTouchMode(false);
+                eNewPassword.setEnabled(false);
+                eConfirmPassword.setEnabled(false);
+                ePassword.setHint(getActivity().getString(R.string.password));
+                slide_up(getActivity(), newpassFormContainer);
+                editPassword.setImageResource(R.drawable.pencil);
+                editPassword.setOnClickListener(oclPasswordEdit);
+
+            }
+        };
+
         editPassword.setOnClickListener(oclPasswordEdit);
+        canEditPassword.setOnClickListener(oclCancelPasswordEdit);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                 .permitAll()
