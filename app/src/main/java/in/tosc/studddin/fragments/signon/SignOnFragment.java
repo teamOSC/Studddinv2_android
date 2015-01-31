@@ -212,38 +212,45 @@ public class SignOnFragment extends Fragment {
                 }
                 if (user == null) {
                     Log.w(TAG, "Uh oh. The user cancelled the Facebook login.");
-                } else if (user.isNew() || (user.getBoolean(UserDataFields.USER_FULLY_REGISTERED) != true)) {
-                    Log.w(TAG, "User signed up and logged in through Facebook!");
+                } else{
+                    boolean fullyRegistered = false;
+                    try {
+                        fullyRegistered = user.getBoolean(UserDataFields.USER_FULLY_REGISTERED);
+                    } catch (Exception e) {}
 
-                    Log.w(TAG,
-                            "FBSHIT \n" +
-                                    ParseFacebookUtils.getSession().getAccessToken() + " \n" +
-                                    ParseFacebookUtils.getFacebook().getAppId()
-                    );
-                    FacebookApi.setSession(ParseFacebookUtils.getSession());
-                    FacebookApi.getFacebookData(new FacebookApi.FbGotDataCallback() {
-                        @Override
-                        public void gotData(final Bundle bundle) {
-                            final SignupDataFragment fragment = showSignupDataFragment(bundle);
-                            FacebookApi.getProfilePicture(new FacebookApi.FbGotProfilePictureCallback() {
-                                @Override
-                                public void gotProfilePicture(Bitmap profilePicture) {
-                                    fragment.bitmapReady = true;
-                                    fragment.profileBitmap = profilePicture;
-                                    fragment.setProfilePicture();
-                                }
-                            });
-                        }
-                    });
-                } else {
-                    Log.w(TAG, "User logged in through Facebook!");
-                    Log.w(TAG,
-                            "FBSHIT \n" +
-                                    ParseFacebookUtils.getSession().getAccessToken() + " \n" +
-                                    ParseFacebookUtils.getSession().getAccessToken() + " \n" +
-                                    ParseFacebookUtils.getFacebook().getAppId()
-                    );
-                    SignupDataFragment.goToMainActivity(getActivity());
+                    if (user.isNew() || (!fullyRegistered)) {
+                        Log.w(TAG, "User signed up and logged in through Facebook!");
+
+                        Log.w(TAG,
+                                "FBSHIT \n" +
+                                        ParseFacebookUtils.getSession().getAccessToken() + " \n" +
+                                        ParseFacebookUtils.getFacebook().getAppId()
+                        );
+                        FacebookApi.setSession(ParseFacebookUtils.getSession());
+                        FacebookApi.getFacebookData(new FacebookApi.FbGotDataCallback() {
+                            @Override
+                            public void gotData(final Bundle bundle) {
+                                final SignupDataFragment fragment = showSignupDataFragment(bundle);
+                                FacebookApi.getProfilePicture(new FacebookApi.FbGotProfilePictureCallback() {
+                                    @Override
+                                    public void gotProfilePicture(Bitmap profilePicture) {
+                                        fragment.bitmapReady = true;
+                                        fragment.profileBitmap = profilePicture;
+                                        fragment.setProfilePicture();
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        Log.w(TAG, "User logged in through Facebook!");
+                        Log.w(TAG,
+                                "FBSHIT \n" +
+                                        ParseFacebookUtils.getSession().getAccessToken() + " \n" +
+                                        ParseFacebookUtils.getSession().getAccessToken() + " \n" +
+                                        ParseFacebookUtils.getFacebook().getAppId()
+                        );
+                        SignupDataFragment.goToMainActivity(getActivity());
+                    }
                 }
             }
         });
@@ -266,22 +273,29 @@ public class SignOnFragment extends Fragment {
                 }
                 if (user == null) {
                     Log.w(TAG, "Uh oh. The user cancelled the Twitter login.");
-                } else if (user.isNew() || (user.getBoolean(UserDataFields.USER_FULLY_REGISTERED) != true)) {
-                    Log.w(TAG, "User signed up and logged in through Twitter!" + ParseTwitterUtils.getTwitter().getScreenName());
-                    final Bundle b = new Bundle();
-                    b.putString(UserDataFields.USER_NAME, ParseTwitterUtils.getTwitter().getScreenName());
-                    final SignupDataFragment fragment = showSignupDataFragment(b);
-                    TwitterApi.getUserInfo(new TwitterApi.TwitterInfoCallback() {
-                        @Override
-                        public void gotInfo(JSONObject object, Bitmap bitmap) throws JSONException {
-                            fragment.profileBitmap = bitmap;
-                            fragment.bitmapReady = true;
-                            fragment.setProfilePicture();
-                        }
-                    });
-                } else {
-                    Log.w(TAG, "User logged in through Twitter!");
-                    SignupDataFragment.goToMainActivity(getActivity());
+                } else{
+                    boolean fullyRegistered = false;
+                    try {
+                        fullyRegistered = user.getBoolean(UserDataFields.USER_FULLY_REGISTERED);
+                    } catch (Exception e) {}
+
+                    if (user.isNew() || (!fullyRegistered)) {
+                        Log.w(TAG, "User signed up and logged in through Twitter!" + ParseTwitterUtils.getTwitter().getScreenName());
+                        final Bundle b = new Bundle();
+                        b.putString(UserDataFields.USER_NAME, ParseTwitterUtils.getTwitter().getScreenName());
+                        final SignupDataFragment fragment = showSignupDataFragment(b);
+                        TwitterApi.getUserInfo(new TwitterApi.TwitterInfoCallback() {
+                            @Override
+                            public void gotInfo(JSONObject object, Bitmap bitmap) throws JSONException {
+                                fragment.profileBitmap = bitmap;
+                                fragment.bitmapReady = true;
+                                fragment.setProfilePicture();
+                            }
+                        });
+                    } else {
+                        Log.w(TAG, "User logged in through Twitter!");
+                        SignupDataFragment.goToMainActivity(getActivity());
+                    }
                 }
             }
         });
