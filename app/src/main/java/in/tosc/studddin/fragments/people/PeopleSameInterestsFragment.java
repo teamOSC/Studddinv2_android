@@ -257,7 +257,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
 
                 ParseQuery<ParseUser> query = ParseUser.getQuery();
-                query.whereContains("INTERESTS", interestslist.get(c));
+                query.whereMatches("INTERESTS", "("+interestslist.get(c)+")", "i");
                 query.findInBackground(new FindCallback<ParseUser>() {
                     public void done(List<ParseUser> objects, ParseException e) {
                         if (e == null) {
