@@ -87,7 +87,7 @@ public class MainActivity extends ActionBarActivity
                         .commit();
             break;
             case 2:
-                Log.d("Studdd.in", "feed fragment");
+                Log.d("Studdd.in", "people fragment");
                 mTitle = "People";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new PeopleFragment())
@@ -95,14 +95,14 @@ public class MainActivity extends ActionBarActivity
                 break;
 
             case 3:
-                Log.d("Studdd.in", "feed fragment");
+                Log.d("Studdd.in", "listings fragment");
                 mTitle = "Listings";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new ListingsFragment())
                         .commit();
                 break;
             case 4:
-                Log.d("Studdd.in", "feed fragment");
+                Log.d("Studdd.in", "events fragment");
                 mTitle = "Events";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new EventsFragment())
