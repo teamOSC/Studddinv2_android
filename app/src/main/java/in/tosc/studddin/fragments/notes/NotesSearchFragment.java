@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.GridView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
@@ -145,7 +144,7 @@ public class NotesSearchFragment extends Fragment {
             public void onClick(View v) {
                 NotesFragment notesFragment = (NotesFragment) getParentFragment();
                 if (notesFragment != null) {
-                    notesFragment.goToUploadFragment();
+                    notesFragment.goToOtherFragment(1);
                 }
             }
         });

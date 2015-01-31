@@ -68,8 +68,8 @@ public class NotesFragment extends Fragment {
 
     }
 
-    public void goToUploadFragment () {
-        notesPager.setCurrentItem(1);
+    public void goToOtherFragment(int position) {
+        notesPager.setCurrentItem(position);
 
     }
 
