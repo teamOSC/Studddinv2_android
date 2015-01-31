@@ -243,7 +243,7 @@ public class PeopleSameInstituteFragment extends Fragment {
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         if (currentuserinstituition != null)
-            query.whereContains("INSTITUTE", currentuserinstituition);
+            query.whereMatches("INSTITUTE", "("+currentuserinstituition+")", "i");
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> objects, ParseException e) {
                 if (e == null) {
