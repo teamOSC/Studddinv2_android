@@ -5,77 +5,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <in.tosc.studddin.utils.FloatingActionsMenu
-        android:id="@+id/multiple_actions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <in.tosc.studddin.utils.FloatingActionButton
+        android:id="@+id/listing_upload"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        fab:fab_addButtonColorNormal="@color/note_button"
-        fab:fab_addButtonColorPressed="@color/note_button_pressed"
-        fab:fab_addButtonPlusIconColor="@color/white"
-        fab:fab_labelStyle="@style/menu_labels_style"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp">
+        android:layout_marginEnd="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        fab:fab_colorNormal="@color/note_button"
+        fab:fab_title="upload"
+        fab:fab_icon="@drawable/ic_file_upload_white_48dp"
+        fab:fab_colorPressed="@color/note_button_pressed"/>
 
-        <in.tosc.studddin.utils.FloatingActionButton
-            android:id="@+id/camerafab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/white"
-            fab:fab_title="camera"
-            fab:fab_icon="@drawable/ic_camera_alt_grey600_48dp"
-            fab:fab_colorPressed="@color/note_button_pressed"/>
-
-        <in.tosc.studddin.utils.FloatingActionButton
-            android:id="@+id/uploadfab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/white"
-            fab:fab_title="upload"
-            fab:fab_icon="@drawable/ic_file_upload_grey600_48dp"
-            fab:fab_colorPressed="@color/note_button_pressed"/>
-
-    </in.tosc.studddin.utils.FloatingActionsMenu>
-
-    <!--
-    <ImageView
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:id="@+id/listing_camera"
-        android:src="@drawable/imageview_selector_listing_camera"
-        android:layout_marginTop="63dp"
-        android:layout_marginLeft="65dp"
-        android:layout_marginStart="65dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <ImageView
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:id="@+id/listing_sdcard"
-        android:src="@drawable/imageview_selector_listing_gallery"
-        android:layout_alignTop="@+id/listing_camera"
-        android:layout_toRightOf="@+id/listing_camera"
-        android:layout_toEndOf="@+id/listing_camera" />
-        -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_alignParentTop="true"
+        >
         <in.tosc.studddin.customview.MaterialEditText
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:id="@+id/et_listing"
-            android:hint="Listing"
+            android:layout_marginTop="32dp"
+            android:hint="Listing Name"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="50dp"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            app:baseColor="@color/search_color"
+            app:primaryColor="@color/colorPrimaryDark"/>
+
+        <in.tosc.studddin.customview.MaterialEditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/listing_desc"
+            android:hint="Listing Description"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/et_listing"
+            android:inputType="textMultiLine"
+            android:maxLength="100"
+            android:maxLines="3"
+            android:layout_alignLeft="@+id/et_listing"
+            android:layout_alignStart="@+id/et_listing"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
             app:baseColor="@color/search_color"
             app:primaryColor="@color/colorPrimaryDark"/>
@@ -85,7 +60,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/et_mobile"
             android:hint="Mobile"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
+            android:inputType="phone"
+            android:digits="0123456789+"
             android:layout_below="@+id/et_listing"
             android:layout_alignLeft="@+id/et_listing"
             android:layout_alignStart="@+id/et_listing"
@@ -103,56 +80,23 @@
             android:layout_below="@+id/listing_category"
             android:layout_centerHorizontal="true" />
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/listing_image"
-            android:layout_gravity="left|bottom"
-            android:layout_alignBottom="@+id/et_listing"
-            android:layout_toLeftOf="@+id/et_listing"
-            android:layout_toStartOf="@+id/et_listing"
-            android:layout_below="@+id/listing_image" />
-
         <Spinner
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:id="@+id/listing_category"
+            android:layout_marginTop="20dp"
             android:layout_below="@+id/et_mobile"
-            android:layout_toLeftOf="@+id/listing_upload"
             android:layout_alignLeft="@+id/et_mobile"
-            android:layout_alignStart="@+id/et_mobile"
-            android:spinnerMode="dialog"
-            android:layout_marginTop="30dp"/>
+            android:layout_alignStart="@+id/et_mobile" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_height="50dp"
-            android:layout_width="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignLeft="@+id/listing_image"
-            android:layout_alignStart="@+id/listing_image"
-            android:id="@+id/listing_uploadLayout"
-            android:visibility="gone"
-            android:layout_alignRight="@+id/listing_camera"
-            android:layout_alignEnd="@+id/listing_camera">
-            <ProgressBar
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/listing_uploadProgress"
-                android:layout_weight="3"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Uploading.."
-                android:id="@+id/textView"
-                android:layout_weight="1"
-                android:gravity="center"/>
-        </LinearLayout>
-
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/listing_image"
+            android:src="@drawable/imageview_selector_listing_camera"
+            android:layout_gravity="center" />
 
     </LinearLayout>
-
-
 
 </RelativeLayout>
