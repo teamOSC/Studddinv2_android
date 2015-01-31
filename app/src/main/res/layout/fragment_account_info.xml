@@ -86,6 +86,18 @@
                 android:textCursorDrawable="@drawable/text_cursor_cyan"
                 app:baseColor="@color/search_color"
                 app:primaryColor="@color/colorPrimaryDark"/>
+
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/cancel_edit_institute_button"
+                android:src="@drawable/cross"
+                android:visibility="invisible"
+                android:scaleType="centerInside"
+                android:background="@android:color/transparent"/>
+
             <ImageButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -94,6 +106,9 @@
                 android:src="@drawable/pencil"
                 android:scaleType="centerInside"
                 android:background="@android:color/transparent"/>
+
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -117,6 +132,18 @@
                 android:textCursorDrawable="@drawable/text_cursor_cyan"
                 app:baseColor="@color/search_color"
                 app:primaryColor="@color/colorPrimaryDark"/>
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/cancel_edit_qualification_button"
+                android:src="@drawable/cross"
+                android:visibility="invisible"
+                android:scaleType="centerInside"
+                android:background="@android:color/transparent"/>
+
+
             <ImageButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -147,6 +174,17 @@
                 android:textCursorDrawable="@drawable/text_cursor_cyan"
                 app:baseColor="@color/search_color"
                 app:primaryColor="@color/colorPrimaryDark"/>
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/cancel_edit_password_button"
+                android:src="@drawable/cross"
+                android:visibility="invisible"
+                android:scaleType="centerInside"
+                android:background="@android:color/transparent"/>
+
             <ImageButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -155,6 +193,7 @@
                 android:src="@drawable/pencil"
                 android:scaleType="centerInside"
                 android:background="@android:color/transparent"/>
+
         </LinearLayout>
 
         <RelativeLayout
@@ -175,7 +214,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:hint="@string/new_password"
-                    android:layout_weight="6"
+                    android:layout_weight="4"
                     android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
                     android:descendantFocusability="beforeDescendants"
                     android:focusableInTouchMode="true"
@@ -183,12 +222,22 @@
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
                     app:baseColor="@color/search_color"
                     app:primaryColor="@color/colorPrimaryDark"/>
+
                 <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:id="@+id/empty_button_new_password"
                     android:layout_weight="1"
                     />
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/empty_button_new_password_2"
+                    android:layout_weight="1"
+                    />
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -198,12 +247,13 @@
                 android:layout_below="@id/account_info_container_new_password"
                 android:orientation="horizontal"
                 android:animateLayoutChanges="true">
+
                 <in.tosc.studddin.customview.MaterialEditText
                     android:id="@+id/account_info_confirm_password"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:hint="@string/confirm_password"
-                    android:layout_weight="6"
+                    android:layout_weight="4"
                     android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
                     android:descendantFocusability="beforeDescendants"
                     android:inputType="textPassword"
@@ -211,14 +261,23 @@
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
                     app:baseColor="@color/search_color"
                     app:primaryColor="@color/colorPrimaryDark"/>
+
                 <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:id="@+id/empty_button_confirm_password"
                     android:layout_weight="1"
                     />
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/empty_button_confirm_password_2"
+                    android:layout_weight="1"
+                    />
+
             </LinearLayout>
-        </RelativeLayout>
+       </RelativeLayout>
 
 
 
