@@ -2,13 +2,16 @@ package in.tosc.studddin.fragments.people;
 
 
         import android.content.Intent;
+        import android.graphics.BitmapFactory;
         import android.os.Bundle;
         import android.support.v4.app.Fragment;
+        import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.Button;
         import android.widget.EditText;
+        import android.widget.ImageView;
         import android.widget.TextView;
         import android.widget.Toast;
 
@@ -21,6 +24,9 @@ public class ViewPerson extends Fragment {
 
     TextView name , interests , qualifications , distance , institute;
     String sname , sinterests , squalifications , sdistance , sinstitute;
+    ImageView pic ;
+    byte[] data;
+
 
     public ViewPerson() {
         // Required empty public constructor
@@ -40,13 +46,21 @@ public class ViewPerson extends Fragment {
             sinterests = i.getString("interests");
             squalifications = i.getString("qualifications");
             sdistance = i.getString("distance");
+            data = i.getByteArray("pic");
+            Log.e("pic" , String.valueOf(data));
         }
 
+        pic = (ImageView) rootView.findViewById(R.id.person_image);
         name = (TextView)rootView.findViewById(R.id.person_name);
         institute = (TextView)rootView.findViewById(R.id.person_institute);
         interests = (TextView)rootView.findViewById(R.id.person_interests);
         qualifications = (TextView)rootView.findViewById(R.id.person_qualifications);
         distance = (TextView)rootView.findViewById(R.id.person_area);
+
+        pic.setImageBitmap(BitmapFactory
+                .decodeByteArray(
+                        data, 0,
+                        data.length));
 
         name.setText(" " + sname);
         interests.setText(" " + sinterests);
