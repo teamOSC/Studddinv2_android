@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.transition.Explode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,8 @@ import in.tosc.studddin.externalapi.UserDataFields;
  * SignupDataFragment
  */
 public class SignupDataFragment extends Fragment {
+
+    private static final String TAG = "SignupDataFragment";
 
     Bundle userDataBundle;
 
@@ -99,7 +102,11 @@ public class SignupDataFragment extends Fragment {
                 boolean f = validateInput();
 
                 if (f) {
-                    pushInputToParse();
+                    try {
+                        pushInputToParse();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     startNextActivity();
                 }
             }
@@ -196,7 +203,7 @@ public class SignupDataFragment extends Fragment {
         //get to next activity and set flags etc in shared preferences
     }
 
-    private void pushInputToParse() {
+    private void pushInputToParse() throws ParseException {
         //push the valid input to parse
         ParseUser user = ParseUser.getCurrentUser();
         user.setUsername(input.get(UserDataFields.USER_EMAIL));
@@ -210,14 +217,18 @@ public class SignupDataFragment extends Fragment {
         user.put(UserDataFields.USER_INTERESTS, input.get(UserDataFields.USER_INTERESTS));
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         profileBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        user.put(UserDataFields.USER_IMAGE, new ParseFile("profilePicture.png", stream.toByteArray()));
+        ParseFile profile = new ParseFile("profilePicture.png", stream.toByteArray());
+        profile.save();
+        user.put(UserDataFields.USER_IMAGE, profile);
+        /*
         try {
             user.put(UserDataFields.USER_LAT, input.get(UserDataFields.USER_LAT));
             user.put(UserDataFields.USER_LONG, input.get(UserDataFields.USER_LONG));
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         if (user.getSessionToken() != null) {
+            Log.d(TAG, "saving user in background");
             user.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
@@ -230,12 +241,15 @@ public class SignupDataFragment extends Fragment {
                 }
             });
         } else {
+            Log.d(TAG, "signing up user in background");
             user.signUpInBackground(new SignUpCallback() {
                 public void done(ParseException e) {
                     if (e == null) {
                         // Hooray! Let them use the app now.
                         goToMainActivity(getActivity());
                     } else {
+                        e.printStackTrace();
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
