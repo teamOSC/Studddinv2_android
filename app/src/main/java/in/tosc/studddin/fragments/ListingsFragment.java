@@ -87,8 +87,8 @@ public class ListingsFragment extends Fragment {
     }
 
     private void compressImage(String path){
-        int targetW = ListingsUploadFragment.listing_image.getWidth();
-        int targetH = ListingsUploadFragment.listing_image.getHeight();
+        int targetW = 150;
+        int targetH = 150;
 
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();

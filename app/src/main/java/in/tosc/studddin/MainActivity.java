@@ -1,5 +1,6 @@
 package in.tosc.studddin;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -86,7 +87,7 @@ public class MainActivity extends ActionBarActivity
                         .commit();
             break;
             case 2:
-                Log.d("Studdd.in", "feed fragment");
+                Log.d("Studdd.in", "people fragment");
                 mTitle = "People";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new PeopleFragment())
@@ -94,14 +95,14 @@ public class MainActivity extends ActionBarActivity
                 break;
 
             case 3:
-                Log.d("Studdd.in", "feed fragment");
+                Log.d("Studdd.in", "listings fragment");
                 mTitle = "Listings";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new ListingsFragment())
                         .commit();
                 break;
             case 4:
-                Log.d("Studdd.in", "feed fragment");
+                Log.d("Studdd.in", "events fragment");
                 mTitle = "Events";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new EventsFragment())
@@ -180,9 +181,9 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 131077 && resultCode == Activity.RESULT_OK) {
-           super.onActivityResult(requestCode, resultCode, data);
-           paths = data.getStringArrayExtra("all_path");
-
+            paths = data.getStringArrayExtra("all_path");
         }
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 }

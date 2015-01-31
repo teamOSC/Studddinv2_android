@@ -1,10 +1,12 @@
 package in.tosc.studddin.fragments.listings;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -13,9 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -23,7 +23,6 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
@@ -35,38 +34,51 @@ import java.util.Date;
 import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.utils.FloatingActionButton;
+import in.tosc.studddin.utils.ProgressBarCircular;
 
 /**
  * Created by Prempal on 1/25/2015.
  */
 public class ListingsUploadFragment extends Fragment implements View.OnClickListener {
 
-    private ImageView upload;
-    private EditText listing;
-    private EditText mobile;
+    //private ImageView upload;
+    private MaterialEditText listing;
+    private MaterialEditText mobile;
     private Spinner category;
-    private ProgressBar uploading;
-    private EditText listing_desc;
+    private ProgressBarCircular uploading;
+    private MaterialEditText listing_desc;
 
     public static ImageView listing_image;
     public static byte[] byteArray;
     public static String mCurrentPhotoPath;
 
+    private FloatingActionButton upload;
+
     public ListingsUploadFragment() {
         // Required empty public constructor
     }
 
+    @SuppressLint("WrongViewCast")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView =  inflater.inflate(R.layout.fragment_listings_upload, container, false);
-        upload = (ImageView) rootView.findViewById(R.id.listing_upload);
-        listing = (EditText) rootView.findViewById(R.id.et_listing);
-        mobile = (EditText) rootView.findViewById(R.id.et_mobile);
-        listing_desc = (EditText) rootView.findViewById(R.id.listing_desc);
+
+        View rootView;
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB){
+            rootView = inflater.inflate(R.layout.fragment_listings_upload, container, false);
+        }else {
+            rootView = inflater.inflate(R.layout.fragment_listing_upload_gingerbread, container, false);
+        }
+
+        listing = (MaterialEditText) rootView.findViewById(R.id.et_listing);
+        mobile = (MaterialEditText) rootView.findViewById(R.id.et_mobile);
+        listing_desc = (MaterialEditText) rootView.findViewById(R.id.listing_desc);
         listing_image = (ImageView) rootView.findViewById(R.id.listing_image);
         category = (Spinner) rootView.findViewById(R.id.listing_category);
-        uploading = (ProgressBar) rootView.findViewById(R.id.upload_progress);
+        uploading = (ProgressBarCircular) rootView.findViewById(R.id.upload_progress);
+        upload  = (FloatingActionButton) rootView.findViewById(R.id.listing_upload);
         List<String> categoryList = new ArrayList<>();
         categoryList.add("Book");
         categoryList.add("Apparatus");
@@ -74,8 +86,8 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item,categoryList);
         category.setAdapter(dataAdapter);
 
-        listing_image.setOnClickListener(this);
         upload.setOnClickListener(this);
+        listing_image.setOnClickListener(this);
 
         return rootView;
     }
@@ -125,7 +137,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                     ParseFile file = new ParseFile("listing.png", byteArray);
                     file.saveInBackground();
                     upload.put("image", file);
-                    upload.put("ownerName", ParseUser.getCurrentUser().getString("NAME"));
+                    upload.put("ownerName","Prempal" );  //ParseUser.getCurrentUser().getString("NAME")
                     upload.put("listingName", listing.getText().toString());
                     upload.put("listingDesc", listing_desc.getText().toString());
                     upload.put("mobile", mobile.getText().toString());

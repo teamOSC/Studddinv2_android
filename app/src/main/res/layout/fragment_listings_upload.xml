@@ -1,94 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
-
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/et_listing"
-        android:hint="Listing Name"
-        android:layout_marginTop="20dp"
-        android:maxLength="30"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/listing_upload"
-        android:layout_toStartOf="@+id/listing_upload" />
-
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/listing_desc"
-        android:hint="Listing Description"
-        android:inputType="textMultiLine"
-        android:maxLength="100"
-        android:maxLines="3"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/et_listing"
-        android:layout_alignLeft="@+id/et_listing"
-        android:layout_alignStart="@+id/et_listing" />
-
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/et_mobile"
-        android:hint="Mobile"
-        android:layout_marginTop="20dp"
-        android:inputType="phone"
-        android:digits="0123456789+"
-        android:layout_below="@+id/listing_desc"
-        android:layout_alignLeft="@+id/listing_desc"
-        android:layout_alignStart="@+id/listing_desc" />
-
-
-    <Spinner
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/listing_category"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/et_mobile"
-        android:layout_alignLeft="@+id/et_mobile"
-        android:layout_alignStart="@+id/et_mobile" />
-
-    <ImageView
-        android:layout_width="92dp"
-        android:layout_height="92dp"
-        android:src="@drawable/imageview_selector_listing_upload"
+    <in.tosc.studddin.utils.FloatingActionButton
         android:id="@+id/listing_upload"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        fab:fab_colorNormal="@color/note_button"
+        fab:fab_title="upload"
+        fab:fab_icon="@drawable/ic_file_upload_white_48dp"
+        fab:fab_colorPressed="@color/note_button_pressed"/>
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        >
+        <in.tosc.studddin.customview.MaterialEditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_listing"
+            android:layout_marginTop="32dp"
+            android:hint="Listing Name"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            app:baseColor="@color/search_color"
+            app:primaryColor="@color/colorPrimaryDark"/>
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/listing_category"
-        android:layout_alignLeft="@+id/listing_category"
-        android:layout_alignStart="@+id/listing_category"
-        android:layout_alignRight="@+id/listing_category"
-        android:layout_alignEnd="@+id/listing_category"
-        android:layout_above="@+id/listing_upload"
-        android:layout_marginTop="20dp"
-        android:id="@+id/frameLayout">
+        <in.tosc.studddin.customview.MaterialEditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/listing_desc"
+            android:hint="Listing Description"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/et_listing"
+            android:inputType="textMultiLine"
+            android:maxLength="100"
+            android:maxLines="3"
+            android:layout_alignLeft="@+id/et_listing"
+            android:layout_alignStart="@+id/et_listing"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            app:baseColor="@color/search_color"
+            app:primaryColor="@color/colorPrimaryDark"/>
+
+        <in.tosc.studddin.customview.MaterialEditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_mobile"
+            android:hint="Mobile"
+            android:layout_marginTop="20dp"
+            android:inputType="phone"
+            android:digits="0123456789+"
+            android:layout_below="@+id/et_listing"
+            android:layout_alignLeft="@+id/et_listing"
+            android:layout_alignStart="@+id/et_listing"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            app:baseColor="@color/search_color"
+            app:primaryColor="@color/colorPrimaryDark"/>
+
+        <in.tosc.studddin.utils.ProgressBarCircular
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:textSize="24sp"
+            android:id="@+id/upload_progress"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_below="@+id/listing_category"
+            android:layout_centerHorizontal="true" />
+
+        <Spinner
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/listing_category"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/et_mobile"
+            android:layout_alignLeft="@+id/et_mobile"
+            android:layout_alignStart="@+id/et_mobile" />
 
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
+            android:layout_marginTop="20dp"
             android:id="@+id/listing_image"
             android:src="@drawable/imageview_selector_listing_camera"
             android:layout_gravity="center" />
-    </FrameLayout>
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/upload_progress"
-        android:visibility="gone"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_below="@+id/listing_category"
-        android:layout_centerHorizontal="true" />
-
+    </LinearLayout>
 
 </RelativeLayout>
