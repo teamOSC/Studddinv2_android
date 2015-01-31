@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context="in.tosc.studddin.NavigationDrawerFragment">
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -22,10 +22,21 @@
             android:id="@+id/nav_drawer_profile_pic"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_gravity="bottom|left"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
             android:layout_margin="10dp"
             />
-    </FrameLayout>
+
+        <TextView
+            android:layout_toRightOf="@id/nav_drawer_profile_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@android:color/white"
+            android:text="Umair Khan" />
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/main_navdrawer_list"
