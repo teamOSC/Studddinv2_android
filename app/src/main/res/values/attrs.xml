@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <declare-styleable name="MaterialEditText">
-    <!-- the base color of the line and the texts. default is black. -->
-    <attr name="baseColor" format="color"/>
-    <!-- the highlight color of the line, and the floating label if the highlightFloatingLabel is true. -->
-    <attr name="primaryColor" format="color"/>
-    <!-- how the floating label should be shown. default is none -->
-    <attr name="floatingLabel">
-      <enum name="none" value="0"/>
-      <enum name="normal" value="1"/>
-      <enum name="highlight" value="2"/>
-    </attr>
-    <!-- the color for when something is wrong.(e.g. exceeding max characters) -->
-    <attr name="errorColor" format="color"/>
-    <!-- characters count limit. 0 means no limit. -->
-    <attr name="maxCharacters" format="integer"/>
-    <!-- whether to show the bottom ellipsis in singleLine mode -->
-    <attr name="singleLineEllipsis" format="boolean"/>
-    <!--if the text has the be checked against a regular expression -->
-    <attr name="regexExpression" format="string"/>
-    <!-- error text to show the user if input is not valid -->
-    <attr name="regexErrorText" format="string" />
-    <!-- text to show the user if input is valid -->
-    <attr name="regexText" format="string" />
-  </declare-styleable>
-    
+    <declare-styleable name="MaterialEditText">
+        <!-- the base color of the line and the texts. default is black. -->
+        <attr name="baseColor" format="color" />
+        <!-- the highlight color of the line, and the floating label if the highlightFloatingLabel is true. -->
+        <attr name="primaryColor" format="color" />
+        <!-- how the floating label should be shown. default is none -->
+        <attr name="floatingLabel">
+            <enum name="none" value="0" />
+            <enum name="normal" value="1" />
+            <enum name="highlight" value="2" />
+        </attr>
+        <!-- the color for when something is wrong.(e.g. exceeding max characters) -->
+        <attr name="errorColor" format="color" />
+        <!-- characters count limit. 0 means no limit. -->
+        <attr name="maxCharacters" format="integer" />
+        <!-- whether to show the bottom ellipsis in singleLine mode -->
+        <attr name="singleLineEllipsis" format="boolean" />
+        <!--if the text has the be checked against a regular expression -->
+        <attr name="regexExpression" format="string" />
+        <!-- error text to show the user if input is not valid -->
+        <attr name="regexErrorText" format="string" />
+        <!-- text to show the user if input is valid -->
+        <attr name="regexText" format="string" />
+    </declare-styleable>
+
     <!-- Floating Action Button Attrs -->
 
     <declare-styleable name="FloatingActionButton">
-        <attr name="fab_colorPressed" format="color"/>
-        <attr name="fab_colorNormal" format="color"/>
-        <attr name="fab_icon" format="reference"/>
+        <attr name="fab_colorPressed" format="color" />
+        <attr name="fab_colorNormal" format="color" />
+        <attr name="fab_icon" format="reference" />
         <attr name="fab_size" format="enum">
-            <enum name="normal" value="0"/>
-            <enum name="mini" value="1"/>
+            <enum name="normal" value="0" />
+            <enum name="mini" value="1" />
         </attr>
-        <attr name="fab_title" format="string"/>
-        <attr name="fab_stroke_visible" format="boolean"/>
+        <attr name="fab_title" format="string" />
+        <attr name="fab_stroke_visible" format="boolean" />
     </declare-styleable>
     <declare-styleable name="AddFloatingActionButton">
-        <attr name="fab_plusIconColor" format="color"/>
+        <attr name="fab_plusIconColor" format="color" />
     </declare-styleable>
     <declare-styleable name="FloatingActionsMenu">
-        <attr name="fab_addButtonColorPressed" format="color"/>
-        <attr name="fab_addButtonColorNormal" format="color"/>
-        <attr name="fab_addButtonPlusIconColor" format="color"/>
-        <attr name="fab_addButtonStrokeVisible" format="boolean"/>
-        <attr name="fab_labelStyle" format="reference"/>
+        <attr name="fab_addButtonColorPressed" format="color" />
+        <attr name="fab_addButtonColorNormal" format="color" />
+        <attr name="fab_addButtonPlusIconColor" format="color" />
+        <attr name="fab_addButtonStrokeVisible" format="boolean" />
+        <attr name="fab_labelStyle" format="reference" />
         <attr name="fab_expandDirection" format="enum">
-            <enum name="up" value="0"/>
-            <enum name="down" value="1"/>
-            <enum name="left" value="2"/>
-            <enum name="right" value="3"/>
+            <enum name="up" value="0" />
+            <enum name="down" value="1" />
+            <enum name="left" value="2" />
+            <enum name="right" value="3" />
         </attr>
     </declare-styleable>
-    
-    
+
+
 </resources>
