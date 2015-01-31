@@ -22,15 +22,6 @@
             fab:fab_colorPressed="@color/note_button_pressed"/>
 
         <in.tosc.studddin.utils.FloatingActionButton
-            android:id="@+id/galleryfab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/white"
-            fab:fab_title="gallery"
-            fab:fab_icon="@drawable/ic_collections_grey600_48dp"
-            fab:fab_colorPressed="@color/note_button_pressed"/>
-
-        <in.tosc.studddin.utils.FloatingActionButton
             android:id="@+id/uploadfab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -104,11 +95,15 @@
             android:visibility="gone"
             android:layout_alignRight="@+id/listing_camera"
             android:layout_alignEnd="@+id/listing_camera">
-            <ProgressBar
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/listing_uploadProgress"
-                android:layout_weight="3"/>
+            <in.tosc.studddin.utils.ProgressBarCircular
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:textSize="24sp"
+                android:id="@+id/upload_progress"
+                android:visibility="gone"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_below="@+id/listing_category"
+                android:layout_centerHorizontal="true" />
 
             <TextView
                 android:layout_width="match_parent"
