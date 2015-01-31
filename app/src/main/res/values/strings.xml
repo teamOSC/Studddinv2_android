@@ -4,7 +4,7 @@
     <!-- APIS -->
     <string name="facebook_app_id">903137443064438</string>
 
-    <string name="app_name">Studdd.in</string>
+    <string name="app_name">LearnHut</string>
     <string name="title_activity_sign_on">SignOnActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
