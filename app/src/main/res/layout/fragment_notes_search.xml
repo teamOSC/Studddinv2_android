@@ -62,7 +62,7 @@
     </LinearLayout>
 
 
-    <in.tosc.studddin.utils.FloatingActionButton
+    <in.tosc.studddin.utils.AddFloatingActionButton
         android:layout_gravity="bottom|right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:onClick="jumpToPage"
-        fab:fab_icon="@drawable/ic_file_upload_white_48dp"
+        fab:fab_addButtonPlusIconColor="@color/white"
         fab:fab_colorNormal="@color/note_button"
         fab:fab_colorPressed="@color/note_button_pressed"/>
     

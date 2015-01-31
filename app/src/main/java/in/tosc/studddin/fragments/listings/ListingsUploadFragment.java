@@ -78,6 +78,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         listing_image = (ImageView) rootView.findViewById(R.id.listing_image);
         category = (Spinner) rootView.findViewById(R.id.listing_category);
         uploading = (ProgressBarCircular) rootView.findViewById(R.id.upload_progress);
+        uploading.setBackgroundColor(getResources().getColor(R.color.pink));
         upload  = (FloatingActionButton) rootView.findViewById(R.id.listing_upload);
         List<String> categoryList = new ArrayList<>();
         categoryList.add("Book");
