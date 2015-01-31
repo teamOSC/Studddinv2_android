@@ -86,6 +86,7 @@ public class ListingsSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_listings, container, false);
         loader = (ProgressBarCircular) rootView.findViewById(R.id.progressBar);
+        loader.setBackgroundColor(getResources().getColor(R.color.pink));
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listing_recycler_view);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+import org.apache.tools.ant.taskdefs.condition.Os
 
 android {
     compileSdkVersion 21
@@ -19,10 +20,16 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file("${System.getenv('HOME')}/.android/debug.jks")
+            if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+                storeFile file("${System.getenv('USERPROFILE')}\\.android\\debug.jks")
+            } else {
+                storeFile file("${System.getenv('HOME')}/.android/debug.jks")
+            }
             keyAlias 'teamosc'
             keyPassword 'teamosc'
             storePassword 'teamosc'
+        }
+        release {
         }
     }
 }
