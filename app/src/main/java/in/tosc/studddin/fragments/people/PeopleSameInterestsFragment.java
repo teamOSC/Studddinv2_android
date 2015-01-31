@@ -21,6 +21,7 @@ import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -46,6 +47,10 @@ public class PeopleSameInterestsFragment extends Fragment {
     String currentusername = "";
     String currentuserqualification = "";
     String currentuser = "";
+    String currentuserlocation = "";
+    ParseGeoPoint userlocation;
+
+
 
     EditText search;
 
@@ -158,6 +163,7 @@ public class PeopleSameInterestsFragment extends Fragment {
             holder.textinstituition.setText(row.cinstituition);
             holder.textdistance.setText(row.cdistance);
             holder.textqualification.setText(row.cqualification);
+            holder.textdistance.setText(row.cdistance);
 
 
 //            Toast.makeText(getActivity(), row.cusername, Toast.LENGTH_SHORT).show();
@@ -238,6 +244,8 @@ public class PeopleSameInterestsFragment extends Fragment {
         currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
         currentusername = ParseUser.getCurrentUser().getString("NAME");
         currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
+        userlocation = ParseUser.getCurrentUser().getParseGeoPoint("location");
+
 
         if (currentuserinterests == null) {
             currentuserinterests = "";
@@ -254,6 +262,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                     public void done(List<ParseUser> objects, ParseException e) {
                         if (e == null) {
 
+                            int i=10;
                             for (ParseUser pu : objects) {
                                 //access the data associated with the ParseUser using the get method
                                 //pu.getString("key") or pu.get("key")
@@ -269,6 +278,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                                         each.cinstituition = pu.getString("INSTITUTE");
 //                                          each.cdistance = pu.getString("NAME");
                                         each.cusername = pu.getString("username");
+                                        each.cdistance=String.valueOf(i)+" km";
                                         try
                                         {
                                             each.fileObject = (ParseFile) pu.get("image");
@@ -283,6 +293,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                                         list3.add(each);
                                         existingelement.put(pu.getUsername(), true);
+                                        i=i+12;
                                     }
                                 }
                             }

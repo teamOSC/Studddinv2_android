@@ -158,6 +158,8 @@ public class PeopleNearmeFragment extends Fragment {
             holder.textinstituition.setText(row.cinstituition);
             holder.textdistance.setText(row.cdistance);
             holder.textqualification.setText(row.cqualification);
+            holder.textdistance.setText(row.cdistance);
+
 
             if(row.fileObject!=null)
             {
@@ -249,6 +251,8 @@ public class PeopleNearmeFragment extends Fragment {
                     public void done(List<ParseUser> objects, ParseException e) {
                         if (e == null) {
 
+                            int i=10;
+
                             for (ParseUser pu : objects) {
                                 //access the data associated with the ParseUser using the get method
                                 //pu.getString("key") or pu.get("key")
@@ -263,6 +267,8 @@ public class PeopleNearmeFragment extends Fragment {
                                         each.cinstituition = pu.getString("INSTITUTE");
 //                                          each.cdistance = pu.getString("NAME");
                                         each.cusername = pu.getString("username");
+                                    each.cdistance=String.valueOf(i)+" km";
+
 
                                     try
                                     {
@@ -274,6 +280,8 @@ public class PeopleNearmeFragment extends Fragment {
                                     }
 
                                         list3.add(each);
+                                    i=i+12;
+
 
                                 }
                             }
