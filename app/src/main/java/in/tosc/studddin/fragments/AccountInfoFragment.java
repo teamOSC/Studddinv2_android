@@ -3,9 +3,6 @@ package in.tosc.studddin.fragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -17,26 +14,17 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.model.GraphUser;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
-import com.parse.ParseFacebookUtils;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 
 import in.tosc.studddin.R;

@@ -259,7 +259,7 @@ public class SignOnFragment extends Fragment {
                 try {
                     Log.w(TAG, "pe = " + err.getCode() + err.getMessage());
                 } catch (Exception e) {
-                    // Do nothing
+                    e.printStackTrace();
                 }
                 if (user == null) {
                     Log.w(TAG, "Uh oh. The user cancelled the Twitter login.");
