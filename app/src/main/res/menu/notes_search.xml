@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/notes_search_filter"
+        android:icon="@drawable/ic_action_sort_by_size"
+        android:title="Filter"
+        app:showAsAction="ifRoom"
+
+        />
+
+    <item
+        android:id="@+id/notes_search_upload"
+        android:icon="@android:drawable/stat_sys_upload"
+        android:title="Upload"
+        app:showAsAction="ifRoom"
+
+        />
+
+
+</menu>

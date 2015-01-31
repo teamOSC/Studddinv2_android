@@ -6,6 +6,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -66,12 +69,12 @@ public class NotesSearchFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        setHasOptionsMenu(true);
     }
 
 
@@ -79,6 +82,7 @@ public class NotesSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        getActivity().setTheme(R.style.AppTheme_Custom);
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_notes_search, container, false);
 
@@ -142,10 +146,7 @@ public class NotesSearchFragment extends Fragment {
         addNotesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NotesFragment notesFragment = (NotesFragment) getParentFragment();
-                if (notesFragment != null) {
-                    notesFragment.goToOtherFragment(1);
-                }
+                goToUploadFragment();
             }
         });
 
@@ -153,5 +154,27 @@ public class NotesSearchFragment extends Fragment {
 
     }
 
+    public void goToUploadFragment() {
+        NotesFragment notesFragment = (NotesFragment) getParentFragment();
+        if (notesFragment != null) {
+            notesFragment.goToOtherFragment(1);
+        }
+    }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.notes_search, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.notes_search_upload:
+                goToUploadFragment(); return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
 }
