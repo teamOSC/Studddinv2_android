@@ -4,9 +4,10 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <fragment
-        android:id="@+id/map_dialog"
+        android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:tag="map"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
 </RelativeLayout>
 

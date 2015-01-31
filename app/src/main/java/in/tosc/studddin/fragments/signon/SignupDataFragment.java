@@ -4,6 +4,7 @@ package in.tosc.studddin.fragments.signon;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -18,6 +19,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.LocationCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -37,7 +42,8 @@ import in.tosc.studddin.externalapi.UserDataFields;
 /**
  * SignupDataFragment
  */
-public class SignupDataFragment extends Fragment {
+public class SignupDataFragment extends Fragment implements
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "SignupDataFragment";
 
@@ -52,6 +58,15 @@ public class SignupDataFragment extends Fragment {
 
     public boolean viewReady = false, bitmapReady = false;
     public Bitmap profileBitmap;
+
+    private GoogleApiClient mGoogleApiClient;
+    private Location currentUserLoc;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
 
     public SignupDataFragment() {
         // Required empty public constructor
@@ -82,7 +97,18 @@ public class SignupDataFragment extends Fragment {
         locationEditText.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putDouble("lat", currentUserLoc.getLatitude());
+                b.putDouble("lon", currentUserLoc.getLongitude());
                 LocationSelectDialog dialog = new LocationSelectDialog();
+                dialog.setArguments(b);
+                dialog.setLocationSetCallback(new LocationSelectDialog.LocationSetCallback() {
+                    @Override
+                    public void gotLocation(LatLng latLng) {
+                        currentUserLoc.setLatitude(latLng.latitude);
+                        currentUserLoc.setLongitude(latLng.longitude);
+                    }
+                });
                 dialog.show(getChildFragmentManager(), "LocationSelectDialog");
 //                dialog.renderMap();
             }
@@ -111,15 +137,12 @@ public class SignupDataFragment extends Fragment {
                 }
             }
         });
-        ParseGeoPoint.getCurrentLocationInBackground(10000, new LocationCallback() {
-            @Override
-            public void done(ParseGeoPoint parseGeoPoint, ParseException e) {
-                if (parseGeoPoint != null) {
-                    input.put(UserDataFields.USER_LAT, String.valueOf(parseGeoPoint.getLatitude()));
-                    input.put(UserDataFields.USER_LONG, String.valueOf(parseGeoPoint.getLongitude()));
-                }
-            }
-        });
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
 
         viewReady = true;
         setProfilePicture();
@@ -220,6 +243,8 @@ public class SignupDataFragment extends Fragment {
         ParseFile profile = new ParseFile("profilePicture.png", stream.toByteArray());
         profile.save();
         user.put(UserDataFields.USER_IMAGE, profile);
+        ParseGeoPoint geoPoint = new ParseGeoPoint(currentUserLoc.getLatitude(), currentUserLoc.getLongitude());
+        user.put(UserDataFields.USER_LOCATION, geoPoint);
         /*
         try {
             user.put(UserDataFields.USER_LAT, input.get(UserDataFields.USER_LAT));
@@ -278,5 +303,21 @@ public class SignupDataFragment extends Fragment {
             act.startActivity(i);
         }
         act.finish();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        currentUserLoc = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        Log.d(TAG, "location = " + currentUserLoc);
+        input.put(UserDataFields.USER_LOCATION, currentUserLoc.getLatitude() + "," + currentUserLoc.getLongitude());
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
     }
 }

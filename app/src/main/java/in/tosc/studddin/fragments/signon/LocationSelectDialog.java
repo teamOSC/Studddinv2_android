@@ -1,5 +1,6 @@
 package in.tosc.studddin.fragments.signon;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -15,42 +16,37 @@ import android.widget.RelativeLayout;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.LocationCallback;
 
 import in.tosc.studddin.R;
 
 /**
  * Created by omerjerk on 29/1/15.
  */
-public class LocationSelectDialog extends DialogFragment implements OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class LocationSelectDialog extends DialogFragment implements OnMapReadyCallback {
 
-    GoogleApiClient mGoogleApiClient;
-    Context context;
-    Location mLastLocation;
+    LatLng currentLocation;
     GoogleMap googleMap;
 
-    boolean googleApiConnected = false;
-    boolean mapReady = false;
-
     private static final String TAG = "LocationSelectDialog";
+
+    LocationSetCallback callback;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
-        context = getActivity();
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(context)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
+        Bundle b = getArguments();
+        currentLocation = new LatLng(b.getDouble("lat"), b.getDouble("lon"));
+        Log.d(TAG, "location = " + currentLocation);
 
         RelativeLayout rootView = (RelativeLayout) inflater.inflate(R.layout.fragment_map, null);
 
@@ -61,46 +57,52 @@ public class LocationSelectDialog extends DialogFragment implements OnMapReadyCa
                         //TODO:Pass the location back to parent activity
                     }
                 });
-
-
+        setMapAsync();
         return builder.create();
     }
 
-    public void renderMap() {
-        SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager()
-                .findFragmentById(R.id.map_dialog);
-        mapFragment.getMapAsync(this);
+    public void setMapAsync() {
+        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        if (mapFragment != null)
+            mapFragment.getMapAsync(this);
+        else
+            Log.e(TAG, "mapFragment is null");
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mapReady = true;
         this.googleMap = googleMap;
         setMarker();
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        googleApiConnected = true;
-        setMarker();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.e(TAG, "connection to Google API Client failed " + connectionResult.getErrorCode());
+        setOnClickListener();
     }
 
     private void setMarker() {
-        if (mapReady && googleApiConnected) {
-            googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
-                    .title("My Location"));
-        }
+        googleMap.addMarker(new MarkerOptions()
+                .position(currentLocation)
+                .title("My Location"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
+    }
+
+    private void setOnClickListener() {
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                googleMap.clear();
+                googleMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title("My Location"));
+                currentLocation = latLng;
+                callback.gotLocation(currentLocation);
+            }
+        });
+    }
+
+    public void setLocationSetCallback(LocationSetCallback callback) {
+        this.callback = callback;
+    }
+
+    public interface LocationSetCallback {
+        public void gotLocation(LatLng latLng);
     }
 }

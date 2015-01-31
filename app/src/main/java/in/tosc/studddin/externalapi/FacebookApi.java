@@ -53,8 +53,6 @@ public class FacebookApi {
                         FbDataBundle.putString(UserDataFields.USER_NAME, gu.getName());
                         FbDataBundle.putString(UserDataFields.USER_USERNAME, gu.getUsername());
                         FbDataBundle.putString(UserDataFields.USER_CITY, gu.getLocation().getLocation().getCity());
-                        FbDataBundle.putDouble(UserDataFields.USER_LAT, gu.getLocation().getLocation().getLatitude());
-                        FbDataBundle.putDouble(UserDataFields.USER_LONG, gu.getLocation().getLocation().getLongitude());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

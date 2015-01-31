@@ -13,7 +13,6 @@ public class UserDataFields {
     public static final String USER_EMAIL = "email";
     public static final String USER_INTERESTS = "INTERESTS";
     public static final String USER_QUALIFICATIONS = "QUALIFICATIONS";
-    public static final String USER_LAT = "LAT";
-    public static final String USER_LONG = "LONG";
+    public static final String USER_LOCATION = "location";
     public static final String USER_IMAGE = "image";
 }
