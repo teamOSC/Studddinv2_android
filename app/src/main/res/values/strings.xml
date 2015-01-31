@@ -90,5 +90,6 @@
 
     <!-- Listings -->
     <string name="upload_complete">Upload complete</string>
+    <string name="notes_uploading">Uploading</string>
 
 </resources>

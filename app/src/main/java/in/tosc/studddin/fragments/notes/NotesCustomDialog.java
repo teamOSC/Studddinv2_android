@@ -22,6 +22,7 @@ public class NotesCustomDialog extends Dialog {
     TextView dialogCollegeName, dialogBranchName, dialogTopicName, dialogSubjectName, dialogUploadedBy;
     Button downloadNotes;
     private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName;
+    int position;
     Context c;
     public NotesCustomDialog(Activity activity, ArrayList<String> notesCollegeName, ArrayList<String> notesBranchName, ArrayList<String> notesTopicName, ArrayList<String> notesSubjectName) {
         super(activity);
@@ -31,6 +32,7 @@ public class NotesCustomDialog extends Dialog {
         this.notesSubjectName = notesSubjectName;
         this.notesTopicName = notesTopicName;
         this.c = activity;
+        this.position = position;
     }
 
     @Override
@@ -46,10 +48,10 @@ public class NotesCustomDialog extends Dialog {
         dialogUploadedBy = (TextView)findViewById(R.id.notes_details_uploadedby);
         downloadNotes = (Button) findViewById(R.id.notes_button_download);
 
-        dialogBranchName.setText(notesBranchName.get(0));
-        dialogCollegeName.setText(notesCollegeName.get(0));
-        dialogSubjectName.setText(notesSubjectName.get(0));
-        dialogTopicName.setText(notesTopicName.get(0));
+        dialogBranchName.setText(notesBranchName.get(position));
+        dialogCollegeName.setText(notesCollegeName.get(position));
+        dialogSubjectName.setText(notesSubjectName.get(position));
+        dialogTopicName.setText(notesTopicName.get(position));
 
 
         downloadNotes.setOnClickListener(new View.OnClickListener() {
