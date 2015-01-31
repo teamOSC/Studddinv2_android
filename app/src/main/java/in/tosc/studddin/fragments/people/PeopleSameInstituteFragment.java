@@ -22,6 +22,7 @@ import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -43,6 +44,8 @@ public class PeopleSameInstituteFragment extends Fragment {
     String currentusername= "";
     String currentuserqualification= "";
     String currentuser = "";
+    ParseGeoPoint userlocation = new ParseGeoPoint(0,0);
+
 
     EditText search ;
 
@@ -234,6 +237,7 @@ public class PeopleSameInstituteFragment extends Fragment {
         String currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
         String currentusername = ParseUser.getCurrentUser().getString("NAME");
         String currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
+        userlocation = ParseUser.getCurrentUser().getParseGeoPoint("location");
 
 
 

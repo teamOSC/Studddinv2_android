@@ -22,6 +22,7 @@ import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -43,6 +44,8 @@ public class PeopleNearmeFragment extends Fragment {
     String currentusername= "";
     String currentuserqualification= "";
     String currentuser = "";
+    ParseGeoPoint userlocation = new ParseGeoPoint(0,0);
+
 
     EditText search ;
 
@@ -243,6 +246,7 @@ public class PeopleNearmeFragment extends Fragment {
         currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
         currentusername = ParseUser.getCurrentUser().getString("NAME");
         currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
+        userlocation = ParseUser.getCurrentUser().getParseGeoPoint("location");
 
 
 
@@ -267,8 +271,22 @@ public class PeopleNearmeFragment extends Fragment {
                                         each.cinstituition = pu.getString("INSTITUTE");
 //                                          each.cdistance = pu.getString("NAME");
                                         each.cusername = pu.getString("username");
-                                    each.cdistance=String.valueOf(i)+" km";
-
+                                    ParseGeoPoint temploc = pu.getParseGeoPoint("location");
+                                    if (temploc!=null && temploc.getLatitude()!=0)
+                                    {
+                                        if(userlocation!=null)
+                                        {
+                                            each.cdistance=String.valueOf((int)temploc.distanceInKilometersTo(userlocation))+" km";
+                                        }
+                                        else
+                                        {
+                                            each.cdistance="13 km";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        each.cdistance="16 km";
+                                    }
 
                                     try
                                     {

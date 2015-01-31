@@ -48,7 +48,7 @@ public class PeopleSameInterestsFragment extends Fragment {
     String currentuserqualification = "";
     String currentuser = "";
     String currentuserlocation = "";
-    ParseGeoPoint userlocation;
+    ParseGeoPoint userlocation = new ParseGeoPoint(0,0);
 
 
 
