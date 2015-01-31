@@ -10,7 +10,8 @@
         android:layout_weight="1">
 
         <ImageView
-        android:src="@drawable/ic_abstract"
+        android:src="@drawable/arnav_cover"
+        android:background="@android:color/black"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/nav_drawer_cover_picture"
