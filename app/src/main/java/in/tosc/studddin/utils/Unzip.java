@@ -1,4 +1,4 @@
-package in.tosc.studddin.fragments.notes;
+package in.tosc.studddin.utils;
 
 import android.util.Log;
 
@@ -11,11 +11,11 @@ import java.util.zip.ZipInputStream;
 /**
  * Created by raghav on 31/01/15.
  */
-public class NotesUnzip {
+public class Unzip {
     private String _zipFile;
     private String _location;
 
-    public NotesUnzip(String zipFile, String location) {
+    public Unzip(String zipFile, String location) {
         _zipFile = zipFile;
         _location = location;
 

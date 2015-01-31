@@ -1,4 +1,4 @@
-package in.tosc.studddin.fragments.notes;
+package in.tosc.studddin.utils;
 
 import android.util.Log;
 
