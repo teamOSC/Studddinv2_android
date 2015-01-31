@@ -95,7 +95,10 @@ public class SignOnFragment extends Fragment {
         }
 
         ParseUser pUser = ParseUser.getCurrentUser();
-        if ((pUser != null) && (pUser.isAuthenticated()) && (pUser.getSessionToken() != null)) {
+        if ((pUser != null)
+                && (pUser.isAuthenticated())
+                && (pUser.getSessionToken() != null)
+                && (pUser.getBoolean(UserDataFields.USER_FULLY_REGISTERED))) {
             Log.d("SignOnFragment", pUser.getUsername() + pUser.getSessionToken());
             Intent i = new Intent(getActivity(), MainActivity.class);
                 startActivity(i);
