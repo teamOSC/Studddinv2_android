@@ -181,9 +181,9 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 131077 && resultCode == Activity.RESULT_OK) {
-           super.onActivityResult(requestCode, resultCode, data);
-           paths = data.getStringArrayExtra("all_path");
-
+            paths = data.getStringArrayExtra("all_path");
         }
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 }

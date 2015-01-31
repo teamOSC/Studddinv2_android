@@ -23,7 +23,6 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
@@ -37,7 +36,6 @@ import java.util.List;
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.utils.FloatingActionButton;
-import in.tosc.studddin.utils.FloatingActionsMenu;
 import in.tosc.studddin.utils.ProgressBarCircular;
 
 /**
@@ -56,7 +54,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
     public static byte[] byteArray;
     public static String mCurrentPhotoPath;
 
-    private FloatingActionButton camera , gallery, upload;
+    private FloatingActionButton upload;
 
     public ListingsUploadFragment() {
         // Required empty public constructor
@@ -67,11 +65,9 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
         View rootView;
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB){
             rootView = inflater.inflate(R.layout.fragment_listings_upload, container, false);
-            FloatingActionsMenu myMenu = (FloatingActionsMenu) rootView.findViewById(R.id.multiple_actions);
         }else {
             rootView = inflater.inflate(R.layout.fragment_listing_upload_gingerbread, container, false);
         }
@@ -82,6 +78,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         listing_image = (ImageView) rootView.findViewById(R.id.listing_image);
         category = (Spinner) rootView.findViewById(R.id.listing_category);
         uploading = (ProgressBarCircular) rootView.findViewById(R.id.upload_progress);
+        upload  = (FloatingActionButton) rootView.findViewById(R.id.listing_upload);
         List<String> categoryList = new ArrayList<>();
         categoryList.add("Book");
         categoryList.add("Apparatus");
@@ -89,14 +86,8 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item,categoryList);
         category.setAdapter(dataAdapter);
 
-        camera = (FloatingActionButton) rootView.findViewById(R.id.camerafab);
-        //gallery = (FloatingActionButton) rootView.findViewById(R.id.galleryfab);
-        upload  = (FloatingActionButton) rootView.findViewById(R.id.uploadfab);
-
-
-
-        camera.setOnClickListener(this);
-        //gallery.setOnClickListener(this);
+        upload.setOnClickListener(this);
+        listing_image.setOnClickListener(this);
 
         return rootView;
     }
@@ -105,7 +96,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
     public void onClick(View view) {
         switch(view.getId()){
 
-            case R.id.camerafab:
+            case R.id.listing_image:
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 File photoFile = null;
@@ -129,7 +120,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                 startActivityForResult(chooser, 0);
                 break;
 
-            case R.id.uploadfab:
+            case R.id.listing_upload:
                 boolean validate = validateInput();
 
                 if(validate){
@@ -146,7 +137,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                     ParseFile file = new ParseFile("listing.png", byteArray);
                     file.saveInBackground();
                     upload.put("image", file);
-                    upload.put("ownerName", ParseUser.getCurrentUser().getString("NAME"));
+                    upload.put("ownerName","Prempal" );  //ParseUser.getCurrentUser().getString("NAME")
                     upload.put("listingName", listing.getText().toString());
                     upload.put("listingDesc", listing_desc.getText().toString());
                     upload.put("mobile", mobile.getText().toString());

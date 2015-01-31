@@ -4,7 +4,7 @@
         
     </shape></item>
 
-    <item android:drawable="@drawable/ic_camera_alt_grey600_48dp">
+    <item android:drawable="@drawable/ic_camera_alt_black_48dp">
 
     </item>
 
