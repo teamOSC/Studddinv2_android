@@ -11,6 +11,7 @@ import com.facebook.HttpMethod;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
+import com.facebook.android.Util;
 import com.facebook.model.GraphUser;
 
 import org.json.JSONArray;
@@ -21,6 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import in.tosc.studddin.utils.Utilities;
 
 /**
  * Created by championswimmer on 26/1/15.
@@ -94,15 +97,8 @@ public class FacebookApi {
                         try {
                             String objectId = response.getGraphObject().getInnerJSONObject().getString("id");
                             String sUrl = "https://graph.facebook.com/" + objectId + "/picture??width=300&&height=300";
-                            URL url = new URL(sUrl);
-                            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                            connection.setDoInput(true);
-                            connection.connect();
-                            InputStream input = connection.getInputStream();
-                            Bitmap bitmap = BitmapFactory.decodeStream(input);
+                            Bitmap bitmap = Utilities.downloadBitmap(sUrl);
                             listener.gotProfilePicture(bitmap);
-                        } catch (IOException e) {
-                            e.printStackTrace();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

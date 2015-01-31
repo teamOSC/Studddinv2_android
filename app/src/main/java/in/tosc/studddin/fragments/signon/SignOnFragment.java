@@ -24,6 +24,9 @@ import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.twitter.Twitter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,6 +34,7 @@ import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.externalapi.FacebookApi;
+import in.tosc.studddin.externalapi.TwitterApi;
 import in.tosc.studddin.externalapi.UserDataFields;
 import in.tosc.studddin.utils.FloatingActionButton;
 import in.tosc.studddin.utils.Utilities;
@@ -256,25 +260,25 @@ public class SignOnFragment extends Fragment {
         ParseTwitterUtils.logIn(getActivity(), new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException err) {
-                try {
-                    Log.w(TAG, "pe = " + err.getCode() + err.getMessage());
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (err != null) {
+                    err.printStackTrace();
+                    return;
                 }
                 if (user == null) {
                     Log.w(TAG, "Uh oh. The user cancelled the Twitter login.");
                 } else if (user.isNew()) {
                     Log.w(TAG, "User signed up and logged in through Twitter!" + ParseTwitterUtils.getTwitter().getScreenName());
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
-                    Bundle b = new Bundle();
-
-                    Twitter t = ParseTwitterUtils.getTwitter();
-                    b.putString(UserDataFields.USER_NAME, t.getScreenName());
-                    SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
-
-                    transaction.replace(R.id.signon_container,newFragment).addToBackStack("SignIn").commit();
+                    final Bundle b = new Bundle();
+                    b.putString(UserDataFields.USER_NAME, ParseTwitterUtils.getTwitter().getScreenName());
+                    final SignupDataFragment fragment = showSignupDataFragment(b);
+                    TwitterApi.getUserInfo(new TwitterApi.TwitterInfoCallback() {
+                        @Override
+                        public void gotInfo(JSONObject object, Bitmap bitmap) throws JSONException {
+                            fragment.profileBitmap = bitmap;
+                            fragment.bitmapReady = true;
+                            fragment.setProfilePicture();
+                        }
+                    });
                 } else {
                     Log.w(TAG, "User logged in through Twitter!");
                     SignupDataFragment.goToMainActivity(getActivity());
