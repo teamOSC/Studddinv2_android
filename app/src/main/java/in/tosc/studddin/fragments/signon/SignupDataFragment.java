@@ -96,6 +96,18 @@ public class SignupDataFragment extends Fragment implements
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
+        currentUserLoc = new Location("");
+
+        ParseGeoPoint.getCurrentLocationInBackground(6000, new LocationCallback() {
+            @Override
+            public void done(ParseGeoPoint parseGeoPoint, ParseException e) {
+                if (parseGeoPoint != null) {
+                    currentUserLoc.setLatitude(parseGeoPoint.getLatitude());
+                    currentUserLoc.setLongitude(parseGeoPoint.getLongitude());
+                }
+            }
+        });
+
         Button locationEditText = (Button) rootView.findViewById(R.id.user_location);
         locationEditText.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -269,13 +281,9 @@ public class SignupDataFragment extends Fragment implements
             ParseGeoPoint geoPoint = new ParseGeoPoint(currentUserLoc.getLatitude(), currentUserLoc.getLongitude());
             user.put(UserDataFields.USER_LOCATION, geoPoint);
         }
-        /*
-        try {
-            user.put(UserDataFields.USER_LAT, input.get(UserDataFields.USER_LAT));
-            user.put(UserDataFields.USER_LONG, input.get(UserDataFields.USER_LONG));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+
+        user.put(UserDataFields.USER_FULLY_REGISTERED, true);
+
         if (user.getSessionToken() != null) {
             Log.d(TAG, "saving user in background");
             user.saveInBackground(new SaveCallback() {

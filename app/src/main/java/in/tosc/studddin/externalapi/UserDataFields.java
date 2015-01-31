@@ -15,4 +15,5 @@ public class UserDataFields {
     public static final String USER_QUALIFICATIONS = "QUALIFICATIONS";
     public static final String USER_LOCATION = "location";
     public static final String USER_IMAGE = "image";
+    public static final String USER_FULLY_REGISTERED = "FULLY_REGISTERED";
 }
