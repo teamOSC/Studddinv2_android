@@ -69,7 +69,6 @@ public class NotesFragment extends Fragment {
     }
 
     public void goToUploadFragment () {
-        NotesUploadFragment notesUploadFragment = new NotesUploadFragment();
         notesPager.setCurrentItem(1);
 
     }
