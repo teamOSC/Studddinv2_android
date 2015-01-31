@@ -283,6 +283,12 @@ public class SignupDataFragment extends Fragment implements
             ParseGeoPoint geoPoint = new ParseGeoPoint(currentUserLoc.getLatitude(), currentUserLoc.getLongitude());
             user.put(UserDataFields.USER_LOCATION, geoPoint);
         }
+        // PUTTING SOME DUMMY DATA
+        else
+        {
+            ParseGeoPoint p = new ParseGeoPoint(28.807436,77.282683);
+            user.put(UserDataFields.USER_LOCATION, p);
+        }
 
         user.put(UserDataFields.USER_FULLY_REGISTERED, true);
 

@@ -250,8 +250,10 @@ public class PeopleNearmeFragment extends Fragment {
 
 
 
-                ParseQuery<ParseUser> query = ParseUser.getQuery();
-                query.findInBackground(new FindCallback<ParseUser>() {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereNear("location", userlocation);
+
+        query.findInBackground(new FindCallback<ParseUser>() {
                     public void done(List<ParseUser> objects, ParseException e) {
                         if (e == null) {
 
