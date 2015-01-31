@@ -272,11 +272,13 @@ public class SignupDataFragment extends Fragment implements
         user.put(UserDataFields.USER_INSTITUTE, input.get(UserDataFields.USER_INSTITUTE));
         user.put(UserDataFields.USER_QUALIFICATIONS, input.get(UserDataFields.USER_QUALIFICATIONS));
         user.put(UserDataFields.USER_INTERESTS, input.get(UserDataFields.USER_INTERESTS));
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        profileBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        ParseFile profile = new ParseFile("profilePicture.png", stream.toByteArray());
-        profile.save();
-        user.put(UserDataFields.USER_IMAGE, profile);
+        if (profileBitmap != null) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            profileBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            ParseFile profile = new ParseFile("profilePicture.png", stream.toByteArray());
+            profile.save();
+            user.put(UserDataFields.USER_IMAGE, profile);
+        }
         if (currentUserLoc != null) {
             ParseGeoPoint geoPoint = new ParseGeoPoint(currentUserLoc.getLatitude(), currentUserLoc.getLongitude());
             user.put(UserDataFields.USER_LOCATION, geoPoint);

@@ -401,11 +401,13 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
                         } catch (UnsupportedOperationException ex) {
                             Log.e(TAG, "Unsupported Operation");
                         }
-                        mAdapter.setDataSet(i, parseObjects, true, getString(resourceId));
+                        if (FeedFragment.this.isAdded()) {
+                            mAdapter.setDataSet(i, parseObjects, true, getString(resourceId));
 
-                        mAdapter.invalidateData(i);
-//                        if (flag == 1)
+                            mAdapter.invalidateData(i);
                             mAdapter.notifyDataSetChanged();
+                        }
+
                     } else {
                         Log.e(TAG, "Query failed");
                     }
