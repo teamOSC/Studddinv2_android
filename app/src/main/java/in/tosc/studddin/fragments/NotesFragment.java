@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +23,7 @@ public class NotesFragment extends Fragment {
 
 
     ViewPager notesPager;
-    FragmentPagerAdapter fragmentPagerAdapter;
+    FragmentStatePagerAdapter fragmentPagerAdapter;
 
     NotesUploadFragment notesUploadFragment;
 
@@ -39,7 +40,7 @@ public class NotesFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
 
 
-        fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
+        fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 switch (position) {
