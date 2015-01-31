@@ -278,7 +278,23 @@ public class PeopleSameInterestsFragment extends Fragment {
                                         each.cinstituition = pu.getString("INSTITUTE");
 //                                          each.cdistance = pu.getString("NAME");
                                         each.cusername = pu.getString("username");
-                                        each.cdistance=String.valueOf(i)+" km";
+                                        ParseGeoPoint temploc = pu.getParseGeoPoint("location");
+                                        if (temploc!=null && temploc.getLatitude()!=0)
+                                        {
+                                            if(userlocation!=null)
+                                            {
+                                                each.cdistance=String.valueOf((int)temploc.distanceInKilometersTo(userlocation))+" km";
+                                            }
+                                            else
+                                            {
+                                                each.cdistance="13 km";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            each.cdistance="16 km";
+                                        }
+
                                         try
                                         {
                                             each.fileObject = (ParseFile) pu.get("image");
