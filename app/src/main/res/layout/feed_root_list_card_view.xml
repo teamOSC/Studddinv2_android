@@ -27,6 +27,7 @@
             android:id="@+id/feed_category_progress_bar"
             android:layout_width="36dp"
             android:layout_height="36dp"
+            android:layout_gravity="center|left"
             android:layout_below="@id/feed_category_text" />
 
         <android.support.v7.widget.RecyclerView

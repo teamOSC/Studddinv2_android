@@ -80,7 +80,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_feed, container, false);
         searchEditText = (MaterialEditText) rootView.findViewById(R.id.feed_search);
         searchEditText.setOnKeyListener(this);
@@ -88,7 +87,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
 
         context = getActivity();
 
-        // use a linear layout manager
         RecyclerView.LayoutManager mVerticalLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
 
@@ -109,12 +107,14 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             interestList.add(list);
         }
 
+        return rootView;
+    }
+
+    private void updateAll() {
         updateUI(CATEGORY_INTERESTS, FEED_TABLE, 0);
         updateUI(CATEGORY_COLLEGE, EVENTS_TABLE, 0);
         updateUI(CATEGORY_AROUND, FEED_TABLE, 0);
         getFeed();
-
-        return rootView;
     }
 
     @Override
@@ -156,7 +156,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     @Override
     public void onResume() {
         super.onResume();
-        mAdapter.notifyDataSetChanged();
+        updateAll();
     }
 
     private int getCategoryResource(int i) throws UnsupportedOperationException {
@@ -239,7 +239,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         });
     }
 
-    private void updateUI(final int i, String tableName, final int flag) {
+    private synchronized void updateUI(final int i, String tableName, final int flag) {
         if (this.isAdded()) {
             ParseQuery<ParseObject> query = ParseQuery.getQuery(tableName).fromLocalDatastore().setLimit(10);
 //            query.whereContainedIn("category", interestList);
@@ -258,6 +258,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
                         }
                     } else {
                         Log.e(TAG, "Query failed");
+                        e.printStackTrace();
                     }
                 }
             });
@@ -284,9 +285,9 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
 
         public void invalidateData(int i) {
             adapters[i].notifyDataSetChanged();
+            notifyItemChanged(i);
         }
 
-        // Create new views (invoked by the layout manager)
         @Override
         public FeedRootAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                              int viewType) {
@@ -296,11 +297,9 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             return new ViewHolder(v);
         }
 
-        // Replace the contents of a view (invoked by the layout manager)
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             holder.mTextView.setText(mDataset[position].string);
-
             if (mDataset[position].isLoaded) {
                 holder.progressBar.setVisibility(View.GONE);
                 holder.mHorizontalRecyclerView.setVisibility(View.VISIBLE);
@@ -310,17 +309,12 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             }
         }
 
-        // Return the size of your dataset (invoked by the layout manager)
         @Override
         public int getItemCount() {
             return mDataset.length;
         }
 
-        // Provide a reference to the views for each data item
-        // Complex data items may need more than one view per item, and
-        // you provide access to all the views for a data item in a view holder
         public static class ViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
             public CardView mCardView;
             public TextView mTextView;
             public RecyclerView mHorizontalRecyclerView;
@@ -330,6 +324,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
                 super(v);
                 mCardView = v;
                 mTextView = (TextView) mCardView.findViewById(R.id.feed_category_text);
+                mTextView.setVisibility(View.VISIBLE);
                 mHorizontalRecyclerView = (RecyclerView)
                         mCardView.findViewById(R.id.feed_category_horizontal_recycler_view);
                 RecyclerView.LayoutManager mHorizontalLayoutManager = new LinearLayoutManager(context,
@@ -353,7 +348,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         public FeedCategoryAdapter.FeedCategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LinearLayout view = (LinearLayout) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.feed_category_item, parent, false);
-            //FeedCategoryAdapter.FeedCategoryViewHolder vh = new FeedCategoryAdapter.FeedCategoryViewHolder(view);
             return new FeedCategoryAdapter.FeedCategoryViewHolder(view);
         }
 
@@ -362,18 +356,16 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
 
             final ParseObject object = parseObjects.get(position);
             holder.mTextView.setText(object.getString(KEY_TITLE));
-            Ion.with(holder.mImageView)
-//                    .placeholder(R.drawable.placeholder_image)
-//                    .error(R.drawable.error_image)
-//                    .animateLoad(spinAnimation)
-//                    .animateIn(fadeInAnimation)
-                    .load(object.getString(KEY_IMAGE_URL));
+            Ion.with(holder.mImageView).load(object.getString(KEY_IMAGE_URL));
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(object.getString(KEY_LINK)));
-                    context.startActivity(browserIntent);
+                    String uriString = object.getString(KEY_LINK);
+                    if (uriString != null) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(uriString));
+                        context.startActivity(browserIntent);
+                    }
                 }
             });
         }
@@ -386,7 +378,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         }
 
         public static class FeedCategoryViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
             public LinearLayout view;
             public TextView mTextView;
             public ImageView mImageView;
