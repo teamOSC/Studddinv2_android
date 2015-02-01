@@ -359,9 +359,12 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(object.getString(KEY_LINK)));
-                    context.startActivity(browserIntent);
+                    String uriString = object.getString(KEY_LINK);
+                    if (uriString != null) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(uriString));
+                        context.startActivity(browserIntent);
+                    }
                 }
             });
         }
