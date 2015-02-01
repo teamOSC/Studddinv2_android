@@ -5,11 +5,19 @@
     android:orientation="vertical">
 
 
+    <ScrollView
+        android:layout_width="350dp"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <TextView
             android:layout_width="0dp"
@@ -32,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
-
+        android:padding="10dp"
         >
 
         <TextView
@@ -53,7 +61,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <TextView
             android:layout_width="0dp"
@@ -73,7 +82,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <TextView
             android:layout_width="0dp"
@@ -93,7 +103,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <TextView
             android:layout_width="0dp"
@@ -112,18 +123,22 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="25dp">
 
         <Button
             android:id="@+id/notes_button_download"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:background="@drawable/btn_sel"
             android:clickable="true"
             android:text="Download All"
-            android:textColor="@color/white" />
+            android:padding="8dp"
+            android:textColor="@color/white"
+            android:layout_margin="5dp"/>
 
     </RelativeLayout>
+    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

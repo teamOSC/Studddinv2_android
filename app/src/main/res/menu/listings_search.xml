@@ -6,17 +6,17 @@
         android:id="@+id/listing_filter"
         android:icon="@drawable/ic_action_sort_by_size"
         android:title="Filter"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
 
-        ></item>
+        />
 
     <item
         android:id="@+id/listing_upload"
         android:icon="@android:drawable/stat_sys_upload"
         android:title="Upload"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
 
-        ></item>
+        />
 
 
 </menu>
