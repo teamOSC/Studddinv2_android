@@ -92,15 +92,17 @@ public class NotesCustomDialog extends Dialog {
                         ParseFile notesZipParseFile = (ParseFile) notesZipParseObject.get("imageZip");
 
                         String zipFileURL = notesZipParseFile.getUrl();
-                        Log.d("raghav", ""+ zipFileURL);
+                        Log.d("Raghav", ""+ zipFileURL);
                             File myFile = new File("/mnt/sdcard/noteszipfile " + notesSubjectName.get(position) +" "+
                                     notesTopicName.get(position) + " "+
                                     notesCollegeName.get(position) + " " +
                                     notesBranchName.get(position) +".zip");
                             Uri uri = Uri.parse(zipFileURL);
                             DownloadManager.Request dr = new DownloadManager.Request(uri);
-                            dr.setTitle("Downloading...");
-                            dr.setDescription("Keep Calm");
+                            dr.setTitle("Notes: " + notesTopicName.get(position) +" "+
+                                    notesSubjectName.get(position) + " "+
+                                    notesBranchName.get(position) +".zip");
+                            dr.setDescription("");
 
                             dr.setDestinationInExternalPublicDir("/mnt/sdcard/", "noteszipfile " + notesSubjectName.get(position) +" "+
                                     notesTopicName.get(position) + " "+
