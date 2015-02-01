@@ -10,6 +10,20 @@
     <!-- App Main colors -->
     <color name="colorPrimary">#D86C70</color>
     <color name="colorPrimaryDark">#A3333D</color>
+    
+    <!--Feed color -->
+    <color name="feedColorPrimary">#009688</color>
+    <!--Notes color -->
+    <color name="notesColorPrimary">#2196F3</color>
+    <!--People color -->
+    <color name="peopleColorPrimary">#FF9800</color>
+    <!--Listings color -->
+    <color name="listingsColorPrimary">#8BC34A</color>
+    <!--Events color -->
+    <color name="eventsColorPrimary">#673AB7</color>
+    <!--Account color -->
+    <color name="accountColorPrimary">#A3333D</color>
+    
     <!-- #CF5C36 -->
     <color name="colorPrimaryPressed">#aaD86C70</color>
 

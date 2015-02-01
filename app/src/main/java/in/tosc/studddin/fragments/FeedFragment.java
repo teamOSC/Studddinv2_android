@@ -1,10 +1,14 @@
 package in.tosc.studddin.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -73,8 +77,12 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.feedColorPrimary));
+        actionBar.setBackgroundDrawable(colorDrawable);
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        
     }
 
     @Override
@@ -86,7 +94,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.feed_recycler_view);
 
         context = getActivity();
-
         RecyclerView.LayoutManager mVerticalLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
 
@@ -134,6 +141,12 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        activity.setTheme(R.style.AppTheme_Custom);
     }
 
     @Override
