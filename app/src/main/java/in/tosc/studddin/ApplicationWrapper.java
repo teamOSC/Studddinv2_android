@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
-import com.parse.ParseConfig;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 

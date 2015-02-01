@@ -1,28 +1,20 @@
 package in.tosc.studddin.fragments.signon;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.parse.LocationCallback;
 
 import in.tosc.studddin.R;
 
@@ -31,11 +23,9 @@ import in.tosc.studddin.R;
  */
 public class LocationSelectDialog extends DialogFragment implements OnMapReadyCallback {
 
+    private static final String TAG = "LocationSelectDialog";
     LatLng currentLocation;
     GoogleMap googleMap;
-
-    private static final String TAG = "LocationSelectDialog";
-
     LocationSetCallback callback;
 
     @Override

@@ -30,6 +30,7 @@ public class TwitterApi {
     public static void getUserInfo(final TwitterInfoCallback callback) {
         new AsyncTask<Void, Void, JSONObject>() {
             Bitmap bitmap = null;
+
             @Override
             protected JSONObject doInBackground(Void... params) {
                 Twitter twitter = ParseTwitterUtils.getTwitter();

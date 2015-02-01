@@ -25,7 +25,7 @@ public class Unzip {
     public void unzip() {
         try {
             File f = new File(_location);
-            if(!f.isDirectory()) {
+            if (!f.isDirectory()) {
                 f.mkdirs();
             }
             ZipInputStream zin = new ZipInputStream(new FileInputStream(_zipFile));
@@ -36,30 +36,26 @@ public class Unzip {
 
                     if (ze.isDirectory()) {
                         File unzipFile = new File(path);
-                        if(!unzipFile.isDirectory()) {
+                        if (!unzipFile.isDirectory()) {
                             unzipFile.mkdirs();
                         }
-                    }
-                    else {
+                    } else {
                         FileOutputStream fout = new FileOutputStream(path, false);
                         try {
                             for (int c = zin.read(); c != -1; c = zin.read()) {
                                 fout.write(c);
                             }
                             zin.closeEntry();
-                        }
-                        finally {
+                        } finally {
                             Log.d("Raghav", "Files Unzipped");
                             fout.close();
                         }
                     }
                 }
-            }
-            finally {
+            } finally {
                 zin.close();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Log.e("Raghav", "Unzip exception", e);
         }
 
@@ -68,7 +64,7 @@ public class Unzip {
     private void _dirChecker(String dir) {
         File f = new File(_location + dir);
 
-        if(!f.isDirectory()) {
+        if (!f.isDirectory()) {
             f.mkdirs();
         }
     }

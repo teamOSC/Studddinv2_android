@@ -33,15 +33,17 @@ public class NotesSearchFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    FloatingActionButton addNotesButton;
+    EditText searchEdTxt;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    FloatingActionButton addNotesButton;
-    EditText searchEdTxt;
-
     private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName;
+
+    public NotesSearchFragment() {
+        // Required empty public constructor
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -63,10 +65,6 @@ public class NotesSearchFragment extends Fragment {
 
     }
 
-    public NotesSearchFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +84,7 @@ public class NotesSearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_notes_search, container, false);
 
-        GridView notesGridView = (GridView)rootView.findViewById(R.id.notes_gridview);
+        GridView notesGridView = (GridView) rootView.findViewById(R.id.notes_gridview);
 
         notesCollegeName = new ArrayList<String>();
         notesBranchName = new ArrayList<String>();
@@ -104,7 +102,7 @@ public class NotesSearchFragment extends Fragment {
                 FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
 
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.notes_slide_entry,R.anim.notes_slide_exit);
+                fragmentTransaction.setCustomAnimations(R.anim.notes_slide_entry, R.anim.notes_slide_exit);
 
                 NotesUploadFragment newFragment = new NotesUploadFragment();
 
@@ -124,7 +122,7 @@ public class NotesSearchFragment extends Fragment {
 
 
         NotesCustomGridViewAdapter adapter = new NotesCustomGridViewAdapter(getActivity(), notesCollegeName, notesBranchName, notesTopicName, notesSubjectName);
-        notesGridView = (GridView)rootView.findViewById(R.id.notes_gridview);
+        notesGridView = (GridView) rootView.findViewById(R.id.notes_gridview);
         notesGridView.setAdapter(adapter);
 
         notesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -132,15 +130,13 @@ public class NotesSearchFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                NotesCustomDialog notesCustomDialog = new NotesCustomDialog(getActivity(),notesCollegeName, notesBranchName, notesTopicName, notesSubjectName);
+                NotesCustomDialog notesCustomDialog = new NotesCustomDialog(getActivity(), notesCollegeName, notesBranchName, notesTopicName, notesSubjectName);
                 notesCustomDialog.setTitle("Details:");
                 notesCustomDialog.show();
 
 
             }
         });
-
-
 
 
         addNotesButton.setOnClickListener(new View.OnClickListener() {
@@ -171,7 +167,8 @@ public class NotesSearchFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.notes_search_upload:
-                goToUploadFragment(); return true;
+                goToUploadFragment();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

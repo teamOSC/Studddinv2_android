@@ -7,6 +7,7 @@ import android.os.AsyncTask;
  */
 public class HttpRequest {
     private String url;
+
     public void HttpRequest(HttpExecutor callback, String url) {
         this.url = url;
     }

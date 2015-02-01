@@ -38,7 +38,6 @@ import java.util.HashMap;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
-import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.externalapi.UserDataFields;
 
 /**
@@ -48,28 +47,16 @@ public class SignupDataFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "SignupDataFragment";
-
+    public boolean viewReady = false, bitmapReady = false;
+    public Bitmap profileBitmap;
     Bundle userDataBundle;
-
     View rootView;
-
     private HashMap<String, String> input;
     private SparseArray<EditText> editTextArray = new SparseArray<>();
     private Button submitButton;
-
     private ImageView profileImageView;
-
-    public boolean viewReady = false, bitmapReady = false;
-    public Bitmap profileBitmap;
-
     private GoogleApiClient mGoogleApiClient;
-    private Location currentUserLoc;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
+    private Location currentUserLoc = new Location("");
 
     public SignupDataFragment() {
         // Required empty public constructor
@@ -81,6 +68,26 @@ public class SignupDataFragment extends Fragment implements
         return fragment;
     }
 
+    public static void goToMainActivity(Activity act) {
+        Intent i = new Intent(act, MainActivity.class);
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+            Activity activity = act;
+            Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
+            activity.getWindow().setExitTransition(new Explode().setDuration(1500));
+            ActivityCompat.startActivityForResult(activity, i, 0, options);
+        } else {
+            act.startActivity(i);
+        }
+        act.finish();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        connectToGoogleApi();
+        mGoogleApiClient.connect();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +95,7 @@ public class SignupDataFragment extends Fragment implements
             userDataBundle = getArguments();
         }
         input = new HashMap<>();
+        connectToGoogleApi();
     }
 
     @Override
@@ -96,7 +104,7 @@ public class SignupDataFragment extends Fragment implements
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
-        currentUserLoc = new Location("");
+        connectToGoogleApi();
 
         ParseGeoPoint.getCurrentLocationInBackground(6000, new LocationCallback() {
             @Override
@@ -163,12 +171,6 @@ public class SignupDataFragment extends Fragment implements
             }
         });
 
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-
         viewReady = true;
         setProfilePicture();
         return rootView;
@@ -183,7 +185,7 @@ public class SignupDataFragment extends Fragment implements
         }
     }
 
-    private void setDataToFields (int id, String fieldName) {
+    private void setDataToFields(int id, String fieldName) {
         try {
             editTextArray.get(id).setText(userDataBundle.getString(fieldName));
         } catch (Exception e) {
@@ -255,7 +257,6 @@ public class SignupDataFragment extends Fragment implements
         return f;
     }
 
-
     private void startNextActivity() {
         //get to next activity and set flags etc in shared preferences
     }
@@ -284,9 +285,8 @@ public class SignupDataFragment extends Fragment implements
             user.put(UserDataFields.USER_LOCATION, geoPoint);
         }
         // PUTTING SOME DUMMY DATA
-        else
-        {
-            ParseGeoPoint p = new ParseGeoPoint(28.807436,77.282683);
+        else {
+            ParseGeoPoint p = new ParseGeoPoint(28.807436, 77.282683);
             user.put(UserDataFields.USER_LOCATION, p);
         }
 
@@ -326,23 +326,10 @@ public class SignupDataFragment extends Fragment implements
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                        profileImageView.setImageBitmap(profileBitmap);
+                    profileImageView.setImageBitmap(profileBitmap);
                 }
             });
         }
-    }
-
-    public static void goToMainActivity (Activity act) {
-        Intent i = new Intent(act, MainActivity.class);
-        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-            Activity activity = act;
-            Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
-            activity.getWindow().setExitTransition(new Explode().setDuration(1500));
-            ActivityCompat.startActivityForResult(activity, i, 0,options);
-        }else{
-            act.startActivity(i);
-        }
-        act.finish();
     }
 
     @Override
@@ -357,5 +344,15 @@ public class SignupDataFragment extends Fragment implements
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+    }
+
+    protected synchronized void connectToGoogleApi() {
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
     }
 }

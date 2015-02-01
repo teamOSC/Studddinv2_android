@@ -19,8 +19,14 @@ public class ProgressBarCircular extends RelativeLayout {
     final static String ANDROIDXML = "http://schemas.android.com/apk/res/android";
 
     int backgroundColor = Color.parseColor("#1E88E5");
-
-
+    float radius1 = 0;
+    float radius2 = 0;
+    int cont = 0;
+    boolean firstAnimationOver = false;
+    int arcD = 1;
+    int arcO = 0;
+    float rotateAngle = 0;
+    int limite = 0;
     public ProgressBarCircular(Context context, AttributeSet attrs) {
         super(context, attrs);
         setAttributes(attrs);
@@ -72,7 +78,6 @@ public class ProgressBarCircular extends RelativeLayout {
         return Color.argb(128, r, g, b);
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -83,11 +88,6 @@ public class ProgressBarCircular extends RelativeLayout {
         invalidate();
 
     }
-
-    float radius1 = 0;
-    float radius2 = 0;
-    int cont = 0;
-    boolean firstAnimationOver = false;
 
     /**
      * Draw first animation of view
@@ -125,11 +125,6 @@ public class ProgressBarCircular extends RelativeLayout {
                 firstAnimationOver = true;
         }
     }
-
-    int arcD = 1;
-    int arcO = 0;
-    float rotateAngle = 0;
-    int limite = 0;
 
     /**
      * Draw second animation of view

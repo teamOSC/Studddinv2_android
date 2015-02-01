@@ -24,104 +24,104 @@ import in.tosc.studddin.R;
 
 public class MainActivity extends Activity {
 
-	GridView gridGallery;
-	Handler handler;
-	GalleryAdapter adapter;
+    GridView gridGallery;
+    Handler handler;
+    GalleryAdapter adapter;
 
-	ImageView imgSinglePick;
-	Button btnGalleryPick;
-	Button btnGalleryPickMul;
+    ImageView imgSinglePick;
+    Button btnGalleryPick;
+    Button btnGalleryPickMul;
 
-	String action;
-	ViewSwitcher viewSwitcher;
-	ImageLoader imageLoader;
+    String action;
+    ViewSwitcher viewSwitcher;
+    ImageLoader imageLoader;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.main);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.main);
 
-		initImageLoader();
-		init();
-	}
+        initImageLoader();
+        init();
+    }
 
-	private void initImageLoader() {
-		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-				.cacheOnDisc().imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
-				.bitmapConfig(Bitmap.Config.RGB_565).build();
-		ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(
-				this).defaultDisplayImageOptions(defaultOptions).memoryCache(
-				new WeakMemoryCache());
+    private void initImageLoader() {
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheOnDisc().imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+                .bitmapConfig(Bitmap.Config.RGB_565).build();
+        ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(
+                this).defaultDisplayImageOptions(defaultOptions).memoryCache(
+                new WeakMemoryCache());
 
-		ImageLoaderConfiguration config = builder.build();
-		imageLoader = ImageLoader.getInstance();
-		imageLoader.init(config);
-	}
+        ImageLoaderConfiguration config = builder.build();
+        imageLoader = ImageLoader.getInstance();
+        imageLoader.init(config);
+    }
 
-	private void init() {
+    private void init() {
 
-		handler = new Handler();
-		gridGallery = (GridView) findViewById(R.id.gridGallery);
-		gridGallery.setFastScrollEnabled(true);
-		adapter = new GalleryAdapter(getApplicationContext(), imageLoader);
-		adapter.setMultiplePick(false);
-		gridGallery.setAdapter(adapter);
+        handler = new Handler();
+        gridGallery = (GridView) findViewById(R.id.gridGallery);
+        gridGallery.setFastScrollEnabled(true);
+        adapter = new GalleryAdapter(getApplicationContext(), imageLoader);
+        adapter.setMultiplePick(false);
+        gridGallery.setAdapter(adapter);
 
-		viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
-		viewSwitcher.setDisplayedChild(1);
+        viewSwitcher = (ViewSwitcher) findViewById(R.id.viewSwitcher);
+        viewSwitcher.setDisplayedChild(1);
 
-		imgSinglePick = (ImageView) findViewById(R.id.imgSinglePick);
+        imgSinglePick = (ImageView) findViewById(R.id.imgSinglePick);
 
-		btnGalleryPick = (Button) findViewById(R.id.btnGalleryPick);
-		btnGalleryPick.setOnClickListener(new View.OnClickListener() {
+        btnGalleryPick = (Button) findViewById(R.id.btnGalleryPick);
+        btnGalleryPick.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
 
-				Intent i = new Intent(Action.ACTION_PICK);
-				startActivityForResult(i, 100);
+                Intent i = new Intent(Action.ACTION_PICK);
+                startActivityForResult(i, 100);
 
-			}
-		});
+            }
+        });
 
-		btnGalleryPickMul = (Button) findViewById(R.id.btnGalleryPickMul);
-		btnGalleryPickMul.setOnClickListener(new View.OnClickListener() {
+        btnGalleryPickMul = (Button) findViewById(R.id.btnGalleryPickMul);
+        btnGalleryPickMul.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
-				startActivityForResult(i, 200);
-			}
-		});
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
+                startActivityForResult(i, 200);
+            }
+        });
 
-	}
+    }
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
-			adapter.clear();
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
+            adapter.clear();
 
-			viewSwitcher.setDisplayedChild(1);
-			String single_path = data.getStringExtra("single_path");
-			imageLoader.displayImage("file://" + single_path, imgSinglePick);
+            viewSwitcher.setDisplayedChild(1);
+            String single_path = data.getStringExtra("single_path");
+            imageLoader.displayImage("file://" + single_path, imgSinglePick);
 
-		} else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
-			String[] all_path = data.getStringArrayExtra("all_path");
+        } else if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
+            String[] all_path = data.getStringArrayExtra("all_path");
 
-			ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
+            ArrayList<CustomGallery> dataT = new ArrayList<CustomGallery>();
 
-			for (String string : all_path) {
-				CustomGallery item = new CustomGallery();
-				item.sdcardPath = string;
+            for (String string : all_path) {
+                CustomGallery item = new CustomGallery();
+                item.sdcardPath = string;
 
-				dataT.add(item);
-			}
+                dataT.add(item);
+            }
 
-			viewSwitcher.setDisplayedChild(0);
-			adapter.addAll(dataT);
-		}
-	}
+            viewSwitcher.setDisplayedChild(0);
+            adapter.addAll(dataT);
+        }
+    }
 }

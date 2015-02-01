@@ -36,16 +36,19 @@ import in.tosc.studddin.utils.MakeZip;
 public class NotesUploadFragment extends Fragment {
 
 
+    static byte[] byteArray;
+    static String[] imagePaths = new String[0];
+    String zipFileName = "/mnt/sdcard/noteszipfile.zip";
     private Button attachButton;
     private FloatingActionButton uploadButton;
     private EditText topicNameEdTxt, branchNameEdTxt, subjectNameEdTxt;
     private String topicNameString = "", branchNameString = "", subjectNameString = "";
 
-    static byte[] byteArray;
+    public NotesUploadFragment() {
 
-    static String[] imagePaths = new String[0];
+        // Required empty public constructor
 
-    String zipFileName = "/mnt/sdcard/noteszipfile.zip";
+    }
 
     public void setImagePaths(String[] paths, Boolean isSelected) {
         if (isSelected)
@@ -57,12 +60,6 @@ public class NotesUploadFragment extends Fragment {
                     .show();
 
         imagePaths = paths;
-
-    }
-
-    public NotesUploadFragment() {
-
-        // Required empty public constructor
 
     }
 
@@ -106,7 +103,6 @@ public class NotesUploadFragment extends Fragment {
                 topicNameString = topicNameEdTxt.getText().toString();
                 branchNameString = branchNameEdTxt.getText().toString();
                 subjectNameString = subjectNameEdTxt.getText().toString();
-
 
 
                 if (topicNameString.length() < 1) {

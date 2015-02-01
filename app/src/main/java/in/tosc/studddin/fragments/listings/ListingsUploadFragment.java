@@ -44,17 +44,15 @@ import in.tosc.studddin.utils.ProgressBarCircular;
  */
 public class ListingsUploadFragment extends Fragment implements View.OnClickListener {
 
+    public static ImageView listing_image;
+    public static byte[] byteArray;
+    public static String mCurrentPhotoPath;
     //private ImageView upload;
     private MaterialEditText listing;
     private MaterialEditText mobile;
     private Spinner category;
     private ProgressBarCircular uploading;
     private MaterialEditText listing_desc;
-
-    public static ImageView listing_image;
-    public static byte[] byteArray;
-    public static String mCurrentPhotoPath;
-
     private FloatingActionButton upload;
 
     public ListingsUploadFragment() {
@@ -67,9 +65,9 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
 
         View rootView;
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             rootView = inflater.inflate(R.layout.fragment_listings_upload, container, false);
-        }else {
+        } else {
             rootView = inflater.inflate(R.layout.fragment_listing_upload_gingerbread, container, false);
         }
 
@@ -80,12 +78,12 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         category = (Spinner) rootView.findViewById(R.id.listing_category);
         uploading = (ProgressBarCircular) rootView.findViewById(R.id.upload_progress);
         uploading.setBackgroundColor(getResources().getColor(R.color.pink));
-        upload  = (FloatingActionButton) rootView.findViewById(R.id.listing_upload);
+        upload = (FloatingActionButton) rootView.findViewById(R.id.listing_upload);
         List<String> categoryList = new ArrayList<>();
         categoryList.add("Book");
         categoryList.add("Apparatus");
         categoryList.add("Misc.");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_spinner_item,categoryList);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categoryList);
         category.setAdapter(dataAdapter);
 
         upload.setOnClickListener(this);
@@ -96,10 +94,10 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()){
+        switch (view.getId()) {
 
             case R.id.listing_image:
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 File photoFile = null;
                 try {
@@ -117,7 +115,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                 chooser.putExtra(Intent.EXTRA_INTENT, galleryIntent);
                 chooser.putExtra(Intent.EXTRA_TITLE, "Upload Listing Photo");
 
-                Intent[] intentArray =  {cameraIntent};
+                Intent[] intentArray = {cameraIntent};
                 chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
                 startActivityForResult(chooser, 0);
                 break;
@@ -125,11 +123,11 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
             case R.id.listing_upload:
                 boolean validate = validateInput();
 
-                if(validate){
+                if (validate) {
                     uploading.setVisibility(View.VISIBLE);
                     ParseObject upload = new ParseObject("Listings");
-                    ParseGeoPoint point = new ParseGeoPoint(28.7500749,77.11766519999992);
-                    if(byteArray==null){
+                    ParseGeoPoint point = new ParseGeoPoint(28.7500749, 77.11766519999992);
+                    if (byteArray == null) {
                         Drawable drawable = getResources().getDrawable(R.drawable.listing_placeholder);
                         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -139,12 +137,12 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                     ParseFile file = new ParseFile("listing.png", byteArray);
                     file.saveInBackground();
                     upload.put("image", file);
-                    upload.put("ownerName", ParseUser.getCurrentUser().getString("NAME") );
+                    upload.put("ownerName", ParseUser.getCurrentUser().getString("NAME"));
                     upload.put("listingName", listing.getText().toString());
                     upload.put("listingDesc", listing_desc.getText().toString());
                     upload.put("mobile", mobile.getText().toString());
                     upload.put("location", point);
-                    upload.put("category",category.getSelectedItem().toString());
+                    upload.put("category", category.getSelectedItem().toString());
 
                     upload.saveInBackground(new SaveCallback() {
                         @Override
@@ -175,11 +173,11 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         return image;
     }
 
-    private boolean validateInput(){
+    private boolean validateInput() {
         boolean validate = true;
-        if(listing.getText().toString().isEmpty() || listing_desc.getText().toString().isEmpty() || mobile.getText().toString().isEmpty()){
+        if (listing.getText().toString().isEmpty() || listing_desc.getText().toString().isEmpty() || mobile.getText().toString().isEmpty()) {
             validate = false;
-            Toast.makeText(getActivity(),"All fields are mandatory",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "All fields are mandatory", Toast.LENGTH_SHORT).show();
         }
         return validate;
     }

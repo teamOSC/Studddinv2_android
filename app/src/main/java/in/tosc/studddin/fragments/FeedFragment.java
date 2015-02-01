@@ -38,33 +38,26 @@ import in.tosc.studddin.externalapi.UserDataFields;
 /**
  * News Feed fragment subclass
  */
-public class FeedFragment extends Fragment implements View.OnKeyListener{
+public class FeedFragment extends Fragment implements View.OnKeyListener {
 
-    private FeedRootAdapter mAdapter;
-    View rootView;
-    private RecyclerView recyclerView;
-
-    private static Context context;
-
+    public static final int CATEGORY_INTERESTS = 0;
+    public static final int CATEGORY_AROUND = 1;
+    public static final int CATEGORY_COLLEGE = 2;
     private static final String TAG = "[[[OMERJERK]]]";
-
-    private MaterialEditText searchEditText;
-
     private static final String KEY_LINK = "url";
     private static final String KEY_TITLE = "title";
     private static final String KEY_IMAGE_URL = "image";
     private static final String FEED_TABLE = "Feed";
     private static final String EVENTS_TABLE = "Events";
     private static final String KEY_LOCAL_DATASTORE = "feed";
-
-    public static final int CATEGORY_INTERESTS = 0;
-    public static final int CATEGORY_AROUND = 1;
-    public static final int CATEGORY_COLLEGE = 2;
-
+    private static Context context;
+    View rootView;
     String searchUrl = "tosc.in:8082/search?q=";
-
     String interests = "Physics, biology, Economics";
     List<String> interestList;
+    private FeedRootAdapter mAdapter;
+    private RecyclerView recyclerView;
+    private MaterialEditText searchEditText;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -78,7 +71,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
     }
 
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
@@ -158,156 +151,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         return false;
     }
 
-    private static class FeedRootAdapter extends RecyclerView.Adapter<FeedRootAdapter.ViewHolder> {
-        private static final int CATEGORY_COUNT = 3;
-
-        //Adapters for each category
-        private FeedCategoryAdapter[] adapters = new FeedCategoryAdapter[CATEGORY_COUNT];
-        private FeedRootWrapper[] mDataset = new FeedRootWrapper[CATEGORY_COUNT];
-
-        public FeedRootAdapter() {
-            for (int i = 0; i < CATEGORY_COUNT; ++i) {
-                adapters[i] = new FeedCategoryAdapter();
-                mDataset[i] = new FeedRootWrapper();
-            }
-        }
-
-        public void setDataSet(int i, List<ParseObject> parseObjects, boolean isLoaded, String categoryName) {
-            mDataset[i].setData(parseObjects, isLoaded, categoryName);
-        }
-
-        public void invalidateData(int i) {
-            adapters[i].notifyDataSetChanged();
-        }
-
-        // Provide a reference to the views for each data item
-        // Complex data items may need more than one view per item, and
-        // you provide access to all the views for a data item in a view holder
-        public static class ViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
-            public CardView mCardView;
-            public TextView mTextView;
-            public RecyclerView mHorizontalRecyclerView;
-            public ProgressBar progressBar;
-            public ViewHolder(CardView v) {
-                super(v);
-                mCardView = v;
-                mTextView = (TextView) mCardView.findViewById(R.id.feed_category_text);
-                mHorizontalRecyclerView = (RecyclerView)
-                        mCardView.findViewById(R.id.feed_category_horizontal_recycler_view);
-                RecyclerView.LayoutManager mHorizontalLayoutManager = new LinearLayoutManager(context,
-                        LinearLayoutManager.HORIZONTAL, false);
-                mHorizontalRecyclerView.setLayoutManager(mHorizontalLayoutManager);
-                progressBar = (ProgressBar) mCardView.findViewById(R.id.feed_category_progress_bar);
-            }
-        }
-
-        // Create new views (invoked by the layout manager)
-        @Override
-        public FeedRootAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                       int viewType) {
-            // create a new view
-            CardView v = (CardView) LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.feed_root_list_card_view, parent, false);
-            return new ViewHolder(v);
-        }
-
-        // Replace the contents of a view (invoked by the layout manager)
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.mTextView.setText(mDataset[position].string);
-
-            if (mDataset[position].isLoaded) {
-                holder.progressBar.setVisibility(View.GONE);
-                holder.mHorizontalRecyclerView.setVisibility(View.VISIBLE);
-                FeedCategoryAdapter mFeedCategoryAdapter = new FeedCategoryAdapter();
-                mFeedCategoryAdapter.setDataset(mDataset[position].parseObjects);
-                holder.mHorizontalRecyclerView.setAdapter(mFeedCategoryAdapter);
-            }
-        }
-
-        // Return the size of your dataset (invoked by the layout manager)
-        @Override
-        public int getItemCount() {
-            return mDataset.length;
-        }
-    }
-
-    private static class FeedCategoryAdapter extends RecyclerView.Adapter<FeedCategoryAdapter.FeedCategoryViewHolder> {
-
-        List<ParseObject> parseObjects = new ArrayList();
-
-        public void setDataset(List<ParseObject> parseObjects) {
-            this.parseObjects = parseObjects;
-        }
-
-        public static class FeedCategoryViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
-            public LinearLayout view;
-            public TextView mTextView;
-            public ImageView mImageView;
-            public FeedCategoryViewHolder(LinearLayout v) {
-                super(v);
-                this.view = v;
-                mTextView = (TextView) this.view.findViewById(R.id.feed_item_text_view);
-                mImageView = (ImageView) this.view.findViewById(R.id.feed_item_image);
-            }
-        }
-
-        @Override
-        public FeedCategoryAdapter.FeedCategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LinearLayout view = (LinearLayout) LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.feed_category_item, parent, false);
-            //FeedCategoryAdapter.FeedCategoryViewHolder vh = new FeedCategoryAdapter.FeedCategoryViewHolder(view);
-            return new FeedCategoryAdapter.FeedCategoryViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(FeedCategoryViewHolder holder, int position) {
-
-            final ParseObject object = parseObjects.get(position);
-            holder.mTextView.setText(object.getString(KEY_TITLE));
-            Ion.with(holder.mImageView)
-//                    .placeholder(R.drawable.placeholder_image)
-//                    .error(R.drawable.error_image)
-//                    .animateLoad(spinAnimation)
-//                    .animateIn(fadeInAnimation)
-                    .load(object.getString(KEY_IMAGE_URL));
-            holder.view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                Uri.parse(object.getString(KEY_LINK)));
-                    context.startActivity(browserIntent);
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            if (parseObjects == null)
-                return 0;
-            return parseObjects.size();
-        }
-    }
-
-    private static class FeedRootWrapper {
-        public String string;
-        public List<ParseObject> parseObjects;
-        public boolean isLoaded = false;
-
-        public void setData(List<ParseObject> parseObjects, boolean isLoaded, String categoryTitle) {
-            this.parseObjects = parseObjects;
-            this.string = categoryTitle;
-            this.isLoaded = isLoaded;
-        }
-
-        public void setData(List<ParseObject> parseObjects) {
-            setData(parseObjects, isLoaded, string);
-        }
-    }
-
-    private int getCategoryResource(int i) throws UnsupportedOperationException{
+    private int getCategoryResource(int i) throws UnsupportedOperationException {
         switch (i) {
             case 0:
                 return R.string.feed_category_interests;
@@ -387,7 +231,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
         });
     }
 
-    private void updateUI (final int i, String tableName, final int flag) {
+    private void updateUI(final int i, String tableName, final int flag) {
         if (this.isAdded()) {
             ParseQuery<ParseObject> query = ParseQuery.getQuery(tableName).fromLocalDatastore().setLimit(10);
 //            query.whereContainedIn("category", interestList);
@@ -413,6 +257,157 @@ public class FeedFragment extends Fragment implements View.OnKeyListener{
                     }
                 }
             });
+        }
+    }
+
+    private static class FeedRootAdapter extends RecyclerView.Adapter<FeedRootAdapter.ViewHolder> {
+        private static final int CATEGORY_COUNT = 3;
+
+        //Adapters for each category
+        private FeedCategoryAdapter[] adapters = new FeedCategoryAdapter[CATEGORY_COUNT];
+        private FeedRootWrapper[] mDataset = new FeedRootWrapper[CATEGORY_COUNT];
+
+        public FeedRootAdapter() {
+            for (int i = 0; i < CATEGORY_COUNT; ++i) {
+                adapters[i] = new FeedCategoryAdapter();
+                mDataset[i] = new FeedRootWrapper();
+            }
+        }
+
+        public void setDataSet(int i, List<ParseObject> parseObjects, boolean isLoaded, String categoryName) {
+            mDataset[i].setData(parseObjects, isLoaded, categoryName);
+        }
+
+        public void invalidateData(int i) {
+            adapters[i].notifyDataSetChanged();
+        }
+
+        // Create new views (invoked by the layout manager)
+        @Override
+        public FeedRootAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                             int viewType) {
+            // create a new view
+            CardView v = (CardView) LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.feed_root_list_card_view, parent, false);
+            return new ViewHolder(v);
+        }
+
+        // Replace the contents of a view (invoked by the layout manager)
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.mTextView.setText(mDataset[position].string);
+
+            if (mDataset[position].isLoaded) {
+                holder.progressBar.setVisibility(View.GONE);
+                holder.mHorizontalRecyclerView.setVisibility(View.VISIBLE);
+                FeedCategoryAdapter mFeedCategoryAdapter = new FeedCategoryAdapter();
+                mFeedCategoryAdapter.setDataset(mDataset[position].parseObjects);
+                holder.mHorizontalRecyclerView.setAdapter(mFeedCategoryAdapter);
+            }
+        }
+
+        // Return the size of your dataset (invoked by the layout manager)
+        @Override
+        public int getItemCount() {
+            return mDataset.length;
+        }
+
+        // Provide a reference to the views for each data item
+        // Complex data items may need more than one view per item, and
+        // you provide access to all the views for a data item in a view holder
+        public static class ViewHolder extends RecyclerView.ViewHolder {
+            // each data item is just a string in this case
+            public CardView mCardView;
+            public TextView mTextView;
+            public RecyclerView mHorizontalRecyclerView;
+            public ProgressBar progressBar;
+
+            public ViewHolder(CardView v) {
+                super(v);
+                mCardView = v;
+                mTextView = (TextView) mCardView.findViewById(R.id.feed_category_text);
+                mHorizontalRecyclerView = (RecyclerView)
+                        mCardView.findViewById(R.id.feed_category_horizontal_recycler_view);
+                RecyclerView.LayoutManager mHorizontalLayoutManager = new LinearLayoutManager(context,
+                        LinearLayoutManager.HORIZONTAL, false);
+                mHorizontalRecyclerView.setLayoutManager(mHorizontalLayoutManager);
+                progressBar = (ProgressBar) mCardView.findViewById(R.id.feed_category_progress_bar);
+            }
+        }
+    }
+
+    private static class FeedCategoryAdapter extends RecyclerView.Adapter<FeedCategoryAdapter.FeedCategoryViewHolder> {
+
+        List<ParseObject> parseObjects = new ArrayList();
+
+        public void setDataset(List<ParseObject> parseObjects) {
+            this.parseObjects = parseObjects;
+        }
+
+        @Override
+        public FeedCategoryAdapter.FeedCategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LinearLayout view = (LinearLayout) LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.feed_category_item, parent, false);
+            //FeedCategoryAdapter.FeedCategoryViewHolder vh = new FeedCategoryAdapter.FeedCategoryViewHolder(view);
+            return new FeedCategoryAdapter.FeedCategoryViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(FeedCategoryViewHolder holder, int position) {
+
+            final ParseObject object = parseObjects.get(position);
+            holder.mTextView.setText(object.getString(KEY_TITLE));
+            Ion.with(holder.mImageView)
+//                    .placeholder(R.drawable.placeholder_image)
+//                    .error(R.drawable.error_image)
+//                    .animateLoad(spinAnimation)
+//                    .animateIn(fadeInAnimation)
+                    .load(object.getString(KEY_IMAGE_URL));
+            holder.view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(object.getString(KEY_LINK)));
+                    context.startActivity(browserIntent);
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            if (parseObjects == null)
+                return 0;
+            return parseObjects.size();
+        }
+
+        public static class FeedCategoryViewHolder extends RecyclerView.ViewHolder {
+            // each data item is just a string in this case
+            public LinearLayout view;
+            public TextView mTextView;
+            public ImageView mImageView;
+
+            public FeedCategoryViewHolder(LinearLayout v) {
+                super(v);
+                this.view = v;
+                mTextView = (TextView) this.view.findViewById(R.id.feed_item_text_view);
+                mImageView = (ImageView) this.view.findViewById(R.id.feed_item_image);
+            }
+        }
+    }
+
+    private static class FeedRootWrapper {
+        public String string;
+        public List<ParseObject> parseObjects;
+        public boolean isLoaded = false;
+
+        public void setData(List<ParseObject> parseObjects, boolean isLoaded, String categoryTitle) {
+            this.parseObjects = parseObjects;
+            this.string = categoryTitle;
+            this.isLoaded = isLoaded;
+        }
+
+        public void setData(List<ParseObject> parseObjects) {
+            setData(parseObjects, isLoaded, string);
         }
     }
 }

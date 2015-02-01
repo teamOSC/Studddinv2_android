@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark">
 
+
     <TextView
         android:id="@+id/tvTitleText"
 

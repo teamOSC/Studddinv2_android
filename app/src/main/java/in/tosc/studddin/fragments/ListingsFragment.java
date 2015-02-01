@@ -46,8 +46,10 @@ public class ListingsFragment extends Fragment {
             @Override
             public Fragment getItem(int position) {
                 switch (position) {
-                    case 0: return (new ListingsSearchFragment());
-                    case 1: return (new ListingsUploadFragment());
+                    case 0:
+                        return (new ListingsSearchFragment());
+                    case 1:
+                        return (new ListingsUploadFragment());
                 }
                 return new ListingsSearchFragment();
             }
@@ -66,14 +68,14 @@ public class ListingsFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode, resultCode, data);
         Log.d("onActivityResult", "call ho raha hai" + resultCode + "   " + requestCode);
         if ((requestCode == 0) && resultCode == -1) {
             if (data == null) {
-                Log.d("onActivityResult","camera");
+                Log.d("onActivityResult", "camera");
                 compressImage(ListingsUploadFragment.mCurrentPhotoPath);
             } else {
-                Log.d("onActivityResult","docs");
+                Log.d("onActivityResult", "docs");
                 Uri selectedImage = data.getData();
                 String[] filePath = {MediaStore.Images.Media.DATA};
                 Cursor c = getActivity().getContentResolver().query(selectedImage, filePath, null, null, null);
@@ -86,7 +88,7 @@ public class ListingsFragment extends Fragment {
         }
     }
 
-    private void compressImage(String path){
+    private void compressImage(String path) {
         int targetW = 150;
         int targetH = 150;
 

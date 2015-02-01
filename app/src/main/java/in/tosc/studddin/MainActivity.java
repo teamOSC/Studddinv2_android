@@ -24,17 +24,15 @@ public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     String[] paths;
-
+    Toolbar toolbar;
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
-
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-    Toolbar toolbar;
     private String myTitle;
 
 
@@ -42,17 +40,17 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         myTitle = getString(R.string.app_name);
-        if(toolbar==null){
+        if (toolbar == null) {
             toolbar = (Toolbar) findViewById(R.id.toolbar);
-            if(toolbar!=null){
+            if (toolbar != null) {
                 setSupportActionBar(toolbar);
                 toolbar.setTitle(myTitle);
                 toolbar.setTitleTextColor(getResources().getColor(R.color.white));
             }
         }
-        
+
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -78,14 +76,14 @@ public class MainActivity extends ActionBarActivity
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, FeedFragment.newInstance())
                         .commit();
-            break;
+                break;
             case 1:
                 Log.d("Studdd.in", "notes fragment");
                 mTitle = "Notes";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new NotesFragment())
                         .commit();
-            break;
+                break;
             case 2:
                 Log.d("Studdd.in", "people fragment");
                 mTitle = "People";
@@ -109,11 +107,11 @@ public class MainActivity extends ActionBarActivity
                         .commit();
                 break;
             case 5:
-                Log.d("Studd.in","account info");
+                Log.d("Studd.in", "account info");
                 mTitle = "Account";
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container,new AccountInfoFragment())
-                        .commit(); 
+                        .replace(R.id.container, new AccountInfoFragment())
+                        .commit();
                 break;
 
         }
