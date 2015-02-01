@@ -1,9 +1,10 @@
 package in.tosc.studddin.fragments.notes;
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,8 +46,12 @@ public class NotesSearchFragment extends Fragment {
     private String mParam1;
 
     private String mParam2;
-    private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, uploadedBy;
+    GridView notesGridView;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private List<ParseObject> notesListParseObject;
+    private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, uploadedBy;
+
+    private boolean onRefresh = false;
 
     public NotesSearchFragment() {
         // Required empty public constructor
@@ -92,7 +97,7 @@ public class NotesSearchFragment extends Fragment {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_notes_search, container, false);
 
-        GridView notesGridView = (GridView) rootView.findViewById(R.id.notes_gridview);
+        notesGridView = (GridView) rootView.findViewById(R.id.notes_gridview);
 
         notesCollegeName = new ArrayList<String>();
         notesBranchName = new ArrayList<String>();
@@ -102,40 +107,34 @@ public class NotesSearchFragment extends Fragment {
 
         addNotesButton = (FloatingActionButton) rootView.findViewById(R.id.notes_button_add);
         searchEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_search);
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
 
-
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                if (Utilities.isNetworkAvailable(getActivity())) {
+//                    getNotes(notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, uploadedBy);
+//                } else {
+//                    swipeRefreshLayout.setRefreshing(false);
+//                    Toast.makeText(getActivity(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
         if (Utilities.isNetworkAvailable(getActivity())) {
 
-            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
-                    "Notes");
-            query.orderByDescending("createdAt");
-            try {
-                notesListParseObject = query.find();
-            } catch (ParseException e) {
-                Log.e("Roalts", e.getMessage());
-                e.printStackTrace();
-            }
-
-            for (ParseObject notes : notesListParseObject) {
-                notesBranchName.add((String) notes.get("branchName"));
-                notesSubjectName.add((String) notes.get("subjectName"));
-                notesCollegeName.add((String) notes.get("collegeName"));
-                notesTopicName.add((String) notes.get("topicName"));
-                uploadedBy.add((String) notes.get("userName"));
-
-            }
-        }else
+            GetNotes getNotes = new GetNotes();
+            getNotes.execute();
+        }
+        else
             Toast.makeText(getActivity(), "Internet Connection Problem", Toast.LENGTH_SHORT)
-            .show();
+                    .show();
 
 
 
         searchEdTxt = (EditText) rootView.findViewById(R.id.notes_search);
 
 
-        NotesCustomGridViewAdapter adapter = new NotesCustomGridViewAdapter(getActivity(), notesCollegeName, notesBranchName, notesTopicName, notesSubjectName);
 
-        notesGridView.setAdapter(adapter);
 
         notesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -167,6 +166,40 @@ public class NotesSearchFragment extends Fragment {
         return rootView;
 
     }
+    private class GetNotes extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+                    "Notes");
+            query.orderByDescending("createdAt");
+
+            try {
+                notesListParseObject = query.find();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            for (ParseObject notes : notesListParseObject) {
+
+                notesBranchName.add((String) notes.get("branchName"));
+                notesSubjectName.add((String) notes.get("subjectName"));
+                notesCollegeName.add((String) notes.get("collegeName"));
+                notesTopicName.add((String) notes.get("topicName"));
+                uploadedBy.add((String) notes.get("userName"));
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            NotesCustomGridViewAdapter adapter = new NotesCustomGridViewAdapter(getActivity(), notesCollegeName, notesBranchName, notesTopicName, notesSubjectName);
+
+            notesGridView.setAdapter(adapter);
+        }
+
+    }
+
+
 
     public void goToUploadFragment() {
         NotesFragment notesFragment = (NotesFragment) getParentFragment();
@@ -174,7 +207,6 @@ public class NotesSearchFragment extends Fragment {
             notesFragment.goToOtherFragment(1);
         }
     }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -193,3 +225,5 @@ public class NotesSearchFragment extends Fragment {
 
     }
 }
+
+

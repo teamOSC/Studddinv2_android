@@ -18,36 +18,41 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center">
 
-            <FrameLayout
-                android:id="@+id/feed_search_frame"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/selector_card_background">
 
-                <in.tosc.studddin.customview.MaterialEditText
-                    android:id="@+id/notes_search"
+                <FrameLayout
+                    android:id="@+id/feed_search_frame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="5dp"
-                    android:hint="@string/feed_search_hint"
-                    android:imeOptions="actionSearch"
-                    android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    app:baseColor="@color/search_color"
-                    app:floatingLabel="highlight"
-                    app:maxCharacters="25"
-                    app:primaryColor="@color/colorPrimaryDark"
-                    app:singleLineEllipsis="true" />
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/selector_card_background">
 
 
-            </FrameLayout>
+                    <in.tosc.studddin.customview.MaterialEditText
+                        android:id="@+id/notes_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
+                        android:hint="@string/feed_search_hint"
+                        android:imeOptions="actionSearch"
+                        android:textCursorDrawable="@drawable/text_cursor_cyan"
+                        app:baseColor="@color/search_color"
+                        app:floatingLabel="highlight"
+                        app:maxCharacters="25"
+                        app:primaryColor="@color/colorPrimaryDark"
+                        app:singleLineEllipsis="true" />
+
+
+                </FrameLayout>
 
         </RelativeLayout>
-
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <GridView
             android:id="@+id/notes_gridview"
             android:layout_width="fill_parent"
@@ -61,6 +66,7 @@
             android:stretchMode="columnWidth">
 
         </GridView>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 
 
@@ -77,5 +83,6 @@
         fab:fab_addButtonPlusIconColor="@color/white"
         fab:fab_colorNormal="@color/note_button"
         fab:fab_colorPressed="@color/note_button_pressed" />
+
 
 </FrameLayout>
