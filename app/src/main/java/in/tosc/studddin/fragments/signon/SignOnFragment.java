@@ -5,6 +5,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -170,8 +171,8 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         });
         googleLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
+            public void onClick(View v) {
+                doGoogleSignOn(v);
             }
         });
         signUpButton.setOnClickListener(new View.OnClickListener() {
@@ -289,6 +290,13 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.w(TAG, "onActivityResult called");
+        if (requestCode == RC_SIGN_IN) {
+            mIntentInProgress = false;
+
+            if (!mGoogleApiClient.isConnecting()) {
+                mGoogleApiClient.connect();
+            }
+        }
         ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
     }
 
@@ -332,6 +340,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     }
 
     public void doGoogleSignOn(View v) {
+        mGoogleApiClient.connect();
     }
 
     public SignupDataFragment showSignupDataFragment(Bundle b) {
@@ -347,16 +356,29 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
 
     @Override
     public void onConnected(Bundle bundle) {
-
+        //connect with parse
     }
+
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        mGoogleApiClient.connect();
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(ConnectionResult result) {
+        if (!mIntentInProgress && result.hasResolution()) {
+            try {
+                mIntentInProgress = true;
+                getActivity().startIntentSenderForResult(result.getResolution().getIntentSender(),
+                        RC_SIGN_IN, null, 0, 0, 0);
+            } catch (IntentSender.SendIntentException e) {
+                // The intent was canceled before it was sent.  Return to the default
+                // state and attempt to connect to get an updated ConnectionResult.
+                mIntentInProgress = false;
+                mGoogleApiClient.connect();
+            }
+        }
 
     }
 }

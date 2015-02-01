@@ -2,6 +2,7 @@ package in.tosc.studddin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -23,7 +24,7 @@ public class SignOnActivity extends ActionBarActivity {
         android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         SignOnFragment newFragment = new SignOnFragment();
-        transaction.replace(R.id.signon_container, newFragment).commit();
+        transaction.replace(R.id.signon_container, newFragment,"SignOnFragment").commit();
     }
 
 
@@ -54,6 +55,12 @@ public class SignOnActivity extends ActionBarActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("SignOnActivity", "onActivityResult called");
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag("SignOnFragment");
+        if (fragment != null)
+        {
+            fragment.onActivityResult(requestCode, resultCode,data);
+        }
         ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
     }
 }
