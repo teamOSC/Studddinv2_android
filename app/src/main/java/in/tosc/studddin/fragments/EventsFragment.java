@@ -69,5 +69,10 @@ public class EventsFragment extends Fragment {
         return view;
     }
 
+    public void goToOtherFragment(int position) {
+        eventsPager.setCurrentItem(position);
+    }
+
+
 
 }

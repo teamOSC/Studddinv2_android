@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.parse.ParseUser;
+
 import in.tosc.studddin.fragments.AccountInfoFragment;
 import in.tosc.studddin.fragments.EventsFragment;
 import in.tosc.studddin.fragments.FeedFragment;
@@ -169,7 +171,11 @@ public class MainActivity extends ActionBarActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_signout) {
+            ParseUser.logOut();
+            Intent i = new Intent(this, SignOnActivity.class);
+            startActivity(i);
+            finish();
             return true;
         }
 

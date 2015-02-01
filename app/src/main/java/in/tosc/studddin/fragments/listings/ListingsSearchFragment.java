@@ -12,8 +12,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.internal.widget.TintCheckBox;
 import android.support.v7.widget.CardView;
@@ -40,15 +38,16 @@ import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.fragments.ListingsFragment;
 import in.tosc.studddin.utils.ProgressBarCircular;
 import in.tosc.studddin.utils.Utilities;
 
@@ -134,7 +133,7 @@ public class ListingsSearchFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.listing, menu);
+        inflater.inflate(R.menu.listings_search, menu);
     }
 
     @Override
@@ -146,11 +145,8 @@ public class ListingsSearchFragment extends Fragment {
                 dialog.show(getFragmentManager(), "filterdialog");
                 return true;
             case R.id.listing_upload:
-                Fragment fragment2 = new ListingsUploadFragment();
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.notes_pager, fragment2);
-                transaction.commit();
+                ListingsFragment lFragment = (ListingsFragment) getParentFragment();
+                lFragment.goToOtherFragment(1);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -263,7 +259,7 @@ public class ListingsSearchFragment extends Fragment {
                 public void done(byte[] bytes, ParseException e) {
                 }
             });
-            double distance = mDataset.get(i).getParseGeoPoint("location").distanceInKilometersTo(new ParseGeoPoint(28.7500749, 77.11766519999992));
+            double distance = mDataset.get(i).getParseGeoPoint("location").distanceInKilometersTo(ParseUser.getCurrentUser().getParseGeoPoint("location"));
             if (distance < 10 && distance != 0)
                 viewHolder.listing_distance.setText(String.format("%.1f", distance) + " km away");
             else
