@@ -80,7 +80,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_feed, container, false);
         searchEditText = (MaterialEditText) rootView.findViewById(R.id.feed_search);
         searchEditText.setOnKeyListener(this);
@@ -88,7 +87,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
 
         context = getActivity();
 
-        // use a linear layout manager
         RecyclerView.LayoutManager mVerticalLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
 
@@ -290,7 +288,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             notifyItemChanged(i);
         }
 
-        // Create new views (invoked by the layout manager)
         @Override
         public FeedRootAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                              int viewType) {
@@ -300,7 +297,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             return new ViewHolder(v);
         }
 
-        // Replace the contents of a view (invoked by the layout manager)
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             holder.mTextView.setText(mDataset[position].string);
@@ -313,17 +309,12 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             }
         }
 
-        // Return the size of your dataset (invoked by the layout manager)
         @Override
         public int getItemCount() {
             return mDataset.length;
         }
 
-        // Provide a reference to the views for each data item
-        // Complex data items may need more than one view per item, and
-        // you provide access to all the views for a data item in a view holder
         public static class ViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
             public CardView mCardView;
             public TextView mTextView;
             public RecyclerView mHorizontalRecyclerView;
@@ -356,7 +347,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         public FeedCategoryAdapter.FeedCategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LinearLayout view = (LinearLayout) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.feed_category_item, parent, false);
-            //FeedCategoryAdapter.FeedCategoryViewHolder vh = new FeedCategoryAdapter.FeedCategoryViewHolder(view);
             return new FeedCategoryAdapter.FeedCategoryViewHolder(view);
         }
 
@@ -384,7 +374,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         }
 
         public static class FeedCategoryViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
             public LinearLayout view;
             public TextView mTextView;
             public ImageView mImageView;
