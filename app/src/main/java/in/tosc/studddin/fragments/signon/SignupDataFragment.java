@@ -2,9 +2,12 @@ package in.tosc.studddin.fragments.signon;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -56,7 +59,8 @@ public class SignupDataFragment extends Fragment implements
     private Button submitButton;
     private ImageView profileImageView;
     private GoogleApiClient mGoogleApiClient;
-    private Location currentUserLoc = new Location("");
+    private Location currentUserLoc;
+    private Location approxUserLoc;
 
     public SignupDataFragment() {
         // Required empty public constructor
@@ -84,7 +88,6 @@ public class SignupDataFragment extends Fragment implements
     @Override
     public void onStart() {
         super.onStart();
-        connectToGoogleApi();
         mGoogleApiClient.connect();
     }
 
@@ -104,12 +107,13 @@ public class SignupDataFragment extends Fragment implements
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
-        connectToGoogleApi();
+        startLocationService();
 
-        ParseGeoPoint.getCurrentLocationInBackground(6000, new LocationCallback() {
+        ParseGeoPoint.getCurrentLocationInBackground(4000, new LocationCallback() {
             @Override
             public void done(ParseGeoPoint parseGeoPoint, ParseException e) {
                 if (parseGeoPoint != null) {
+                    currentUserLoc = new Location("");
                     currentUserLoc.setLatitude(parseGeoPoint.getLatitude());
                     currentUserLoc.setLongitude(parseGeoPoint.getLongitude());
                 }
@@ -121,12 +125,16 @@ public class SignupDataFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 LocationSelectDialog dialog = new LocationSelectDialog();
+                Bundle b = new Bundle();
+                if (currentUserLoc == null) {
+                    currentUserLoc = approxUserLoc;
+                }
                 if (currentUserLoc != null) {
-                    Bundle b = new Bundle();
                     b.putDouble("lat", currentUserLoc.getLatitude());
                     b.putDouble("lon", currentUserLoc.getLongitude());
-                    dialog.setArguments(b);
                 }
+
+                dialog.setArguments(b);
                 dialog.setLocationSetCallback(new LocationSelectDialog.LocationSetCallback() {
                     @Override
                     public void gotLocation(LatLng latLng) {
@@ -280,14 +288,12 @@ public class SignupDataFragment extends Fragment implements
             profile.save();
             user.put(UserDataFields.USER_IMAGE, profile);
         }
+        if (currentUserLoc == null) {
+            currentUserLoc = approxUserLoc;
+        }
         if (currentUserLoc != null) {
             ParseGeoPoint geoPoint = new ParseGeoPoint(currentUserLoc.getLatitude(), currentUserLoc.getLongitude());
             user.put(UserDataFields.USER_LOCATION, geoPoint);
-        }
-        // PUTTING SOME DUMMY DATA
-        else {
-            ParseGeoPoint p = new ParseGeoPoint(28.807436, 77.282683);
-            user.put(UserDataFields.USER_LOCATION, p);
         }
 
         user.put(UserDataFields.USER_FULLY_REGISTERED, true);
@@ -354,5 +360,22 @@ public class SignupDataFragment extends Fragment implements
                     .addApi(LocationServices.API)
                     .build();
         }
+    }
+
+    private void startLocationService() {
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                approxUserLoc = location;
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+        };
+
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
     }
 }
