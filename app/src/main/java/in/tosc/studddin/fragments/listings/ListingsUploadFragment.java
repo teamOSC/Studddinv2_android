@@ -23,6 +23,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
@@ -138,7 +139,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                     ParseFile file = new ParseFile("listing.png", byteArray);
                     file.saveInBackground();
                     upload.put("image", file);
-                    upload.put("ownerName","Prempal" );  //ParseUser.getCurrentUser().getString("NAME")
+                    upload.put("ownerName", ParseUser.getCurrentUser().getString("NAME") );
                     upload.put("listingName", listing.getText().toString());
                     upload.put("listingDesc", listing_desc.getText().toString());
                     upload.put("mobile", mobile.getText().toString());
