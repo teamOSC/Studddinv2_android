@@ -34,9 +34,11 @@ public class NotesCustomDialog extends Dialog {
     int position;
     private DownloadManager downloadManager;
     Context c;
-    private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName;
+    private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, uploadedBy;
 
-    public NotesCustomDialog(Activity activity, ArrayList<String> notesCollegeName, ArrayList<String> notesBranchName, ArrayList<String> notesTopicName, ArrayList<String> notesSubjectName, int position) {
+    public NotesCustomDialog(Activity activity, ArrayList<String> notesCollegeName,
+                             ArrayList<String> notesBranchName, ArrayList<String> notesTopicName,
+                             ArrayList<String> notesSubjectName, int position, ArrayList<String> uploadedBy) {
         super(activity);
 
         this.notesBranchName = notesBranchName;
@@ -45,6 +47,7 @@ public class NotesCustomDialog extends Dialog {
         this.notesTopicName = notesTopicName;
         this.c = activity;
         this.position = position;
+        this.uploadedBy = uploadedBy;
     }
 
     @Override
@@ -62,6 +65,7 @@ public class NotesCustomDialog extends Dialog {
 
         downloadManager =  (DownloadManager) this.c.getSystemService(Context.DOWNLOAD_SERVICE);
 
+        dialogUploadedBy.setText(uploadedBy.get(position));
         dialogBranchName.setText(notesBranchName.get(position));
         dialogCollegeName.setText(notesCollegeName.get(position));
         dialogSubjectName.setText(notesSubjectName.get(position));

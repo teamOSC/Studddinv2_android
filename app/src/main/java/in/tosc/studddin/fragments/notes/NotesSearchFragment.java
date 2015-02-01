@@ -1,9 +1,9 @@
 package in.tosc.studddin.fragments.notes;
 
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,7 +14,12 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
@@ -36,9 +41,10 @@ public class NotesSearchFragment extends Fragment {
     EditText searchEdTxt;
     // TODO: Rename and change types of parameters
     private String mParam1;
-    
+
     private String mParam2;
-    private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName;
+    private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, uploadedBy;
+    private List<ParseObject> notesListParseObject;
 
     public NotesSearchFragment() {
         // Required empty public constructor
@@ -90,20 +96,34 @@ public class NotesSearchFragment extends Fragment {
         notesBranchName = new ArrayList<String>();
         notesSubjectName = new ArrayList<String>();
         notesTopicName = new ArrayList<String>();
+        uploadedBy = new ArrayList<String>();
 
         addNotesButton = (FloatingActionButton) rootView.findViewById(R.id.notes_button_add);
         searchEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_search);
 
 
 
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+                "Notes");
+        query.orderByDescending("createdAt");
+        try {
+            notesListParseObject = query.find();
+        } catch (ParseException e) {
+            Log.e("Roalts", e.getMessage());
+            e.printStackTrace();
+        }
+
+        for (ParseObject notes : notesListParseObject) {
+            notesBranchName.add((String) notes.get("branchName"));
+            notesSubjectName.add((String) notes.get("subjectName"));
+            notesCollegeName.add((String) notes.get("collegeName"));
+            notesTopicName.add((String) notes.get("topicName"));
+            uploadedBy.add((String) notes.get("userName"));
+
+        }
 
         searchEdTxt = (EditText) rootView.findViewById(R.id.notes_search);
-        for(int i = 0; i < 15; i++) {
-            notesBranchName.add("fine arts");
-            notesTopicName.add("drawing");
-            notesSubjectName.add("arts");
-            notesCollegeName.add("DTU");
-        }
+
 
         NotesCustomGridViewAdapter adapter = new NotesCustomGridViewAdapter(getActivity(), notesCollegeName, notesBranchName, notesTopicName, notesSubjectName);
 
@@ -114,7 +134,8 @@ public class NotesSearchFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                NotesCustomDialog notesCustomDialog = new NotesCustomDialog(getActivity(), notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, position);
+                NotesCustomDialog notesCustomDialog = new NotesCustomDialog(getActivity(),
+                        notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, position, uploadedBy);
                 notesCustomDialog.setTitle(getString(R.string.notes_details));
                 notesCustomDialog.show();
 
