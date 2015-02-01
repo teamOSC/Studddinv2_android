@@ -64,25 +64,10 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     private MaterialEditText emailEditText;
     private MaterialEditText passwordEditText;
 
-    /* Request code used to invoke sign in user interactions. */
     private static final int RC_SIGN_IN = 69;
-
-    /* Client used to interact with Google APIs. */
     private GoogleApiClient mGoogleApiClient;
-
-    /* A flag indicating that a PendingIntent is in progress and prevents
-     * us from starting further intents.
-     */
     private boolean mIntentInProgress;
-
-    /* Track whether the sign-in button has been clicked so that we know to resolve
- * all issues preventing sign-in without waiting.
- */
     private boolean mSignInClicked;
-
-    /* Store the connection result from onConnectionFailed callbacks so that we can
-     * resolve them when the user clicks sign-in.
-     */
     private ConnectionResult mConnectionResult;
 
     // TODO: Rename and change types of parameters
@@ -125,7 +110,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                 .addOnConnectionFailedListener(this)
                 .addApi(Plus.API)
                 .addScope(Plus.SCOPE_PLUS_LOGIN)
-                .addScope(Plus.SCOPE_PLUS_PROFILE)
                 .build();
 
         ParseUser pUser = ParseUser.getCurrentUser();
@@ -216,7 +200,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                             new AlertDialog.Builder(getActivity())
                                     .setTitle("Login failed")
                                     .setCancelable(true)
-                                    .setMessage("Logging in to Studdd.in failed !")
+                                    .setMessage("Logging in to LearnHut failed !")
                                     .show();
                         }
                     }
@@ -378,13 +362,24 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     public void onConnected(Bundle bundle) {
         mSignInClicked = false;
         Toast.makeText(getActivity(), "Google+ sign-in successful", Toast.LENGTH_LONG).show();
-        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-            String personName = currentPerson.getDisplayName();
-            Person.Image personPhoto = currentPerson.getImage();
-            //String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
-            Log.d("Name",personName);
-            //Log.d("email",email);
+        try {
+            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                Person currentPerson = Plus.PeopleApi
+                        .getCurrentPerson(mGoogleApiClient);
+                String personName = currentPerson.getDisplayName();
+                String personPhotoUrl = currentPerson.getImage().getUrl();
+                String personGooglePlusProfile = currentPerson.getUrl();
+                String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+
+                Log.e(TAG, "Name: " + personName + ", plusProfile: "
+                        + personGooglePlusProfile + ", email: " + email
+                        + ", Image: " + personPhotoUrl);
+            } else {
+                Toast.makeText(getActivity(),
+                        "Person information is null", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         /*String accessToken = null;
@@ -405,6 +400,8 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         }*/
 
         //connect with parse
+
+
     }
 
 
@@ -416,13 +413,8 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         if (!mIntentInProgress) {
-            // Store the ConnectionResult so that we can use it later when the user clicks
-            // 'sign-in'.
             mConnectionResult = result;
-
             if (mSignInClicked) {
-                // The user has already clicked 'sign-in' so we attempt to resolve all
-                // errors until the user is signed in, or they cancel.
                 resolveSignInError();
             }
         }
@@ -436,8 +428,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                 getActivity().startIntentSenderForResult(mConnectionResult.getResolution().getIntentSender(),
                         RC_SIGN_IN, null, 0, 0, 0);
             } catch (IntentSender.SendIntentException e) {
-                // The intent was canceled before it was sent.  Return to the default
-                // state and attempt to connect to get an updated ConnectionResult.
                 mIntentInProgress = false;
                 mGoogleApiClient.connect();
             }

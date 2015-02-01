@@ -268,8 +268,6 @@ public class SignupDataFragment extends Fragment implements
             input.put(UserDataFields.USER_INTERESTS, getActivity().getString(R.string.empty_interests));
         }
 
-        //TODO: also make sure a valid USER_EMAIL id is entered
-
         return f;
     }
 
