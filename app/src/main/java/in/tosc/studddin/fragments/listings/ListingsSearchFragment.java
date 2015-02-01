@@ -12,8 +12,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.internal.widget.TintCheckBox;
 import android.support.v7.widget.CardView;
@@ -40,10 +38,10 @@ import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -261,7 +259,7 @@ public class ListingsSearchFragment extends Fragment {
                 public void done(byte[] bytes, ParseException e) {
                 }
             });
-            double distance = mDataset.get(i).getParseGeoPoint("location").distanceInKilometersTo(new ParseGeoPoint(28.7500749, 77.11766519999992));
+            double distance = mDataset.get(i).getParseGeoPoint("location").distanceInKilometersTo(ParseUser.getCurrentUser().getParseGeoPoint("location"));
             if (distance < 10 && distance != 0)
                 viewHolder.listing_distance.setText(String.format("%.1f", distance) + " km away");
             else
