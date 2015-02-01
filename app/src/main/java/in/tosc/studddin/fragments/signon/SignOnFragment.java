@@ -17,6 +17,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
@@ -42,7 +45,7 @@ import in.tosc.studddin.utils.Utilities;
 /**
  * SignOnFragment
  */
-public class SignOnFragment extends Fragment {
+public class SignOnFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final String TAG = "SignOnFragment";
     // TODO: Rename parameter arguments, choose names that match
@@ -57,6 +60,17 @@ public class SignOnFragment extends Fragment {
     private TextView guestContinue;
     private MaterialEditText emailEditText;
     private MaterialEditText passwordEditText;
+
+    /* Request code used to invoke sign in user interactions. */
+    private static final int RC_SIGN_IN = 69;
+
+    /* Client used to interact with Google APIs. */
+    private GoogleApiClient mGoogleApiClient;
+
+    /* A flag indicating that a PendingIntent is in progress and prevents
+     * us from starting further intents.
+     */
+    private boolean mIntentInProgress;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -92,6 +106,13 @@ public class SignOnFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .build();
 
         ParseUser pUser = ParseUser.getCurrentUser();
         if ((pUser != null)
@@ -147,7 +168,12 @@ public class SignOnFragment extends Fragment {
                 doTwitterSignOn(v);
             }
         });
-        //googleLoginButton.setOnClickListener(signUpListener);
+        googleLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -317,5 +343,20 @@ public class SignOnFragment extends Fragment {
 
         transaction.replace(R.id.signon_container, newFragment).addToBackStack("SignIn").commit();
         return newFragment;
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 }
