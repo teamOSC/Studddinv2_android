@@ -152,10 +152,10 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle item selection
         switch (item.getItemId()) {
-            case R.id.action_feed_refresh:
+            //case R.id.action_feed_refresh:
                 //getFeed();
                 //Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_SHORT).show();
-                return true;
+                //return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
