@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.koushikdutta.ion.Ion;
 import com.parse.FindCallback;
@@ -43,7 +44,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     public static final int CATEGORY_INTERESTS = 0;
     public static final int CATEGORY_AROUND = 1;
     public static final int CATEGORY_COLLEGE = 2;
-    private static final String TAG = "[[[OMERJERK]]]";
+    private static final String TAG = "FeedFragment";
     private static final String KEY_LINK = "url";
     private static final String KEY_TITLE = "title";
     private static final String KEY_IMAGE_URL = "image";
@@ -127,7 +128,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         // handle item selection
         switch (item.getItemId()) {
             case R.id.action_feed_refresh:
-                //TODO: Do refresh thing
+                getFeed();
+                Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -149,6 +151,12 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             }
         }
         return false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.notifyDataSetChanged();
     }
 
     private int getCategoryResource(int i) throws UnsupportedOperationException {
@@ -238,7 +246,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> parseObjects, ParseException e) {
                     if (e == null) {
-
                         int resourceId = 0;
                         try {
                             resourceId = getCategoryResource(i);
@@ -247,11 +254,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
                         }
                         if (FeedFragment.this.isAdded()) {
                             mAdapter.setDataSet(i, parseObjects, true, getString(resourceId));
-
                             mAdapter.invalidateData(i);
-                            mAdapter.notifyDataSetChanged();
                         }
-
                     } else {
                         Log.e(TAG, "Query failed");
                     }
