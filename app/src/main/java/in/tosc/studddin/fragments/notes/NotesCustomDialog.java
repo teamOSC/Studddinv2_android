@@ -2,12 +2,23 @@ package in.tosc.studddin.fragments.notes;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.io.File;
 import java.util.ArrayList;
 
 import in.tosc.studddin.R;
@@ -21,10 +32,11 @@ public class NotesCustomDialog extends Dialog {
     TextView dialogCollegeName, dialogBranchName, dialogTopicName, dialogSubjectName, dialogUploadedBy;
     Button downloadNotes;
     int position;
+    private DownloadManager downloadManager;
     Context c;
     private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName;
 
-    public NotesCustomDialog(Activity activity, ArrayList<String> notesCollegeName, ArrayList<String> notesBranchName, ArrayList<String> notesTopicName, ArrayList<String> notesSubjectName) {
+    public NotesCustomDialog(Activity activity, ArrayList<String> notesCollegeName, ArrayList<String> notesBranchName, ArrayList<String> notesTopicName, ArrayList<String> notesSubjectName, int position) {
         super(activity);
 
         this.notesBranchName = notesBranchName;
@@ -48,6 +60,8 @@ public class NotesCustomDialog extends Dialog {
         dialogUploadedBy = (TextView) findViewById(R.id.notes_details_uploadedby);
         downloadNotes = (Button) findViewById(R.id.notes_button_download);
 
+        downloadManager =  (DownloadManager) this.c.getSystemService(Context.DOWNLOAD_SERVICE);
+
         dialogBranchName.setText(notesBranchName.get(position));
         dialogCollegeName.setText(notesCollegeName.get(position));
         dialogSubjectName.setText(notesSubjectName.get(position));
@@ -57,8 +71,45 @@ public class NotesCustomDialog extends Dialog {
         downloadNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO write the code to download all the notes
 
-                //write the code to download all the notes
+
+                Log.d("Raghav", "" + position + notesSubjectName.get(position) + notesTopicName.get(position) + notesCollegeName.get(position) +
+                        notesBranchName.get(position) );
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Notes");
+                query.whereEqualTo("subjectName", notesSubjectName.get(position));
+                query.whereEqualTo("topicName", notesTopicName.get(position));
+                query.whereEqualTo("collegeName", notesCollegeName.get(position));
+                query.whereEqualTo("branchName", notesBranchName.get(position));
+
+                query.getFirstInBackground(new GetCallback<ParseObject>() {
+                    @Override
+                    public void done(ParseObject notesZipParseObject, ParseException e) {
+                        ParseFile notesZipParseFile = (ParseFile) notesZipParseObject.get("imageZip");
+
+                        String zipFileURL = notesZipParseFile.getUrl();
+                        Log.d("raghav", ""+ zipFileURL);
+                            File myFile = new File("/mnt/sdcard/noteszipfile " + notesSubjectName.get(position) +" "+
+                                    notesTopicName.get(position) + " "+
+                                    notesCollegeName.get(position) + " " +
+                                    notesBranchName.get(position) +".zip");
+                            Uri uri = Uri.parse(zipFileURL);
+                            DownloadManager.Request dr = new DownloadManager.Request(uri);
+                            dr.setTitle("Downloading...");
+                            dr.setDescription("Keep Calm");
+
+                            dr.setDestinationInExternalPublicDir("/mnt/sdcard/", "noteszipfile " + notesSubjectName.get(position) +" "+
+                                    notesTopicName.get(position) + " "+
+                                    notesCollegeName.get(position) + " " +
+                                    notesBranchName.get(position) +".zip");
+                            downloadManager.enqueue(dr);
+                            Toast.makeText(getContext(), "Download Start", Toast.LENGTH_SHORT).show();
+
+
+
+                    }
+                });
+
 
             }
         });

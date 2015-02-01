@@ -1,10 +1,9 @@
 package in.tosc.studddin.fragments.notes;
 
 
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,6 +36,7 @@ public class NotesSearchFragment extends Fragment {
     EditText searchEdTxt;
     // TODO: Rename and change types of parameters
     private String mParam1;
+    
     private String mParam2;
     private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName;
 
@@ -82,7 +82,7 @@ public class NotesSearchFragment extends Fragment {
 
         getActivity().setTheme(R.style.AppTheme_Custom);
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_notes_search, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_notes_search, container, false);
 
         GridView notesGridView = (GridView) rootView.findViewById(R.id.notes_gridview);
 
@@ -94,35 +94,19 @@ public class NotesSearchFragment extends Fragment {
         addNotesButton = (FloatingActionButton) rootView.findViewById(R.id.notes_button_add);
         searchEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_search);
 
-        addNotesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
 
-                FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
-
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.notes_slide_entry, R.anim.notes_slide_exit);
-
-                NotesUploadFragment newFragment = new NotesUploadFragment();
-
-                fragmentTransaction.replace(R.id.notes_pager, newFragment).addToBackStack(null).commit();
-
-                // Start the animated transition.
-
-            }
-        });
 
         searchEdTxt = (EditText) rootView.findViewById(R.id.notes_search);
-
-        notesBranchName.add("MCE");
-        notesTopicName.add("Sequences");
-        notesSubjectName.add("RA");
-        notesCollegeName.add("DTU");
-
+        for(int i = 0; i < 15; i++) {
+            notesBranchName.add("fine arts");
+            notesTopicName.add("drawing");
+            notesSubjectName.add("arts");
+            notesCollegeName.add("DTU");
+        }
 
         NotesCustomGridViewAdapter adapter = new NotesCustomGridViewAdapter(getActivity(), notesCollegeName, notesBranchName, notesTopicName, notesSubjectName);
-        notesGridView = (GridView) rootView.findViewById(R.id.notes_gridview);
+
         notesGridView.setAdapter(adapter);
 
         notesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -130,19 +114,24 @@ public class NotesSearchFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                NotesCustomDialog notesCustomDialog = new NotesCustomDialog(getActivity(), notesCollegeName, notesBranchName, notesTopicName, notesSubjectName);
-                notesCustomDialog.setTitle("Details:");
+                NotesCustomDialog notesCustomDialog = new NotesCustomDialog(getActivity(), notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, position);
+                notesCustomDialog.setTitle(getString(R.string.notes_details));
                 notesCustomDialog.show();
-
 
             }
         });
+
 
 
         addNotesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToUploadFragment();
+
+//                String unzipLocation = "/mnt/sdcard/Notes";
+//
+//                NotesUnzip d = new NotesUnzip(zipFile, unzipLocation);
+//                d.unzip();
             }
         });
 
