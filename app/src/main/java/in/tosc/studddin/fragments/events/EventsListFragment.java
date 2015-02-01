@@ -74,7 +74,7 @@ public class EventsListFragment extends Fragment {
 
     public class Parent {
         private String event_name;
-        private Date event_date;
+        private String event_date;
         private String event_description;
         private String event_type;
 
@@ -87,11 +87,11 @@ public class EventsListFragment extends Fragment {
             this.event_name = s;
         }
 
-        public Date getEventDate() {
+        public String getEventDate() {
             return event_date;
         }
 
-        public void setEventDate(Date s) {
+        public void setEventDate(String s) {
             this.event_date = s;
         }
 
@@ -136,6 +136,7 @@ public class EventsListFragment extends Fragment {
             holder.event_name.setText(parents.get(position).getEventName());
             holder.event_description.setText(parents.get(position).getEventDescription());
             holder.event_type.setText(parents.get(position).getEventType());
+            holder.event_date.setText(parents.get(position).getEventDate());
 
             if (position == expandedPosition) {
                 holder.expanded_area.setVisibility(View.VISIBLE);
@@ -209,7 +210,7 @@ public class EventsListFragment extends Fragment {
             for (ParseObject listing : listings) {
                 Parent parent = new Parent();
                 parent.setEventName((String) listing.get("title"));
-                parent.setEventDate((Date) listing.get("createdAt"));
+                parent.setEventDate(listing.get("date") + "  " + listing.get("time"));
                 parent.setEventDescription((String) listing.get("description"));
                 parent.setEventType((String) listing.get("type"));
                 parents.add(parent);
