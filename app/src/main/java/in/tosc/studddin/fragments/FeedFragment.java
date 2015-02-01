@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +34,7 @@ import java.util.List;
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.externalapi.UserDataFields;
+import in.tosc.studddin.utils.ProgressBarCircular;
 
 /**
  * News Feed fragment subclass
@@ -324,7 +324,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             public CardView mCardView;
             public TextView mTextView;
             public RecyclerView mHorizontalRecyclerView;
-            public ProgressBar progressBar;
+            public ProgressBarCircular progressBar;
 
             public ViewHolder(CardView v) {
                 super(v);
@@ -335,7 +335,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
                 RecyclerView.LayoutManager mHorizontalLayoutManager = new LinearLayoutManager(context,
                         LinearLayoutManager.HORIZONTAL, false);
                 mHorizontalRecyclerView.setLayoutManager(mHorizontalLayoutManager);
-                progressBar = (ProgressBar) mCardView.findViewById(R.id.feed_category_progress_bar);
+                progressBar = (ProgressBarCircular) mCardView.findViewById(R.id.feed_category_progress_bar);
+                progressBar.setBackgroundColor(context.getResources().getColor(R.color.pink));
             }
         }
     }

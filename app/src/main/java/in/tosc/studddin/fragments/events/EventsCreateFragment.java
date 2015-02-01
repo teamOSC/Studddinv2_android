@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -34,8 +35,8 @@ public class EventsCreateFragment extends Fragment {
     View v;
     private HashMap<String, String> events;
     Calendar calendar;
-    Button setDate;
-    Button setTime;
+    ImageButton setDate;
+    ImageButton setTime;
 
     public EventsCreateFragment() {
         // Required empty public constructor
@@ -53,8 +54,8 @@ public class EventsCreateFragment extends Fragment {
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_events_create, container, false);
         create = (Button) v.findViewById(R.id.submit_button);
-        setDate = (Button) v.findViewById(R.id.date_picker);
-        setTime = (Button) v.findViewById(R.id.time_picker);
+        setDate = (ImageButton) v.findViewById(R.id.date_picker);
+        setTime = (ImageButton) v.findViewById(R.id.time_picker);
         setTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

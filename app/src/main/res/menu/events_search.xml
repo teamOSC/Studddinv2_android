@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/event_add"
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@drawable/ic_action_add"
         android:title="Add Event"
         app:showAsAction="ifRoom"
 
