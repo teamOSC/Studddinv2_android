@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.fragments.ListingsFragment;
 import in.tosc.studddin.utils.ProgressBarCircular;
 import in.tosc.studddin.utils.Utilities;
 
@@ -134,7 +135,7 @@ public class ListingsSearchFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.listing, menu);
+        inflater.inflate(R.menu.listings_search, menu);
     }
 
     @Override
@@ -146,11 +147,8 @@ public class ListingsSearchFragment extends Fragment {
                 dialog.show(getFragmentManager(), "filterdialog");
                 return true;
             case R.id.listing_upload:
-                Fragment fragment2 = new ListingsUploadFragment();
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.notes_pager, fragment2);
-                transaction.commit();
+                ListingsFragment lFragment = (ListingsFragment) getParentFragment();
+                lFragment.goToOtherFragment(1);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

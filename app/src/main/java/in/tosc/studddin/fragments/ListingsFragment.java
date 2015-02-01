@@ -28,7 +28,7 @@ import in.tosc.studddin.fragments.listings.ListingsUploadFragment;
 public class ListingsFragment extends Fragment {
 
 
-    ViewPager notesPager;
+    ViewPager listingsPager;
     FragmentPagerAdapter fragmentPagerAdapter;
 
     public ListingsFragment() {
@@ -60,10 +60,14 @@ public class ListingsFragment extends Fragment {
             }
         };
 
-        notesPager = (ViewPager) rootView.findViewById(R.id.notes_pager);
-        notesPager.setAdapter(fragmentPagerAdapter);
+        listingsPager = (ViewPager) rootView.findViewById(R.id.notes_pager);
+        listingsPager.setAdapter(fragmentPagerAdapter);
 
         return rootView;
+    }
+
+    public void goToOtherFragment(int position) {
+        listingsPager.setCurrentItem(position);
     }
 
     @Override
