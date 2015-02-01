@@ -26,6 +26,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
@@ -363,7 +364,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     public void doGoogleSignOn(View v) {
         if (!mGoogleApiClient.isConnecting()) {
             mSignInClicked = true;
-            resolveSignInError();
+            mGoogleApiClient.connect();
         }
     }
 
@@ -386,15 +387,23 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         try {
             accessToken = GoogleAuthUtil.getToken(getActivity(),
                     Plus.AccountApi.getAccountName(mGoogleApiClient),
-                    "oauth2:" + Scopes.PLUS_LOGIN + " " + Scopes.PLUS_ME + " https://www.googleapis.com/auth/userinfo.email");
+                    "oauth2:" + Scopes.PLUS_LOGIN + " " + Scopes.PLUS_ME);
         } catch (IOException transientEx) {
 
         } catch (UserRecoverableAuthException e) {
             accessToken = null;
         } catch (GoogleAuthException authEx) {
+            Log.d("accesstoken","authEx error");
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            Log.d("accesstoken"," error");
+            e.printStackTrace();
+        }
+        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null && Plus.AccountApi.getAccountName(mGoogleApiClient)!=null) {
+            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            String personName = currentPerson.getDisplayName();
+            Person.Image personPhoto = currentPerson.getImage();
+            String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
         }
         //connect with parse
     }
