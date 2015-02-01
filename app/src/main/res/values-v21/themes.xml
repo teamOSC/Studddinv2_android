@@ -16,7 +16,7 @@
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
         <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
-        <item name="android:navigationBarColor">@color/blue_semi_transparent_pressed</item>
+        <item name="android:navigationBarColor">@color/note_button_pressed</item>
     </style>
 
 

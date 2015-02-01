@@ -38,6 +38,7 @@ import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -64,6 +65,8 @@ public class ListingsSearchFragment extends Fragment {
     private SharedPreferences filterPrefs;
     private SharedPreferences.Editor editor;
 
+    private ParseGeoPoint location;
+
     public ListingsSearchFragment() {
         // Required empty public constructor
     }
@@ -79,6 +82,8 @@ public class ListingsSearchFragment extends Fragment {
         editor.putBoolean("misc", true);
         editor.putString("sortby", "nearest");
         editor.commit();
+
+        location = ParseUser.getCurrentUser().getParseGeoPoint("location");
     }
 
     @Override
@@ -259,7 +264,7 @@ public class ListingsSearchFragment extends Fragment {
                 public void done(byte[] bytes, ParseException e) {
                 }
             });
-            double distance = mDataset.get(i).getParseGeoPoint("location").distanceInKilometersTo(ParseUser.getCurrentUser().getParseGeoPoint("location"));
+            double distance = mDataset.get(i).getParseGeoPoint("location").distanceInKilometersTo(location);
             if (distance < 10 && distance != 0)
                 viewHolder.listing_distance.setText(String.format("%.1f", distance) + " km away");
             else

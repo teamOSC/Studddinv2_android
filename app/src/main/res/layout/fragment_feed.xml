@@ -35,14 +35,22 @@
                 app:singleLineEllipsis="true" />
         </FrameLayout>
 
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayoutfeed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/feed_search_frame">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/feed_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="fill_parent"
             android:layout_below="@id/feed_search_frame"
             android:layout_marginTop="5dp"
             android:layoutAnimation="@anim/slide_in_gogo"
             android:scrollbars="vertical" />
+        </android.support.v4.widget.SwipeRefreshLayout>
     </RelativeLayout>
+    
 
 </FrameLayout>

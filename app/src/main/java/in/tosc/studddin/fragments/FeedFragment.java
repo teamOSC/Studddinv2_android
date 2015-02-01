@@ -1,10 +1,15 @@
 package in.tosc.studddin.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +40,7 @@ import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.externalapi.UserDataFields;
 import in.tosc.studddin.utils.ProgressBarCircular;
+import in.tosc.studddin.utils.Utilities;
 
 /**
  * News Feed fragment subclass
@@ -59,6 +65,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     private FeedRootAdapter mAdapter;
     private RecyclerView recyclerView;
     private MaterialEditText searchEditText;
+    ActionBarActivity actionBarActivity;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -73,8 +81,12 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.feedColorPrimary));
+        actionBar.setBackgroundDrawable(colorDrawable);
+        super.onCreate(savedInstanceState);     
         setHasOptionsMenu(true);
+        
     }
 
     @Override
@@ -84,9 +96,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         searchEditText = (MaterialEditText) rootView.findViewById(R.id.feed_search);
         searchEditText.setOnKeyListener(this);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.feed_recycler_view);
-
+        
         context = getActivity();
-
         RecyclerView.LayoutManager mVerticalLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
 
@@ -94,6 +105,20 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
 
         mAdapter = new FeedRootAdapter();
         recyclerView.setAdapter(mAdapter);
+        
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayoutfeed);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (Utilities.isNetworkAvailable(getActivity())) {
+                    getFeed();
+                    Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_SHORT).show();
+                } else {
+                    swipeRefreshLayout.setRefreshing(false);
+                    Toast.makeText(getActivity(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         Log.d(TAG, "interests = " + currentUser.getString(UserDataFields.USER_INTERESTS));
@@ -127,13 +152,19 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle item selection
         switch (item.getItemId()) {
-            case R.id.action_feed_refresh:
-                getFeed();
-                Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_SHORT).show();
-                return true;
+            //case R.id.action_feed_refresh:
+                //getFeed();
+                //Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_SHORT).show();
+                //return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        //activity.setTheme(R.style.AppTheme_Custom);
     }
 
     @Override
