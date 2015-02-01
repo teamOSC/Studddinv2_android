@@ -27,6 +27,7 @@ import com.parse.ParseImageView;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,13 +80,18 @@ public class PeopleSameInstituteFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ViewPerson newFragment = new ViewPerson();
+                final ViewPerson newFragment = new ViewPerson();
 
                 String tname = list3.get(i).cname;
                 String tinterests = list3.get(i).cinterests;
                 String tinstitute =  list3.get(i).cinstituition;
                 String tqualifications = list3.get(i).cqualification;
                 String tdistance = list3.get(i).cdistance;
+                ParseFile tfile = list3.get(i).fileObject;
+
+                final Bundle in = new Bundle();
+
+
 
                 if(tname==null)
                     tname= " - " ;
@@ -98,7 +104,7 @@ public class PeopleSameInstituteFragment extends Fragment {
                 if(tdistance==null)
                     tdistance= " - " ;
 
-                final Bundle in = new Bundle();
+
                 in.putString("name", tname);
                 in.putString("institute", tinstitute);
                 in.putString("qualifications" , tqualifications);
@@ -108,10 +114,47 @@ public class PeopleSameInstituteFragment extends Fragment {
                 newFragment.setArguments(in);
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                final FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
 
-                transaction.replace(R.id.container,newFragment).addToBackStack("PeopleNearMe").commit();
+
+                if(tfile!=null)
+                {
+                    tfile
+                            .getDataInBackground(new GetDataCallback() {
+
+                                public void done(byte[] data,
+                                                 ParseException e) {
+                                    if (e == null) {
+                                        Log.d("test",
+                                                "We've got data in data.");
+
+                                        in.putByteArray("pic", data);
+                                        System.out.print("pic3" + String.valueOf(data));
+                                        transaction.replace(R.id.container,newFragment).addToBackStack("PeopleNearMe").commit();
+
+
+
+                                    } else {
+                                        Log.d("test","There was a problem downloading the data.");
+                                    }
+                                }
+                            });
+                } else {
+
+
+                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_person);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] bitmapdata = stream.toByteArray();
+
+                    in.putByteArray("pic", bitmapdata);
+                    System.out.print("pic2" + String.valueOf(bitmapdata));
+
+                    transaction.replace(R.id.container,newFragment).addToBackStack("PeopleNearMe").commit();
+
+                }
+
             }
         });
 
