@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,7 +20,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
@@ -32,6 +37,7 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -382,22 +388,34 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
             e.printStackTrace();
         }
 
-        /*String accessToken = null;
-        try {
-            accessToken = GoogleAuthUtil.getToken(getActivity(),
-                    Plus.AccountApi.getAccountName(mGoogleApiClient),
-                    "oauth2:" + Scopes.PLUS_LOGIN + " " + Scopes.PLUS_ME);
-        } catch (IOException transientEx) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                String token = null;
 
-        } catch (UserRecoverableAuthException e) {
-            accessToken = null;
-        } catch (GoogleAuthException authEx) {
-            Log.d("accesstoken","authEx error");
+                try {
+                    token = GoogleAuthUtil.getToken(
+                            getActivity(),
+                            Plus.AccountApi.getAccountName(mGoogleApiClient),
+                            "oauth2:" + Scopes.PLUS_LOGIN);
+                } catch (IOException transientEx) {
+                    // Network or server error, try later
+                    Log.e(TAG, transientEx.toString());
+                } catch (UserRecoverableAuthException e) {
+                    Log.e(TAG, e.toString());
+                } catch (GoogleAuthException authEx) {
+                    Log.e(TAG, authEx.toString());
+                }
 
-        } catch (Exception e) {
-            Log.d("accesstoken"," error");
-            e.printStackTrace();
-        }*/
+                return token;
+            }
+
+            @Override
+            protected void onPostExecute(String token) {
+                Log.i(TAG, "Access token retrieved:" + token);
+            }
+
+        }.execute();
 
         //connect with parse
 
