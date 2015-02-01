@@ -63,11 +63,12 @@ public class SignupDataFragment extends Fragment implements
     public Bitmap profileBitmap;
 
     private GoogleApiClient mGoogleApiClient;
-    private Location currentUserLoc;
+    private Location currentUserLoc = new Location("");
 
     @Override
     public void onStart() {
         super.onStart();
+        connectToGoogleApi();
         mGoogleApiClient.connect();
     }
 
@@ -88,6 +89,7 @@ public class SignupDataFragment extends Fragment implements
             userDataBundle = getArguments();
         }
         input = new HashMap<>();
+        connectToGoogleApi();
     }
 
     @Override
@@ -96,7 +98,7 @@ public class SignupDataFragment extends Fragment implements
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
-        currentUserLoc = new Location("");
+        connectToGoogleApi();
 
         ParseGeoPoint.getCurrentLocationInBackground(6000, new LocationCallback() {
             @Override
@@ -162,12 +164,6 @@ public class SignupDataFragment extends Fragment implements
                 }
             }
         });
-
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
 
         viewReady = true;
         setProfilePicture();
@@ -357,5 +353,15 @@ public class SignupDataFragment extends Fragment implements
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+    }
+
+    protected synchronized void connectToGoogleApi() {
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
     }
 }
