@@ -36,8 +36,10 @@ public class EventsFragment extends Fragment {
             @Override
             public Fragment getItem(int position) {
                 switch (position) {
-                    case 0: return (new EventsListFragment());
-                    case 1: return (new EventsCreateFragment());
+                    case 0:
+                        return (new EventsListFragment());
+                    case 1:
+                        return (new EventsCreateFragment());
 
                 }
                 return new NotesSearchFragment();

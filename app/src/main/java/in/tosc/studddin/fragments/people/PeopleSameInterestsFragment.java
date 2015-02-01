@@ -49,8 +49,7 @@ public class PeopleSameInterestsFragment extends Fragment {
     String currentuserqualification = "";
     String currentuser = "";
     String currentuserlocation = "";
-    ParseGeoPoint userlocation = new ParseGeoPoint(0,0);
-
+    ParseGeoPoint userlocation = new ParseGeoPoint(0, 0);
 
 
     EditText search;
@@ -89,7 +88,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                 String tname = list3.get(i).cname;
                 String tinterests = list3.get(i).cinterests;
-                String tinstitute =  list3.get(i).cinstituition;
+                String tinstitute = list3.get(i).cinstituition;
                 String tqualifications = list3.get(i).cqualification;
                 String tdistance = list3.get(i).cdistance;
                 ParseFile tfile = list3.get(i).fileObject;
@@ -97,23 +96,22 @@ public class PeopleSameInterestsFragment extends Fragment {
                 final Bundle in = new Bundle();
 
 
-
-                if(tname==null)
-                    tname= " - " ;
-                if(tinterests==null)
-                    tinterests= " - " ;
-                if(tinstitute==null)
-                    tinstitute= " - " ;
-                if(tqualifications==null)
-                    tqualifications= " - " ;
-                if(tdistance==null)
-                    tdistance= " - " ;
+                if (tname == null)
+                    tname = " - ";
+                if (tinterests == null)
+                    tinterests = " - ";
+                if (tinstitute == null)
+                    tinstitute = " - ";
+                if (tqualifications == null)
+                    tqualifications = " - ";
+                if (tdistance == null)
+                    tdistance = " - ";
 
 
                 in.putString("name", tname);
                 in.putString("institute", tinstitute);
-                in.putString("qualifications" , tqualifications);
-                in.putString("interests" , tinterests);
+                in.putString("qualifications", tqualifications);
+                in.putString("interests", tinterests);
                 in.putString("distance", tdistance);
 
                 newFragment.setArguments(in);
@@ -123,8 +121,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                 transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
 
 
-                if(tfile!=null)
-                {
+                if (tfile != null) {
                     tfile
                             .getDataInBackground(new GetDataCallback() {
 
@@ -136,12 +133,11 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                                         in.putByteArray("pic", data);
                                         System.out.print("pic3" + String.valueOf(data));
-                                        transaction.replace(R.id.container,newFragment).addToBackStack("PeopleNearMe").commit();
-
+                                        transaction.replace(R.id.container, newFragment).addToBackStack("PeopleNearMe").commit();
 
 
                                     } else {
-                                        Log.d("test","There was a problem downloading the data.");
+                                        Log.d("test", "There was a problem downloading the data.");
                                     }
                                 }
                             });
@@ -156,7 +152,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                     in.putByteArray("pic", bitmapdata);
                     System.out.print("pic2" + String.valueOf(bitmapdata));
 
-                    transaction.replace(R.id.container,newFragment).addToBackStack("PeopleNearMe").commit();
+                    transaction.replace(R.id.container, newFragment).addToBackStack("PeopleNearMe").commit();
 
                 }
 
@@ -165,113 +161,6 @@ public class PeopleSameInterestsFragment extends Fragment {
 
         return view;
     }
-
-
-    class MyAdapter3 extends ArrayAdapter<EachRow3> {
-        LayoutInflater inflat;
-        ViewHolder holder;
-
-        public MyAdapter3(Context context, int textViewResourceId,
-                          ArrayList<EachRow3> objects) {
-            super(context, textViewResourceId, objects);
-            // TODO Auto-generated constructor stub
-            inflat = LayoutInflater.from(context);
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            // TODO Auto-generated method stub
-            final int pos = position;
-
-            if (convertView == null) {
-                convertView = inflat.inflate(R.layout.listview_people, null);
-                holder = new ViewHolder();
-                holder.textname = (TextView) convertView.findViewById(R.id.people_name);
-                holder.textinterests = (TextView) convertView.findViewById(R.id.people_interests);
-//                holder.textdate = (TextView) convertView.findViewById(R.id.date);
-                holder.textinstituition = (TextView) convertView.findViewById(R.id.people_institute);
-                holder.textdistance = (TextView) convertView.findViewById(R.id.people_distance);
-                holder.textqualification = (TextView) convertView.findViewById(R.id.people_qualification);
-                holder.userimg = (ParseImageView) convertView.findViewById(R.id.people_userimg);
-
-
-                convertView.setTag(holder);
-            }
-            holder = (ViewHolder) convertView.getTag();
-            EachRow3 row = getItem(position);
-
-            holder.textname.setText(row.cname);
-            holder.textinterests.setText(row.cinterests);
-            holder.textinstituition.setText(row.cinstituition);
-            holder.textdistance.setText(row.cdistance);
-            holder.textqualification.setText(row.cqualification);
-            holder.textdistance.setText(row.cdistance);
-
-
-//            Toast.makeText(getActivity(), row.cusername, Toast.LENGTH_SHORT).show();
-
-            if(row.fileObject!=null)
-            {
-                row.fileObject
-                        .getDataInBackground(new GetDataCallback() {
-                            public void done(byte[] data,
-                                             ParseException e) {
-                                if (e == null) {
-                                    Log.d("test",
-                                            "We've got data in data.");
-
-                                    holder.userimg.setImageBitmap(BitmapFactory
-                                            .decodeByteArray(
-                                                    data, 0,
-                                                    data.length));
-
-                                } else {
-                                    Log.e("test","There was a problem downloading the data.");
-                                }
-                            }
-                        });
-            }
-
-            else
-            {
-                holder.userimg.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_person));
-            }
-
-            return convertView;
-        }
-
-
-        private class ViewHolder {
-
-            TextView textname;
-            TextView textinterests;
-            TextView textdistance;
-            TextView textinstituition;
-            TextView textqualification;
-            ParseImageView userimg;
-
-        }
-
-
-        @Override
-        public EachRow3 getItem(int position) {
-            // TODO Auto-generated method stub
-            return list3.get(position);
-        }
-
-    }
-
-    private class EachRow3 {
-        String cname;
-        String cinterests;
-        String cdistance;
-        String cqualification;
-        String cinstituition;
-        String cusername;
-        Bitmap cbmp;
-        ParseFile fileObject;
-    }
-
 
     private void loaddata() {
 
@@ -320,32 +209,22 @@ public class PeopleSameInterestsFragment extends Fragment {
 //                                          each.cdistance = pu.getString("NAME");
                                         each.cusername = pu.getString("username");
                                         ParseGeoPoint temploc = pu.getParseGeoPoint("location");
-                                        if (temploc!=null && temploc.getLatitude()!=0)
-                                        {
-                                            if(userlocation!=null)
-                                            {
-                                                each.cdistance=String.valueOf((int)temploc.distanceInKilometersTo(userlocation))+" km";
+                                        if (temploc != null && temploc.getLatitude() != 0) {
+                                            if (userlocation != null) {
+                                                each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
+                                            } else {
+                                                each.cdistance = "13 km";
                                             }
-                                            else
-                                            {
-                                                each.cdistance="13 km";
-                                            }
-                                        }
-                                        else
-                                        {
-                                            each.cdistance="16 km";
+                                        } else {
+                                            each.cdistance = "16 km";
                                         }
 
-                                        try
-                                        {
+                                        try {
                                             each.fileObject = (ParseFile) pu.get("image");
 
-                                        }
-                                        catch (Exception e1 )
-                                        {
+                                        } catch (Exception e1) {
                                             System.out.print("nahh");
                                         }
-
 
 
                                         list3.add(each);
@@ -366,5 +245,104 @@ public class PeopleSameInterestsFragment extends Fragment {
                 });
             }
         }
+    }
+
+    class MyAdapter3 extends ArrayAdapter<EachRow3> {
+        LayoutInflater inflat;
+        ViewHolder holder;
+
+        public MyAdapter3(Context context, int textViewResourceId,
+                          ArrayList<EachRow3> objects) {
+            super(context, textViewResourceId, objects);
+            // TODO Auto-generated constructor stub
+            inflat = LayoutInflater.from(context);
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            // TODO Auto-generated method stub
+            final int pos = position;
+
+            if (convertView == null) {
+                convertView = inflat.inflate(R.layout.listview_people, null);
+                holder = new ViewHolder();
+                holder.textname = (TextView) convertView.findViewById(R.id.people_name);
+                holder.textinterests = (TextView) convertView.findViewById(R.id.people_interests);
+//                holder.textdate = (TextView) convertView.findViewById(R.id.date);
+                holder.textinstituition = (TextView) convertView.findViewById(R.id.people_institute);
+                holder.textdistance = (TextView) convertView.findViewById(R.id.people_distance);
+                holder.textqualification = (TextView) convertView.findViewById(R.id.people_qualification);
+                holder.userimg = (ParseImageView) convertView.findViewById(R.id.people_userimg);
+
+
+                convertView.setTag(holder);
+            }
+            holder = (ViewHolder) convertView.getTag();
+            EachRow3 row = getItem(position);
+
+            holder.textname.setText(row.cname);
+            holder.textinterests.setText(row.cinterests);
+            holder.textinstituition.setText(row.cinstituition);
+            holder.textdistance.setText(row.cdistance);
+            holder.textqualification.setText(row.cqualification);
+            holder.textdistance.setText(row.cdistance);
+
+
+//            Toast.makeText(getActivity(), row.cusername, Toast.LENGTH_SHORT).show();
+
+            if (row.fileObject != null) {
+                row.fileObject
+                        .getDataInBackground(new GetDataCallback() {
+                            public void done(byte[] data,
+                                             ParseException e) {
+                                if (e == null) {
+                                    Log.d("test",
+                                            "We've got data in data.");
+
+                                    holder.userimg.setImageBitmap(BitmapFactory
+                                            .decodeByteArray(
+                                                    data, 0,
+                                                    data.length));
+
+                                } else {
+                                    Log.e("test", "There was a problem downloading the data.");
+                                }
+                            }
+                        });
+            } else {
+                holder.userimg.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_person));
+            }
+
+            return convertView;
+        }
+
+        @Override
+        public EachRow3 getItem(int position) {
+            // TODO Auto-generated method stub
+            return list3.get(position);
+        }
+
+        private class ViewHolder {
+
+            TextView textname;
+            TextView textinterests;
+            TextView textdistance;
+            TextView textinstituition;
+            TextView textqualification;
+            ParseImageView userimg;
+
+        }
+
+    }
+
+    private class EachRow3 {
+        String cname;
+        String cinterests;
+        String cdistance;
+        String cqualification;
+        String cinstituition;
+        String cusername;
+        Bitmap cbmp;
+        ParseFile fileObject;
     }
 }

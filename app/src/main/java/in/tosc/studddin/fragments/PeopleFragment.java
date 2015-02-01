@@ -35,7 +35,7 @@ public class PeopleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_people, container, false);
+        View view = inflater.inflate(R.layout.fragment_people, container, false);
         /*
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
@@ -47,9 +47,12 @@ public class PeopleFragment extends Fragment {
             @Override
             public Fragment getItem(int position) {
                 switch (position) {
-                    case 0: return (new PeopleNearmeFragment());
-                    case 1: return (new PeopleSameInstituteFragment());
-                    case 2: return (new PeopleSameInterestsFragment());
+                    case 0:
+                        return (new PeopleNearmeFragment());
+                    case 1:
+                        return (new PeopleSameInstituteFragment());
+                    case 2:
+                        return (new PeopleSameInterestsFragment());
 
                 }
                 return new NotesSearchFragment();
@@ -80,8 +83,6 @@ public class PeopleFragment extends Fragment {
         peoplePager.setOffscreenPageLimit(3);
         return view;
     }
-
-
 
 
 }

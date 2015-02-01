@@ -18,12 +18,12 @@ import in.tosc.studddin.R;
 public class NotesCustomDialog extends Dialog {
 
 
-
     TextView dialogCollegeName, dialogBranchName, dialogTopicName, dialogSubjectName, dialogUploadedBy;
     Button downloadNotes;
-    private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName;
     int position;
     Context c;
+    private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName;
+
     public NotesCustomDialog(Activity activity, ArrayList<String> notesCollegeName, ArrayList<String> notesBranchName, ArrayList<String> notesTopicName, ArrayList<String> notesSubjectName) {
         super(activity);
 
@@ -41,11 +41,11 @@ public class NotesCustomDialog extends Dialog {
         setContentView(R.layout.fragment_notes_custom_dialog);
 
 
-        dialogBranchName = (TextView)findViewById(R.id.notes_details_branchname);
-        dialogSubjectName = (TextView)findViewById(R.id.notes_details_subjectname);
-        dialogTopicName = (TextView)findViewById(R.id.notes_details_topicname);
-        dialogCollegeName = (TextView)findViewById(R.id.notes_details_collegename);
-        dialogUploadedBy = (TextView)findViewById(R.id.notes_details_uploadedby);
+        dialogBranchName = (TextView) findViewById(R.id.notes_details_branchname);
+        dialogSubjectName = (TextView) findViewById(R.id.notes_details_subjectname);
+        dialogTopicName = (TextView) findViewById(R.id.notes_details_topicname);
+        dialogCollegeName = (TextView) findViewById(R.id.notes_details_collegename);
+        dialogUploadedBy = (TextView) findViewById(R.id.notes_details_uploadedby);
         downloadNotes = (Button) findViewById(R.id.notes_button_download);
 
         dialogBranchName.setText(notesBranchName.get(position));

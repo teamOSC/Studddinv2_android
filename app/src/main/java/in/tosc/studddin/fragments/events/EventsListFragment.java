@@ -1,25 +1,18 @@
 package in.tosc.studddin.fragments.events;
 
 
-import android.animation.ValueAnimator;
-import android.annotation.TargetApi;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -41,8 +34,8 @@ public class EventsListFragment extends Fragment {
     List<ParseObject> listings;
     RecyclerView.Adapter adapter;
     FetchData f;
-    private boolean refresh = false;
     SwipeRefreshLayout swipeRefreshLayout;
+    private boolean refresh = false;
 
     public EventsListFragment() {
 
@@ -52,10 +45,10 @@ public class EventsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_events_list, container, false);
-        eventlist = (RecyclerView)v.findViewById(R.id.listviewevents);
+        eventlist = (RecyclerView) v.findViewById(R.id.listviewevents);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         eventlist.setLayoutManager(layoutManager);
-        swipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -69,53 +62,53 @@ public class EventsListFragment extends Fragment {
         return v;
     }
 
-    public class Parent{
+    public class Parent {
         private String event_name;
         private Date event_date;
         private String event_description;
         private String event_type;
 
 
-        public String getEventName(){
+        public String getEventName() {
             return event_name;
         }
 
-        public Date getEventDate(){
-            return event_date;
-        }
-
-        public void setEventName(String s){
+        public void setEventName(String s) {
             this.event_name = s;
         }
 
-        public void setEventDate(Date s){
+        public Date getEventDate() {
+            return event_date;
+        }
+
+        public void setEventDate(Date s) {
             this.event_date = s;
         }
 
-        public String getEventDescription(){
+        public String getEventDescription() {
             return event_description;
         }
 
-        public void setEventDescription(String d){
+        public void setEventDescription(String d) {
             this.event_description = d;
         }
 
-        public String getEventType(){
+        public String getEventType() {
             return event_type;
         }
 
-        public void setEventType(String d){
+        public void setEventType(String d) {
             this.event_type = d;
         }
 
     }
 
-    public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> implements View.OnClickListener{
+    public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> implements View.OnClickListener {
 
         private int expandedPosition = -1;
         private ArrayList<Parent> parents;
 
-        public EventAdapter(ArrayList<Parent> parent){
+        public EventAdapter(ArrayList<Parent> parent) {
             parents = parent;
         }
 
@@ -149,10 +142,10 @@ public class EventsListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             final ViewHolder holder = (ViewHolder) v.getTag();
-            if(holder.getPosition() == expandedPosition){
+            if (holder.getPosition() == expandedPosition) {
                 holder.expanded_area.setVisibility(View.GONE);
                 expandedPosition = -1;
-            }else {
+            } else {
                 if (expandedPosition >= 0) {
                     int prev = expandedPosition;
                     notifyItemChanged(prev);
@@ -163,7 +156,7 @@ public class EventsListFragment extends Fragment {
 
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder{
+        public class ViewHolder extends RecyclerView.ViewHolder {
             TextView event_name;
             TextView event_date;
             TextView event_description;
@@ -181,12 +174,12 @@ public class EventsListFragment extends Fragment {
         }
     }
 
-    private class FetchData extends AsyncTask<Void,Void,Void>{
+    private class FetchData extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPostExecute(Void aVoid) {
             adapter = new EventAdapter(parents);
             eventlist.setAdapter(adapter);
-            if(refresh == true){
+            if (refresh == true) {
                 swipeRefreshLayout.setRefreshing(false);
                 refresh = false;
             }

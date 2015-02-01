@@ -24,7 +24,7 @@ public class MakeZip {
     }
 
     public void zip() {
-        try  {
+        try {
             BufferedInputStream origin = null;
             FileOutputStream dest = new FileOutputStream(_zipFile);
 
@@ -32,7 +32,7 @@ public class MakeZip {
 
             byte data[] = new byte[BUFFER];
 
-            for(int i=0; i < _files.length; i++) {
+            for (int i = 0; i < _files.length; i++) {
                 Log.v("Compress", "Adding: " + _files[i]);
                 FileInputStream fi = new FileInputStream(_files[i]);
                 origin = new BufferedInputStream(fi, BUFFER);
@@ -46,7 +46,7 @@ public class MakeZip {
             }
 
             out.close();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -20,9 +20,7 @@ public class NotesCustomGridViewAdapter extends BaseAdapter {
     private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName;
 
 
-
-
-    public NotesCustomGridViewAdapter(Context c, ArrayList<String> notesCollegeName, ArrayList<String> notesBranchName, ArrayList<String> notesTopicName, ArrayList<String> notesSubjectName){
+    public NotesCustomGridViewAdapter(Context c, ArrayList<String> notesCollegeName, ArrayList<String> notesBranchName, ArrayList<String> notesTopicName, ArrayList<String> notesSubjectName) {
 
         mContext = c;
         this.notesBranchName = notesBranchName;
@@ -32,6 +30,7 @@ public class NotesCustomGridViewAdapter extends BaseAdapter {
 
 
     }
+
     @Override
     public int getCount() {
         return 15;
@@ -54,8 +53,7 @@ public class NotesCustomGridViewAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         grid = new View(mContext);
         if (convertView == null) {
-            if(position >= 0 && position < 15) {
-
+            if (position >= 0 && position < 15) {
 
 
                 grid = inflater.inflate(R.layout.notes_search_gridview_item, null);

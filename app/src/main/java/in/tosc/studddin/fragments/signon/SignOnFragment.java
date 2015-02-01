@@ -22,7 +22,6 @@ import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
-import com.parse.twitter.Twitter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,6 +63,10 @@ public class SignOnFragment extends Fragment {
     private String mParam2;
 
 
+    public SignOnFragment() {
+        // Required empty public constructor
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -82,10 +85,6 @@ public class SignOnFragment extends Fragment {
         return fragment;
     }
 
-    public SignOnFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +100,7 @@ public class SignOnFragment extends Fragment {
                 && (pUser.getBoolean(UserDataFields.USER_FULLY_REGISTERED))) {
             Log.d("SignOnFragment", pUser.getUsername() + pUser.getSessionToken());
             Intent i = new Intent(getActivity(), MainActivity.class);
-                startActivity(i);
+            startActivity(i);
 
             getActivity().finish();
         }
@@ -163,7 +162,7 @@ public class SignOnFragment extends Fragment {
         });
     }
 
-    public void doSignIn (View v) {
+    public void doSignIn(View v) {
         ParseUser.logInInBackground(
                 emailEditText.getText().toString(),
                 passwordEditText.getText().toString(),
@@ -185,7 +184,7 @@ public class SignOnFragment extends Fragment {
         );
     }
 
-    public void doSignUp (View v) {
+    public void doSignUp(View v) {
         Bundle b = new Bundle();
 
         AccountManager am = AccountManager.get(getActivity());
@@ -196,7 +195,7 @@ public class SignOnFragment extends Fragment {
         showSignupDataFragment(b);
     }
 
-    public void doFacebookSignOn (View v) {
+    public void doFacebookSignOn(View v) {
         List<String> permissions = Arrays.asList("public_profile", "user_friends",
                 ParseFacebookUtils.Permissions.User.EMAIL,
                 ParseFacebookUtils.Permissions.User.ABOUT_ME,
@@ -215,11 +214,12 @@ public class SignOnFragment extends Fragment {
                 }
                 if (user == null) {
                     Log.w(TAG, "Uh oh. The user cancelled the Facebook login.");
-                } else{
+                } else {
                     boolean fullyRegistered = false;
                     try {
                         fullyRegistered = user.getBoolean(UserDataFields.USER_FULLY_REGISTERED);
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                    }
 
                     if (user.isNew() || (!fullyRegistered)) {
                         Log.w(TAG, "User signed up and logged in through Facebook!");
@@ -266,7 +266,7 @@ public class SignOnFragment extends Fragment {
         ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
     }
 
-    public void doTwitterSignOn (View v) {
+    public void doTwitterSignOn(View v) {
         ParseTwitterUtils.logIn(getActivity(), new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException err) {
@@ -276,11 +276,12 @@ public class SignOnFragment extends Fragment {
                 }
                 if (user == null) {
                     Log.w(TAG, "Uh oh. The user cancelled the Twitter login.");
-                } else{
+                } else {
                     boolean fullyRegistered = false;
                     try {
                         fullyRegistered = user.getBoolean(UserDataFields.USER_FULLY_REGISTERED);
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                    }
 
                     if (user.isNew() || (!fullyRegistered)) {
                         Log.w(TAG, "User signed up and logged in through Twitter!" + ParseTwitterUtils.getTwitter().getScreenName());
@@ -304,17 +305,17 @@ public class SignOnFragment extends Fragment {
         });
     }
 
-    public void doGoogleSignOn (View v) {
+    public void doGoogleSignOn(View v) {
     }
 
     public SignupDataFragment showSignupDataFragment(Bundle b) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.anim_signin_enter,R.anim.anim_signin_exit);
+        transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
 
         SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
 
-        transaction.replace(R.id.signon_container,newFragment).addToBackStack("SignIn").commit();
+        transaction.replace(R.id.signon_container, newFragment).addToBackStack("SignIn").commit();
         return newFragment;
     }
 }

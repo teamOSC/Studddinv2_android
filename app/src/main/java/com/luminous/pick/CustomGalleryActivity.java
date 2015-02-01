@@ -33,184 +33,184 @@ import in.tosc.studddin.R;
 
 public class CustomGalleryActivity extends Activity {
 
-	GridView gridGallery;
-	Handler handler;
-	GalleryAdapter adapter;
+    GridView gridGallery;
+    Handler handler;
+    GalleryAdapter adapter;
 
-	ImageView imgNoMedia;
-	Button btnGalleryOk;
+    ImageView imgNoMedia;
+    Button btnGalleryOk;
 
-	String action;
-	private ImageLoader imageLoader;
+    String action;
+    View.OnClickListener mOkClickListener = new View.OnClickListener() {
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.gallery);
+        @Override
+        public void onClick(View v) {
+            ArrayList<CustomGallery> selected = adapter.getSelected();
 
-		action = getIntent().getAction();
-		if (action == null) {
-			finish();
-		}
-		initImageLoader();
-		init();
-	}
+            String[] allPath = new String[selected.size()];
+            for (int i = 0; i < allPath.length; i++) {
+                allPath[i] = selected.get(i).sdcardPath;
+            }
 
-	private void initImageLoader() {
-		try {
-			String CACHE_DIR = Environment.getExternalStorageDirectory()
-					.getAbsolutePath() + "/.temp_tmp";
-			new File(CACHE_DIR).mkdirs();
+            Intent data = new Intent().putExtra("all_path", allPath);
+            setResult(RESULT_OK, data);
+            finish();
 
-			File cacheDir = StorageUtils.getOwnCacheDirectory(getBaseContext(),
-					CACHE_DIR);
+        }
+    };
+    AdapterView.OnItemClickListener mItemMulClickListener = new AdapterView.OnItemClickListener() {
 
-			DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-					.cacheOnDisc(true).imageScaleType(ImageScaleType.EXACTLY)
-					.bitmapConfig(Bitmap.Config.RGB_565).build();
-			ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(
-					getBaseContext())
-					.defaultDisplayImageOptions(defaultOptions)
-					.discCache(new UnlimitedDiscCache(cacheDir))
-					.memoryCache(new WeakMemoryCache());
+        @Override
+        public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+            adapter.changeSelection(v, position);
 
-			ImageLoaderConfiguration config = builder.build();
-			imageLoader = ImageLoader.getInstance();
-			imageLoader.init(config);
+        }
+    };
+    AdapterView.OnItemClickListener mItemSingleClickListener = new AdapterView.OnItemClickListener() {
 
-		} catch (Exception e) {
+        @Override
+        public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+            CustomGallery item = adapter.getItem(position);
+            Intent data = new Intent().putExtra("single_path", item.sdcardPath);
+            setResult(RESULT_OK, data);
+            finish();
+        }
+    };
+    private ImageLoader imageLoader;
 
-		}
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.gallery);
 
-	private void init() {
+        action = getIntent().getAction();
+        if (action == null) {
+            finish();
+        }
+        initImageLoader();
+        init();
+    }
 
-		handler = new Handler();
-		gridGallery = (GridView) findViewById(R.id.gridGallery);
-		gridGallery.setFastScrollEnabled(true);
-		adapter = new GalleryAdapter(getApplicationContext(), imageLoader);
-		PauseOnScrollListener listener = new PauseOnScrollListener(imageLoader,
-				true, true);
-		gridGallery.setOnScrollListener(listener);
+    private void initImageLoader() {
+        try {
+            String CACHE_DIR = Environment.getExternalStorageDirectory()
+                    .getAbsolutePath() + "/.temp_tmp";
+            new File(CACHE_DIR).mkdirs();
 
-		if (action.equalsIgnoreCase(Action.ACTION_MULTIPLE_PICK)) {
+            File cacheDir = StorageUtils.getOwnCacheDirectory(getBaseContext(),
+                    CACHE_DIR);
 
-			findViewById(R.id.llBottomContainer).setVisibility(View.VISIBLE);
-			gridGallery.setOnItemClickListener(mItemMulClickListener);
-			adapter.setMultiplePick(true);
+            DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                    .cacheOnDisc(true).imageScaleType(ImageScaleType.EXACTLY)
+                    .bitmapConfig(Bitmap.Config.RGB_565).build();
+            ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(
+                    getBaseContext())
+                    .defaultDisplayImageOptions(defaultOptions)
+                    .discCache(new UnlimitedDiscCache(cacheDir))
+                    .memoryCache(new WeakMemoryCache());
 
-		} else if (action.equalsIgnoreCase(Action.ACTION_PICK)) {
+            ImageLoaderConfiguration config = builder.build();
+            imageLoader = ImageLoader.getInstance();
+            imageLoader.init(config);
 
-			findViewById(R.id.llBottomContainer).setVisibility(View.GONE);
-			gridGallery.setOnItemClickListener(mItemSingleClickListener);
-			adapter.setMultiplePick(false);
+        } catch (Exception e) {
 
-		}
+        }
+    }
 
-		gridGallery.setAdapter(adapter);
-		imgNoMedia = (ImageView) findViewById(R.id.imgNoMedia);
+    private void init() {
 
-		btnGalleryOk = (Button) findViewById(R.id.btnGalleryOk);
-		btnGalleryOk.setOnClickListener(mOkClickListener);
+        handler = new Handler();
+        gridGallery = (GridView) findViewById(R.id.gridGallery);
+        gridGallery.setFastScrollEnabled(true);
+        adapter = new GalleryAdapter(getApplicationContext(), imageLoader);
+        PauseOnScrollListener listener = new PauseOnScrollListener(imageLoader,
+                true, true);
+        gridGallery.setOnScrollListener(listener);
 
-		new Thread() {
+        if (action.equalsIgnoreCase(Action.ACTION_MULTIPLE_PICK)) {
 
-			@Override
-			public void run() {
-				Looper.prepare();
-				handler.post(new Runnable() {
+            findViewById(R.id.llBottomContainer).setVisibility(View.VISIBLE);
+            gridGallery.setOnItemClickListener(mItemMulClickListener);
+            adapter.setMultiplePick(true);
 
-					@Override
-					public void run() {
-						adapter.addAll(getGalleryPhotos());
-						checkImageStatus();
-					}
-				});
-				Looper.loop();
-			};
+        } else if (action.equalsIgnoreCase(Action.ACTION_PICK)) {
 
-		}.start();
+            findViewById(R.id.llBottomContainer).setVisibility(View.GONE);
+            gridGallery.setOnItemClickListener(mItemSingleClickListener);
+            adapter.setMultiplePick(false);
 
-	}
+        }
 
-	private void checkImageStatus() {
-		if (adapter.isEmpty()) {
-			imgNoMedia.setVisibility(View.VISIBLE);
-		} else {
-			imgNoMedia.setVisibility(View.GONE);
-		}
-	}
+        gridGallery.setAdapter(adapter);
+        imgNoMedia = (ImageView) findViewById(R.id.imgNoMedia);
 
-	View.OnClickListener mOkClickListener = new View.OnClickListener() {
+        btnGalleryOk = (Button) findViewById(R.id.btnGalleryOk);
+        btnGalleryOk.setOnClickListener(mOkClickListener);
 
-		@Override
-		public void onClick(View v) {
-			ArrayList<CustomGallery> selected = adapter.getSelected();
+        new Thread() {
 
-			String[] allPath = new String[selected.size()];
-			for (int i = 0; i < allPath.length; i++) {
-				allPath[i] = selected.get(i).sdcardPath;
-			}
+            @Override
+            public void run() {
+                Looper.prepare();
+                handler.post(new Runnable() {
 
-			Intent data = new Intent().putExtra("all_path", allPath);
-			setResult(RESULT_OK, data);
-			finish();
+                    @Override
+                    public void run() {
+                        adapter.addAll(getGalleryPhotos());
+                        checkImageStatus();
+                    }
+                });
+                Looper.loop();
+            }
 
-		}
-	};
-	AdapterView.OnItemClickListener mItemMulClickListener = new AdapterView.OnItemClickListener() {
+            ;
 
-		@Override
-		public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-			adapter.changeSelection(v, position);
+        }.start();
 
-		}
-	};
+    }
 
-	AdapterView.OnItemClickListener mItemSingleClickListener = new AdapterView.OnItemClickListener() {
+    private void checkImageStatus() {
+        if (adapter.isEmpty()) {
+            imgNoMedia.setVisibility(View.VISIBLE);
+        } else {
+            imgNoMedia.setVisibility(View.GONE);
+        }
+    }
 
-		@Override
-		public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-			CustomGallery item = adapter.getItem(position);
-			Intent data = new Intent().putExtra("single_path", item.sdcardPath);
-			setResult(RESULT_OK, data);
-			finish();
-		}
-	};
+    private ArrayList<CustomGallery> getGalleryPhotos() {
+        ArrayList<CustomGallery> galleryList = new ArrayList<CustomGallery>();
 
-	private ArrayList<CustomGallery> getGalleryPhotos() {
-		ArrayList<CustomGallery> galleryList = new ArrayList<CustomGallery>();
+        try {
+            final String[] columns = {MediaStore.Images.Media.DATA,
+                    MediaStore.Images.Media._ID};
+            final String orderBy = MediaStore.Images.Media._ID;
 
-		try {
-			final String[] columns = { MediaStore.Images.Media.DATA,
-					MediaStore.Images.Media._ID };
-			final String orderBy = MediaStore.Images.Media._ID;
+            Cursor imagecursor = managedQuery(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
+                    null, null, orderBy);
 
-			Cursor imagecursor = managedQuery(
-					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
-					null, null, orderBy);
+            if (imagecursor != null && imagecursor.getCount() > 0) {
 
-			if (imagecursor != null && imagecursor.getCount() > 0) {
+                while (imagecursor.moveToNext()) {
+                    CustomGallery item = new CustomGallery();
 
-				while (imagecursor.moveToNext()) {
-					CustomGallery item = new CustomGallery();
+                    int dataColumnIndex = imagecursor
+                            .getColumnIndex(MediaStore.Images.Media.DATA);
 
-					int dataColumnIndex = imagecursor
-							.getColumnIndex(MediaStore.Images.Media.DATA);
+                    item.sdcardPath = imagecursor.getString(dataColumnIndex);
 
-					item.sdcardPath = imagecursor.getString(dataColumnIndex);
+                    galleryList.add(item);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-					galleryList.add(item);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// show newest photo at beginning of the list
-		Collections.reverse(galleryList);
-		return galleryList;
-	}
+        // show newest photo at beginning of the list
+        Collections.reverse(galleryList);
+        return galleryList;
+    }
 
 }

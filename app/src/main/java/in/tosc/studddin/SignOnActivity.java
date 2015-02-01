@@ -1,31 +1,14 @@
 package in.tosc.studddin;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.parse.ParseFacebookUtils;
-
-import in.tosc.studddin.fragments.signon.SignOnFragment;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import in.tosc.studddin.fragments.signon.SignOnFragment;
 
@@ -40,7 +23,7 @@ public class SignOnActivity extends ActionBarActivity {
         android.support.v4.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         SignOnFragment newFragment = new SignOnFragment();
-        transaction.replace(R.id.signon_container,newFragment).commit();
+        transaction.replace(R.id.signon_container, newFragment).commit();
     }
 
 
@@ -53,7 +36,7 @@ public class SignOnActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-         // automatically handle clicks on the Home/Up button, so long
+        // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         // Handle action bar item clicks here. The action bar will
 

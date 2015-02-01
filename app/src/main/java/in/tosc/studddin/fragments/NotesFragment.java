@@ -4,9 +4,7 @@ package in.tosc.studddin.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,7 +43,8 @@ public class NotesFragment extends Fragment {
             @Override
             public Fragment getItem(int position) {
                 switch (position) {
-                    case 0: return (new NotesSearchFragment());
+                    case 0:
+                        return (new NotesSearchFragment());
                     case 1:
                         notesUploadFragment = new NotesUploadFragment();
                         return notesUploadFragment;
@@ -77,13 +76,13 @@ public class NotesFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("Raghav", "Request = " + requestCode + "result = " + resultCode);
-        String[]  paths = data.getStringArrayExtra("all_path");
-        if(paths.length == 0)
+        String[] paths = data.getStringArrayExtra("all_path");
+        if (paths.length == 0)
 
-                notesUploadFragment.setImagePaths(paths, false);
+            notesUploadFragment.setImagePaths(paths, false);
 
 
-            notesUploadFragment.setImagePaths(paths, true);
+        notesUploadFragment.setImagePaths(paths, true);
 
 
     }

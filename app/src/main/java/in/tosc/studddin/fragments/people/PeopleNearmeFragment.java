@@ -36,25 +36,24 @@ import in.tosc.studddin.utils.ProgressBarCircular;
 
 public class PeopleNearmeFragment extends Fragment {
 
-    ProgressBarCircular progressBar ;
+    ProgressBarCircular progressBar;
     Dialog dialogPeople;
 
     String currentuseremail = "";
-    String currentuserinterests= "";
-    String currentuserinstituition= "";
-    String currentusername= "";
-    String currentuserqualification= "";
+    String currentuserinterests = "";
+    String currentuserinstituition = "";
+    String currentusername = "";
+    String currentuserqualification = "";
     String currentuser = "";
-    ParseGeoPoint userlocation = new ParseGeoPoint(0,0);
+    ParseGeoPoint userlocation = new ParseGeoPoint(0, 0);
 
 
-    EditText search ;
+    EditText search;
 
     ArrayList<EachRow3> list3 = new ArrayList<PeopleNearmeFragment.EachRow3>();
     EachRow3 each;
-    MyAdapter3 q ;
-    ListView lv ;
-
+    MyAdapter3 q;
+    ListView lv;
 
 
     public PeopleNearmeFragment() {
@@ -67,12 +66,12 @@ public class PeopleNearmeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_people_nearme, container, false);
-        progressBar=(ProgressBarCircular)view.findViewById(R.id.progressbar_people);
+        progressBar = (ProgressBarCircular) view.findViewById(R.id.progressbar_people);
         progressBar.setBackgroundColor(getResources().getColor(R.color.pink));
 
         search = (EditText) view.findViewById(R.id.people_search);
 
-        lv = (ListView)view.findViewById(R.id.listviewpeople);
+        lv = (ListView) view.findViewById(R.id.listviewpeople);
 
         q = new MyAdapter3(getActivity(), 0, list3);
         q.setNotifyOnChange(true);
@@ -86,7 +85,7 @@ public class PeopleNearmeFragment extends Fragment {
 
                 String tname = list3.get(i).cname;
                 String tinterests = list3.get(i).cinterests;
-                String tinstitute =  list3.get(i).cinstituition;
+                String tinstitute = list3.get(i).cinstituition;
                 String tqualifications = list3.get(i).cqualification;
                 String tdistance = list3.get(i).cdistance;
                 ParseFile tfile = list3.get(i).fileObject;
@@ -94,23 +93,22 @@ public class PeopleNearmeFragment extends Fragment {
                 final Bundle in = new Bundle();
 
 
-
-                if(tname==null)
-                    tname= " - " ;
-                if(tinterests==null)
-                    tinterests= " - " ;
-                if(tinstitute==null)
-                    tinstitute= " - " ;
-                if(tqualifications==null)
-                    tqualifications= " - " ;
-                if(tdistance==null)
-                    tdistance= " - " ;
+                if (tname == null)
+                    tname = " - ";
+                if (tinterests == null)
+                    tinterests = " - ";
+                if (tinstitute == null)
+                    tinstitute = " - ";
+                if (tqualifications == null)
+                    tqualifications = " - ";
+                if (tdistance == null)
+                    tdistance = " - ";
 
 
                 in.putString("name", tname);
                 in.putString("institute", tinstitute);
-                in.putString("qualifications" , tqualifications);
-                in.putString("interests" , tinterests);
+                in.putString("qualifications", tqualifications);
+                in.putString("interests", tinterests);
                 in.putString("distance", tdistance);
 
                 newFragment.setArguments(in);
@@ -120,8 +118,7 @@ public class PeopleNearmeFragment extends Fragment {
                 transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
 
 
-                if(tfile!=null)
-                {
+                if (tfile != null) {
                     tfile
                             .getDataInBackground(new GetDataCallback() {
 
@@ -133,12 +130,11 @@ public class PeopleNearmeFragment extends Fragment {
 
                                         in.putByteArray("pic", data);
                                         System.out.print("pic3" + String.valueOf(data));
-                                        transaction.replace(R.id.container,newFragment).addToBackStack("PeopleNearMe").commit();
-
+                                        transaction.replace(R.id.container, newFragment).addToBackStack("PeopleNearMe").commit();
 
 
                                     } else {
-                                        Log.d("test","There was a problem downloading the data.");
+                                        Log.d("test", "There was a problem downloading the data.");
                                     }
                                 }
                             });
@@ -153,7 +149,7 @@ public class PeopleNearmeFragment extends Fragment {
                     in.putByteArray("pic", bitmapdata);
                     System.out.print("pic2" + String.valueOf(bitmapdata));
 
-                    transaction.replace(R.id.container,newFragment).addToBackStack("PeopleNearMe").commit();
+                    transaction.replace(R.id.container, newFragment).addToBackStack("PeopleNearMe").commit();
 
                 }
 
@@ -161,10 +157,82 @@ public class PeopleNearmeFragment extends Fragment {
         });
 
 
-        return  view;
+        return view;
     }
 
+    private void loaddata() {
 
+        for (int i = 0; i < list3.size(); i++) {
+            list3.remove(each);
+        }
+
+
+        currentuser = ParseUser.getCurrentUser().getUsername();
+        currentuseremail = ParseUser.getCurrentUser().getString("email");
+        currentuserinterests = ParseUser.getCurrentUser().getString("INTERESTS");
+        currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
+        currentusername = ParseUser.getCurrentUser().getString("NAME");
+        currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
+        userlocation = ParseUser.getCurrentUser().getParseGeoPoint("location");
+
+
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereNear("location", userlocation);
+
+        query.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+
+
+                    for (ParseUser pu : objects) {
+                        //access the data associated with the ParseUser using the get method
+                        //pu.getString("key") or pu.get("key")
+
+                        if (!pu.getUsername().equals(currentuser)) {
+
+
+                            each = new EachRow3();
+                            each.cname = pu.getString("NAME");
+                            each.cinterests = pu.getString("INTERESTS");
+                            each.cqualification = pu.getString("QUALIFICATIONS");
+                            each.cinstituition = pu.getString("INSTITUTE");
+//                                          each.cdistance = pu.getString("NAME");
+                            each.cusername = pu.getString("username");
+                            ParseGeoPoint temploc = pu.getParseGeoPoint("location");
+                            if (temploc != null && temploc.getLatitude() != 0) {
+                                if (userlocation != null) {
+                                    each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
+                                } else {
+                                    each.cdistance = "13 km";
+                                }
+                            } else {
+                                each.cdistance = "16 km";
+                            }
+
+                            try {
+                                each.fileObject = (ParseFile) pu.get("image");
+                            } catch (Exception e1) {
+                                System.out.print("nahh");
+                            }
+
+                            list3.add(each);
+
+
+                        }
+                    }
+
+                    // The query was successful.
+                } else {
+                    // Something went wrong.
+                }
+
+                lv.setAdapter(q);
+                progressBar.setVisibility(View.GONE);
+                lv.setVisibility(View.VISIBLE);
+            }
+        });
+
+    }
 
     class MyAdapter3 extends ArrayAdapter<EachRow3> {
         LayoutInflater inflat;
@@ -180,7 +248,7 @@ public class PeopleNearmeFragment extends Fragment {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             // TODO Auto-generated method stub
-            final int pos=position;
+            final int pos = position;
 
             if (convertView == null) {
                 convertView = inflat.inflate(R.layout.listview_people, null);
@@ -206,8 +274,7 @@ public class PeopleNearmeFragment extends Fragment {
             holder.textdistance.setText(row.cdistance);
 
 
-            if(row.fileObject!=null)
-            {
+            if (row.fileObject != null) {
                 row.fileObject
                         .getDataInBackground(new GetDataCallback() {
 
@@ -223,22 +290,22 @@ public class PeopleNearmeFragment extends Fragment {
                                                     data.length));
 
                                 } else {
-                                    Log.d("test","There was a problem downloading the data.");
+                                    Log.d("test", "There was a problem downloading the data.");
                                 }
                             }
                         });
-            }
-
-            else
-            {
+            } else {
                 holder.userimg.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_person));
             }
 
             return convertView;
         }
 
-
-
+        @Override
+        public EachRow3 getItem(int position) {
+            // TODO Auto-generated method stub
+            return list3.get(position);
+        }
 
         private class ViewHolder {
 
@@ -250,115 +317,18 @@ public class PeopleNearmeFragment extends Fragment {
             ParseImageView userimg;
         }
 
-
-        @Override
-        public EachRow3 getItem(int position) {
-            // TODO Auto-generated method stub
-            return list3.get(position);
-        }
-
     }
 
-    private class EachRow3
-    {
+    private class EachRow3 {
         String cname;
-        String cinterests ;
-        String cdistance ;
-        String cqualification ;
-        String cinstituition ;
+        String cinterests;
+        String cdistance;
+        String cqualification;
+        String cinstituition;
         String cusername;
         Bitmap cbmp;
         ParseFile fileObject;
     }
-
-
-    private void loaddata()
-    {
-
-        for(int i  =0 ; i<list3.size(); i++)
-        {
-            list3.remove(each);
-        }
-
-
-
-        currentuser = ParseUser.getCurrentUser().getUsername();
-        currentuseremail = ParseUser.getCurrentUser().getString("email");
-        currentuserinterests = ParseUser.getCurrentUser().getString("INTERESTS");
-        currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
-        currentusername = ParseUser.getCurrentUser().getString("NAME");
-        currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
-        userlocation = ParseUser.getCurrentUser().getParseGeoPoint("location");
-
-
-
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereNear("location", userlocation);
-
-        query.findInBackground(new FindCallback<ParseUser>() {
-                    public void done(List<ParseUser> objects, ParseException e) {
-                        if (e == null) {
-
-
-                            for (ParseUser pu : objects) {
-                                //access the data associated with the ParseUser using the get method
-                                //pu.getString("key") or pu.get("key")
-
-                                if (!pu.getUsername().equals(currentuser)) {
-
-
-                                        each = new EachRow3();
-                                        each.cname = pu.getString("NAME");
-                                        each.cinterests = pu.getString("INTERESTS");
-                                        each.cqualification = pu.getString("QUALIFICATIONS");
-                                        each.cinstituition = pu.getString("INSTITUTE");
-//                                          each.cdistance = pu.getString("NAME");
-                                        each.cusername = pu.getString("username");
-                                    ParseGeoPoint temploc = pu.getParseGeoPoint("location");
-                                    if (temploc!=null && temploc.getLatitude()!=0)
-                                    {
-                                        if(userlocation!=null)
-                                        {
-                                            each.cdistance=String.valueOf((int)temploc.distanceInKilometersTo(userlocation))+" km";
-                                        }
-                                        else
-                                        {
-                                            each.cdistance="13 km";
-                                        }
-                                    }
-                                    else
-                                    {
-                                        each.cdistance="16 km";
-                                    }
-
-                                    try
-                                    {
-                                        each.fileObject = (ParseFile) pu.get("image");
-                                    }
-                                    catch (Exception e1 )
-                                    {
-                                        System.out.print("nahh");
-                                    }
-
-                                        list3.add(each);
-
-
-                                }
-                            }
-
-                            // The query was successful.
-                        } else {
-                            // Something went wrong.
-                        }
-
-                        lv.setAdapter(q);
-                        progressBar.setVisibility(View.GONE);
-                        lv.setVisibility(View.VISIBLE);
-                    }
-                });
-
-    }
-
 
 
 }
