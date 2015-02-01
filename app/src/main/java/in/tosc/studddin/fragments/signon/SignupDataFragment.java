@@ -38,6 +38,8 @@ import com.parse.SignUpCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
@@ -255,6 +257,12 @@ public class SignupDataFragment extends Fragment implements
             f = false;
         }
 
+        if (f && isEmailValid(input.get(UserDataFields.USER_EMAIL))) {
+            Toast.makeText(getActivity(), "Please enter a valid email id",
+                    Toast.LENGTH_LONG).show();
+            f = false;
+        }
+
         if (f && input.get(UserDataFields.USER_INTERESTS) == null) {
             input.remove(UserDataFields.USER_INTERESTS);
             input.put(UserDataFields.USER_INTERESTS, getActivity().getString(R.string.empty_interests));
@@ -263,6 +271,20 @@ public class SignupDataFragment extends Fragment implements
         //TODO: also make sure a valid USER_EMAIL id is entered
 
         return f;
+    }
+
+    private boolean isEmailValid(String email) {
+        boolean isValid = false;
+
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        CharSequence inputStr = email;
+
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+        return isValid;
     }
 
     private void startNextActivity() {

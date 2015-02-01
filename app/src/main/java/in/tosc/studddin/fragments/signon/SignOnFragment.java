@@ -19,11 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.GoogleAuthException;
-import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
@@ -36,7 +32,6 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -383,7 +378,16 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     public void onConnected(Bundle bundle) {
         mSignInClicked = false;
         Toast.makeText(getActivity(), "Google+ sign-in successful", Toast.LENGTH_LONG).show();
-        String accessToken = null;
+        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            String personName = currentPerson.getDisplayName();
+            Person.Image personPhoto = currentPerson.getImage();
+            //String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+            Log.d("Name",personName);
+            //Log.d("email",email);
+        }
+
+        /*String accessToken = null;
         try {
             accessToken = GoogleAuthUtil.getToken(getActivity(),
                     Plus.AccountApi.getAccountName(mGoogleApiClient),
@@ -398,13 +402,8 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         } catch (Exception e) {
             Log.d("accesstoken"," error");
             e.printStackTrace();
-        }
-        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null && Plus.AccountApi.getAccountName(mGoogleApiClient)!=null) {
-            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-            String personName = currentPerson.getDisplayName();
-            Person.Image personPhoto = currentPerson.getImage();
-            String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
-        }
+        }*/
+
         //connect with parse
     }
 
