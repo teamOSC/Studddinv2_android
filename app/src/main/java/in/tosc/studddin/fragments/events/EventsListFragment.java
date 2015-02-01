@@ -9,6 +9,9 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -23,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.fragments.EventsFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +43,12 @@ public class EventsListFragment extends Fragment {
 
     public EventsListFragment() {
 
+    }
+
+    @Override
+    public void onCreate (Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -208,4 +218,21 @@ public class EventsListFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.events_search, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.event_add:
+                EventsFragment eFragment = (EventsFragment) getParentFragment();
+                eFragment.goToOtherFragment(1);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
