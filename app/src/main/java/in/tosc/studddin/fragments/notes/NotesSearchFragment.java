@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -25,6 +26,7 @@ import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.fragments.NotesFragment;
 import in.tosc.studddin.utils.FloatingActionButton;
+import in.tosc.studddin.utils.Utilities;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -102,25 +104,31 @@ public class NotesSearchFragment extends Fragment {
         searchEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_search);
 
 
+        if (Utilities.isNetworkAvailable(getActivity())) {
 
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
-                "Notes");
-        query.orderByDescending("createdAt");
-        try {
-            notesListParseObject = query.find();
-        } catch (ParseException e) {
-            Log.e("Roalts", e.getMessage());
-            e.printStackTrace();
-        }
+            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+                    "Notes");
+            query.orderByDescending("createdAt");
+            try {
+                notesListParseObject = query.find();
+            } catch (ParseException e) {
+                Log.e("Roalts", e.getMessage());
+                e.printStackTrace();
+            }
 
-        for (ParseObject notes : notesListParseObject) {
-            notesBranchName.add((String) notes.get("branchName"));
-            notesSubjectName.add((String) notes.get("subjectName"));
-            notesCollegeName.add((String) notes.get("collegeName"));
-            notesTopicName.add((String) notes.get("topicName"));
-            uploadedBy.add((String) notes.get("userName"));
+            for (ParseObject notes : notesListParseObject) {
+                notesBranchName.add((String) notes.get("branchName"));
+                notesSubjectName.add((String) notes.get("subjectName"));
+                notesCollegeName.add((String) notes.get("collegeName"));
+                notesTopicName.add((String) notes.get("topicName"));
+                uploadedBy.add((String) notes.get("userName"));
 
-        }
+            }
+        }else
+            Toast.makeText(getActivity(), "Internet Connection Problem", Toast.LENGTH_SHORT)
+            .show();
+
+
 
         searchEdTxt = (EditText) rootView.findViewById(R.id.notes_search);
 
