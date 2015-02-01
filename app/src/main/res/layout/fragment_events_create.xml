@@ -34,17 +34,48 @@
             android:textCursorDrawable="@drawable/text_cursor_cyan"
             app:baseColor="@color/search_color"
             app:primaryColor="@color/colorPrimaryDark" />
-
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="Set Date"
+            android:id="@+id/date_picker"
+            android:layout_gravity="center"
+            android:background="@drawable/bbuton_primary_rounded"
+            android:textColor="@android:color/white"
+            />
         <in.tosc.studddin.customview.MaterialEditText
-            android:id="@+id/event_date"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:hint="Date"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/event_date"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
             app:baseColor="@color/search_color"
-            app:primaryColor="@color/colorPrimaryDark" />
+            app:primaryColor="@color/colorPrimaryDark"
+            android:editable="false"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="Set Time"
+            android:id="@+id/time_picker"
+            android:layout_gravity="center"
+            android:background="@drawable/bbuton_primary_rounded"
+            android:textColor="@android:color/white"
+            />
+        <in.tosc.studddin.customview.MaterialEditText
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/event_time"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            app:baseColor="@color/search_color"
+            app:primaryColor="@color/colorPrimaryDark"
+            android:editable="false"
+            />
 
         <in.tosc.studddin.customview.MaterialEditText
             android:id="@+id/event_type"
