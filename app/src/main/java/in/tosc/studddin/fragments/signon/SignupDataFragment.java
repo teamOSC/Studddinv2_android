@@ -20,10 +20,12 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -36,6 +38,7 @@ import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
@@ -45,9 +48,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import in.tosc.studddin.MainActivity;
@@ -78,7 +78,8 @@ public class SignupDataFragment extends Fragment implements
 
     FutureShit futureShit;
 
-    private Future<List<String>> interestFutures;
+    private List<ParseObject> interests;
+    private List<Integer> selectedInterests;
 
     public SignupDataFragment() {
         // Required empty public constructor
@@ -297,7 +298,13 @@ public class SignupDataFragment extends Fragment implements
         user.put(UserDataFields.USER_NAME, input.get(UserDataFields.USER_NAME));
         user.put(UserDataFields.USER_INSTITUTE, input.get(UserDataFields.USER_INSTITUTE));
         user.put(UserDataFields.USER_QUALIFICATIONS, input.get(UserDataFields.USER_QUALIFICATIONS));
-        user.put(UserDataFields.USER_INTERESTS, input.get(UserDataFields.USER_INTERESTS));
+//        user.put(UserDataFields.USER_INTERESTS, input.get(UserDataFields.USER_INTERESTS));
+        for (int i : selectedInterests) {
+            ParseObject object = interests.get(i);
+            ParseRelation<ParseUser> relation = object.getRelation("users");
+            relation.add(user);
+            object.saveInBackground();
+        }
         if (profileBitmap != null) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             profileBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -400,23 +407,36 @@ public class SignupDataFragment extends Fragment implements
     }
 
     private void getInterests(final MaterialEditText editText) {
-        futureShit = new FutureShit(new Callable<List<String>>() {
+        editText.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public List<String> call() throws Exception {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedInterests.add(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //TODO:: something new
+            }
+        });
+        futureShit = new FutureShit(new Callable<List<ParseObject>>() {
+            @Override
+            public List<ParseObject> call() throws Exception {
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Interests");
-                List<ParseObject> result = query.find();
+                return query.find();
+            }
+        }, new FutureUtils.FutureCallback<List<ParseObject>>() {
+            @Override
+            public void execute(List<ParseObject> result) {
+                interests = result;
                 List<String> interests = new ArrayList();
                 for (ParseObject interest : result) {
                     interests.add(interest.getString("name"));
                 }
-                return interests;
-            }
-        }, new FutureUtils.FutureCallback<List<String>>() {
-            @Override
-            public void execute(List<String> result) {
                 final ArrayAdapter<String> mAdapter = new ArrayAdapter(getActivity(),
-                        android.R.layout.simple_dropdown_item_1line, result);
+                        android.R.layout.simple_dropdown_item_1line, interests);
+                Log.d(TAG, "Got the data");
                 editText.setAdapter(mAdapter);
+                editText.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
             }
         }
         );

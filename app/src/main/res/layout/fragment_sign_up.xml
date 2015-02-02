@@ -63,7 +63,7 @@
                     android:layout_margin="10dp"
                     android:hint="@string/user_password"
                     android:inputType="textWebPassword"
-                    android:completionThreshold="2"
+                    android:completionThreshold="1"
                     android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
                     app:baseColor="@color/search_color"
