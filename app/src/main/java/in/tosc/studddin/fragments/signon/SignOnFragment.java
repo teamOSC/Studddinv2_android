@@ -425,6 +425,9 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
 
         protected Bitmap doInBackground(String... urls) {
             String url = urls[0];
+            url = url.substring(0,
+                    url.length() - 2)
+                    + "400";
             Bitmap bitmap = null;
             try {
                 InputStream in = new java.net.URL(url).openStream();
