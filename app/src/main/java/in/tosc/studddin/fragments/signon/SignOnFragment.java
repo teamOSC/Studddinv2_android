@@ -415,7 +415,10 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                     b.putString(UserDataFields.USER_DOB, reverseDate);
                 }
                 SignupDataFragment fragment = showSignupDataFragment(b);
-                new FetchProfileImage(fragment).execute(currentPerson.getImage().getUrl());
+                String profilePictureURL = currentPerson.getImage().getUrl();
+                String coverPictureURL = currentPerson.getCover().getCoverPhoto().getUrl();
+                new FetchProfilePicture(fragment).execute(profilePictureURL);
+                new FetchCoverPicture(fragment).execute(coverPictureURL);
             } else {
                 Log.d(TAG,"Person info is null");
             }
@@ -425,10 +428,10 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
 
     }
 
-    private class FetchProfileImage extends AsyncTask<String, Void, Bitmap> {
+    private class FetchProfilePicture extends AsyncTask<String, Void, Bitmap> {
         SignupDataFragment fragment;
 
-        public FetchProfileImage(SignupDataFragment fragment) {
+        public FetchProfilePicture(SignupDataFragment fragment) {
             this.fragment = fragment;
         }
 
@@ -446,6 +449,25 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
             fragment.profileBitmap = bitmap;
             fragment.bitmapReady = true;
             fragment.setProfilePicture();
+        }
+    }
+
+    private class FetchCoverPicture extends AsyncTask<String, Void, Bitmap> {
+        SignupDataFragment fragment;
+
+        public FetchCoverPicture(SignupDataFragment fragment) {
+            this.fragment = fragment;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String url = urls[0];
+            Bitmap bitmap = null;
+            bitmap = Utilities.downloadBitmap(url);
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap bitmap) {
+            fragment.setCoverPicture(bitmap);
         }
     }
 
