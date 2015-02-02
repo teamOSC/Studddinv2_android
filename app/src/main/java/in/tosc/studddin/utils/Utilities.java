@@ -11,9 +11,7 @@ import android.util.Patterns;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.regex.Pattern;
 
 /**
@@ -42,11 +40,7 @@ public class Utilities {
 
     public static Bitmap downloadBitmap(String sUrl) {
         try {
-            URL url = new URL(sUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
+            InputStream input = new java.net.URL(sUrl).openStream();
             return BitmapFactory.decodeStream(input);
         } catch (MalformedURLException e) {
             e.printStackTrace();
