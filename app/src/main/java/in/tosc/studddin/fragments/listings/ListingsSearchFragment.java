@@ -266,10 +266,10 @@ public class ListingsSearchFragment extends Fragment {
             });
             try{
                 double distance = mDataset.get(i).getParseGeoPoint("location").distanceInKilometersTo(location);
-                if (distance < 10 && distance != 0)
+                if (distance < 10 && distance > 0)
                     viewHolder.listing_distance.setText(String.format("%.1f", distance) + " km away");
                 else
-                    viewHolder.listing_distance.setText((int) distance + " km");
+                    viewHolder.listing_distance.setText((int) distance + " km away");
                 final String latitude = Double.toString(mDataset.get(i).getParseGeoPoint("location").getLatitude());
                 final String longitude = Double.toString(mDataset.get(i).getParseGeoPoint("location").getLongitude());
                 viewHolder.compass.setOnClickListener(new View.OnClickListener() {
