@@ -286,7 +286,8 @@ public class NavigationDrawerFragment extends Fragment {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         ActionBarActivity actionBarActivity = (ActionBarActivity) getActivity();
         actionBarActivity.getSupportActionBar();
-        toolbar.setTitle(R.string.app_name);
+        actionBarActivity.getSupportActionBar().setTitle(R.string.app_name);
+        //toolbar.setTitle(R.string.app_name);
         ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((ActionBarActivity) getActivity()).getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
     }
