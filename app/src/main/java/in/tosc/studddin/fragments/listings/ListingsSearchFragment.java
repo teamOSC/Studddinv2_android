@@ -264,26 +264,30 @@ public class ListingsSearchFragment extends Fragment {
                 public void done(byte[] bytes, ParseException e) {
                 }
             });
-            double distance = mDataset.get(i).getParseGeoPoint("location").distanceInKilometersTo(location);
-            if (distance < 10 && distance != 0)
-                viewHolder.listing_distance.setText(String.format("%.1f", distance) + " km away");
-            else
-                viewHolder.listing_distance.setText((int) distance + " km");
-            final String latitude = Double.toString(mDataset.get(i).getParseGeoPoint("location").getLatitude());
-            final String longitude = Double.toString(mDataset.get(i).getParseGeoPoint("location").getLongitude());
-            viewHolder.compass.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                                Uri.parse("geo:0,0?q=" + latitude + "," + longitude + "(" + mDataset.get(i).getString("ownerName") + ")"));
-                        startActivity(intent);
-                    } catch (ActivityNotFoundException e) {
-                        startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("http://maps.google.com/maps?q=loc:" + latitude + "," + longitude)));
+            try{
+                double distance = mDataset.get(i).getParseGeoPoint("location").distanceInKilometersTo(location);
+                if (distance < 10 && distance != 0)
+                    viewHolder.listing_distance.setText(String.format("%.1f", distance) + " km away");
+                else
+                    viewHolder.listing_distance.setText((int) distance + " km");
+                final String latitude = Double.toString(mDataset.get(i).getParseGeoPoint("location").getLatitude());
+                final String longitude = Double.toString(mDataset.get(i).getParseGeoPoint("location").getLongitude());
+                viewHolder.compass.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                                    Uri.parse("geo:0,0?q=" + latitude + "," + longitude + "(" + mDataset.get(i).getString("ownerName") + ")"));
+                            startActivity(intent);
+                        } catch (ActivityNotFoundException e) {
+                            startActivity(new Intent(Intent.ACTION_VIEW,
+                                    Uri.parse("http://maps.google.com/maps?q=loc:" + latitude + "," + longitude)));
+                        }
                     }
-                }
-            });
+                });
+            }catch(Exception e){
+                viewHolder.listing_distance.setText("Unknown");
+            }
         }
 
         @Override
