@@ -54,6 +54,8 @@ import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.externalapi.UserDataFields;
+import in.tosc.studddin.utils.FutureUtils.FutureShit;
+import in.tosc.studddin.utils.FutureUtils;
 
 /**
  * SignupDataFragment
@@ -73,6 +75,8 @@ public class SignupDataFragment extends Fragment implements
     private GoogleApiClient mGoogleApiClient;
     private Location currentUserLoc;
     private Location approxUserLoc;
+
+    FutureShit futureShit;
 
     private Future<List<String>> interestFutures;
 
@@ -113,7 +117,6 @@ public class SignupDataFragment extends Fragment implements
         }
         input = new HashMap();
         connectToGoogleApi();
-        getInterests();
     }
 
     @Override
@@ -169,30 +172,8 @@ public class SignupDataFragment extends Fragment implements
         initializeEditTexts(R.id.user_qualifications);
 
         final MaterialEditText interestEditText = (MaterialEditText) rootView.findViewById(R.id.user_interests);
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    final ArrayAdapter<String> mAdapter = new ArrayAdapter(getActivity(),
-                            android.R.layout.simple_dropdown_item_1line, interestFutures.get());
-                    for (String string : interestFutures.get()) {
-                        Log.d(TAG, "interest = " + string);
-                    }
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            interestEditText.setAdapter(mAdapter);
-                        }
-                    });
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        }.execute();
-
+        getInterests(interestEditText);
+        futureShit.getShitDone();
 
         if (userDataBundle != null) {
             autoFillData();
@@ -405,19 +386,21 @@ public class SignupDataFragment extends Fragment implements
                 approxUserLoc = location;
             }
 
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
 
-            public void onProviderEnabled(String provider) {}
+            public void onProviderEnabled(String provider) {
+            }
 
-            public void onProviderDisabled(String provider) {}
+            public void onProviderDisabled(String provider) {
+            }
         };
 
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 50, locationListener);
     }
 
-    private void getInterests() {
-        ExecutorService executor = Executors.newFixedThreadPool(3);
-        interestFutures = executor.submit(new Callable<List<String>>() {
+    private void getInterests(final MaterialEditText editText) {
+        futureShit = new FutureShit(new Callable<List<String>>() {
             @Override
             public List<String> call() throws Exception {
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Interests");
@@ -428,6 +411,14 @@ public class SignupDataFragment extends Fragment implements
                 }
                 return interests;
             }
-        });
+        }, new FutureUtils.FutureCallback<List<String>>() {
+            @Override
+            public void execute(List<String> result) {
+                final ArrayAdapter<String> mAdapter = new ArrayAdapter(getActivity(),
+                        android.R.layout.simple_dropdown_item_1line, result);
+                editText.setAdapter(mAdapter);
+            }
+        }
+        );
     }
 }
