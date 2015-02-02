@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,7 +38,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -275,6 +273,12 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                         fragment.setProfilePicture();
                                     }
                                 });
+                                FacebookApi.getCoverPicture(new FacebookApi.FbGotCoverPictureCallback() {
+                                    @Override
+                                    public void gotCoverPicture(Bitmap coverPicture) {
+                                        fragment.setCoverPicture(coverPicture);
+                                    }
+                                });
                             }
                         });
                     } else {
@@ -329,15 +333,19 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
 
                     if (user.isNew() || (!fullyRegistered)) {
                         Log.w(TAG, "User signed up and logged in through Twitter!" + ParseTwitterUtils.getTwitter().getScreenName());
-                        final Bundle b = new Bundle();
-                        b.putString(UserDataFields.USER_NAME, ParseTwitterUtils.getTwitter().getScreenName());
-                        final SignupDataFragment fragment = showSignupDataFragment(b);
-                        TwitterApi.getUserInfo(new TwitterApi.TwitterInfoCallback() {
+                        TwitterApi.getTwitterData(new TwitterApi.TwitterDataCallback() {
                             @Override
-                            public void gotInfo(JSONObject object, Bitmap bitmap) throws JSONException {
-                                fragment.profileBitmap = bitmap;
-                                fragment.bitmapReady = true;
-                                fragment.setProfilePicture();
+                            public void gotData(Bundle bundle) {
+                                final SignupDataFragment fragment = showSignupDataFragment(bundle);
+                                TwitterApi.getUserInfo(new TwitterApi.TwitterInfoCallback() {
+                                    @Override
+                                    public void gotInfo(JSONObject object, Bitmap profileBitmap, Bitmap coverBitmap) throws JSONException {
+                                        fragment.profileBitmap = profileBitmap;
+                                        fragment.bitmapReady = true;
+                                        fragment.setProfilePicture();
+                                        fragment.setCoverPicture(coverBitmap);
+                                    }
+                                });
                             }
                         });
                     } else {
@@ -410,7 +418,10 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                     b.putString(UserDataFields.USER_DOB, reverseDate);
                 }
                 SignupDataFragment fragment = showSignupDataFragment(b);
-                new FetchProfileImage(fragment).execute(currentPerson.getImage().getUrl());
+                String profilePictureURL = currentPerson.getImage().getUrl();
+                String coverPictureURL = currentPerson.getCover().getCoverPhoto().getUrl();
+                new FetchProfilePicture(fragment).execute(profilePictureURL);
+                new FetchCoverPicture(fragment).execute(coverPictureURL);
             } else {
                 Log.d(TAG,"Person info is null");
             }
@@ -420,10 +431,10 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
 
     }
 
-    private class FetchProfileImage extends AsyncTask<String, Void, Bitmap> {
+    private class FetchProfilePicture extends AsyncTask<String, Void, Bitmap> {
         SignupDataFragment fragment;
 
-        public FetchProfileImage(SignupDataFragment fragment) {
+        public FetchProfilePicture(SignupDataFragment fragment) {
             this.fragment = fragment;
         }
 
@@ -433,13 +444,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                     url.length() - 2)
                     + "400";
             Bitmap bitmap = null;
-            try {
-                InputStream in = new java.net.URL(url).openStream();
-                bitmap = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
+            bitmap = Utilities.downloadBitmap(url);
             return bitmap;
         }
 
@@ -447,6 +452,25 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
             fragment.profileBitmap = bitmap;
             fragment.bitmapReady = true;
             fragment.setProfilePicture();
+        }
+    }
+
+    private class FetchCoverPicture extends AsyncTask<String, Void, Bitmap> {
+        SignupDataFragment fragment;
+
+        public FetchCoverPicture(SignupDataFragment fragment) {
+            this.fragment = fragment;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String url = urls[0];
+            Bitmap bitmap = null;
+            bitmap = Utilities.downloadBitmap(url);
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap bitmap) {
+            fragment.setCoverPicture(bitmap);
         }
     }
 
