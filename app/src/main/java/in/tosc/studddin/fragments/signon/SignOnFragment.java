@@ -75,6 +75,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     private boolean mIntentInProgress;
     private boolean mSignInClicked;
     private ConnectionResult mConnectionResult;
+    public static String token;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -368,31 +369,11 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     public void onConnected(Bundle bundle) {
         mSignInClicked = false;
         Toast.makeText(getActivity(), "Google+ sign-in successful", Toast.LENGTH_LONG).show();
-        try {
-            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-                Person currentPerson = Plus.PeopleApi
-                        .getCurrentPerson(mGoogleApiClient);
-                String personName = currentPerson.getDisplayName();
-                String personPhotoUrl = currentPerson.getImage().getUrl();
-                String personGooglePlusProfile = currentPerson.getUrl();
-                String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
-
-                Log.e(TAG, "Name: " + personName + ", plusProfile: "
-                        + personGooglePlusProfile + ", email: " + email
-                        + ", Image: " + personPhotoUrl);
-            } else {
-                Toast.makeText(getActivity(),
-                        "Person information is null", Toast.LENGTH_LONG).show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        final Bundle b = new Bundle();
 
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
-                String token = null;
-
                 try {
                     token = GoogleAuthUtil.getToken(
                             getActivity(),
@@ -412,14 +393,24 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
 
             @Override
             protected void onPostExecute(String token) {
-                Log.i(TAG, "Access token retrieved:" + token);
+                Log.d(TAG, "Access token retrieved:" + token);
+                try {
+                    if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                        Person currentPerson = Plus.PeopleApi
+                                .getCurrentPerson(mGoogleApiClient);
+                        b.putString(UserDataFields.USER_NAME, currentPerson.getDisplayName());
+                        b.putString(UserDataFields.USER_EMAIL, Plus.AccountApi.getAccountName(mGoogleApiClient));
+                        //String personPhotoUrl = currentPerson.getImage().getUrl();
+                        showSignupDataFragment(b);
+                    } else {
+                        Log.d(TAG,"Person info is null");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-
         }.execute();
-
         //connect with parse
-
-
     }
 
 
