@@ -79,7 +79,7 @@ public class SignupDataFragment extends Fragment implements
     FutureShit futureShit;
 
     private List<ParseObject> interests;
-    private List<Integer> selectedInterests;
+    private List<Integer> selectedInterests = new ArrayList();
 
     public SignupDataFragment() {
         // Required empty public constructor
@@ -242,7 +242,6 @@ public class SignupDataFragment extends Fragment implements
         input.put(UserDataFields.USER_DOB, getStringFromEditText(R.id.user_dob));
         input.put(UserDataFields.USER_INSTITUTE, getStringFromEditText(R.id.user_institute));
         input.put(UserDataFields.USER_EMAIL, getStringFromEditText(R.id.user_email));
-        input.put(UserDataFields.USER_INTERESTS, getStringFromEditText(R.id.user_interests));
         input.put(UserDataFields.USER_QUALIFICATIONS, getStringFromEditText(R.id.user_qualifications));
     }
 
@@ -407,17 +406,6 @@ public class SignupDataFragment extends Fragment implements
     }
 
     private void getInterests(final MaterialEditText editText) {
-        editText.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedInterests.add(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //TODO:: something new
-            }
-        });
         futureShit = new FutureShit(new Callable<List<ParseObject>>() {
             @Override
             public List<ParseObject> call() throws Exception {
@@ -437,6 +425,19 @@ public class SignupDataFragment extends Fragment implements
                 Log.d(TAG, "Got the data");
                 editText.setAdapter(mAdapter);
                 editText.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+                editText.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        selectedInterests.add(new Integer(position));
+                        Log.d(TAG, "selected = " + position);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        //TODO:: new interest appears
+                        Log.d(TAG, "Nothing Selected");
+                    }
+                });
             }
         }
         );
