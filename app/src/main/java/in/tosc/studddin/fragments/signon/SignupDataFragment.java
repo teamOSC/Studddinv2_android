@@ -257,7 +257,7 @@ public class SignupDataFragment extends Fragment implements
             f = false;
         }
 
-        if (f && isEmailValid(input.get(UserDataFields.USER_EMAIL))) {
+        if (f && !isEmailValid(input.get(UserDataFields.USER_EMAIL))) {
             Toast.makeText(getActivity(), "Please enter a valid email id",
                     Toast.LENGTH_LONG).show();
             f = false;
