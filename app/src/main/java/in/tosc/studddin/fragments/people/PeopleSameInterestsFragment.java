@@ -3,6 +3,7 @@ package in.tosc.studddin.fragments.people;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,18 +20,23 @@ import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.utils.ProgressBarCircular;
@@ -42,15 +48,15 @@ public class PeopleSameInterestsFragment extends Fragment {
 
     HashMap<String, Boolean> existingelement = new HashMap<String, Boolean>();
 
-    String currentuseremail = "";
-    String currentuserinterests = "";
-    String currentuserinstituition = "";
-    String currentusername = "";
-    String currentuserqualification = "";
-    String currentuser = "";
-    String currentuserlocation = "";
-    ParseGeoPoint userlocation = new ParseGeoPoint(0, 0);
+    ParseUser currentUser = ParseUser.getCurrentUser();
 
+    String currentEmail = "";
+    String currentInstitution = "";
+    String currentUsername = "";
+    String currentName = "";
+    String currentQualification = "";
+    ParseGeoPoint currentLocation;
+    ParseGeoPoint userlocation = new ParseGeoPoint(0, 0);
 
     EditText search;
 
@@ -59,6 +65,7 @@ public class PeopleSameInterestsFragment extends Fragment {
     MyAdapter3 q;
     ListView lv;
 
+    private static final String TAG = "PeopleSameInterestsFragment";
 
     public PeopleSameInterestsFragment() {
         // Required empty public constructor
@@ -77,9 +84,19 @@ public class PeopleSameInterestsFragment extends Fragment {
         lv = (ListView) view.findViewById(R.id.listviewpeople);
 
         q = new MyAdapter3(getActivity(), 0, list3);
-        q.setNotifyOnChange(true);
+        lv.setAdapter(q);
 
-        loaddata();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    loadData();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        } ,"SameInterestQuery").start();
+
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -162,89 +179,63 @@ public class PeopleSameInterestsFragment extends Fragment {
         return view;
     }
 
-    private void loaddata() {
+    private void loadData() throws ParseException {
 
-        for (int i = 0; i < list3.size(); i++) {
-            list3.remove(each);
-        }
+        currentUsername = ParseUser.getCurrentUser().getUsername();
+        currentEmail = ParseUser.getCurrentUser().getString("email");
+        currentInstitution = ParseUser.getCurrentUser().getString("INSTITUTE");
+        currentName = ParseUser.getCurrentUser().getString("NAME");
+        currentQualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
+        currentLocation = ParseUser.getCurrentUser().getParseGeoPoint("location");
 
+        Set<ParseUser> sameInterestUsers = new HashSet();
 
-        currentuser = ParseUser.getCurrentUser().getUsername();
-        currentuseremail = ParseUser.getCurrentUser().getString("email");
-        currentuserinterests = ParseUser.getCurrentUser().getString("INTERESTS");
-        currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
-        currentusername = ParseUser.getCurrentUser().getString("NAME");
-        currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
-        userlocation = ParseUser.getCurrentUser().getParseGeoPoint("location");
-
-
-        if (currentuserinterests == null) {
-            currentuserinterests = "";
-        }
-        List<String> interestslist = Arrays.asList(currentuserinterests.split(","));
-
-        for (int c = 0; c < interestslist.size(); c++) {
-            if (!interestslist.get(c).equals("") || !interestslist.get(c).equals(null)) {
-
-
-                ParseQuery<ParseUser> query = ParseUser.getQuery();
-                query.whereMatches("INTERESTS", "(" + interestslist.get(c) + ")", "i");
-                query.findInBackground(new FindCallback<ParseUser>() {
-                    public void done(List<ParseUser> objects, ParseException e) {
-                        if (e == null) {
-
-                            for (ParseUser pu : objects) {
-                                //access the data associated with the ParseUser using the get method
-                                //pu.getString("key") or pu.get("key")
-
-                                if (!pu.getUsername().equals(currentuser)) {
-
-                                    if (!existingelement.containsKey(pu.getUsername())) {
-
-                                        each = new EachRow3();
-                                        each.cname = pu.getString("NAME");
-                                        each.cinterests = pu.getString("INTERESTS");
-                                        each.cqualification = pu.getString("QUALIFICATIONS");
-                                        each.cinstituition = pu.getString("INSTITUTE");
-//                                          each.cdistance = pu.getString("NAME");
-                                        each.cusername = pu.getString("username");
-                                        ParseGeoPoint temploc = pu.getParseGeoPoint("location");
-                                        if (temploc != null && temploc.getLatitude() != 0) {
-                                            if (userlocation != null) {
-                                                each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
-                                            } else {
-                                                each.cdistance = "13 km";
-                                            }
-                                        } else {
-                                            each.cdistance = "16 km";
-                                        }
-
-                                        try {
-                                            each.fileObject = (ParseFile) pu.get("image");
-
-                                        } catch (Exception e1) {
-                                            System.out.print("nahh");
-                                        }
-
-
-                                        list3.add(each);
-                                        existingelement.put(pu.getUsername(), true);
-                                    }
-                                }
-                            }
-
-                            // The query was successful.
-                        } else {
-                            // Something went wrong.
-                        }
-
-                        lv.setAdapter(q);
-                        progressBar.setVisibility(View.GONE);
-                        lv.setVisibility(View.VISIBLE);
-                    }
-                });
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Interests");
+        query.whereEqualTo("users", currentUser);
+        List<ParseObject> currentInterests = query.find();
+        for (ParseObject interest : currentInterests) {
+            ParseQuery relationQuery = interest.getRelation("users").getQuery();
+            relationQuery.whereNotEqualTo("username", currentUser.getUsername());
+            List<ParseUser> parseUsers = relationQuery.find();
+            for (ParseUser parseUser : parseUsers) {
+                sameInterestUsers.add(parseUser);
             }
         }
+
+        for (ParseUser parseUser : sameInterestUsers) {
+            each = new EachRow3();
+            each.cname = parseUser.getString("NAME");
+            each.cinterests = parseUser.getString("INTERESTS");
+            each.cqualification = parseUser.getString("QUALIFICATIONS");
+            each.cinstituition = parseUser.getString("INSTITUTE");
+            each.cusername = parseUser.getString("username");
+            ParseGeoPoint temploc = parseUser.getParseGeoPoint("location");
+            if (temploc != null && temploc.getLatitude() != 0) {
+                if (userlocation != null) {
+                    each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
+                } else {
+                    each.cdistance = "13 km";
+                }
+            } else {
+                each.cdistance = "16 km";
+            }
+
+            try {
+                each.fileObject = (ParseFile) parseUser.get("image");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            list3.add(each);
+        }
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                q.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
+                lv.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     class MyAdapter3 extends ArrayAdapter<EachRow3> {
