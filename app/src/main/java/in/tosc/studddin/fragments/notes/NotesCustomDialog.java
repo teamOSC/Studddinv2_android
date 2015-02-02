@@ -113,23 +113,22 @@ public class NotesCustomDialog extends Dialog {
 
                     }
                 });
-                new Thread(new Runnable() {
-                    public void run() {
-                        while (true) {
-                            String unzipLocation = "/mnt/sdcard/LearnHut_Notes/";
-                            String zipFile1 = "/mnt/sdcard/noteszipfile.zip";
-
-                            String zipFile = "/mnt/sdcard/LearnHut_Notes/noteszipfile " + notesSubjectName.get(position) +" "+
-                                    notesTopicName.get(position) + " "+
-                                    notesCollegeName.get(position) + " " +
-                                    notesBranchName.get(position) +".zip";
-                            NotesUnzip d = new NotesUnzip(zipFile, unzipLocation);
-                            d.unzip();
-                            Log.i("Raghav", "Unzipping Running parallelly");
-                        }
-                    }
-                }).start();
-
+//                new Thread(new Runnable() {
+//                    public void run() {
+//                        while (true) {
+//                            String unzipLocation = "/mnt/sdcard/LearnHut_Notes/";
+//                            String zipFile1 = "/mnt/sdcard/noteszipfile.zip";
+//
+//                            String zipFile = "/mnt/sdcard/LearnHut_Notes/noteszipfile " + notesSubjectName.get(position) +" "+
+//                                    notesTopicName.get(position) + " "+
+//                                    notesCollegeName.get(position) + " " +
+//                                    notesBranchName.get(position) +".zip";
+//                            NotesUnzip d = new NotesUnzip(zipFile, unzipLocation);
+//                            d.unzip();
+//                            Log.i("Raghav", "Unzipping Running in parallel");
+//                        }
+//                    }
+//                }).start();
 
             }
         });
