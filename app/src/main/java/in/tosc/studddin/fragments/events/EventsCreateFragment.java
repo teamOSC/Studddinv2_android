@@ -3,9 +3,9 @@ package in.tosc.studddin.fragments.events;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -34,7 +34,6 @@ public class EventsCreateFragment extends Fragment {
     Button create;
     View v;
     private HashMap<String, String> events;
-    Calendar calendar;
     ImageButton setDate;
     ImageButton setTime;
 
@@ -60,14 +59,14 @@ public class EventsCreateFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 TimePickerFragment timePickerFragment = new TimePickerFragment();
-                timePickerFragment.show(getActivity().getFragmentManager(), "Set Time");
+                timePickerFragment.show(getActivity().getSupportFragmentManager(), "Set Time");
             }
         });
         setDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatePickerFragment datePicker = new DatePickerFragment();
-                datePicker.show(getActivity().getFragmentManager(), "Set Date");
+                datePicker.show(getActivity().getSupportFragmentManager(), "Set Date");
             }
         });
         create.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +100,12 @@ public class EventsCreateFragment extends Fragment {
             Toast.makeText(getActivity().getApplicationContext(), "Please enter type", Toast.LENGTH_LONG).show();
             return false;
         }
+        if(events.get("date").isEmpty()){
+            Toast.makeText(getActivity().getApplicationContext(), "Please enter date", Toast.LENGTH_LONG).show();
+        }
+        if(events.get("time").isEmpty()){
+            Toast.makeText(getActivity().getApplicationContext(), "Please enter time", Toast.LENGTH_LONG).show();
+        }
         return true;
     }
 
@@ -109,6 +114,8 @@ public class EventsCreateFragment extends Fragment {
         event.put("title", events.get("title"));
         event.put("description", events.get("description"));
         event.put("type", events.get("type"));
+        event.put("date",events.get("date"));
+        event.put("time", events.get("time"));
         event.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -144,7 +151,13 @@ public class EventsCreateFragment extends Fragment {
 
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            String time = new StringBuilder().append(hourOfDay).append(":").append(minute).toString();
+            String time;
+            if(hourOfDay > 12){
+                hourOfDay = hourOfDay - 12;
+                time = new StringBuilder().append(hourOfDay).append(":").append(minute).append(" pm").toString();
+            }else {
+                time = new StringBuilder().append(hourOfDay).append(":").append(minute).append(" am").toString();
+            }
             events.put("time", time);
             ((MaterialEditText)v.findViewById(R.id.event_time)).setText(time);
         }

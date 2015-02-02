@@ -91,5 +91,8 @@
     <!-- Listings -->
     <string name="upload_complete">Upload complete</string>
     <string name="notes_uploading">Uploading</string>
+    <string name="notes_downloading">Downloading...</string>
+    <string name="notes_details">Details:</string>
+    <string name="dialog_download_starting">Download Start</string>
 
 </resources>

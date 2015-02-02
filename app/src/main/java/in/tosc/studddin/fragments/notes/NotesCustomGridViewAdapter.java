@@ -33,7 +33,7 @@ public class NotesCustomGridViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 15;
+        return notesBranchName.size();
     }
 
     @Override
@@ -53,7 +53,7 @@ public class NotesCustomGridViewAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         grid = new View(mContext);
         if (convertView == null) {
-            if (position >= 0 && position < 15) {
+
 
 
                 grid = inflater.inflate(R.layout.notes_search_gridview_item, null);
@@ -62,11 +62,11 @@ public class NotesCustomGridViewAdapter extends BaseAdapter {
                 TextView topicNameTxtView = (TextView) grid.findViewById(R.id.notes_gridview_topicname);
 
 
-                branchNameTxtView.setText(notesBranchName.get(0));
-                topicNameTxtView.setText(notesTopicName.get(0));
-                subjectNameTxtView.setText(notesSubjectName.get(0));
+                branchNameTxtView.setText(notesBranchName.get(position));
+                topicNameTxtView.setText(notesTopicName.get(position));
+                subjectNameTxtView.setText(notesSubjectName.get(position));
 
-            }
+
 
         } else {
             grid = (View) convertView;

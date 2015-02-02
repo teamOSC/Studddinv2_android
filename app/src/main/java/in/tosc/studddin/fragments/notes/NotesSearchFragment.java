@@ -3,8 +3,7 @@ package in.tosc.studddin.fragments.notes;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,13 +13,21 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.Toast;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.fragments.NotesFragment;
 import in.tosc.studddin.utils.FloatingActionButton;
+import in.tosc.studddin.utils.Utilities;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,8 +44,14 @@ public class NotesSearchFragment extends Fragment {
     EditText searchEdTxt;
     // TODO: Rename and change types of parameters
     private String mParam1;
+
     private String mParam2;
-    private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName;
+    GridView notesGridView;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private List<ParseObject> notesListParseObject;
+    private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, uploadedBy;
+
+    private boolean onRefresh = false;
 
     public NotesSearchFragment() {
         // Required empty public constructor
@@ -81,73 +94,78 @@ public class NotesSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_notes_search, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_notes_search, container, false);
 
-        GridView notesGridView = (GridView) rootView.findViewById(R.id.notes_gridview);
+        notesGridView = (GridView) rootView.findViewById(R.id.notes_gridview);
 
         notesCollegeName = new ArrayList<String>();
         notesBranchName = new ArrayList<String>();
         notesSubjectName = new ArrayList<String>();
         notesTopicName = new ArrayList<String>();
+        uploadedBy = new ArrayList<String>();
 
         addNotesButton = (FloatingActionButton) rootView.findViewById(R.id.notes_button_add);
         searchEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_search);
+//        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
+//
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                if (Utilities.isNetworkAvailable(getActivity())) {
+//                    getNotes();
+//                } else {
+//                    swipeRefreshLayout.setRefreshing(false);
+//                    Toast.makeText(getActivity(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+        if (Utilities.isNetworkAvailable(getActivity())) {
 
-        addNotesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            getNotes();
+        }
+        else
+            Toast.makeText(getActivity(), "Internet Connection Problem", Toast.LENGTH_SHORT)
+                    .show();
 
 
-                FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
-
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.notes_slide_entry, R.anim.notes_slide_exit);
-
-                NotesUploadFragment newFragment = new NotesUploadFragment();
-
-                fragmentTransaction.replace(R.id.notes_pager, newFragment).addToBackStack(null).commit();
-
-                // Start the animated transition.
-
-            }
-        });
 
         searchEdTxt = (EditText) rootView.findViewById(R.id.notes_search);
 
-        notesBranchName.add("MCE");
-        notesTopicName.add("Sequences");
-        notesSubjectName.add("RA");
-        notesCollegeName.add("DTU");
 
 
-        NotesCustomGridViewAdapter adapter = new NotesCustomGridViewAdapter(getActivity(), notesCollegeName, notesBranchName, notesTopicName, notesSubjectName);
-        notesGridView = (GridView) rootView.findViewById(R.id.notes_gridview);
-        notesGridView.setAdapter(adapter);
 
         notesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                NotesCustomDialog notesCustomDialog = new NotesCustomDialog(getActivity(), notesCollegeName, notesBranchName, notesTopicName, notesSubjectName);
-                notesCustomDialog.setTitle("Details:");
+                NotesCustomDialog notesCustomDialog = new NotesCustomDialog(getActivity(),
+                        notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, position, uploadedBy);
+                notesCustomDialog.setTitle(getString(R.string.notes_details));
                 notesCustomDialog.show();
-
 
             }
         });
+
 
 
         addNotesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToUploadFragment();
+
+//                String unzipLocation = "/mnt/sdcard/Notes";
+//
+//                NotesUnzip d = new NotesUnzip(zipFile, unzipLocation);
+//                d.unzip();
             }
         });
 
         return rootView;
 
     }
+
+
 
     public void goToUploadFragment() {
         NotesFragment notesFragment = (NotesFragment) getParentFragment();
@@ -156,6 +174,31 @@ public class NotesSearchFragment extends Fragment {
         }
     }
 
+    public void getNotes() {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+                "Notes");
+        query.orderByDescending("createdAt");
+
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+                for (ParseObject notes : parseObjects) {
+
+                    notesBranchName.add((String) notes.get("branchName"));
+                    notesSubjectName.add((String) notes.get("subjectName"));
+                    notesCollegeName.add((String) notes.get("collegeName"));
+                    notesTopicName.add((String) notes.get("topicName"));
+                    uploadedBy.add((String) notes.get("userName"));
+
+                }
+                NotesCustomGridViewAdapter adapter = new NotesCustomGridViewAdapter(getActivity(), notesCollegeName, notesBranchName, notesTopicName, notesSubjectName);
+
+                notesGridView.setAdapter(adapter);
+            }
+
+        });
+    }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -174,3 +217,5 @@ public class NotesSearchFragment extends Fragment {
 
     }
 }
+
+

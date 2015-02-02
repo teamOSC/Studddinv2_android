@@ -75,7 +75,7 @@ public class NotesUploadFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_notes_upload, container, false);
-        Log.d("Raghav", "ID = " + getTag());
+        //Log.d("Raghav", "ID = " + getTag());
 
         attachButton = (Button) rootView.findViewById(R.id.notes_attach);
         uploadButton = (FloatingActionButton) rootView.findViewById(R.id.notes_upload);
@@ -124,48 +124,54 @@ public class NotesUploadFragment extends Fragment {
 
                         File file = new File("/mnt/sdcard/noteszipfile.zip");
 
-                        byte[] zipByte = new byte[(int) file.length()];
-                        try {
-                            Log.d("Raghav", "File Found");
-                            FileInputStream fileInputStream = new FileInputStream(file);
-                            fileInputStream.read(zipByte);
+                        if(file.length() < 10485760) {
+                            byte[] zipByte = new byte[(int) file.length()];
+                            try {
+                                Log.d("Raghav", "File Found");
+                                FileInputStream fileInputStream = new FileInputStream(file);
+                                fileInputStream.read(zipByte);
 
-                        } catch (FileNotFoundException e) {
-                            Log.d("Raghav", "File Not Found.");
+                            } catch (FileNotFoundException e) {
+                                Log.d("Raghav", "File Not Found.");
 
-                        } catch (IOException e1) {
-                            Log.d("Raghav", "Error Reading The File.");
+                            } catch (IOException e1) {
+                                Log.d("Raghav", "Error Reading The File.");
 
-                        }
-
-                        ParseFile parseFile = new ParseFile("notes.zip", zipByte);
-                        parseFile.saveInBackground();
-                        final ProgressDialog notesUploadProgress = new ProgressDialog(getActivity());
-                        notesUploadProgress.setMessage(getString(R.string.notes_uploading));
-                        notesUploadProgress.setCancelable(true);
-                        notesUploadProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        notesUploadProgress.show();
-
-
-                        ParseObject uploadNotes = new ParseObject("Notes");
-
-                        uploadNotes.put("imageZip", parseFile);
-                        uploadNotes.put("userName", ParseUser.getCurrentUser().getString("NAME"));
-                        uploadNotes.put("subjectName", subjectNameString);
-                        uploadNotes.put("topicName", topicNameString);
-                        uploadNotes.put("branchName", branchNameString);
-                        uploadNotes.put("collegeName", "DTU");
-
-                        uploadNotes.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                // uploading.setVisibility(View.GONE);
-                                Log.d("Raghav", "File Uploaded");
-                                notesUploadProgress.dismiss();
-                                Toast.makeText(getActivity(), getString(R.string.upload_complete),
-                                        Toast.LENGTH_SHORT).show();
                             }
-                        });
+
+                            ParseFile parseFile = new ParseFile("notes.zip", zipByte);
+                            parseFile.saveInBackground();
+
+                            final ProgressDialog notesUploadProgress = new ProgressDialog(getActivity());
+                            notesUploadProgress.setMessage(getString(R.string.notes_uploading));
+                            notesUploadProgress.setCancelable(true);
+                            notesUploadProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                            notesUploadProgress.show();
+
+
+                            ParseObject uploadNotes = new ParseObject("Notes");
+
+                            uploadNotes.put("imageZip", parseFile);
+                            uploadNotes.put("userName", ParseUser.getCurrentUser().getString("NAME"));
+                            uploadNotes.put("subjectName", subjectNameString);
+                            uploadNotes.put("topicName", topicNameString);
+                            uploadNotes.put("branchName", branchNameString);
+                            uploadNotes.put("collegeName", "DTU");
+
+                            uploadNotes.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    // uploading.setVisibility(View.GONE);
+                                    Log.d("Raghav", "File Uploaded");
+                                    notesUploadProgress.dismiss();
+                                    Toast.makeText(getActivity(), getString(R.string.upload_complete),
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else {
+                           Toast.makeText(getActivity(), "File size beyond limit", Toast.LENGTH_SHORT)
+                                   .show();
+                        }
                     } else {
 
                         Toast.makeText(getActivity(), "Please select an Image to upload", Toast.LENGTH_SHORT).show();
