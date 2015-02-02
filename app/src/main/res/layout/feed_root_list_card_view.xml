@@ -2,6 +2,7 @@
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_item_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,13 +15,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
+        <in.tosc.studddin.utils.typefacetextview
             android:id="@+id/feed_category_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="4dp"
             android:text="#DUMMY#"
             android:textSize="25sp"
+            app:typeface="fonts/Gotham-MediumItalic.otf"
             android:layout_gravity="center_horizontal"/>
 
         <in.tosc.studddin.utils.ProgressBarCircular

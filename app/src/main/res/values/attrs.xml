@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- customized textview attrs-->
+    <declare-styleable name="TextView">
+        <attr name="typeface" format="string"/>
+    </declare-styleable>
+    
     <declare-styleable name="MaterialEditText">
         <!-- the base color of the line and the texts. default is black. -->
         <attr name="baseColor" format="color" />
