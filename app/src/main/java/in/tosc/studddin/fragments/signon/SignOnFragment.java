@@ -333,16 +333,19 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
 
                     if (user.isNew() || (!fullyRegistered)) {
                         Log.w(TAG, "User signed up and logged in through Twitter!" + ParseTwitterUtils.getTwitter().getScreenName());
-                        final Bundle b = new Bundle();
-                        b.putString(UserDataFields.USER_NAME, ParseTwitterUtils.getTwitter().getScreenName());
-                        final SignupDataFragment fragment = showSignupDataFragment(b);
-                        TwitterApi.getUserInfo(new TwitterApi.TwitterInfoCallback() {
+                        TwitterApi.getTwitterData(new TwitterApi.TwitterDataCallback() {
                             @Override
-                            public void gotInfo(JSONObject object, Bitmap profileBitmap, Bitmap coverBitmap) throws JSONException {
-                                fragment.profileBitmap = profileBitmap;
-                                fragment.bitmapReady = true;
-                                fragment.setProfilePicture();
-                                fragment.setCoverPicture(coverBitmap);
+                            public void gotData(Bundle bundle) {
+                                final SignupDataFragment fragment = showSignupDataFragment(bundle);
+                                TwitterApi.getUserInfo(new TwitterApi.TwitterInfoCallback() {
+                                    @Override
+                                    public void gotInfo(JSONObject object, Bitmap profileBitmap, Bitmap coverBitmap) throws JSONException {
+                                        fragment.profileBitmap = profileBitmap;
+                                        fragment.bitmapReady = true;
+                                        fragment.setProfilePicture();
+                                        fragment.setCoverPicture(coverBitmap);
+                                    }
+                                });
                             }
                         });
                     } else {
