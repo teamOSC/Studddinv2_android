@@ -405,6 +405,10 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                         .getCurrentPerson(mGoogleApiClient);
                 b.putString(UserDataFields.USER_NAME, currentPerson.getDisplayName());
                 b.putString(UserDataFields.USER_EMAIL, Plus.AccountApi.getAccountName(mGoogleApiClient));
+                if(currentPerson.getBirthday()!=null){
+                    String reverseDate = new StringBuffer(currentPerson.getBirthday()).reverse().toString();
+                    b.putString(UserDataFields.USER_DOB, reverseDate);
+                }
                 SignupDataFragment fragment = showSignupDataFragment(b);
                 new FetchProfileImage(fragment).execute(currentPerson.getImage().getUrl());
             } else {
