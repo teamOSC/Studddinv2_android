@@ -38,7 +38,6 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -267,15 +266,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                         FacebookApi.getFacebookData(new FacebookApi.FbGotDataCallback() {
                             @Override
                             public void gotData(final Bundle bundle) {
-                                FacebookApi.getCoverPicture(new FacebookApi.FbGotCoverPictureCallback() {
-                                    @Override
-                                    public void gotCoverPicture(Bitmap coverPicture) {
-                                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                        coverPicture.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                                        byte[] bytes = stream.toByteArray();
-                                        bundle.putByteArray(UserDataFields.USER_COVER,bytes);
-                                    }
-                                });
                                 final SignupDataFragment fragment = showSignupDataFragment(bundle);
                                 FacebookApi.getProfilePicture(new FacebookApi.FbGotProfilePictureCallback() {
                                     @Override
@@ -283,6 +273,12 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                         fragment.bitmapReady = true;
                                         fragment.profileBitmap = profilePicture;
                                         fragment.setProfilePicture();
+                                    }
+                                });
+                                FacebookApi.getCoverPicture(new FacebookApi.FbGotCoverPictureCallback() {
+                                    @Override
+                                    public void gotCoverPicture(Bitmap coverPicture) {
+                                        fragment.setCoverPicture(coverPicture);
                                     }
                                 });
                             }
