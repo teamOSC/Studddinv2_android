@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -19,9 +20,12 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -32,16 +36,26 @@ import com.parse.LocationCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
+import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.externalapi.UserDataFields;
+import in.tosc.studddin.utils.FutureUtils.FutureShit;
+import in.tosc.studddin.utils.FutureUtils;
 
 /**
  * SignupDataFragment
@@ -61,6 +75,11 @@ public class SignupDataFragment extends Fragment implements
     private GoogleApiClient mGoogleApiClient;
     private Location currentUserLoc;
     private Location approxUserLoc;
+
+    FutureShit futureShit;
+
+    private List<ParseObject> interests;
+    private List<Integer> selectedInterests = new ArrayList();
 
     public SignupDataFragment() {
         // Required empty public constructor
@@ -97,14 +116,13 @@ public class SignupDataFragment extends Fragment implements
         if (getArguments() != null) {
             userDataBundle = getArguments();
         }
-        input = new HashMap<>();
+        input = new HashMap();
         connectToGoogleApi();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
         startLocationService();
@@ -143,7 +161,6 @@ public class SignupDataFragment extends Fragment implements
                     }
                 });
                 dialog.show(getChildFragmentManager(), "LocationSelectDialog");
-//                dialog.renderMap();
             }
         });
         profileImageView = (ImageView) rootView.findViewById(R.id.sign_up_profile_picture);
@@ -153,8 +170,11 @@ public class SignupDataFragment extends Fragment implements
         initializeEditTexts(R.id.user_dob);
         initializeEditTexts(R.id.user_institute);
         initializeEditTexts(R.id.user_email);
-        initializeEditTexts(R.id.user_interests);
         initializeEditTexts(R.id.user_qualifications);
+
+        final MaterialEditText interestEditText = (MaterialEditText) rootView.findViewById(R.id.user_interests);
+        getInterests(interestEditText);
+        futureShit.getShitDone();
 
         if (userDataBundle != null) {
             autoFillData();
@@ -222,7 +242,6 @@ public class SignupDataFragment extends Fragment implements
         input.put(UserDataFields.USER_DOB, getStringFromEditText(R.id.user_dob));
         input.put(UserDataFields.USER_INSTITUTE, getStringFromEditText(R.id.user_institute));
         input.put(UserDataFields.USER_EMAIL, getStringFromEditText(R.id.user_email));
-        input.put(UserDataFields.USER_INTERESTS, getStringFromEditText(R.id.user_interests));
         input.put(UserDataFields.USER_QUALIFICATIONS, getStringFromEditText(R.id.user_qualifications));
     }
 
@@ -270,17 +289,21 @@ public class SignupDataFragment extends Fragment implements
     }
 
     private void pushInputToParse() throws ParseException {
-        //push the valid input to parse
         ParseUser user = ParseUser.getCurrentUser();
         user.setUsername(input.get(UserDataFields.USER_EMAIL));
         user.setPassword(input.get(UserDataFields.USER_PASSWORD));
         user.setEmail(input.get(UserDataFields.USER_EMAIL));
 
-        // other fields can be set just like with ParseObject
         user.put(UserDataFields.USER_NAME, input.get(UserDataFields.USER_NAME));
         user.put(UserDataFields.USER_INSTITUTE, input.get(UserDataFields.USER_INSTITUTE));
         user.put(UserDataFields.USER_QUALIFICATIONS, input.get(UserDataFields.USER_QUALIFICATIONS));
-        user.put(UserDataFields.USER_INTERESTS, input.get(UserDataFields.USER_INTERESTS));
+//        user.put(UserDataFields.USER_INTERESTS, input.get(UserDataFields.USER_INTERESTS));
+        for (int i : selectedInterests) {
+            ParseObject object = interests.get(i);
+            ParseRelation<ParseUser> relation = object.getRelation("users");
+            relation.add(user);
+            object.saveInBackground();
+        }
         if (profileBitmap != null) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             profileBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -369,13 +392,54 @@ public class SignupDataFragment extends Fragment implements
                 approxUserLoc = location;
             }
 
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
 
-            public void onProviderEnabled(String provider) {}
+            public void onProviderEnabled(String provider) {
+            }
 
-            public void onProviderDisabled(String provider) {}
+            public void onProviderDisabled(String provider) {
+            }
         };
 
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 50, locationListener);
+    }
+
+    private void getInterests(final MaterialEditText editText) {
+        futureShit = new FutureShit(new Callable<List<ParseObject>>() {
+            @Override
+            public List<ParseObject> call() throws Exception {
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Interests");
+                return query.find();
+            }
+        }, new FutureUtils.FutureCallback<List<ParseObject>>() {
+            @Override
+            public void execute(List<ParseObject> result) {
+                interests = result;
+                List<String> interests = new ArrayList();
+                for (ParseObject interest : result) {
+                    interests.add(interest.getString("name"));
+                }
+                final ArrayAdapter<String> mAdapter = new ArrayAdapter(getActivity(),
+                        android.R.layout.simple_dropdown_item_1line, interests);
+                Log.d(TAG, "Got the data");
+                editText.setAdapter(mAdapter);
+                editText.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+                editText.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        selectedInterests.add(new Integer(position));
+                        Log.d(TAG, "selected = " + position);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        //TODO:: new interest appears
+                        Log.d(TAG, "Nothing Selected");
+                    }
+                });
+            }
+        }
+        );
     }
 }
