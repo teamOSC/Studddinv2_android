@@ -15,6 +15,7 @@ import android.text.method.TransformationMethod;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
 import com.nineoldandroids.animation.ArgbEvaluator;
@@ -26,7 +27,7 @@ import java.util.regex.Pattern;
 import in.tosc.studddin.R;
 
 
-public class MaterialEditText extends EditText {
+public class MaterialEditText extends AutoCompleteTextView {
     public static final int FLOATING_LABEL_NONE = 0;
     public static final int FLOATING_LABEL_NORMAL = 1;
     public static final int FLOATING_LABEL_HIGHLIGHT = 2;

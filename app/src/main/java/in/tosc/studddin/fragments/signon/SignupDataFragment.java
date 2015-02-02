@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -19,6 +20,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,15 +34,25 @@ import com.parse.LocationCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
+import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.externalapi.UserDataFields;
 
 /**
@@ -61,6 +73,8 @@ public class SignupDataFragment extends Fragment implements
     private GoogleApiClient mGoogleApiClient;
     private Location currentUserLoc;
     private Location approxUserLoc;
+
+    private Future<List<String>> interestFutures;
 
     public SignupDataFragment() {
         // Required empty public constructor
@@ -97,14 +111,14 @@ public class SignupDataFragment extends Fragment implements
         if (getArguments() != null) {
             userDataBundle = getArguments();
         }
-        input = new HashMap<>();
+        input = new HashMap();
         connectToGoogleApi();
+        getInterests();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
         startLocationService();
@@ -143,7 +157,6 @@ public class SignupDataFragment extends Fragment implements
                     }
                 });
                 dialog.show(getChildFragmentManager(), "LocationSelectDialog");
-//                dialog.renderMap();
             }
         });
         profileImageView = (ImageView) rootView.findViewById(R.id.sign_up_profile_picture);
@@ -153,8 +166,33 @@ public class SignupDataFragment extends Fragment implements
         initializeEditTexts(R.id.user_dob);
         initializeEditTexts(R.id.user_institute);
         initializeEditTexts(R.id.user_email);
-        initializeEditTexts(R.id.user_interests);
         initializeEditTexts(R.id.user_qualifications);
+
+        final MaterialEditText interestEditText = (MaterialEditText) rootView.findViewById(R.id.user_interests);
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    final ArrayAdapter<String> mAdapter = new ArrayAdapter(getActivity(),
+                            android.R.layout.simple_dropdown_item_1line, interestFutures.get());
+                    for (String string : interestFutures.get()) {
+                        Log.d(TAG, "interest = " + string);
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            interestEditText.setAdapter(mAdapter);
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
+
 
         if (userDataBundle != null) {
             autoFillData();
@@ -270,13 +308,11 @@ public class SignupDataFragment extends Fragment implements
     }
 
     private void pushInputToParse() throws ParseException {
-        //push the valid input to parse
         ParseUser user = ParseUser.getCurrentUser();
         user.setUsername(input.get(UserDataFields.USER_EMAIL));
         user.setPassword(input.get(UserDataFields.USER_PASSWORD));
         user.setEmail(input.get(UserDataFields.USER_EMAIL));
 
-        // other fields can be set just like with ParseObject
         user.put(UserDataFields.USER_NAME, input.get(UserDataFields.USER_NAME));
         user.put(UserDataFields.USER_INSTITUTE, input.get(UserDataFields.USER_INSTITUTE));
         user.put(UserDataFields.USER_QUALIFICATIONS, input.get(UserDataFields.USER_QUALIFICATIONS));
@@ -377,5 +413,21 @@ public class SignupDataFragment extends Fragment implements
         };
 
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+    }
+
+    private void getInterests() {
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+        interestFutures = executor.submit(new Callable<List<String>>() {
+            @Override
+            public List<String> call() throws Exception {
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Interests");
+                List<ParseObject> result = query.find();
+                List<String> interests = new ArrayList();
+                for (ParseObject interest : result) {
+                    interests.add(interest.getString("name"));
+                }
+                return interests;
+            }
+        });
     }
 }
