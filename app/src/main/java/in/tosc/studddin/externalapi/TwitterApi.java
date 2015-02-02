@@ -29,7 +29,8 @@ public class TwitterApi {
 
     public static void getUserInfo(final TwitterInfoCallback callback) {
         new AsyncTask<Void, Void, JSONObject>() {
-            Bitmap bitmap = null;
+            Bitmap profileBitmap = null;
+            Bitmap coverBitmap = null;
 
             @Override
             protected JSONObject doInBackground(Void... params) {
@@ -40,7 +41,8 @@ public class TwitterApi {
                 try {
                     HttpResponse response = client.execute(verifyGet);
                     JSONObject object = new JSONObject(EntityUtils.toString(response.getEntity()));
-                    bitmap = Utilities.downloadBitmap(object.getString("profile_image_url").replace("_normal", ""));
+                    profileBitmap = Utilities.downloadBitmap(object.getString("profile_image_url").replace("_normal", ""));
+                    coverBitmap = Utilities.downloadBitmap(object.getString("profile_background_image_url"));
                     Log.d(TAG, "twitter profile url = " + object.getString("profile_image_url").replace("_normal", ""));
                     return object;
                 } catch (IOException e) {
@@ -54,7 +56,7 @@ public class TwitterApi {
             @Override
             protected void onPostExecute(JSONObject object) {
                 try {
-                    callback.gotInfo(object, bitmap);
+                    callback.gotInfo(object, profileBitmap, coverBitmap);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -63,6 +65,6 @@ public class TwitterApi {
     }
 
     public interface TwitterInfoCallback {
-        public void gotInfo(JSONObject object, Bitmap bitmap) throws JSONException;
+        public void gotInfo(JSONObject object, Bitmap profileBitmap, Bitmap coverBitmap) throws JSONException;
     }
 }

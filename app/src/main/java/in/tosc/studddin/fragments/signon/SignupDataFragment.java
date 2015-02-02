@@ -386,6 +386,13 @@ public class SignupDataFragment extends Fragment implements
         }
     }
 
+    public void setCoverPicture(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] bytes = stream.toByteArray();
+        userDataBundle.putByteArray(UserDataFields.USER_COVER,bytes);
+    }
+
     @Override
     public void onConnected(Bundle bundle) {
         currentUserLoc = LocationServices.FusedLocationApi.getLastLocation(

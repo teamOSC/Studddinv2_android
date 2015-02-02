@@ -344,10 +344,11 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                         final SignupDataFragment fragment = showSignupDataFragment(b);
                         TwitterApi.getUserInfo(new TwitterApi.TwitterInfoCallback() {
                             @Override
-                            public void gotInfo(JSONObject object, Bitmap bitmap) throws JSONException {
-                                fragment.profileBitmap = bitmap;
+                            public void gotInfo(JSONObject object, Bitmap profileBitmap, Bitmap coverBitmap) throws JSONException {
+                                fragment.profileBitmap = profileBitmap;
                                 fragment.bitmapReady = true;
                                 fragment.setProfilePicture();
+                                fragment.setCoverPicture(coverBitmap);
                             }
                         });
                     } else {
