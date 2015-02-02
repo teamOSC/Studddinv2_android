@@ -59,9 +59,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     private static final String KEY_LOCAL_DATASTORE = "feed";
     private static Context context;
     View rootView;
-    String searchUrl = "tosc.in:8082/search?q=";
-    String interests = "Physics, biology, Economics";
-    List<String> interestList;
+    List<String> interestList = new ArrayList();
     private FeedRootAdapter mAdapter;
     private RecyclerView recyclerView;
     private MaterialEditText searchEditText;
@@ -127,16 +125,20 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         });
 
         ParseUser currentUser = ParseUser.getCurrentUser();
-        Log.d(TAG, "interests = " + currentUser.getString(UserDataFields.USER_INTERESTS));
-
-        interests = interests.replaceAll("\\s+", "");
-        interests = interests.replaceAll(",", " ");
-        String[] temp = interests.split(" ");
-        interestList = new ArrayList();
-        for (String list : temp) {
-            Log.d(TAG, "LIST = " + list);
-            interestList.add(list);
-        }
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Interests");
+        query.whereEqualTo("users", currentUser);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+                if (e != null) {
+                    e.printStackTrace();
+                    return;
+                }
+                for (ParseObject parseObject : parseObjects) {
+                    interestList.add(parseObject.getString("name"));
+                }
+            }
+        });
 
         return rootView;
     }
