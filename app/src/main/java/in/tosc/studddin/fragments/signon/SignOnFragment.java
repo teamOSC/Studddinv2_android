@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -394,23 +396,51 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
             @Override
             protected void onPostExecute(String token) {
                 Log.d(TAG, "Access token retrieved:" + token);
-                try {
-                    if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-                        Person currentPerson = Plus.PeopleApi
-                                .getCurrentPerson(mGoogleApiClient);
-                        b.putString(UserDataFields.USER_NAME, currentPerson.getDisplayName());
-                        b.putString(UserDataFields.USER_EMAIL, Plus.AccountApi.getAccountName(mGoogleApiClient));
-                        //String personPhotoUrl = currentPerson.getImage().getUrl();
-                        showSignupDataFragment(b);
-                    } else {
-                        Log.d(TAG,"Person info is null");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
         }.execute();
-        //connect with parse
+
+        try {
+            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                Person currentPerson = Plus.PeopleApi
+                        .getCurrentPerson(mGoogleApiClient);
+                b.putString(UserDataFields.USER_NAME, currentPerson.getDisplayName());
+                b.putString(UserDataFields.USER_EMAIL, Plus.AccountApi.getAccountName(mGoogleApiClient));
+                SignupDataFragment fragment = showSignupDataFragment(b);
+                new FetchProfileImage(fragment).execute(currentPerson.getImage().getUrl());
+            } else {
+                Log.d(TAG,"Person info is null");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private class FetchProfileImage extends AsyncTask<String, Void, Bitmap> {
+        SignupDataFragment fragment;
+
+        public FetchProfileImage(SignupDataFragment fragment) {
+            this.fragment = fragment;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String url = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(url).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap bitmap) {
+            fragment.profileBitmap = bitmap;
+            fragment.bitmapReady = true;
+            fragment.setProfilePicture();
+        }
     }
 
 
