@@ -37,39 +37,48 @@
 
             <in.tosc.studddin.customview.MaterialEditText
                 android:id="@+id/notes_topic"
-                android:layout_width="200dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/notes_attach"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="40dp"
                 android:hint="@string/notes_topic_name"
                 android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:textCursorDrawable="@drawable/text_cursor_cyan"
                 app:baseColor="@color/search_color"
                 app:primaryColor="@color/colorPrimaryDark" />
 
             <in.tosc.studddin.customview.MaterialEditText
                 android:id="@+id/notes_subject"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_below="@+id/notes_topic"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:hint="@string/notes_subject_name"
                 android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:textCursorDrawable="@drawable/text_cursor_cyan"
                 app:baseColor="@color/search_color"
                 app:primaryColor="@color/colorPrimaryDark" />
 
             <in.tosc.studddin.customview.MaterialEditText
                 android:id="@+id/notes_branch"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/notes_subject"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:hint="@string/notes_branch_name"
                 android:imeOptions="actionDone"
+                android:singleLine="true"
                 android:textCursorDrawable="@drawable/text_cursor_cyan"
                 app:baseColor="@color/search_color"
                 app:primaryColor="@color/colorPrimaryDark" />
