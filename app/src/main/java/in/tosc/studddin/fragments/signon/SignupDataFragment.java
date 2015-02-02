@@ -329,10 +329,12 @@ public class SignupDataFragment extends Fragment implements
             profile.save();
             user.put(UserDataFields.USER_IMAGE, profile);
         }
-        if(input.get(UserDataFields.USER_COVER) != null){
+        try{
             ParseFile cover = new ParseFile("coverPicture.png",userDataBundle.getByteArray(UserDataFields.USER_COVER));
             cover.save();
             user.put(UserDataFields.USER_COVER, cover);
+        }catch(Exception e){
+            e.printStackTrace();
         }
         if (currentUserLoc == null) {
             currentUserLoc = approxUserLoc;
