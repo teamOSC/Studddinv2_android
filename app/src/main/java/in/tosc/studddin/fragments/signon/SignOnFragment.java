@@ -5,7 +5,10 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,7 +19,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
@@ -26,6 +38,8 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,7 +56,7 @@ import in.tosc.studddin.utils.Utilities;
 /**
  * SignOnFragment
  */
-public class SignOnFragment extends Fragment {
+public class SignOnFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final String TAG = "SignOnFragment";
     // TODO: Rename parameter arguments, choose names that match
@@ -57,6 +71,13 @@ public class SignOnFragment extends Fragment {
     private TextView guestContinue;
     private MaterialEditText emailEditText;
     private MaterialEditText passwordEditText;
+
+    private static final int RC_SIGN_IN = 69;
+    private GoogleApiClient mGoogleApiClient;
+    private boolean mIntentInProgress;
+    private boolean mSignInClicked;
+    private ConnectionResult mConnectionResult;
+    public static String token;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -92,6 +113,13 @@ public class SignOnFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .build();
 
         ParseUser pUser = ParseUser.getCurrentUser();
         if ((pUser != null)
@@ -147,7 +175,12 @@ public class SignOnFragment extends Fragment {
                 doTwitterSignOn(v);
             }
         });
-        //googleLoginButton.setOnClickListener(signUpListener);
+        googleLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doGoogleSignOn(v);
+            }
+        });
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,7 +209,7 @@ public class SignOnFragment extends Fragment {
                             new AlertDialog.Builder(getActivity())
                                     .setTitle("Login failed")
                                     .setCancelable(true)
-                                    .setMessage("Logging in to Studdd.in failed !")
+                                    .setMessage("Logging in to LearnHut failed !")
                                     .show();
                         }
                     }
@@ -263,6 +296,17 @@ public class SignOnFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.w(TAG, "onActivityResult called");
+        if (requestCode == RC_SIGN_IN) {
+            if (resultCode != -1) {
+                mSignInClicked = false;
+            }
+
+            mIntentInProgress = false;
+
+            if (!mGoogleApiClient.isConnecting()) {
+                mGoogleApiClient.connect();
+            }
+        }
         ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
     }
 
@@ -306,6 +350,10 @@ public class SignOnFragment extends Fragment {
     }
 
     public void doGoogleSignOn(View v) {
+        if (!mGoogleApiClient.isConnecting()) {
+            mSignInClicked = true;
+            mGoogleApiClient.connect();
+        }
     }
 
     public SignupDataFragment showSignupDataFragment(Bundle b) {
@@ -317,5 +365,118 @@ public class SignOnFragment extends Fragment {
 
         transaction.replace(R.id.signon_container, newFragment).addToBackStack("SignIn").commit();
         return newFragment;
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        mSignInClicked = false;
+        Toast.makeText(getActivity(), "Google+ sign-in successful", Toast.LENGTH_LONG).show();
+        final Bundle b = new Bundle();
+
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                try {
+                    token = GoogleAuthUtil.getToken(
+                            getActivity(),
+                            Plus.AccountApi.getAccountName(mGoogleApiClient),
+                            "oauth2:" + Scopes.PLUS_LOGIN);
+                } catch (IOException transientEx) {
+                    // Network or server error, try later
+                    Log.e(TAG, transientEx.toString());
+                } catch (UserRecoverableAuthException e) {
+                    Log.e(TAG, e.toString());
+                } catch (GoogleAuthException authEx) {
+                    Log.e(TAG, authEx.toString());
+                }
+
+                return token;
+            }
+
+            @Override
+            protected void onPostExecute(String token) {
+                Log.d(TAG, "Access token retrieved:" + token);
+            }
+        }.execute();
+
+        try {
+            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                Person currentPerson = Plus.PeopleApi
+                        .getCurrentPerson(mGoogleApiClient);
+                b.putString(UserDataFields.USER_NAME, currentPerson.getDisplayName());
+                b.putString(UserDataFields.USER_EMAIL, Plus.AccountApi.getAccountName(mGoogleApiClient));
+                if(currentPerson.getBirthday()!=null){
+                    String reverseDate = new StringBuffer(currentPerson.getBirthday()).reverse().toString();
+                    b.putString(UserDataFields.USER_DOB, reverseDate);
+                }
+                SignupDataFragment fragment = showSignupDataFragment(b);
+                new FetchProfileImage(fragment).execute(currentPerson.getImage().getUrl());
+            } else {
+                Log.d(TAG,"Person info is null");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private class FetchProfileImage extends AsyncTask<String, Void, Bitmap> {
+        SignupDataFragment fragment;
+
+        public FetchProfileImage(SignupDataFragment fragment) {
+            this.fragment = fragment;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String url = urls[0];
+            url = url.substring(0,
+                    url.length() - 2)
+                    + "400";
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(url).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap bitmap) {
+            fragment.profileBitmap = bitmap;
+            fragment.bitmapReady = true;
+            fragment.setProfilePicture();
+        }
+    }
+
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        if (!mIntentInProgress) {
+            mConnectionResult = result;
+            if (mSignInClicked) {
+                resolveSignInError();
+            }
+        }
+
+    }
+
+    private void resolveSignInError() {
+        if (mConnectionResult.hasResolution()) {
+            try {
+                mIntentInProgress = true;
+                getActivity().startIntentSenderForResult(mConnectionResult.getResolution().getIntentSender(),
+                        RC_SIGN_IN, null, 0, 0, 0);
+            } catch (IntentSender.SendIntentException e) {
+                mIntentInProgress = false;
+                mGoogleApiClient.connect();
+            }
+        }
     }
 }
