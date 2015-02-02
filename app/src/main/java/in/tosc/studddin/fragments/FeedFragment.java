@@ -90,6 +90,12 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        actionBarActivity = (ActionBarActivity) getActivity();
+        // create ContextThemeWrapper from the original Activity Context with the custom theme
+        //Context contextyo = new ContextThemeWrapper(getActivity().getApplicationContext(), R.style.AppThemeEvents);
+        // clone the inflater using the ContextThemeWrapper
+        //LayoutInflater localInflater = inflater.cloneInContext(contextyo);
+        
         rootView = inflater.inflate(R.layout.fragment_feed, container, false);
         searchEditText = (MaterialEditText) rootView.findViewById(R.id.feed_search);
         searchEditText.setOnKeyListener(this);
