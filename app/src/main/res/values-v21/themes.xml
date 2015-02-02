@@ -10,7 +10,7 @@
         <item name="android:navigationBarColor">@color/colorPrimary</item>
     </style>
 
-    <style name="AppTheme.Custom" parent="AppTheme.Custom">
+    <style name="AppThemeCustom" parent="AppTheme.Custom">
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -18,6 +18,65 @@
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
         <item name="android:navigationBarColor">@color/note_button_pressed</item>
     </style>
+    
+    <!-- Feed Theme -->
+    <style name="AppThemeFeed" parent="AppTheme.Feed">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+        <item name="android:navigationBarColor">@color/feedColorPrimaryDark</item>
+    </style>
 
+    <!-- Notes Theme -->
+    <style name="AppThemeNotes" parent="AppTheme.Notes">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+        <item name="android:navigationBarColor">@color/notesColorPrimaryDark</item>
+    </style>
+
+    <!-- People Theme -->
+    <style name="AppThemePeople" parent="AppTheme.People">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+        <item name="android:navigationBarColor">@color/peopleColorPrimaryDark</item>
+    </style>
+
+    <!-- Listings Theme -->
+    <style name="AppThemeListings" parent="AppTheme.Listings">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+        <item name="android:navigationBarColor">@color/listingsColorPrimaryDark</item>
+    </style>
+
+    <!-- Events Theme -->
+    <style name="AppThemeEvents" parent="AppTheme.Events">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+        <item name="android:navigationBarColor">@color/eventsColorPrimaryDark</item>
+    </style>
+
+    <!-- Account Theme -->
+    <style name="AppThemeAccount" parent="AppTheme.Account">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
+        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+        <item name="android:navigationBarColor">@color/accountColorPrimaryDark</item>
+    </style>
 
 </resources>

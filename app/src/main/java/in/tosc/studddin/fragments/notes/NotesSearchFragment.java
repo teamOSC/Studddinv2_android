@@ -80,7 +80,6 @@ public class NotesSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        getActivity().setTheme(R.style.AppTheme_Custom);
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_notes_search, container, false);
 

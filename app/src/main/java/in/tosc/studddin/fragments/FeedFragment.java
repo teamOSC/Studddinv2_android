@@ -92,6 +92,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        
         rootView = inflater.inflate(R.layout.fragment_feed, container, false);
         searchEditText = (MaterialEditText) rootView.findViewById(R.id.feed_search);
         searchEditText.setOnKeyListener(this);

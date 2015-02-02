@@ -12,17 +12,23 @@
     <color name="colorPrimaryDark">#A3333D</color>
     
     <!--Feed color -->
-    <color name="feedColorPrimary">#009688</color>
+    <color name="feedColorPrimary">#D86C70</color>
+    <color name="feedColorPrimaryDark">#A3333D</color>
     <!--Notes color -->
     <color name="notesColorPrimary">#2196F3</color>
+    <color name="notesColorPrimaryDark">#0D47A1</color>
     <!--People color -->
     <color name="peopleColorPrimary">#FF9800</color>
+    <color name="peopleColorPrimaryDark">#E65100</color>
     <!--Listings color -->
     <color name="listingsColorPrimary">#8BC34A</color>
+    <color name="listingsColorPrimaryDark">#33691E</color>
     <!--Events color -->
-    <color name="eventsColorPrimary">#673AB7</color>
+    <color name="eventsColorPrimary">#3F51B5</color>
+    <color name="eventsColorPrimaryDark">#1A237E</color>
     <!--Account color -->
-    <color name="accountColorPrimary">#A3333D</color>
+    <color name="accountColorPrimary">#F44336</color>
+    <color name="accountColorPrimaryDark">#B71C1C</color>
     
     <!-- #CF5C36 -->
     <color name="colorPrimaryPressed">#aaD86C70</color>
