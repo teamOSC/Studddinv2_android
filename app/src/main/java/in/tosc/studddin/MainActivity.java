@@ -82,6 +82,7 @@ public class MainActivity extends ActionBarActivity
             case 1:
                 Log.d("Studdd.in", "notes fragment");
                 mTitle = "Notes";
+                this.getApplicationContext().setTheme(R.style.AppThemeNotes);
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new NotesFragment())
                         .commit();
