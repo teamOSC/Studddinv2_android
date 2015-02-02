@@ -110,7 +110,7 @@ public class FacebookApi {
                     @Override
                     protected Void doInBackground(Void... params) {
                         try {
-                            String sUrl = response.getGraphObject().getInnerJSONObject().getString("source");
+                            String sUrl = response.getGraphObject().getInnerJSONObject().getJSONObject("cover").getString("source");
                             Bitmap bitmap = Utilities.downloadBitmap(sUrl);
                             listener.gotCoverPicture(bitmap);
                         } catch (JSONException e) {
