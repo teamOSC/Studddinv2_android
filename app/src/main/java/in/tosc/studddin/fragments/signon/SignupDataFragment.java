@@ -405,7 +405,14 @@ public class SignupDataFragment extends Fragment implements
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 50, locationListener);
     }
 
-    private void getInterests(final MaterialEditText editText) {
+    private void getInterests(final MultiAutoCompleteTextView editText) {
+        editText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedInterests.add(new Integer(position));
+                Log.d(TAG, "selected = " + position);
+            }
+        });
         futureShit = new FutureShit(new Callable<List<ParseObject>>() {
             @Override
             public List<ParseObject> call() throws Exception {
@@ -425,19 +432,6 @@ public class SignupDataFragment extends Fragment implements
                 Log.d(TAG, "Got the data");
                 editText.setAdapter(mAdapter);
                 editText.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-                editText.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        selectedInterests.add(new Integer(position));
-                        Log.d(TAG, "selected = " + position);
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        //TODO:: new interest appears
-                        Log.d(TAG, "Nothing Selected");
-                    }
-                });
             }
         }
         );
