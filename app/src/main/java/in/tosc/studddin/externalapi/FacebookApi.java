@@ -98,6 +98,31 @@ public class FacebookApi {
         }).executeAsync();
     }
 
+    public static void getCoverPicture(final FbGotCoverPictureCallback listener) {
+        Log.d(TAG, "getting cover picture");
+        Bundle bundle = new Bundle();
+        bundle.putString("fields", "cover");
+        new Request(session, "me", bundle,
+                HttpMethod.GET, new Request.Callback() {
+            @Override
+            public void onCompleted(final Response response) {
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        try {
+                            String sUrl = response.getGraphObject().getInnerJSONObject().getJSONObject("cover").getString("source");
+                            Bitmap bitmap = Utilities.downloadBitmap(sUrl);
+                            listener.gotCoverPicture(bitmap);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                }.execute();
+            }
+        }).executeAsync();
+    }
+
     public interface FbGotDataCallback {
         public void gotData(Bundle b);
     }
@@ -108,5 +133,9 @@ public class FacebookApi {
 
     public interface FbGotEventDataCallback {
         public void gotEventData(JSONArray jArray);
+    }
+
+    public interface FbGotCoverPictureCallback {
+        public void gotCoverPicture(Bitmap coverPicture);
     }
 }

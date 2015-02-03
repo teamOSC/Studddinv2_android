@@ -26,23 +26,20 @@
         android:id="@+id/cb_books"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:buttonTint="@color/colorPrimaryDark"
-        android:text="Books" />
+        android:text="Books"
+        android:textColor="#000000"/>
 
     <android.support.v7.internal.widget.TintCheckBox
         android:id="@+id/cb_apparatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:buttonTint="@color/colorPrimaryDark"
-        android:text="Apparatus" />
+        android:text="Apparatus"
+        android:textColor="#000000"/>
 
     <android.support.v7.internal.widget.TintCheckBox
         android:id="@+id/cb_misc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:buttonTint="@color/colorPrimaryDark"
-        android:text="Miscellaneous" />
+        android:text="Miscellaneous"
+        android:textColor="#000000"/>
 </LinearLayout>
