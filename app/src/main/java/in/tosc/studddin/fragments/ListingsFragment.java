@@ -50,7 +50,7 @@ public class ListingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_listings, container, false);
 
         fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
@@ -67,6 +67,18 @@ public class ListingsFragment extends Fragment {
             @Override
             public int getCount() {
                 return 2;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                switch (position) {
+                    case 0:
+                        return "Listings";
+                    case 1:
+                        return "Create Listing";
+                }
+
+                return null;
             }
         };
 
