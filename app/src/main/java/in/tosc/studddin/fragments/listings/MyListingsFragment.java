@@ -154,10 +154,20 @@ public class MyListingsFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         ParseObject object = mDataset.get(getPosition());
-                        object.deleteInBackground();
-                        mDataset.remove(getPosition());
-                        notifyItemRemoved(getPosition());
-                        notifyItemRangeChanged(getPosition(), mDataset.size());
+                        object.deleteInBackground(new DeleteCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if(e==null){
+                                    mDataset.remove(getPosition());
+                                    notifyItemRemoved(getPosition());
+                                    notifyItemRangeChanged(getPosition(), mDataset.size());
+                                    fetchMyListings(false);
+                                }
+                                else
+                                 Toast.makeText(getActivity(),"Please connect to the Internet",Toast.LENGTH_SHORT);
+                            }
+                        });
+
                     }
                 });
             }
