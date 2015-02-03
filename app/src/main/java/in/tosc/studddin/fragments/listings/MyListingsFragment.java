@@ -81,6 +81,7 @@ public class MyListingsFragment extends Fragment {
                     } else
                         doneFetching(parseObjects, cache);
                 } else {
+                    loader.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
                 }
             }
