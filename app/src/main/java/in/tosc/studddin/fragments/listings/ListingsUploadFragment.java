@@ -141,7 +141,8 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                     upload.put("listingName", listing.getText().toString());
                     upload.put("listingDesc", listing_desc.getText().toString());
                     upload.put("mobile", mobile.getText().toString());
-                    upload.put("location", point);
+                    if(point!=null)
+                        upload.put("location", point);
                     upload.put("category", category.getSelectedItem().toString());
 
                     upload.saveInBackground(new SaveCallback() {

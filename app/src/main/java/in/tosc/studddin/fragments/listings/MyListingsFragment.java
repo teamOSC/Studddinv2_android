@@ -147,6 +147,17 @@ public class MyListingsFragment extends Fragment {
                 this.createdAt = (TextView) v.findViewById(R.id.listing_created_at);
                 this.listing_image = (ParseImageView) v.findViewById(R.id.listing_image);
                 this.listing_desc = (TextView) v.findViewById(R.id.listing_desc);
+
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ParseObject object = mDataset.get(getPosition());
+                        object.deleteInBackground();
+                        mDataset.remove(getPosition());
+                        notifyItemRemoved(getPosition());
+                        notifyItemRangeChanged(getPosition(), mDataset.size());
+                    }
+                });
             }
         }
     }
