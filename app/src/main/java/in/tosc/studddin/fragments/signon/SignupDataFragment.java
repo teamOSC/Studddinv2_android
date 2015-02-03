@@ -41,8 +41,10 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
+import com.tokenautocomplete.TokenCompleteTextView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +54,8 @@ import java.util.regex.Pattern;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
+import in.tosc.studddin.customview.BubbleCompletionView;
+import in.tosc.studddin.customview.MaterialAutoCompleteTextView;
 import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.externalapi.UserDataFields;
 import in.tosc.studddin.utils.FutureUtils;
@@ -69,7 +73,7 @@ public class SignupDataFragment extends Fragment implements
     Bundle userDataBundle;
     View rootView;
     private HashMap<String, String> input;
-    private SparseArray<EditText> editTextArray = new SparseArray<>();
+    private SparseArray<MaterialEditText> editTextArray = new SparseArray<>();
     private Button submitButton;
     private ImageView profileImageView;
     private GoogleApiClient mGoogleApiClient;
@@ -172,7 +176,10 @@ public class SignupDataFragment extends Fragment implements
         initializeEditTexts(R.id.user_email);
         initializeEditTexts(R.id.user_qualifications);
 
-        final MaterialEditText interestEditText = (MaterialEditText) rootView.findViewById(R.id.user_interests);
+
+        //Testing bubbles
+        final BubbleCompletionView interestEditText =
+                (BubbleCompletionView) rootView.findViewById(R.id.user_interests);
         getInterests(interestEditText);
         futureShit.getShitDone();
 
@@ -229,7 +236,7 @@ public class SignupDataFragment extends Fragment implements
     }
 
     private void initializeEditTexts(int id) {
-        EditText mEditText = (EditText) rootView.findViewById(id);
+        MaterialEditText mEditText = (MaterialEditText) rootView.findViewById(id);
         if (mEditText == null) {
             Log.e(TAG, "edit text is null");
         }
@@ -315,8 +322,7 @@ public class SignupDataFragment extends Fragment implements
         user.put(UserDataFields.USER_NAME, input.get(UserDataFields.USER_NAME));
         user.put(UserDataFields.USER_INSTITUTE, input.get(UserDataFields.USER_INSTITUTE));
         user.put(UserDataFields.USER_QUALIFICATIONS, input.get(UserDataFields.USER_QUALIFICATIONS));
-//        user.put(UserDataFields.USER_INTERESTS, input.get(UserDataFields.USER_INTERESTS));
-        for (int i : selectedInterests) {
+        for (Integer i : selectedInterests) {
             ParseObject object = interests.get(i);
             ParseRelation<ParseUser> relation = object.getRelation("users");
             relation.add(user);
@@ -437,14 +443,7 @@ public class SignupDataFragment extends Fragment implements
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 50, locationListener);
     }
 
-    private void getInterests(final MultiAutoCompleteTextView editText) {
-        editText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedInterests.add(new Integer(position));
-                Log.d(TAG, "selected = " + position);
-            }
-        });
+    private void getInterests(final BubbleCompletionView editText) {
         futureShit = new FutureShit(new Callable<List<ParseObject>>() {
             @Override
             public List<ParseObject> call() throws Exception {
@@ -455,15 +454,25 @@ public class SignupDataFragment extends Fragment implements
             @Override
             public void execute(List<ParseObject> result) {
                 interests = result;
-                List<String> interests = new ArrayList();
+                final List<String> interests = new ArrayList();
                 for (ParseObject interest : result) {
                     interests.add(interest.getString("name"));
                 }
-                final ArrayAdapter<String> mAdapter = new ArrayAdapter(getActivity(),
-                        android.R.layout.simple_dropdown_item_1line, interests);
+                ArrayAdapter mAdapter = new ArrayAdapter(getActivity(),
+                        android.R.layout.simple_list_item_1, interests);
                 Log.d(TAG, "Got the data");
                 editText.setAdapter(mAdapter);
-                editText.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+                editText.setTokenListener(new TokenCompleteTextView.TokenListener() {
+                    @Override
+                    public void onTokenAdded(Object o) {
+                        selectedInterests.add(interests.indexOf(o));
+                    }
+
+                    @Override
+                    public void onTokenRemoved(Object o) {
+                        selectedInterests.remove(interests.indexOf(o));
+                    }
+                });
             }
         }
         );
