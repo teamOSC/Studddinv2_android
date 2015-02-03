@@ -164,7 +164,7 @@ public class MyListingsFragment extends Fragment {
                                     fetchMyListings(false);
                                 }
                                 else
-                                 Toast.makeText(getActivity(),"Please connect to the Internet",Toast.LENGTH_SHORT);
+                                 Toast.makeText(getActivity(),"Please connect to the Internet",Toast.LENGTH_SHORT).show();
                             }
                         });
 
