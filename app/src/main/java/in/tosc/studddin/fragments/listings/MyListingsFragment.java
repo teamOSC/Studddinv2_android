@@ -22,6 +22,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import in.tosc.studddin.R;
@@ -114,7 +115,8 @@ public class MyListingsFragment extends Fragment {
         @Override
         public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
             viewHolder.listing_name.setText(mDataset.get(i).getString("listingName"));
-            viewHolder.createdAt.setText(mDataset.get(i).getCreatedAt().toString());
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yy");
+            viewHolder.createdAt.setText(sdf.format(mDataset.get(i).getCreatedAt()));
             viewHolder.listing_desc.setText(mDataset.get(i).getString("listingDesc"));
             if (!mCache)
                 viewHolder.listing_image.setPlaceholder(getResources().getDrawable(R.drawable.listing_placeholder));
