@@ -7,15 +7,19 @@
         android:icon="@drawable/ic_action_sort_by_size"
         android:title="Filter"
         app:showAsAction="ifRoom"
-
         />
 
     <item
         android:id="@+id/listing_upload"
         android:icon="@drawable/ic_action_add"
-        android:title="Create"
+        android:title="Create Listing"
         app:showAsAction="ifRoom"
+        />
 
+    <item
+        android:id="@+id/listing_my"
+        android:title="My Listings"
+        app:showAsAction="never"
         />
 
 

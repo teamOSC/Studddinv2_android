@@ -153,6 +153,10 @@ public class ListingsSearchFragment extends Fragment {
                 ListingsFragment lFragment = (ListingsFragment) getParentFragment();
                 lFragment.goToOtherFragment(1);
                 return true;
+            case R.id.listing_my:
+                ListingsFragment fragment = (ListingsFragment) getParentFragment();
+                fragment.goToOtherFragment(2);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
