@@ -3,12 +3,9 @@ package in.tosc.studddin.fragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,9 +78,9 @@ public class AccountInfoFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
-        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.accountColorPrimary));
-        actionBar.setBackgroundDrawable(colorDrawable);
+        //ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+        //ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.accountColorPrimary));
+        //actionBar.setBackgroundDrawable(colorDrawable);
         super.onCreate(savedInstanceState);
     }
 

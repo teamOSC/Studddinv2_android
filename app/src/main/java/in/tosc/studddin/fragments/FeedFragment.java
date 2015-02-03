@@ -3,12 +3,10 @@ package in.tosc.studddin.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,7 +36,6 @@ import java.util.List;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
-import in.tosc.studddin.externalapi.UserDataFields;
 import in.tosc.studddin.utils.ProgressBarCircular;
 import in.tosc.studddin.utils.Utilities;
 
@@ -79,9 +76,9 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
-        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.feedColorPrimary));
-        actionBar.setBackgroundDrawable(colorDrawable);
+        //ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+        //ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.feedColorPrimary));
+        //actionBar.setBackgroundDrawable(colorDrawable);
         super.onCreate(savedInstanceState);     
         setHasOptionsMenu(true);
         

@@ -1,13 +1,10 @@
 package in.tosc.studddin.fragments;
 
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,9 +32,9 @@ public class PeopleFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
-        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.peopleColorPrimary));
-        actionBar.setBackgroundDrawable(colorDrawable);
+        //ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+        //ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.peopleColorPrimary));
+        //actionBar.setBackgroundDrawable(colorDrawable);
         super.onCreate(savedInstanceState);
     }
 
