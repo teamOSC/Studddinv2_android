@@ -94,6 +94,8 @@ public class MyListingsFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
         loader.setVisibility(View.GONE);
         mRecyclerView.setAdapter(mAdapter);
+        if(mAdapter.getItemCount()==0)
+            Toast.makeText(getActivity(),"No listing available. Please create one first.",Toast.LENGTH_LONG).show();
     }
 
     public class MyListingAdapter extends RecyclerView.Adapter<MyListingAdapter.ViewHolder> {
