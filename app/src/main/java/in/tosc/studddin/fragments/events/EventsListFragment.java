@@ -77,7 +77,24 @@ public class EventsListFragment extends Fragment {
         private String event_date;
         private String event_description;
         private String event_type;
+        private String event_user;
+        private String event_location;
 
+        public String getEvent_location() {
+            return event_location;
+        }
+
+        public void setEvent_location(String event_location) {
+            this.event_location = event_location;
+        }
+
+        public String getEvent_user() {
+            return event_user;
+        }
+
+        public void setEvent_user(String event_user) {
+            this.event_user = event_user;
+        }
 
         public String getEventName() {
             return event_name;
@@ -137,6 +154,8 @@ public class EventsListFragment extends Fragment {
             holder.event_description.setText(parents.get(position).getEventDescription());
             holder.event_type.setText(parents.get(position).getEventType());
             holder.event_date.setText(parents.get(position).getEventDate());
+            holder.event_creator.setText(parents.get(position).getEvent_user());
+            holder.event_location.setText(parents.get(position).getEvent_location());
 
             if (position == expandedPosition) {
                 holder.expanded_area.setVisibility(View.VISIBLE);
@@ -173,6 +192,8 @@ public class EventsListFragment extends Fragment {
             TextView event_description;
             TextView event_type;
             RelativeLayout expanded_area;
+            TextView event_creator;
+            TextView event_location;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -181,6 +202,8 @@ public class EventsListFragment extends Fragment {
                 this.event_description = (TextView) itemView.findViewById(R.id.event_description);
                 this.event_type = (TextView) itemView.findViewById(R.id.event_type);
                 this.expanded_area = (RelativeLayout) itemView.findViewById(R.id.expanded_area);
+                this.event_creator = (TextView) itemView.findViewById(R.id.event_creator);
+                this.event_location = (TextView) itemView.findViewById(R.id.event_location);
             }
         }
     }
@@ -213,6 +236,8 @@ public class EventsListFragment extends Fragment {
                 parent.setEventDate(listing.get("date") + "  " + listing.get("time"));
                 parent.setEventDescription((String) listing.get("description"));
                 parent.setEventType((String) listing.get("type"));
+                parent.setEvent_user((String) listing.get("createdBy"));
+                parent.setEvent_location((String) listing.get("location_des"));
                 parents.add(parent);
             }
             return null;

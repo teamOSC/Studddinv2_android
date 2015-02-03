@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.Calendar;
@@ -85,6 +86,8 @@ public class EventsCreateFragment extends Fragment {
         events.put("title", ((MaterialEditText) v.findViewById(R.id.event_name)).getText() + "");
         events.put("description", ((MaterialEditText) v.findViewById(R.id.event_description)).getText() + "");
         events.put("type", ((MaterialEditText) v.findViewById(R.id.event_type)).getText() + "");
+        events.put("location", ((MaterialEditText) v.findViewById(R.id.event_location)).getText() + "");
+        events.put("user", ParseUser.getCurrentUser().getString("NAME"));
     }
 
     private boolean checkIfEmpty() {
@@ -100,11 +103,17 @@ public class EventsCreateFragment extends Fragment {
             Toast.makeText(getActivity().getApplicationContext(), "Please enter type", Toast.LENGTH_LONG).show();
             return false;
         }
-        if(events.get("date").isEmpty()){
-            Toast.makeText(getActivity().getApplicationContext(), "Please enter date", Toast.LENGTH_LONG).show();
+        if (events.get("location").isEmpty()) {
+            Toast.makeText(getActivity().getApplicationContext(), "Please enter location", Toast.LENGTH_LONG).show();
+            return false;
         }
-        if(events.get("time").isEmpty()){
+        if(!events.containsKey("date")){
+            Toast.makeText(getActivity().getApplicationContext(), "Please enter date", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(!events.containsKey("time")){
             Toast.makeText(getActivity().getApplicationContext(), "Please enter time", Toast.LENGTH_LONG).show();
+            return false;
         }
         return true;
     }
@@ -114,8 +123,10 @@ public class EventsCreateFragment extends Fragment {
         event.put("title", events.get("title"));
         event.put("description", events.get("description"));
         event.put("type", events.get("type"));
+        event.put("location_des", events.get("location"));
         event.put("date",events.get("date"));
         event.put("time", events.get("time"));
+        event.put("createdBy", events.get("user"));
         event.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -152,11 +163,15 @@ public class EventsCreateFragment extends Fragment {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             String time;
+            String min = Integer.toString(minute);
+            if(minute < 10){
+                min = "0" +Integer.toString(minute);
+            }
             if(hourOfDay > 12){
                 hourOfDay = hourOfDay - 12;
-                time = new StringBuilder().append(hourOfDay).append(":").append(minute).append(" pm").toString();
+                time = new StringBuilder().append(hourOfDay).append(":").append(min).append(" pm").toString();
             }else {
-                time = new StringBuilder().append(hourOfDay).append(":").append(minute).append(" am").toString();
+                time = new StringBuilder().append(hourOfDay).append(":").append(min).append(" am").toString();
             }
             events.put("time", time);
             ((MaterialEditText)v.findViewById(R.id.event_time)).setText(time);
