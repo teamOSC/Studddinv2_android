@@ -61,7 +61,7 @@
             app:primaryColor="@color/colorPrimaryDark" />
 
         <in.tosc.studddin.customview.MaterialEditText
-            android:id="@+id/listing_desc"
+            android:id="@+id/listing_created_at"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/et_listing"
