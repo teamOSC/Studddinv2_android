@@ -31,8 +31,6 @@
             android:id="@+id/et_listing"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:layout_marginTop="32dp"
             android:hint="Listing Name"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
@@ -43,9 +41,6 @@
             android:id="@+id/listing_desc"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/et_listing"
-            android:layout_alignStart="@+id/et_listing"
-            android:layout_below="@+id/et_listing"
             android:layout_marginTop="20dp"
             android:hint="Listing Description"
             android:inputType="textMultiLine"
@@ -59,9 +54,6 @@
             android:id="@+id/et_mobile"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/et_listing"
-            android:layout_alignStart="@+id/et_listing"
-            android:layout_below="@+id/et_listing"
             android:layout_marginTop="20dp"
             android:digits="0123456789+"
             android:hint="Mobile"
@@ -74,8 +66,6 @@
             android:id="@+id/upload_progress"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_below="@+id/listing_category"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal|bottom"
             android:textSize="24sp"
             android:visibility="gone" />
@@ -84,9 +74,6 @@
             android:id="@+id/listing_category"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/et_mobile"
-            android:layout_alignStart="@+id/et_mobile"
-            android:layout_below="@+id/et_mobile"
             android:layout_marginTop="20dp" />
 
         <ImageView

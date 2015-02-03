@@ -61,6 +61,7 @@ public class NavigationDrawerFragment extends Fragment {
     private ListView mDrawerListView;
     private View mFragmentContainerView;
     private ParseImageView mProfilePic;
+    private ParseImageView mCoverPic;
 
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
@@ -131,6 +132,9 @@ public class NavigationDrawerFragment extends Fragment {
         mProfilePic.setPlaceholder(getResources().getDrawable(R.drawable.com_facebook_profile_default_icon));
         mProfilePic.setParseFile(ParseUser.getCurrentUser().getParseFile(UserDataFields.USER_IMAGE));
 
+        mCoverPic = ((ParseImageView) mDrawerLinearLayout.findViewById(R.id.nav_drawer_cover_picture));
+        mCoverPic.setPlaceholder(getResources().getDrawable(R.drawable.ic_abstract));
+        mCoverPic.setParseFile(ParseUser.getCurrentUser().getParseFile(UserDataFields.USER_COVER));
 
         return mDrawerLinearLayout;
     }
@@ -191,6 +195,7 @@ public class NavigationDrawerFragment extends Fragment {
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
                 }
                 mProfilePic.loadInBackground();
+                mCoverPic.loadInBackground();
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
         };

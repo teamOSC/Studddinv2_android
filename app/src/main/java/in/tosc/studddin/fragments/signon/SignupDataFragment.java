@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -48,7 +47,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,8 +54,8 @@ import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.externalapi.UserDataFields;
-import in.tosc.studddin.utils.FutureUtils.FutureShit;
 import in.tosc.studddin.utils.FutureUtils;
+import in.tosc.studddin.utils.FutureUtils.FutureShit;
 
 /**
  * SignupDataFragment
@@ -331,6 +329,13 @@ public class SignupDataFragment extends Fragment implements
             profile.save();
             user.put(UserDataFields.USER_IMAGE, profile);
         }
+        try{
+            ParseFile cover = new ParseFile("coverPicture.png",userDataBundle.getByteArray(UserDataFields.USER_COVER));
+            cover.save();
+            user.put(UserDataFields.USER_COVER, cover);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         if (currentUserLoc == null) {
             currentUserLoc = approxUserLoc;
         }
@@ -379,6 +384,13 @@ public class SignupDataFragment extends Fragment implements
                 }
             });
         }
+    }
+
+    public void setCoverPicture(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] bytes = stream.toByteArray();
+        userDataBundle.putByteArray(UserDataFields.USER_COVER,bytes);
     }
 
     @Override
