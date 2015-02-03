@@ -228,6 +228,7 @@ public class PeopleSameInterestsFragment extends Fragment {
             list3.add(each);
         }
 
+        //FIXME: NPE
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
