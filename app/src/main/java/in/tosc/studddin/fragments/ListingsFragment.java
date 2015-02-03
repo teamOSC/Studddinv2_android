@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,9 +40,6 @@ public class ListingsFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        //ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
-        //ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.listingsColorPrimary));
-        //actionBar.setBackgroundDrawable(colorDrawable);
         super.onCreate(savedInstanceState);
     }
 
@@ -48,7 +48,7 @@ public class ListingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
-
+        setCustomTheme();
         fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -124,4 +124,16 @@ public class ListingsFragment extends Fragment {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream);
         ListingsUploadFragment.byteArray = stream.toByteArray();
     }
+
+    public void setCustomTheme(){
+        int primary = getActivity().getResources().getColor(R.color.listingsColorPrimary);
+        int secondary = getActivity().getResources().getColor(R.color.listingsColorPrimaryDark);
+        ColorDrawable colorDrawable = new ColorDrawable(primary);
+        ((ActionBarActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(colorDrawable);
+        if(Build.VERSION.SDK_INT==Build.VERSION_CODES.LOLLIPOP){
+            getActivity().getWindow().setNavigationBarColor(secondary);
+            getActivity().getWindow().setStatusBarColor(secondary);
+        }
+    }
+    
 }
