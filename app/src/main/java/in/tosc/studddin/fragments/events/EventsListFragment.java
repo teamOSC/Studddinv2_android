@@ -3,11 +3,13 @@ package in.tosc.studddin.fragments.events;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,10 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,15 +45,27 @@ public class EventsListFragment extends Fragment {
     FetchData f;
     SwipeRefreshLayout swipeRefreshLayout;
     private boolean refresh = false;
+    private boolean check_my_events=false;
 
-    public EventsListFragment() {
+    public EventsListFragment(){
 
+    }
+
+    public static EventsListFragment newInstance(Boolean check){
+        EventsListFragment eventsListFragment = new EventsListFragment();
+        Bundle b = new Bundle();
+        b.putBoolean("check", check);
+        eventsListFragment.setArguments(b);
+        return eventsListFragment;
     }
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        if(this.getArguments() != null){
+            check_my_events = getArguments().getBoolean("check");
+        }
     }
 
     @Override
@@ -63,11 +80,11 @@ public class EventsListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 refresh = true;
-                f = new FetchData();
+                f = new FetchData(check_my_events);
                 f.execute();
             }
         });
-        f = new FetchData();
+        f = new FetchData(check_my_events);
         f.execute();
         return v;
     }
@@ -209,6 +226,11 @@ public class EventsListFragment extends Fragment {
     }
 
     private class FetchData extends AsyncTask<Void, Void, Void> {
+        private boolean check;
+
+        public FetchData(Boolean check_myevents){
+            check = check_myevents;
+        }
         @Override
         protected void onPostExecute(Void aVoid) {
             adapter = new EventAdapter(parents);
@@ -225,6 +247,9 @@ public class EventsListFragment extends Fragment {
             ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
                     "Events");
             query.orderByAscending("createdAt");
+            if(check){
+                query.whereEqualTo("createdBy", ParseUser.getCurrentUser().getString("NAME"));
+            }
             try {
                 listings = query.find();
             } catch (ParseException e) {
@@ -242,6 +267,7 @@ public class EventsListFragment extends Fragment {
             }
             return null;
         }
+
     }
 
     @Override
