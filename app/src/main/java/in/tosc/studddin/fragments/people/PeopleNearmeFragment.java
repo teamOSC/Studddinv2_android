@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.utils.ParseCircularImageView;
 import in.tosc.studddin.utils.ProgressBarCircular;
 
 public class PeopleNearmeFragment extends Fragment {
@@ -354,7 +355,7 @@ public class PeopleNearmeFragment extends Fragment {
                 holder.textinstituition = (TextView) convertView.findViewById(R.id.people_institute);
                 holder.textdistance = (TextView) convertView.findViewById(R.id.people_distance);
                 holder.textqualification = (TextView) convertView.findViewById(R.id.people_qualification);
-                holder.userimg = (ParseImageView) convertView.findViewById(R.id.people_userimg);
+                holder.userimg = (ParseCircularImageView) convertView.findViewById(R.id.people_userimg);
 
 
                 convertView.setTag(holder);
