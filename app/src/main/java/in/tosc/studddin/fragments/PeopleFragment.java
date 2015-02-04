@@ -40,8 +40,8 @@ public class PeopleFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_people, container, false);
-        int p = getActivity().getResources().getColor(R.color.accountColorPrimary);
-        int s = getActivity().getResources().getColor(R.color.accountColorPrimaryDark);
+        int p = getActivity().getResources().getColor(R.color.peopleColorPrimary);
+        int s = getActivity().getResources().getColor(R.color.peopleColorPrimaryDark);
         ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(), p, s);
 
         fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {

@@ -85,8 +85,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_feed, container, false);
-        int p = getActivity().getResources().getColor(R.color.feedColorPrimary);
-        int s = getActivity().getResources().getColor(R.color.feedColorPrimaryDark);
+        int p = getActivity().getResources().getColor(R.color.colorPrimary);
+        int s = getActivity().getResources().getColor(R.color.colorPrimaryDark);
         ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(), p, s);
         searchEditText = (MaterialEditText) rootView.findViewById(R.id.feed_search);
         searchEditText.setOnKeyListener(this);

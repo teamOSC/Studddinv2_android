@@ -8,8 +8,8 @@
     <color name="app_background">#00BCD4</color>
 
     <!-- App Main colors -->
-    <color name="colorPrimary">#D86C70</color>
-    <color name="colorPrimaryDark">#A3333D</color>
+    <color name="colorPrimary">#607D8B</color>
+    <color name="colorPrimaryDark">#455A64</color>
     
     <!--Feed color -->
     <color name="feedColorPrimary">#D86C70</color>
