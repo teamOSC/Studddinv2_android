@@ -42,14 +42,17 @@ public class EventsFragment extends Fragment {
         int p = getActivity().getResources().getColor(R.color.eventsColorPrimary);
         int s = getActivity().getResources().getColor(R.color.eventsColorPrimaryDark);
         ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(), p, s);
+
         fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 switch (position) {
                     case 0:
-                        return (new EventsListFragment());
+                        return EventsListFragment.newInstance(false);
                     case 1:
                         return (new EventsCreateFragment());
+                    case 2:
+                        return EventsListFragment.newInstance(true);
 
                 }
                 return new NotesSearchFragment();
@@ -62,6 +65,8 @@ public class EventsFragment extends Fragment {
                         return "Events";
                     case 1:
                         return "Create event";
+                    case 2:
+                        return "My Events";
                 }
 
                 return null;
@@ -69,7 +74,7 @@ public class EventsFragment extends Fragment {
 
             @Override
             public int getCount() {
-                return 2;
+                return 3;
             }
         };
 
