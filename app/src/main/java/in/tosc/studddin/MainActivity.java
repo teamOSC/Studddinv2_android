@@ -66,11 +66,6 @@ public class MainActivity extends ActionBarActivity
 
     }
 
-    public void getToolbar(){
-        this.toolbar = toolbar;
-        
-    }
-
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
