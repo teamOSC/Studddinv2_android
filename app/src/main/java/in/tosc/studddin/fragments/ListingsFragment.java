@@ -30,6 +30,9 @@ import in.tosc.studddin.fragments.listings.MyListingsFragment;
  * A simple {@link Fragment} subclass.
  */
 public class ListingsFragment extends Fragment {
+    public static final String TAG = "ListingsFragment";
+    public static final boolean DEBUG = ApplicationWrapper.LOG_DEBUG;
+    public static final boolean INFO = ApplicationWrapper.LOG_INFO;
 
 
     ViewPager listingsPager;
@@ -105,13 +108,13 @@ public class ListingsFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("onActivityResult", "call ho raha hai" + resultCode + "   " + requestCode);
+        if (DEBUG) Log.d(TAG, "onActivityResult call ho raha hai" + resultCode + "   " + requestCode);
         if ((requestCode == 0) && resultCode == -1) {
             if (data == null) {
-                Log.d("onActivityResult", "camera");
+                if (DEBUG) Log.d(TAG, "onActivityResult camera");
                 compressImage(ListingsUploadFragment.mCurrentPhotoPath);
             } else {
-                Log.d("onActivityResult", "docs");
+                if (DEBUG) Log.d(TAG, "onActivityResult docs");
                 Uri selectedImage = data.getData();
                 String[] filePath = {MediaStore.Images.Media.DATA};
                 Cursor c = getActivity().getContentResolver().query(selectedImage, filePath, null, null, null);

@@ -21,6 +21,9 @@ import in.tosc.studddin.fragments.notes.NotesUploadFragment;
  * A simple {@link Fragment} subclass.
  */
 public class NotesFragment extends Fragment {
+    public static final String TAG = "NotesFragment";
+    public static final boolean DEBUG = ApplicationWrapper.LOG_DEBUG;
+    public static final boolean INFO = ApplicationWrapper.LOG_INFO;
 
 
     ViewPager notesPager;
@@ -83,7 +86,7 @@ public class NotesFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("Raghav", "Request = " + requestCode + "result = " + resultCode);
+        if (DEBUG) Log.d(TAG, "Request = " + requestCode + "result = " + resultCode);
         String[] paths = data.getStringArrayExtra("all_path");
         if (paths.length == 0)
 

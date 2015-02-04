@@ -20,12 +20,16 @@ import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 
+import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
 
 /**
  * Created by raghav on 21/07/15.
  */
 public class NotesCustomDialog extends Dialog {
+    public static final String TAG = "NotesFragment";
+    public static final boolean DEBUG = ApplicationWrapper.LOG_DEBUG;
+    public static final boolean INFO = ApplicationWrapper.LOG_INFO;
 
 
     TextView dialogCollegeName, dialogBranchName, dialogTopicName, dialogSubjectName, dialogUploadedBy;
@@ -75,7 +79,7 @@ public class NotesCustomDialog extends Dialog {
             @Override
             public void onClick(View v) {
 
-                Log.d("Raghav", "" + position + notesSubjectName.get(position) + notesTopicName.get(position) + notesCollegeName.get(position) +
+                if (DEBUG) Log.d(TAG, "" + position + notesSubjectName.get(position) + notesTopicName.get(position) + notesCollegeName.get(position) +
                         notesBranchName.get(position) );
 
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Notes");
@@ -111,7 +115,7 @@ public class NotesCustomDialog extends Dialog {
 //                        ParseFile notesParseFile = (ParseFile) notesZipParseObject.get("imageZip");
 //
 //                        String zipFileURL = notesZipParseFile.getUrl();
-//                        Log.d("Raghav", ""+ zipFileURL);
+//                        if (DEBUG) Log.d(TAG, ""+ zipFileURL);
 //                        Uri uri = Uri.parse(zipFileURL);
 //                        DownloadManager.Request dr = new DownloadManager.Request(uri);
 //                        dr.setTitle("Notes: " + notesTopicName.get(position) +" "+
