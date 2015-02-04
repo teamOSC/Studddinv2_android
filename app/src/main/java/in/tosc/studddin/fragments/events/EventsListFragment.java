@@ -16,10 +16,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.DeleteCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -173,6 +175,10 @@ public class EventsListFragment extends Fragment {
             holder.event_date.setText(parents.get(position).getEventDate());
             holder.event_creator.setText(parents.get(position).getEvent_user());
             holder.event_location.setText(parents.get(position).getEvent_location());
+            if(check_my_events){
+                holder.event_creator.setVisibility(View.GONE);
+                holder.event_delete.setVisibility(View.VISIBLE);
+            }
 
             if (position == expandedPosition) {
                 holder.expanded_area.setVisibility(View.VISIBLE);
@@ -211,6 +217,7 @@ public class EventsListFragment extends Fragment {
             RelativeLayout expanded_area;
             TextView event_creator;
             TextView event_location;
+            Button event_delete;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -221,6 +228,24 @@ public class EventsListFragment extends Fragment {
                 this.expanded_area = (RelativeLayout) itemView.findViewById(R.id.expanded_area);
                 this.event_creator = (TextView) itemView.findViewById(R.id.event_creator);
                 this.event_location = (TextView) itemView.findViewById(R.id.event_location);
+                this.event_delete = (Button) itemView.findViewById(R.id.event_delete);
+                event_delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ParseObject event = listings.get(getPosition());
+                        event.deleteInBackground(new DeleteCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if(e == null){
+                                    new FetchData(check_my_events).execute();
+                                }
+                                else{
+                                    Toast.makeText(getActivity().getApplicationContext(), "Internet Connection Problem", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                });
             }
         }
     }
