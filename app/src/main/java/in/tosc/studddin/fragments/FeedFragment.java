@@ -3,9 +3,7 @@ package in.tosc.studddin.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -36,6 +34,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.utils.ProgressBarCircular;
@@ -86,7 +85,9 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_feed, container, false);
-        setCustomTheme();
+        int p = getActivity().getResources().getColor(R.color.feedColorPrimary);
+        int s = getActivity().getResources().getColor(R.color.feedColorPrimaryDark);
+        ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(), p, s);
         searchEditText = (MaterialEditText) rootView.findViewById(R.id.feed_search);
         searchEditText.setOnKeyListener(this);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.feed_recycler_view);
@@ -435,17 +436,5 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             setData(parseObjects, isLoaded, string);
         }
     }
-
-    public void setCustomTheme(){
-        int primary = getActivity().getResources().getColor(R.color.feedColorPrimary);
-        int secondary = getActivity().getResources().getColor(R.color.feedColorPrimaryDark);
-        ColorDrawable colorDrawable = new ColorDrawable(primary);
-        ((ActionBarActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(colorDrawable);
-        if(Build.VERSION.SDK_INT==Build.VERSION_CODES.LOLLIPOP){
-            getActivity().getWindow().setNavigationBarColor(secondary);
-            getActivity().getWindow().setStatusBarColor(secondary);
-        }
-    }
-
 
 }

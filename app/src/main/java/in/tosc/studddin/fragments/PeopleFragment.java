@@ -1,8 +1,6 @@
 package in.tosc.studddin.fragments;
 
 
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -12,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
 import in.tosc.studddin.fragments.notes.NotesSearchFragment;
 import in.tosc.studddin.fragments.people.PeopleNearmeFragment;
@@ -41,7 +40,9 @@ public class PeopleFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_people, container, false);
-        setCustomTheme();
+        int p = getActivity().getResources().getColor(R.color.accountColorPrimary);
+        int s = getActivity().getResources().getColor(R.color.accountColorPrimaryDark);
+        ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(), p, s);
 
         fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
@@ -82,17 +83,6 @@ public class PeopleFragment extends Fragment {
         peoplePager.setAdapter(fragmentPagerAdapter);
         peoplePager.setOffscreenPageLimit(3);
         return view;
-    }
-
-    public void setCustomTheme(){
-        int primary = getActivity().getResources().getColor(R.color.peopleColorPrimary);
-        int secondary = getActivity().getResources().getColor(R.color.peopleColorPrimaryDark);
-        ColorDrawable colorDrawable = new ColorDrawable(primary);
-        ((ActionBarActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(colorDrawable);
-        if(Build.VERSION.SDK_INT==Build.VERSION_CODES.LOLLIPOP){
-            getActivity().getWindow().setNavigationBarColor(secondary);
-            getActivity().getWindow().setStatusBarColor(secondary);
-        }
     }
 
 

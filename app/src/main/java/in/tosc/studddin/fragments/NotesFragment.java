@@ -2,8 +2,6 @@ package in.tosc.studddin.fragments;
 
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -27,7 +25,7 @@ public class NotesFragment extends Fragment {
 
     ViewPager notesPager;
     FragmentStatePagerAdapter fragmentPagerAdapter;
-    ApplicationWrapper applicationWrapper; int p,s;
+    int p,s;
     NotesUploadFragment notesUploadFragment;
 
 
@@ -45,9 +43,9 @@ public class NotesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
-        //p = getActivity().getResources().getColor(R.color.notesColorPrimary);
-        //s = getActivity().getResources().getColor(R.color.notesColorPrimaryDark);
-        setCustomTheme();
+        p = getActivity().getResources().getColor(R.color.notesColorPrimary);
+        s = getActivity().getResources().getColor(R.color.notesColorPrimaryDark);
+        ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(),p,s);
 
         fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override
@@ -94,17 +92,6 @@ public class NotesFragment extends Fragment {
 
         notesUploadFragment.setImagePaths(paths, true);
 
-    }
-
-    public void setCustomTheme(){
-        int primary = getActivity().getResources().getColor(R.color.notesColorPrimary);
-        int secondary = getActivity().getResources().getColor(R.color.notesColorPrimaryDark);
-        ColorDrawable colorDrawable = new ColorDrawable(primary);
-        ((ActionBarActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(colorDrawable);
-        if(Build.VERSION.SDK_INT==Build.VERSION_CODES.LOLLIPOP){
-            getActivity().getWindow().setNavigationBarColor(secondary);
-            getActivity().getWindow().setStatusBarColor(secondary);
-        }
     }
     
 }
