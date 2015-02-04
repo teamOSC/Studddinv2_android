@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,10 +73,26 @@ public class PeopleSameInstituteFragment extends Fragment {
         search = (EditText) view.findViewById(R.id.people_search);
         lv = (ListView) view.findViewById(R.id.listviewpeople);
 
-        q = new MyAdapter3(getActivity(), 0, list3);
-        q.setNotifyOnChange(true);
+
 
         loaddata();
+
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                loaddataAfterSearch( editable.toString());
+            }
+        });
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -159,9 +177,7 @@ public class PeopleSameInstituteFragment extends Fragment {
 
     private void loaddata() {
 
-        for (int i = 0; i < list3.size(); i++) {
-            list3.remove(each);
-        }
+       list3.clear();
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         String currentuseremail = ParseUser.getCurrentUser().getString("email");
@@ -217,6 +233,89 @@ public class PeopleSameInstituteFragment extends Fragment {
 
                     }
 
+
+                    q = new MyAdapter3(getActivity(), 0, list3);
+                    q.notifyDataSetChanged();
+
+                    lv.setAdapter(q);
+                    progressBar.setVisibility(View.GONE);
+                    lv.setVisibility(View.VISIBLE);
+
+
+                    // The query was successful.
+                } else {
+                    // Something went wrong.
+                }
+            }
+        });
+
+
+    }
+
+
+    private void loaddataAfterSearch(String textSearch) {
+
+        list3.clear();
+
+        currentuser = ParseUser.getCurrentUser().getUsername();
+        String currentuseremail = ParseUser.getCurrentUser().getString("email");
+        String currentuserinterests = ParseUser.getCurrentUser().getString("INTERESTS");
+        String currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
+        String currentusername = ParseUser.getCurrentUser().getString("NAME");
+        String currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
+        userlocation = ParseUser.getCurrentUser().getParseGeoPoint("location");
+
+
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereMatches("NAME", "(" + textSearch + ")", "i");
+
+        if (currentuserinstituition != null)
+            query.whereMatches("INSTITUTE", "(" + currentuserinstituition + ")", "i");
+        query.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+
+
+                    for (ParseUser pu : objects) {
+                        //access the data associated with the ParseUser using the get method
+                        //pu.getString("key") or pu.get("key")
+
+                        if (!pu.getUsername().equals(currentuser)) {
+                            each = new EachRow3();
+                            each.cname = pu.getString("NAME");
+                            each.cinterests = pu.getString("INTERESTS");
+                            each.cqualification = pu.getString("QUALIFICATIONS");
+                            each.cinstituition = pu.getString("INSTITUTE");
+//                        each.cdistance = pu.getString("NAME");
+                            each.cusername = pu.getString("username");
+                            ParseGeoPoint temploc = pu.getParseGeoPoint("location");
+                            if (temploc != null && temploc.getLatitude() != 0) {
+                                if (userlocation != null) {
+                                    each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
+                                } else {
+                                    each.cdistance = "13 km";
+                                }
+                            } else {
+                                each.cdistance = "16 km";
+                            }
+
+                            try {
+                                each.fileObject = (ParseFile) pu.get("image");
+
+                            } catch (Exception e1) {
+                                System.out.print("nahh");
+                            }
+
+
+                            list3.add(each);
+
+                        }
+
+                    }
+
+
+                    q = new MyAdapter3(getActivity(), 0, list3);
+                    q.notifyDataSetChanged();
 
                     lv.setAdapter(q);
                     progressBar.setVisibility(View.GONE);
