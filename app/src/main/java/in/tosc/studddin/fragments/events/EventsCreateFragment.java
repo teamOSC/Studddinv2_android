@@ -33,8 +33,8 @@ import in.tosc.studddin.customview.MaterialEditText;
 public class EventsCreateFragment extends Fragment {
 
     Button create;
-    View v;
-    private HashMap<String, String> events;
+    static View v;
+    private static HashMap<String, String> events;
     ImageButton setDate;
     ImageButton setTime;
 
@@ -138,7 +138,7 @@ public class EventsCreateFragment extends Fragment {
 
 
 
-    private class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
+    public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
 
         @Override
         public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -158,7 +158,7 @@ public class EventsCreateFragment extends Fragment {
         }
     }
 
-    private class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
+    public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
 
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
