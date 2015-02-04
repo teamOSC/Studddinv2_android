@@ -1,6 +1,7 @@
 package in.tosc.studddin;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -19,12 +20,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.parse.ParseImageView;
 import com.parse.ParseUser;
+
+import java.lang.reflect.Array;
 
 import in.tosc.studddin.externalapi.UserDataFields;
 import in.tosc.studddin.utils.ParseCircularImageView;
@@ -113,7 +118,7 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-
+/*
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActivity().getApplicationContext(),
                 R.layout.drawer_simple_list_item,
@@ -126,6 +131,15 @@ public class NavigationDrawerFragment extends Fragment {
                         "Events",
                         "Account"
                 }));
+*/
+        mDrawerListView.setAdapter(new NavigationDrawerAdapter(new String[]{
+                "Feeds",
+                "Notes",
+                "People",
+                "Listings",
+                "Events",
+                "Account"
+        }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
 
@@ -312,4 +326,75 @@ public class NavigationDrawerFragment extends Fragment {
         void onNavigationDrawerItemSelected(int position);
 
     }
+
+    private class NavigationDrawerAdapter extends BaseAdapter {
+
+        String[] mCategoryMap;
+
+        public NavigationDrawerAdapter(String[] mCategoryMap) {
+
+            this.mCategoryMap = mCategoryMap;
+        }
+
+        @Override
+        public int getCount() {
+            // TODO Auto-generated method stub
+            return Array.getLength(mCategoryMap);
+        }
+
+        @Override
+        public String getItem(int pos) {
+            // TODO Auto-generated method stub
+            return mCategoryMap[pos];
+        }
+
+        @Override
+        public long getItemId(int pos) {
+            // TODO Auto-generated method stub
+            return pos;
+        }
+
+        @Override
+        public View getView(int pos, View convertView, ViewGroup parent) {
+
+            View rowView;
+
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                rowView = inflater.inflate(R.layout.row_navigation_drawer, null);
+            } else {
+                rowView = convertView;
+            }
+
+            ImageView navigationIcon = (ImageView) rowView.findViewById(R.id.icon_navigation);
+            TextView navigationTitle = (TextView) rowView.findViewById(R.id.title_navigation);
+
+            navigationTitle.setText(mCategoryMap[pos]);
+            //navigationTitle.setTextColor(Color.WHITE);
+            navigationIcon.setBackgroundResource(R.drawable.ic_launcher);
+
+            String s = mCategoryMap[pos];
+            if (s.equals("Feeds")) {
+                navigationIcon.setBackgroundResource(R.drawable.feeds);
+
+            } else if (s.equals("Notes")) {
+                navigationIcon.setBackgroundResource(R.drawable.notes);
+
+            } else if (s.equals("People")) {
+                navigationIcon.setBackgroundResource(R.drawable.people);
+
+            } else if (s.equals("Listings")) {
+                navigationIcon.setBackgroundResource(R.drawable.listings);
+
+            } else if (s.equals("Events")) {
+                navigationIcon.setBackgroundResource(R.drawable.events);
+
+            } else if (s.equals("Account")) {
+                navigationIcon.setBackgroundResource(R.drawable.account);
+
+            }
+            return rowView;
+        }
+    }
+    
 }

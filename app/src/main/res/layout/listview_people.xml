@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
 
-        <com.parse.ParseImageView
+        <in.tosc.studddin.utils.ParseCircularImageView
             android:id="@+id/people_userimg"
             android:layout_width="0sp"
             android:layout_height="match_parent"
