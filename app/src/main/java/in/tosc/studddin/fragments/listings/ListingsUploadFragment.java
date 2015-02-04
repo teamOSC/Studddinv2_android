@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -65,11 +64,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
 
         View rootView;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            rootView = inflater.inflate(R.layout.fragment_listings_upload, container, false);
-        } else {
-            rootView = inflater.inflate(R.layout.fragment_listing_upload_gingerbread, container, false);
-        }
+        rootView = inflater.inflate(R.layout.fragment_listings_upload, container, false);
 
         listing = (MaterialEditText) rootView.findViewById(R.id.et_listing);
         mobile = (MaterialEditText) rootView.findViewById(R.id.et_mobile);
@@ -141,7 +136,8 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                     upload.put("listingName", listing.getText().toString());
                     upload.put("listingDesc", listing_desc.getText().toString());
                     upload.put("mobile", mobile.getText().toString());
-                    upload.put("location", point);
+                    if(point!=null)
+                        upload.put("location", point);
                     upload.put("category", category.getSelectedItem().toString());
 
                     upload.saveInBackground(new SaveCallback() {

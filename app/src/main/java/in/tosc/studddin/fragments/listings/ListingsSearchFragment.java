@@ -89,7 +89,7 @@ public class ListingsSearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_listings, container, false);
+        rootView = inflater.inflate(R.layout.fragment_listings_search, container, false);
         loader = (ProgressBarCircular) rootView.findViewById(R.id.progressBar);
         loader.setBackgroundColor(getResources().getColor(R.color.pink));
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listing_recycler_view);
@@ -153,6 +153,10 @@ public class ListingsSearchFragment extends Fragment {
                 ListingsFragment lFragment = (ListingsFragment) getParentFragment();
                 lFragment.goToOtherFragment(1);
                 return true;
+            case R.id.listing_my:
+                ListingsFragment fragment = (ListingsFragment) getParentFragment();
+                fragment.goToOtherFragment(2);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -195,6 +199,7 @@ public class ListingsSearchFragment extends Fragment {
                             onRefresh = false;
                             swipeRefreshLayout.setRefreshing(false);
                         }
+                        loader.setVisibility(View.GONE);
                         Toast.makeText(getActivity(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
                     }
                 }

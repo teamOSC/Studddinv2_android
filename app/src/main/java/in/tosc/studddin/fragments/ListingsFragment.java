@@ -23,6 +23,7 @@ import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
 import in.tosc.studddin.fragments.listings.ListingsSearchFragment;
 import in.tosc.studddin.fragments.listings.ListingsUploadFragment;
+import in.tosc.studddin.fragments.listings.MyListingsFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,25 +51,42 @@ public class ListingsFragment extends Fragment {
         int p = getActivity().getResources().getColor(R.color.listingsColorPrimary);
         int s = getActivity().getResources().getColor(R.color.listingsColorPrimaryDark);
         ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(), p, s);
+
         fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 switch (position) {
                     case 0:
-                        return (new ListingsSearchFragment());
+                        return new ListingsSearchFragment();
                     case 1:
-                        return (new ListingsUploadFragment());
+                        return new ListingsUploadFragment();
+                    case 2:
+                        return new MyListingsFragment();
                 }
                 return new ListingsSearchFragment();
             }
 
             @Override
             public int getCount() {
-                return 2;
+                return 3;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                switch (position) {
+                    case 0:
+                        return "Listings";
+                    case 1:
+                        return "Create Listing";
+                    case 2:
+                        return "My Listings";
+                }
+
+                return null;
             }
         };
 
-        listingsPager = (ViewPager) rootView.findViewById(R.id.notes_pager);
+        listingsPager = (ViewPager) rootView.findViewById(R.id.listings_pager);
         listingsPager.setAdapter(fragmentPagerAdapter);
 
         return rootView;
