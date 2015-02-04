@@ -338,6 +338,7 @@ public class SignupDataFragment extends Fragment implements
             relation.add(user);
             object.saveInBackground();
         }
+
         stringBuilder.setLength(stringBuilder.length() - 1);
         user.put(UserDataFields.USER_INTERESTS, stringBuilder.toString());
 
