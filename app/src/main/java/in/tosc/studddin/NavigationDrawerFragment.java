@@ -27,6 +27,7 @@ import com.parse.ParseImageView;
 import com.parse.ParseUser;
 
 import in.tosc.studddin.externalapi.UserDataFields;
+import in.tosc.studddin.utils.ParseCircularImageView;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -128,7 +129,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
 
-        mProfilePic = ((ParseImageView) mDrawerLinearLayout.findViewById(R.id.nav_drawer_profile_pic));
+        mProfilePic = ((ParseCircularImageView) mDrawerLinearLayout.findViewById(R.id.nav_drawer_profile_pic));
         mProfilePic.setPlaceholder(getResources().getDrawable(R.drawable.com_facebook_profile_default_icon));
         mProfilePic.setParseFile(ParseUser.getCurrentUser().getParseFile(UserDataFields.USER_IMAGE));
 
