@@ -32,20 +32,9 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
             android:hint="Listing Name"
-            android:textCursorDrawable="@drawable/text_cursor_cyan"
-            app:baseColor="@color/search_color"
-            app:primaryColor="@color/colorPrimaryDark" />
-
-        <in.tosc.studddin.customview.MaterialEditText
-            android:id="@+id/listing_desc"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:hint="Listing Description"
-            android:inputType="textMultiLine"
-            android:maxLength="100"
-            android:maxLines="3"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
             app:baseColor="@color/search_color"
             app:primaryColor="@color/colorPrimaryDark" />
@@ -57,7 +46,23 @@
             android:layout_marginTop="20dp"
             android:digits="0123456789+"
             android:hint="Mobile"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
             android:inputType="phone"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            app:baseColor="@color/search_color"
+            app:primaryColor="@color/colorPrimaryDark" />
+
+        <in.tosc.studddin.customview.MaterialEditText
+            android:id="@+id/listing_desc"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="Listing Description"
+            android:maxLength="100"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:imeOptions="actionDone"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
             app:baseColor="@color/search_color"
             app:primaryColor="@color/colorPrimaryDark" />

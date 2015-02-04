@@ -1,17 +1,16 @@
 package in.tosc.studddin.fragments;
 
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
 import in.tosc.studddin.fragments.events.EventsCreateFragment;
 import in.tosc.studddin.fragments.events.EventsListFragment;
@@ -32,9 +31,6 @@ public class EventsFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
-        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.eventsColorPrimary));
-        actionBar.setBackgroundDrawable(colorDrawable);
         super.onCreate(savedInstanceState);
     }
 
@@ -43,6 +39,10 @@ public class EventsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_events, container, false);
+        int p = getActivity().getResources().getColor(R.color.eventsColorPrimary);
+        int s = getActivity().getResources().getColor(R.color.eventsColorPrimaryDark);
+        ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(), p, s);
+
         fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -87,7 +87,6 @@ public class EventsFragment extends Fragment {
     public void goToOtherFragment(int position) {
         eventsPager.setCurrentItem(position);
     }
-
 
 
 }

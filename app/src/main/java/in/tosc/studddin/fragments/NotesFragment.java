@@ -2,18 +2,17 @@ package in.tosc.studddin.fragments;
 
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
 import in.tosc.studddin.fragments.notes.NotesSearchFragment;
 import in.tosc.studddin.fragments.notes.NotesUploadFragment;
@@ -26,7 +25,7 @@ public class NotesFragment extends Fragment {
 
     ViewPager notesPager;
     FragmentStatePagerAdapter fragmentPagerAdapter;
-
+    int p,s;
     NotesUploadFragment notesUploadFragment;
 
 
@@ -36,9 +35,6 @@ public class NotesFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
-        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.notesColorPrimary));
-        actionBar.setBackgroundDrawable(colorDrawable);
         super.onCreate(savedInstanceState);
     }
 
@@ -47,7 +43,9 @@ public class NotesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
-
+        p = getActivity().getResources().getColor(R.color.notesColorPrimary);
+        s = getActivity().getResources().getColor(R.color.notesColorPrimaryDark);
+        ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(),p,s);
 
         fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override
@@ -94,6 +92,6 @@ public class NotesFragment extends Fragment {
 
         notesUploadFragment.setImagePaths(paths, true);
 
-
     }
+    
 }

@@ -12,14 +12,14 @@
 
         <com.parse.ParseImageView
             android:id="@+id/nav_drawer_cover_picture"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:src="@drawable/ic_abstract" />
 
-        <com.parse.ParseImageView
+        <in.tosc.studddin.utils.ParseCircularImageView
             android:id="@+id/nav_drawer_profile_pic"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:layout_gravity="bottom|left"
             android:layout_margin="10dp"
             android:src="@drawable/com_facebook_profile_default_icon" />

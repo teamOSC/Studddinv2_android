@@ -25,6 +25,8 @@
             android:layout_height="0dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
             android:hint="@string/user_username"
             android:inputType="textEmailAddress"
             android:textAlignment="center"
