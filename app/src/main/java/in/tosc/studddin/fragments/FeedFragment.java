@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,7 +38,6 @@ import java.util.List;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
-import in.tosc.studddin.externalapi.UserDataFields;
 import in.tosc.studddin.utils.ProgressBarCircular;
 import in.tosc.studddin.utils.Utilities;
 
@@ -63,7 +62,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     private FeedRootAdapter mAdapter;
     private RecyclerView recyclerView;
     private MaterialEditText searchEditText;
-    ActionBarActivity actionBarActivity;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     public FeedFragment() {
@@ -79,9 +77,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
-        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.feedColorPrimary));
-        actionBar.setBackgroundDrawable(colorDrawable);
         super.onCreate(savedInstanceState);     
         setHasOptionsMenu(true);
         
@@ -90,13 +85,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        actionBarActivity = (ActionBarActivity) getActivity();
-        // create ContextThemeWrapper from the original Activity Context with the custom theme
-        //Context contextyo = new ContextThemeWrapper(getActivity().getApplicationContext(), R.style.AppThemeEvents);
-        // clone the inflater using the ContextThemeWrapper
-        //LayoutInflater localInflater = inflater.cloneInContext(contextyo);
-        
         rootView = inflater.inflate(R.layout.fragment_feed, container, false);
+        setCustomTheme();
         searchEditText = (MaterialEditText) rootView.findViewById(R.id.feed_search);
         searchEditText.setOnKeyListener(this);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.feed_recycler_view);
@@ -445,4 +435,17 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             setData(parseObjects, isLoaded, string);
         }
     }
+
+    public void setCustomTheme(){
+        int primary = getActivity().getResources().getColor(R.color.feedColorPrimary);
+        int secondary = getActivity().getResources().getColor(R.color.feedColorPrimaryDark);
+        ColorDrawable colorDrawable = new ColorDrawable(primary);
+        ((ActionBarActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(colorDrawable);
+        if(Build.VERSION.SDK_INT==Build.VERSION_CODES.LOLLIPOP){
+            getActivity().getWindow().setNavigationBarColor(secondary);
+            getActivity().getWindow().setStatusBarColor(secondary);
+        }
+    }
+
+
 }

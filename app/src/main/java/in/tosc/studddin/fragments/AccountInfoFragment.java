@@ -4,10 +4,10 @@ package in.tosc.studddin.fragments;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,9 +81,6 @@ public class AccountInfoFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
-        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.accountColorPrimary));
-        actionBar.setBackgroundDrawable(colorDrawable);
         super.onCreate(savedInstanceState);
     }
 
@@ -92,6 +89,7 @@ public class AccountInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_account_info, container, false);
+        setCustomTheme();
         userInfo = new HashMap<>();
         init();
         try {
@@ -389,6 +387,18 @@ public class AccountInfoFragment extends Fragment {
                 }
         );
     }
+
+    public void setCustomTheme(){
+        int primary = getActivity().getResources().getColor(R.color.accountColorPrimary);
+        int secondary = getActivity().getResources().getColor(R.color.accountColorPrimaryDark);
+        ColorDrawable colorDrawable = new ColorDrawable(primary);
+        ((ActionBarActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(colorDrawable);
+        if(Build.VERSION.SDK_INT==Build.VERSION_CODES.LOLLIPOP){
+            getActivity().getWindow().setNavigationBarColor(secondary);
+            getActivity().getWindow().setStatusBarColor(secondary);
+        }
+    }
+    
 }
 
 

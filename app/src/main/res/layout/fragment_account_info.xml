@@ -38,7 +38,7 @@
                 android:layout_weight="2"
                 android:orientation="vertical">
 
-                <TextView
+                <in.tosc.studddin.utils.typefacetextview
                     android:id="@+id/account_info_fullname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -47,9 +47,10 @@
                     android:gravity="center"
                     android:text="@string/user_name"
                     android:textColor="#000000"
-                    android:textSize="30sp" />
+                    android:textSize="30sp"
+                    app:typeface="fonts/Gotham-Book.ttf"/>
 
-                <TextView
+                <in.tosc.studddin.utils.typefacetextview
                     android:id="@+id/account_info_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -58,8 +59,10 @@
                     android:gravity="center"
                     android:text="@string/email_id"
                     android:textAlignment="center"
+                    android:padding="5dp"
                     android:textColor="#888888"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    app:typeface="fonts/Gotham-Light.ttf"/>
             </LinearLayout>
 
 
