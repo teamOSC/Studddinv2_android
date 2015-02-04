@@ -109,7 +109,7 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="8dp"
 
-                android:layout_weight="0.6"
+                android:layout_weight="0.475"
                 android:background="@android:drawable/ic_menu_compass"
                 android:gravity="center" />
 

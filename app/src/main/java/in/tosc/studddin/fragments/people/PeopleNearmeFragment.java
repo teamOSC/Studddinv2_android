@@ -192,6 +192,14 @@ public class PeopleNearmeFragment extends Fragment {
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint("location");
 
 
+        // DUMMY DATA SO THAT IT DISPLAYS SOMETHING
+        if (userlocation==null ||  userlocation.getLatitude() == 0)
+        {
+            userlocation = new ParseGeoPoint(28.7434552 , 77.1205612);
+        }
+
+
+
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereNear("location", userlocation);
 
@@ -265,6 +273,12 @@ public class PeopleNearmeFragment extends Fragment {
         currentusername = ParseUser.getCurrentUser().getString("NAME");
         currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint("location");
+
+ // DUMMY DATA SO THAT IT DISPLAYS SOMETHING
+        if (userlocation==null ||  userlocation.getLatitude() == 0)
+        {
+           userlocation = new ParseGeoPoint(28.7434552 , 77.1205612);
+        }
 
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
