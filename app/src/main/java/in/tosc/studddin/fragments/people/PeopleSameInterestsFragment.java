@@ -3,7 +3,6 @@ package in.tosc.studddin.fragments.people;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,21 +17,17 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.parse.FindCallback;
 import com.parse.GetDataCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -228,13 +223,13 @@ public class PeopleSameInterestsFragment extends Fragment {
             list3.add(each);
         }
 
-        //FIXME: NPE
+        //FIXME: NPE/*
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                q.notifyDataSetChanged();
-                progressBar.setVisibility(View.GONE);
-                lv.setVisibility(View.VISIBLE);
+                //q.notifyDataSetChanged();
+                //progressBar.setVisibility(View.GONE);
+                //lv.setVisibility(View.VISIBLE);
             }
         });
     }

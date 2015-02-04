@@ -2,6 +2,7 @@
 <resources>
     <color name="signin_guest">#BDBDBD</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
     <color name="edittext_color">#009688</color>
     <color name="search_color">#982360</color>
     <color name="search_grey">#9E9E9E</color>

@@ -7,14 +7,18 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary">
         <com.parse.ParseImageView
             android:id="@+id/nav_drawer_cover_picture"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:src="@drawable/ic_abstract" />
+        </FrameLayout>
 
         <in.tosc.studddin.utils.ParseCircularImageView
             android:id="@+id/nav_drawer_profile_pic"
@@ -30,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:background="#ccc"
+        android:background="@color/white"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
