@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="13dp">
+
+    <ImageView
+        android:id="@+id/icon_navigation"
+        android:layout_width="24dp"
+        android:layout_height="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="18dp"
+        android:layout_centerVertical="true" />
+
+    <in.tosc.studddin.utils.typefacetextview
+        android:id="@+id/title_navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/icon_navigation"
+        android:layout_centerVertical="true"
+        android:paddingRight="30dp"
+        android:textSize="15sp"
+        app:typeface="fonts/Gotham-Book.ttf"/>
+
+</RelativeLayout>

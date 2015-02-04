@@ -227,9 +227,9 @@ public class PeopleSameInterestsFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //q.notifyDataSetChanged();
-                //progressBar.setVisibility(View.GONE);
-                //lv.setVisibility(View.VISIBLE);
+                q.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
+                lv.setVisibility(View.VISIBLE);
             }
         });
     }
