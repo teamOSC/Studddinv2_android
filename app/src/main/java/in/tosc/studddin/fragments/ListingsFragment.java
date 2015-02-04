@@ -87,7 +87,10 @@ public class ListingsFragment extends Fragment {
         };
 
         listingsPager = (ViewPager) rootView.findViewById(R.id.listings_pager);
-        listingsPager.setAdapter(fragmentPagerAdapter);
+        //FIXME : figure out why exaclt the NPE is here, and fix it
+        try {
+            listingsPager.setAdapter(fragmentPagerAdapter);
+        } catch (Exception e) {}
 
         return rootView;
     }
