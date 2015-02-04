@@ -48,7 +48,7 @@ public class NotesSearchFragment extends Fragment {
     private String mParam2;
     GridView notesGridView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private List<ParseObject> notesListParseObject;
+
     private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, uploadedBy;
 
     private boolean onRefresh = false;
@@ -134,6 +134,7 @@ public class NotesSearchFragment extends Fragment {
 
 
 
+
         notesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -154,10 +155,6 @@ public class NotesSearchFragment extends Fragment {
             public void onClick(View v) {
                 goToUploadFragment();
 
-//                String unzipLocation = "/mnt/sdcard/Notes";
-//
-//                NotesUnzip d = new NotesUnzip(zipFile, unzipLocation);
-//                d.unzip();
             }
         });
 

@@ -81,6 +81,14 @@
                 android:gravity="center"
                 android:text="Type"
                 android:textColor="#000000" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/event_delete"
+                android:background="@drawable/cross"
+                android:layout_below="@+id/event_location"
+                android:visibility="gone"
+                />
         </RelativeLayout>
 
     </RelativeLayout>
