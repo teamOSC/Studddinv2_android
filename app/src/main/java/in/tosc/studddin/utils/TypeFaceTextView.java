@@ -6,9 +6,9 @@ import android.util.AttributeSet;
 /**
  * Created by yogesh on 2/2/15.
  */
-public class typefacetextview extends android.widget.TextView {
+public class TypeFaceTextView extends android.widget.TextView {
 
-    public typefacetextview(Context context, AttributeSet attrs) {
+    public TypeFaceTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         for (int i = 0; i < attrs.getAttributeCount(); i++) {
             /**

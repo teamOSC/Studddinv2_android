@@ -1,6 +1,7 @@
 package in.tosc.studddin;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -24,6 +25,10 @@ import in.tosc.studddin.fragments.PeopleFragment;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+    
+    public static final String TAG = "MainActivity";
+    public static final boolean DEBUG = ApplicationWrapper.LOG_DEBUG;
+    public static final boolean INFO = ApplicationWrapper.LOG_INFO;
 
     String[] paths;
     Toolbar toolbar;
@@ -73,14 +78,14 @@ public class MainActivity extends ActionBarActivity
         switch (position) {
             case 0:
             default:
-                Log.d("Studdd.in", "feed fragment");
+                if (DEBUG) Log.d(TAG, "feed fragment");
                 mTitle = "Feeds";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, FeedFragment.newInstance())
                         .commit();
                 break;
             case 1:
-                Log.d("Studdd.in", "notes fragment");
+                if (DEBUG) Log.d(TAG, "notes fragment");
                 mTitle = "Notes";
                 this.getApplicationContext().setTheme(R.style.AppThemeNotes);
                 fragmentManager.beginTransaction()
@@ -88,7 +93,7 @@ public class MainActivity extends ActionBarActivity
                         .commit();
                 break;
             case 2:
-                Log.d("Studdd.in", "people fragment");
+                if (DEBUG) Log.d(TAG, "people fragment");
                 mTitle = "People";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new PeopleFragment())
@@ -96,21 +101,21 @@ public class MainActivity extends ActionBarActivity
                 break;
 
             case 3:
-                Log.d("Studdd.in", "listings fragment");
+                if (DEBUG) Log.d(TAG, "listings fragment");
                 mTitle = "Listings";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new ListingsFragment())
                         .commit();
                 break;
             case 4:
-                Log.d("Studdd.in", "events fragment");
+                if (DEBUG) Log.d(TAG, "events fragment");
                 mTitle = "Events";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new EventsFragment())
                         .commit();
                 break;
             case 5:
-                Log.d("Studd.in", "account info");
+                if (DEBUG) Log.d(TAG, "account info");
                 mTitle = "Account";
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new AccountInfoFragment())

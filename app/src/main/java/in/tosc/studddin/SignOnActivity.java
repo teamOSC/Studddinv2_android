@@ -14,6 +14,9 @@ import com.parse.ParseFacebookUtils;
 import in.tosc.studddin.fragments.signon.SignOnFragment;
 
 public class SignOnActivity extends ActionBarActivity {
+    public static final String TAG = "SignOnActivity";
+    public static final boolean DEBUG = ApplicationWrapper.LOG_DEBUG;
+    public static final boolean INFO = ApplicationWrapper.LOG_INFO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +57,7 @@ public class SignOnActivity extends ActionBarActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("SignOnActivity", "onActivityResult called");
+        if (DEBUG) Log.d(TAG, "onActivityResult called");
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag("SignOnFragment");
         if (fragment != null)

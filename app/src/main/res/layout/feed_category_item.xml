@@ -26,7 +26,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="1" />
 
-            <in.tosc.studddin.utils.typefacetextview
+            <in.tosc.studddin.utils.TypeFaceTextView
                 android:id="@+id/feed_item_text_view"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

@@ -124,7 +124,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                 && (pUser.isAuthenticated())
                 && (pUser.getSessionToken() != null)
                 && (pUser.getBoolean(UserDataFields.USER_FULLY_REGISTERED))) {
-            Log.d("SignOnFragment", pUser.getUsername() + pUser.getSessionToken());
+            Log.d(TAG, pUser.getUsername() + pUser.getSessionToken());
             Intent i = new Intent(getActivity(), MainActivity.class);
             startActivity(i);
 
@@ -250,6 +250,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                     try {
                         fullyRegistered = user.getBoolean(UserDataFields.USER_FULLY_REGISTERED);
                     } catch (Exception e) {
+                        Log.w(TAG, "could not get fully registered data", e);
                     }
 
                     if (user.isNew() || (!fullyRegistered)) {

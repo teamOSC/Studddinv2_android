@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
@@ -15,6 +16,9 @@ import com.parse.ParseUser;
  * Created by championswimmer on 25/1/15.
  */
 public class ApplicationWrapper extends Application {
+    public static final boolean LOG_DEBUG = true;
+    public static final boolean LOG_INFO = true;
+
     @Override
     public void onCreate() {
         super.onCreate();

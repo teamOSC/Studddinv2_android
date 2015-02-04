@@ -38,7 +38,7 @@
                 android:layout_weight="2"
                 android:orientation="vertical">
 
-                <in.tosc.studddin.utils.typefacetextview
+                <in.tosc.studddin.utils.TypeFaceTextView
                     android:id="@+id/account_info_fullname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                     android:textSize="30sp"
                     app:typeface="fonts/Gotham-Book.ttf"/>
 
-                <in.tosc.studddin.utils.typefacetextview
+                <in.tosc.studddin.utils.TypeFaceTextView
                     android:id="@+id/account_info_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

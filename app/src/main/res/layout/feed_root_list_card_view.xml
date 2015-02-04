@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <in.tosc.studddin.utils.typefacetextview
+        <in.tosc.studddin.utils.TypeFaceTextView
             android:id="@+id/feed_category_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

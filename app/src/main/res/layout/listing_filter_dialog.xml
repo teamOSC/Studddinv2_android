@@ -6,7 +6,7 @@
     android:layout_margin="@dimen/activity_vertical_margin"
     android:orientation="vertical">
 
-    <in.tosc.studddin.utils.typefacetextview
+    <in.tosc.studddin.utils.TypeFaceTextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
