@@ -134,7 +134,7 @@
                     app:floatingLabel="highlight"
                     app:primaryColor="@color/colorPrimaryDark" />
 
-                <in.tosc.studddin.customview.MaterialEditText
+                <in.tosc.studddin.customview.BubbleCompletionView
                     android:id="@+id/user_interests"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
