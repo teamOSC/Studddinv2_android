@@ -24,11 +24,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
 import in.tosc.studddin.utils.FloatingActionButton;
-import in.tosc.studddin.utils.MakeZip;
 
 /**
  * NotesUploadFragment
@@ -42,6 +42,7 @@ public class NotesUploadFragment extends Fragment {
     private Button attachButton;
     private FloatingActionButton uploadButton;
     private EditText topicNameEdTxt, branchNameEdTxt, subjectNameEdTxt;
+    private ArrayList<ParseFile> parseFileList;
     private String topicNameString = "", branchNameString = "", subjectNameString = "";
 
     public NotesUploadFragment() {
@@ -73,15 +74,17 @@ public class NotesUploadFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View rootView = inflater.inflate(R.layout.fragment_notes_upload, container, false);
-        //Log.d("Raghav", "ID = " + getTag());
+
 
         attachButton = (Button) rootView.findViewById(R.id.notes_attach);
         uploadButton = (FloatingActionButton) rootView.findViewById(R.id.notes_upload);
         topicNameEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_topic);
         branchNameEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_branch);
         subjectNameEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_subject);
+
+        parseFileList = new ArrayList<>();
 
         attachButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,62 +119,55 @@ public class NotesUploadFragment extends Fragment {
                             Toast.LENGTH_SHORT).show();
 
                 } else {
+
                     if (imagePaths.length != 0) {
 
-                        MakeZip makeZip = new MakeZip(imagePaths, zipFileName);
+                        final ProgressDialog notesUploadProgress = new ProgressDialog(getActivity());
+                        notesUploadProgress.setMessage(getString(R.string.notes_uploading));
+                        notesUploadProgress.setCancelable(false);
+                        notesUploadProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        notesUploadProgress.show();
 
-                        makeZip.zip();
 
-                        File file = new File("/mnt/sdcard/noteszipfile.zip");
 
-                        if(file.length() < 10485760) {
-                            byte[] zipByte = new byte[(int) file.length()];
-                            try {
-                                Log.d("Raghav", "File Found");
-                                FileInputStream fileInputStream = new FileInputStream(file);
-                                fileInputStream.read(zipByte);
-
-                            } catch (FileNotFoundException e) {
-                                Log.d("Raghav", "File Not Found.");
-
-                            } catch (IOException e1) {
-                                Log.d("Raghav", "Error Reading The File.");
-
+                        for(int i = 0; i < imagePaths.length; i++){
+                            byte[] imageToBeUploaded = convertToByteArray(imagePaths[i]);
+                            if(imageToBeUploaded == null) {
+                                Toast.makeText(getActivity(), "File size beyond limit", Toast.LENGTH_SHORT)
+                                        .show();
                             }
 
-                            ParseFile parseFile = new ParseFile("notes.zip", zipByte);
-                            parseFile.saveInBackground();
+                            ParseFile parseFile = new ParseFile("notes_images", imageToBeUploaded);
 
-                            final ProgressDialog notesUploadProgress = new ProgressDialog(getActivity());
-                            notesUploadProgress.setMessage(getString(R.string.notes_uploading));
-                            notesUploadProgress.setCancelable(true);
-                            notesUploadProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                            notesUploadProgress.show();
-
-
-                            ParseObject uploadNotes = new ParseObject("Notes");
-
-                            uploadNotes.put("imageZip", parseFile);
-                            uploadNotes.put("userName", ParseUser.getCurrentUser().getString("NAME"));
-                            uploadNotes.put("subjectName", subjectNameString);
-                            uploadNotes.put("topicName", topicNameString);
-                            uploadNotes.put("branchName", branchNameString);
-                            uploadNotes.put("collegeName", "DTU");
-
-                            uploadNotes.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    // uploading.setVisibility(View.GONE);
-                                    Log.d("Raghav", "File Uploaded");
-                                    notesUploadProgress.dismiss();
-                                    Toast.makeText(getActivity(), getString(R.string.upload_complete),
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        } else {
-                           Toast.makeText(getActivity(), "File size beyond limit", Toast.LENGTH_SHORT)
-                                   .show();
+                            try {
+                                parseFile.save();
+                            } catch (ParseException e) {
+                                Log.d("Raghav", "Error in parsefile");
+                            }
+                            parseFileList.add(parseFile);
                         }
+
+
+                        ParseObject uploadNotes = new ParseObject("Notes");
+
+                        uploadNotes.addAll("notesImages", parseFileList);
+                        uploadNotes.put("userName", ParseUser.getCurrentUser().getString("NAME"));
+                        uploadNotes.put("subjectName", subjectNameString);
+                        uploadNotes.put("topicName", topicNameString);
+                        uploadNotes.put("branchName", branchNameString);
+                        uploadNotes.put("collegeName", "DTU");
+
+                        uploadNotes.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                // uploading.setVisibility(View.GONE);
+                                Log.d("Raghav", "File Uploaded");
+                                notesUploadProgress.dismiss();
+                                Toast.makeText(getActivity(), getString(R.string.upload_complete),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                     } else {
 
                         Toast.makeText(getActivity(), "Please select an Image to upload", Toast.LENGTH_SHORT).show();
@@ -180,6 +176,30 @@ public class NotesUploadFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+    private static byte[] convertToByteArray(String imagePath) {
+        File file = new File(imagePath);
+
+        if (file.length() < 10485760) {
+            byte[] imageByte = new byte[(int) file.length()];
+            try {
+                Log.d("Raghav", "File Found");
+                FileInputStream fileInputStream = new FileInputStream(file);
+                fileInputStream.read(imageByte);
+
+            } catch (FileNotFoundException e) {
+                Log.d("Raghav", "File Not Found.");
+
+            } catch (IOException e1) {
+                Log.d("Raghav", "Error Reading The File.");
+
+            }
+            return imageByte;
+
+        } else {
+            return null;
+        }
     }
 
 }
