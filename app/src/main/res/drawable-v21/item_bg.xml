@@ -6,12 +6,12 @@
         android:drawable="@android:color/white"></item>
     <item android:state_pressed="true">
         <shape>
-            <solid android:color="#BDBDBD" />
+            <solid android:color="#E0E0E0" />
         </shape>
     </item>
     <item>
         <shape>
-            <solid android:color="#FAFAFA" />
+            <solid android:color="#E0E0E0" />
         </shape>
     </item>
 </ripple>
