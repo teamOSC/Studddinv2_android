@@ -2,6 +2,7 @@ package in.tosc.studddin;
 
 import android.app.Application;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 
@@ -25,8 +26,7 @@ public class ApplicationWrapper extends Application {
     }
 
     public static void setCustomTheme(ActionBarActivity actionBarActivity, int primary, int secondary){
-        ColorDrawable colorDrawable = new ColorDrawable(primary);
-        actionBarActivity.getSupportActionBar().setBackgroundDrawable(colorDrawable);
+        actionBarActivity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(primary));
         if(Build.VERSION.SDK_INT==Build.VERSION_CODES.LOLLIPOP){
             actionBarActivity.getWindow().setNavigationBarColor(secondary);
             actionBarActivity.getWindow().setStatusBarColor(secondary);
