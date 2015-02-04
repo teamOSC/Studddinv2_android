@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
@@ -55,7 +54,7 @@ import java.util.regex.Pattern;
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
-import in.tosc.studddin.externalapi.UserDataFields;
+import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.utils.FutureUtils;
 import in.tosc.studddin.utils.FutureUtils.FutureShit;
 
@@ -241,10 +240,10 @@ public class SignupDataFragment extends Fragment implements
     }
 
     private void autoFillData() {
-        setDataToFields(R.id.user_name, UserDataFields.USER_NAME);
-        setDataToFields(R.id.user_dob, UserDataFields.USER_DOB);
-        setDataToFields(R.id.user_institute, UserDataFields.USER_INSTITUTE);
-        setDataToFields(R.id.user_email, UserDataFields.USER_EMAIL);
+        setDataToFields(R.id.user_name, ParseTables.Users.USER_NAME);
+        setDataToFields(R.id.user_dob, ParseTables.Users.USER_DOB);
+        setDataToFields(R.id.user_institute, ParseTables.Users.USER_INSTITUTE);
+        setDataToFields(R.id.user_email, ParseTables.Users.USER_EMAIL);
     }
 
     private void initializeEditTexts(int id) {
@@ -256,44 +255,44 @@ public class SignupDataFragment extends Fragment implements
     }
 
     private void getInput() {
-        input.put(UserDataFields.USER_NAME, getStringFromEditText(R.id.user_name));
-        input.put(UserDataFields.USER_PASSWORD, getStringFromEditText(R.id.user_password));
-        input.put(UserDataFields.USER_DOB, getStringFromEditText(R.id.user_dob));
-        input.put(UserDataFields.USER_INSTITUTE, getStringFromEditText(R.id.user_institute));
-        input.put(UserDataFields.USER_EMAIL, getStringFromEditText(R.id.user_email));
-        input.put(UserDataFields.USER_QUALIFICATIONS, getStringFromEditText(R.id.user_qualifications));
+        input.put(ParseTables.Users.USER_NAME, getStringFromEditText(R.id.user_name));
+        input.put(ParseTables.Users.USER_PASSWORD, getStringFromEditText(R.id.user_password));
+        input.put(ParseTables.Users.USER_DOB, getStringFromEditText(R.id.user_dob));
+        input.put(ParseTables.Users.USER_INSTITUTE, getStringFromEditText(R.id.user_institute));
+        input.put(ParseTables.Users.USER_EMAIL, getStringFromEditText(R.id.user_email));
+        input.put(ParseTables.Users.USER_QUALIFICATIONS, getStringFromEditText(R.id.user_qualifications));
     }
 
     private boolean validateInput() {
         //validate input stored in input
         boolean f = true;
-        if (input.get(UserDataFields.USER_NAME).isEmpty()) {
+        if (input.get(ParseTables.Users.USER_NAME).isEmpty()) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.enter_name), Toast.LENGTH_LONG).show();
             f = false;
         }
-        if (input.get(UserDataFields.USER_PASSWORD).isEmpty()) {
+        if (input.get(ParseTables.Users.USER_PASSWORD).isEmpty()) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.enter_name), Toast.LENGTH_LONG).show();
             f = false;
         }
 
-        if (f && input.get(UserDataFields.USER_INSTITUTE).isEmpty()) {
+        if (f && input.get(ParseTables.Users.USER_INSTITUTE).isEmpty()) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.enter_institute), Toast.LENGTH_LONG).show();
             f = false;
         }
 
-        if (f && input.get(UserDataFields.USER_EMAIL).isEmpty()) {
+        if (f && input.get(ParseTables.Users.USER_EMAIL).isEmpty()) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.enter_email),
                     Toast.LENGTH_LONG).show();
             f = false;
         }
 
-        if (f && input.get(UserDataFields.USER_QUALIFICATIONS).isEmpty()) {
+        if (f && input.get(ParseTables.Users.USER_QUALIFICATIONS).isEmpty()) {
             Toast.makeText(getActivity(), getString(R.string.enter_qualifications),
                     Toast.LENGTH_LONG).show();
             f = false;
         }
 
-        if (f && !isEmailValid(input.get(UserDataFields.USER_EMAIL))) {
+        if (f && !isEmailValid(input.get(ParseTables.Users.USER_EMAIL))) {
             Toast.makeText(getActivity(), "Please enter a valid email id",
                     Toast.LENGTH_LONG).show();
             f = false;
@@ -322,13 +321,13 @@ public class SignupDataFragment extends Fragment implements
 
     private void pushInputToParse() throws ParseException {
         ParseUser user = ParseUser.getCurrentUser();
-        user.setUsername(input.get(UserDataFields.USER_EMAIL));
-        user.setPassword(input.get(UserDataFields.USER_PASSWORD));
-        user.setEmail(input.get(UserDataFields.USER_EMAIL));
+        user.setUsername(input.get(ParseTables.Users.USER_EMAIL));
+        user.setPassword(input.get(ParseTables.Users.USER_PASSWORD));
+        user.setEmail(input.get(ParseTables.Users.USER_EMAIL));
 
-        user.put(UserDataFields.USER_NAME, input.get(UserDataFields.USER_NAME));
-        user.put(UserDataFields.USER_INSTITUTE, input.get(UserDataFields.USER_INSTITUTE));
-        user.put(UserDataFields.USER_QUALIFICATIONS, input.get(UserDataFields.USER_QUALIFICATIONS));
+        user.put(ParseTables.Users.USER_NAME, input.get(ParseTables.Users.USER_NAME));
+        user.put(ParseTables.Users.USER_INSTITUTE, input.get(ParseTables.Users.USER_INSTITUTE));
+        user.put(ParseTables.Users.USER_QUALIFICATIONS, input.get(ParseTables.Users.USER_QUALIFICATIONS));
 
         StringBuilder stringBuilder = new StringBuilder("") ;
 
@@ -341,19 +340,19 @@ public class SignupDataFragment extends Fragment implements
         }
 
         stringBuilder.setLength(stringBuilder.length() - 1);
-        user.put(UserDataFields.USER_INTERESTS, stringBuilder.toString());
+        user.put(ParseTables.Users.USER_INTERESTS, stringBuilder.toString());
 
         if (profileBitmap != null) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             profileBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             ParseFile profile = new ParseFile("profilePicture.png", stream.toByteArray());
             profile.save();
-            user.put(UserDataFields.USER_IMAGE, profile);
+            user.put(ParseTables.Users.USER_IMAGE, profile);
         }
         try{
-            ParseFile cover = new ParseFile("coverPicture.png",userDataBundle.getByteArray(UserDataFields.USER_COVER));
+            ParseFile cover = new ParseFile("coverPicture.png",userDataBundle.getByteArray(ParseTables.Users.USER_COVER));
             cover.save();
-            user.put(UserDataFields.USER_COVER, cover);
+            user.put(ParseTables.Users.USER_COVER, cover);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -362,10 +361,10 @@ public class SignupDataFragment extends Fragment implements
         }
         if (currentUserLoc != null) {
             ParseGeoPoint geoPoint = new ParseGeoPoint(currentUserLoc.getLatitude(), currentUserLoc.getLongitude());
-            user.put(UserDataFields.USER_LOCATION, geoPoint);
+            user.put(ParseTables.Users.USER_LOCATION, geoPoint);
         }
 
-        user.put(UserDataFields.USER_FULLY_REGISTERED, true);
+        user.put(ParseTables.Users.USER_FULLY_REGISTERED, true);
 
         if (user.getSessionToken() != null) {
             Log.d(TAG, "saving user in background");
@@ -411,7 +410,7 @@ public class SignupDataFragment extends Fragment implements
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] bytes = stream.toByteArray();
-        userDataBundle.putByteArray(UserDataFields.USER_COVER,bytes);
+        userDataBundle.putByteArray(ParseTables.Users.USER_COVER,bytes);
     }
 
     @Override
