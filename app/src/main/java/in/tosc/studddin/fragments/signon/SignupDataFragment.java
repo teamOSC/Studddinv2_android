@@ -2,12 +2,14 @@ package in.tosc.studddin.fragments.signon;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -19,12 +21,9 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -191,18 +190,35 @@ public class SignupDataFragment extends Fragment implements
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getInput();
+                final ProgressDialog ringProgressDialog = ProgressDialog.show(getActivity(), "Signing up...", "", true);
+                ringProgressDialog.setCancelable(false);
 
-                boolean f = validateInput();
+                new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        getInput();
 
-                if (f) {
-                    try {
-                        pushInputToParse();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                        boolean f = validateInput();
+
+                        if (f) {
+                            try {
+                                pushInputToParse();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                        return null;
                     }
-                    startNextActivity();
-                }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        super.onPostExecute(aVoid);
+                        ringProgressDialog.cancel();
+                        startNextActivity();
+                    }
+                }.execute();
+
             }
         });
 
@@ -285,11 +301,6 @@ public class SignupDataFragment extends Fragment implements
             Toast.makeText(getActivity(), "Please enter a valid email id",
                     Toast.LENGTH_LONG).show();
             f = false;
-        }
-
-        if (f && input.get(UserDataFields.USER_INTERESTS) == null) {
-            input.remove(UserDataFields.USER_INTERESTS);
-            input.put(UserDataFields.USER_INTERESTS, getActivity().getString(R.string.empty_interests));
         }
 
         return f;
