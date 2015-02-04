@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -32,7 +33,7 @@ public class ListingsFragment extends Fragment {
 
 
     ViewPager listingsPager;
-    FragmentPagerAdapter fragmentPagerAdapter;
+    FragmentStatePagerAdapter fragmentPagerAdapter;
 
     public ListingsFragment() {
         // Required empty public constructor
@@ -47,12 +48,12 @@ public class ListingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_listings, container, false);
         int p = getActivity().getResources().getColor(R.color.listingsColorPrimary);
         int s = getActivity().getResources().getColor(R.color.listingsColorPrimaryDark);
         ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(), p, s);
 
-        fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
+        fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 switch (position) {
@@ -74,23 +75,25 @@ public class ListingsFragment extends Fragment {
             @Override
             public CharSequence getPageTitle(int position) {
                 switch (position) {
-                    case 0:
-                        return "Listings";
                     case 1:
                         return "Create Listing";
                     case 2:
                         return "My Listings";
+                    case 0:
+                    default:
+                        return "Listings";
                 }
-
-                return null;
             }
         };
 
         listingsPager = (ViewPager) rootView.findViewById(R.id.listings_pager);
-        //FIXME : figure out why exaclt the NPE is here, and fix it
+
         try {
             listingsPager.setAdapter(fragmentPagerAdapter);
-        } catch (Exception e) {}
+        } catch (NullPointerException e) {
+            if (listingsPager == null) Log.e("Listings", "listingsPager = null", e);
+            if (fragmentPagerAdapter == null) Log.e("Listings", "fragmentPagerAdapter = null", e);
+        }
 
         return rootView;
     }
