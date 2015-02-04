@@ -74,61 +74,62 @@ public class NotesCustomDialog extends Dialog {
         downloadNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO write the code to download all the notes
-
 
                 Log.d("Raghav", "" + position + notesSubjectName.get(position) + notesTopicName.get(position) + notesCollegeName.get(position) +
                         notesBranchName.get(position) );
+
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Notes");
                 query.whereEqualTo("subjectName", notesSubjectName.get(position));
                 query.whereEqualTo("topicName", notesTopicName.get(position));
                 query.whereEqualTo("collegeName", notesCollegeName.get(position));
                 query.whereEqualTo("branchName", notesBranchName.get(position));
 
+
+                Toast.makeText(getContext(), "Download Start", Toast.LENGTH_SHORT).show();
                 query.getFirstInBackground(new GetCallback<ParseObject>() {
                     @Override
-                    public void done(ParseObject notesZipParseObject, ParseException e) {
-                        ParseFile notesZipParseFile = (ParseFile) notesZipParseObject.get("imageZip");
+                    public void done(ParseObject notesParseObject, ParseException e) {
 
-                        String zipFileURL = notesZipParseFile.getUrl();
-                        Log.d("Raghav", ""+ zipFileURL);
-//                        File myFile = new File("/mnt/sdcard/noteszipfile " + notesSubjectName.get(position) +" "+
+                        ArrayList<ParseFile> parseFileList = (ArrayList<ParseFile>) notesParseObject.get("notesImages");
+                        if(!parseFileList.isEmpty()) {
+                            for(ParseFile pFile : parseFileList) {
+
+                                ParseFile parseFile = pFile;
+                                String imageFileURL = parseFile.getUrl();
+                                Uri uri = Uri.parse(imageFileURL);
+                                DownloadManager.Request dr = new DownloadManager.Request(uri);
+                                dr.setTitle("Notes: " + notesTopicName.get(position)+ ".jpg");
+                                dr.setDescription("");
+
+                                dr.setDestinationInExternalPublicDir("/LearnHut_Notes/",
+                                        notesTopicName.get(position) + ".jpg");
+                                downloadManager.enqueue(dr);
+
+                            }
+                        }
+
+//                        ParseFile notesParseFile = (ParseFile) notesZipParseObject.get("imageZip");
+//
+//                        String zipFileURL = notesZipParseFile.getUrl();
+//                        Log.d("Raghav", ""+ zipFileURL);
+//                        Uri uri = Uri.parse(zipFileURL);
+//                        DownloadManager.Request dr = new DownloadManager.Request(uri);
+//                        dr.setTitle("Notes: " + notesTopicName.get(position) +" "+
+//                                notesSubjectName.get(position) + " "+
+//                                notesBranchName.get(position) +".zip");
+//                        dr.setDescription("");
+//
+//                        dr.setDestinationInExternalPublicDir("/LearnHut_Notes/", "noteszipfile " + notesSubjectName.get(position) +" "+
 //                                notesTopicName.get(position) + " "+
 //                                notesCollegeName.get(position) + " " +
 //                                notesBranchName.get(position) +".zip");
-                        Uri uri = Uri.parse(zipFileURL);
-                        DownloadManager.Request dr = new DownloadManager.Request(uri);
-                        dr.setTitle("Notes: " + notesTopicName.get(position) +" "+
-                                notesSubjectName.get(position) + " "+
-                                notesBranchName.get(position) +".zip");
-                        dr.setDescription("");
-
-                        dr.setDestinationInExternalPublicDir("/LearnHut_Notes/", "noteszipfile " + notesSubjectName.get(position) +" "+
-                                notesTopicName.get(position) + " "+
-                                notesCollegeName.get(position) + " " +
-                                notesBranchName.get(position) +".zip");
-                        downloadManager.enqueue(dr);
-                        Toast.makeText(getContext(), "Download Start", Toast.LENGTH_SHORT).show();
-
+//                        downloadManager.enqueue(dr);
+//                        Toast.makeText(getContext(), "Download Start", Toast.LENGTH_SHORT).show();
+//
 
                     }
                 });
-//                new Thread(new Runnable() {
-//                    public void run() {
-//                        while (true) {
-//                            String unzipLocation = "/mnt/sdcard/LearnHut_Notes/";
-//                            String zipFile1 = "/mnt/sdcard/noteszipfile.zip";
 //
-//                            String zipFile = "/mnt/sdcard/LearnHut_Notes/noteszipfile " + notesSubjectName.get(position) +" "+
-//                                    notesTopicName.get(position) + " "+
-//                                    notesCollegeName.get(position) + " " +
-//                                    notesBranchName.get(position) +".zip";
-//                            NotesUnzip d = new NotesUnzip(zipFile, unzipLocation);
-//                            d.unzip();
-//                            Log.i("Raghav", "Unzipping Running in parallel");
-//                        }
-//                    }
-//                }).start();
 
             }
         });
