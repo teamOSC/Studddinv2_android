@@ -30,7 +30,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:src="@drawable/imageview_selector_listing_camera"
-        android:layout_alignBottom="@+id/upload_progress"
+        android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/listing_upload"
         android:layout_toStartOf="@+id/listing_upload" />
 
@@ -39,14 +39,15 @@
         android:layout_width="250dp"
         android:layout_height="fill_parent"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/upload_progress"
-        android:layout_alignEnd="@+id/upload_progress">
+        android:layout_marginLeft="50dp"
+        android:layout_marginStart="50dp">
 
         <in.tosc.studddin.customview.MaterialEditText
             android:id="@+id/et_listing"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:singleLine="true"
             android:imeOptions="actionNext"
             android:hint="Listing Name"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
@@ -60,6 +61,7 @@
             android:layout_marginTop="20dp"
             android:digits="0123456789+"
             android:hint="Mobile"
+            android:singleLine="true"
             android:imeOptions="actionNext"
             android:inputType="phone"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
@@ -75,6 +77,7 @@
             android:inputType="textMultiLine"
             android:maxLength="100"
             android:maxLines="3"
+            android:imeOptions="actionDone"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
             app:baseColor="@color/search_color"
             app:primaryColor="@color/colorPrimaryDark" />

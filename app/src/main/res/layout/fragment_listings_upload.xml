@@ -46,6 +46,7 @@
             android:layout_marginTop="20dp"
             android:digits="0123456789+"
             android:hint="Mobile"
+            android:singleLine="true"
             android:imeOptions="actionNext"
             android:inputType="phone"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
@@ -61,6 +62,7 @@
             android:maxLength="100"
             android:inputType="textMultiLine"
             android:maxLines="3"
+            android:imeOptions="actionDone"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
             app:baseColor="@color/search_color"
             app:primaryColor="@color/colorPrimaryDark" />
