@@ -333,12 +333,19 @@ public class SignupDataFragment extends Fragment implements
         user.put(UserDataFields.USER_NAME, input.get(UserDataFields.USER_NAME));
         user.put(UserDataFields.USER_INSTITUTE, input.get(UserDataFields.USER_INSTITUTE));
         user.put(UserDataFields.USER_QUALIFICATIONS, input.get(UserDataFields.USER_QUALIFICATIONS));
+
+        StringBuilder stringBuilder = new StringBuilder("") ;
+
         for (Integer i : selectedInterests) {
             ParseObject object = interests.get(i);
+            stringBuilder.append(object.get("name").toString()+",");
             ParseRelation<ParseUser> relation = object.getRelation("users");
             relation.add(user);
             object.saveInBackground();
         }
+        stringBuilder.setLength(stringBuilder.length() - 1);
+        user.put(UserDataFields.USER_INTERESTS, stringBuilder.toString());
+
         if (profileBitmap != null) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             profileBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
