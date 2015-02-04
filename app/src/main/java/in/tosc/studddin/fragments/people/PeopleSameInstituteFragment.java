@@ -50,7 +50,7 @@ public class PeopleSameInstituteFragment extends Fragment {
 
     EditText search;
 
-    ArrayList<EachRow3> list3 = new ArrayList<PeopleSameInstituteFragment.EachRow3>();
+    ArrayList<EachRow3> list3 = new ArrayList<EachRow3>();
     EachRow3 each;
     MyAdapter3 q;
     ListView lv;
