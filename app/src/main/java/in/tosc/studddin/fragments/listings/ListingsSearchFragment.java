@@ -49,6 +49,7 @@ import java.util.List;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.fragments.ListingsFragment;
+import in.tosc.studddin.utils.ParseCircularImageView;
 import in.tosc.studddin.utils.ProgressBarCircular;
 import in.tosc.studddin.utils.Utilities;
 
@@ -316,7 +317,7 @@ public class ListingsSearchFragment extends Fragment {
                 this.owner_name = (TextView) v.findViewById(R.id.owner_name);
                 this.mobile = (TextView) v.findViewById(R.id.mobile);
                 this.listing_distance = (TextView) v.findViewById(R.id.listing_distance);
-                this.listing_image = (ParseImageView) v.findViewById(R.id.listing_image);
+                this.listing_image = (ParseCircularImageView) v.findViewById(R.id.listing_image);
                 this.listing_desc = (TextView) v.findViewById(R.id.listing_desc);
             }
         }
