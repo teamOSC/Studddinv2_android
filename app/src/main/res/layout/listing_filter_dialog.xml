@@ -14,7 +14,8 @@
         android:layout_marginRight="5dp"
         android:text="Sort by:"
         android:textSize="20sp"
-        app:typeface="fonts/Gotham-Bold.ttf"/>
+        app:typeface="fonts/Gotham-Bold.ttf"
+        android:layout_gravity="center_horizontal"/>
 
     <Spinner
         android:id="@+id/spinner"
@@ -23,7 +24,8 @@
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="3dp"
         android:layout_marginRight="3dp"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:padding="10dp"/>
 
     <android.support.v7.internal.widget.TintCheckBox
         android:id="@+id/cb_books"

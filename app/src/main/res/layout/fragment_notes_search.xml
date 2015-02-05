@@ -19,34 +19,45 @@
             android:layout_gravity="center">
 
 
-                <FrameLayout
+                <LinearLayout
                     android:id="@+id/feed_search_frame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/selector_card_background">
+                    android:background="@color/notesColorPrimary"
+                    android:orientation="horizontal">
 
 
                     <in.tosc.studddin.customview.MaterialEditText
                         android:id="@+id/notes_search"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+
+                        android:layout_weight="4"
+                        android:descendantFocusability="beforeDescendants"
                         android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
                         android:layout_marginTop="5dp"
                         android:hint="@string/feed_search_hint"
                         android:imeOptions="actionSearch"
                         android:textCursorDrawable="@drawable/text_cursor_cyan"
-                        app:baseColor="@color/search_color"
+                        app:baseColor="@color/white"
                         app:floatingLabel="highlight"
                         app:maxCharacters="25"
                         app:primaryColor="@color/colorPrimaryDark"
-                        app:singleLineEllipsis="true" />
+                        app:singleLineEllipsis="true"
+                        app:errorColor="@color/white"
+                        app:BaseErrorColor="@color/notesColorPrimaryDark"/>
+
+                    <ImageButton
+                        android:id="@+id/searchblahblah"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/abc_ic_search_api_mtrl_alpha" />
 
 
-                </FrameLayout>
+                </LinearLayout>
 
         </RelativeLayout>
         <android.support.v4.widget.SwipeRefreshLayout

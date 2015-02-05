@@ -50,6 +50,7 @@ import java.util.List;
 import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.fragments.ListingsFragment;
+import in.tosc.studddin.utils.ParseCircularImageView;
 import in.tosc.studddin.utils.ProgressBarCircular;
 import in.tosc.studddin.utils.Utilities;
 
@@ -317,7 +318,7 @@ public class ListingsSearchFragment extends Fragment {
                 this.owner_name = (TextView) v.findViewById(R.id.owner_name);
                 this.mobile = (TextView) v.findViewById(R.id.mobile);
                 this.listing_distance = (TextView) v.findViewById(R.id.listing_distance);
-                this.listing_image = (ParseImageView) v.findViewById(R.id.listing_image);
+                this.listing_image = (ParseCircularImageView) v.findViewById(R.id.listing_image);
                 this.listing_desc = (TextView) v.findViewById(R.id.listing_desc);
             }
         }
@@ -339,7 +340,7 @@ public class ListingsSearchFragment extends Fragment {
             List<String> spinnerList = new ArrayList<>();
             spinnerList.add("Nearest");
             spinnerList.add("Recent");
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, spinnerList);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), R.layout.simple_filter_textview, spinnerList);
             AlertDialog.Builder filterDialog = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater = getActivity().getLayoutInflater();
             v = inflater.inflate(R.layout.listing_filter_dialog, null);

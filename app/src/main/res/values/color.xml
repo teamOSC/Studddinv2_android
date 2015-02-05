@@ -27,6 +27,7 @@
     <!--Events color -->
     <color name="eventsColorPrimary">#3F51B5</color>
     <color name="eventsColorPrimaryDark">#303F9F</color>
+    <color name="eventsColorPrimaryPressed">#aa3F51B5</color>
     <!--Account color -->
     <color name="accountColorPrimary">#F44336</color>
     <color name="accountColorPrimaryDark">#D32F2F</color>
