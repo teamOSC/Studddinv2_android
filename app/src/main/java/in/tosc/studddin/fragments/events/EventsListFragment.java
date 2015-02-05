@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.fragments.EventsFragment;
 
 /**
@@ -271,9 +272,9 @@ public class EventsListFragment extends Fragment {
             parents = new ArrayList<Parent>();
             ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
                     "Events");
-            query.orderByAscending("createdAt");
+            query.orderByAscending(ParseTables.Events.CREATED_AT);
             if(check){
-                query.whereEqualTo("createdBy", ParseUser.getCurrentUser().getString("NAME"));
+                query.whereEqualTo(ParseTables.Events.CREATED_BY, ParseUser.getCurrentUser().getString("NAME"));
             }
             try {
                 listings = query.find();
@@ -282,12 +283,12 @@ public class EventsListFragment extends Fragment {
             }
             for (ParseObject listing : listings) {
                 Parent parent = new Parent();
-                parent.setEventName((String) listing.get("title"));
-                parent.setEventDate(listing.get("date") + "  " + listing.get("time"));
-                parent.setEventDescription((String) listing.get("description"));
-                parent.setEventType((String) listing.get("type"));
-                parent.setEvent_user((String) listing.get("createdBy"));
-                parent.setEvent_location((String) listing.get("location_des"));
+                parent.setEventName((String) listing.get(ParseTables.Events.TITLE));
+                parent.setEventDate(listing.get(ParseTables.Events.DATE) + "  " + listing.get(ParseTables.Events.TIME));
+                parent.setEventDescription((String) listing.get(ParseTables.Events.DESCRIPTION));
+                parent.setEventType((String) listing.get(ParseTables.Events.TYPE));
+                parent.setEvent_user((String) listing.get(ParseTables.Events.CREATED_BY));
+                parent.setEvent_location((String) listing.get(ParseTables.Events.LOCATION_DES));
                 parents.add(parent);
             }
             return null;

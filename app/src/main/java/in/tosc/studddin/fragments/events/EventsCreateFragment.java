@@ -26,6 +26,7 @@ import java.util.HashMap;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.externalapi.ParseTables;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -83,35 +84,35 @@ public class EventsCreateFragment extends Fragment {
     }
 
     public void addInput() {
-        events.put("title", ((MaterialEditText) v.findViewById(R.id.event_name)).getText() + "");
-        events.put("description", ((MaterialEditText) v.findViewById(R.id.event_description)).getText() + "");
-        events.put("type", ((MaterialEditText) v.findViewById(R.id.event_type)).getText() + "");
-        events.put("location", ((MaterialEditText) v.findViewById(R.id.event_location)).getText() + "");
-        events.put("user", ParseUser.getCurrentUser().getString("NAME"));
+        events.put(ParseTables.Events.TITLE, ((MaterialEditText) v.findViewById(R.id.event_name)).getText() + "");
+        events.put(ParseTables.Events.DESCRIPTION, ((MaterialEditText) v.findViewById(R.id.event_description)).getText() + "");
+        events.put(ParseTables.Events.TYPE, ((MaterialEditText) v.findViewById(R.id.event_type)).getText() + "");
+        events.put(ParseTables.Events.LOCATION, ((MaterialEditText) v.findViewById(R.id.event_location)).getText() + "");
+        events.put(ParseTables.Events.USER, ParseUser.getCurrentUser().getString(ParseTables.Users.USER_NAME));
     }
 
     private boolean checkIfEmpty() {
-        if (events.get("title").isEmpty()) {
+        if (events.get(ParseTables.Events.TITLE).isEmpty()) {
             Toast.makeText(getActivity().getApplicationContext(), "Please enter title", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (events.get("description").isEmpty()) {
+        if (events.get(ParseTables.Events.DESCRIPTION).isEmpty()) {
             Toast.makeText(getActivity().getApplicationContext(), "Please enter description", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (events.get("type").isEmpty()) {
+        if (events.get(ParseTables.Events.TYPE).isEmpty()) {
             Toast.makeText(getActivity().getApplicationContext(), "Please enter type", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (events.get("location").isEmpty()) {
+        if (events.get(ParseTables.Events.LOCATION).isEmpty()) {
             Toast.makeText(getActivity().getApplicationContext(), "Please enter location", Toast.LENGTH_LONG).show();
             return false;
         }
-        if(!events.containsKey("date")){
+        if(!events.containsKey(ParseTables.Events.DATE)){
             Toast.makeText(getActivity().getApplicationContext(), "Please enter date", Toast.LENGTH_LONG).show();
             return false;
         }
-        if(!events.containsKey("time")){
+        if(!events.containsKey(ParseTables.Events.TIME)){
             Toast.makeText(getActivity().getApplicationContext(), "Please enter time", Toast.LENGTH_LONG).show();
             return false;
         }
@@ -120,13 +121,13 @@ public class EventsCreateFragment extends Fragment {
 
     private void pushDataToParse() {
         ParseObject event = new ParseObject("Events");
-        event.put("title", events.get("title"));
-        event.put("description", events.get("description"));
-        event.put("type", events.get("type"));
-        event.put("location_des", events.get("location"));
-        event.put("date",events.get("date"));
-        event.put("time", events.get("time"));
-        event.put("createdBy", events.get("user"));
+        event.put(ParseTables.Events.TITLE, events.get("title"));
+        event.put(ParseTables.Events.DESCRIPTION, events.get("description"));
+        event.put(ParseTables.Events.TYPE, events.get("type"));
+        event.put(ParseTables.Events.LOCATION_DES, events.get("location"));
+        event.put(ParseTables.Events.DATE, events.get("date"));
+        event.put(ParseTables.Events.TIME, events.get("time"));
+        event.put(ParseTables.Events.CREATED_BY, events.get("user"));
         event.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -143,7 +144,7 @@ public class EventsCreateFragment extends Fragment {
         @Override
         public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             String date = new StringBuilder().append(dayOfMonth).append("/").append(monthOfYear).append("/").append(year).toString();
-            events.put("date", date);
+            events.put(ParseTables.Events.DATE, date);
             ((MaterialEditText)v.findViewById(R.id.event_date)).setText(date);
         }
 
@@ -173,7 +174,7 @@ public class EventsCreateFragment extends Fragment {
             }else {
                 time = new StringBuilder().append(hourOfDay).append(":").append(min).append(" am").toString();
             }
-            events.put("time", time);
+            events.put(ParseTables.Events.TIME, time);
             ((MaterialEditText)v.findViewById(R.id.event_time)).setText(time);
         }
 

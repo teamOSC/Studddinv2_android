@@ -34,4 +34,18 @@ public class ParseTables {
         public static final String LISTING_PNG = "listing.png";
         public static final String CREATED_AT = "createdAt";
     }
+
+    public static class Events {
+        public static final String TITLE = "title";
+        public static final String DESCRIPTION = "description";
+        public static final String TYPE = "type";
+        public static final String LOCATION = "location";
+        public static final String LOCATION_DES = "location_des";
+        public static final String USER = "user";
+        public static final String DATE = "date";
+        public static final String TIME = "time";
+        public static final String CREATED_BY = "createdBy";
+        public static final String CREATED_AT = "createdAt";
+
+    }
 }
