@@ -43,7 +43,7 @@ public class FacebookApi {
                         FbDataBundle.putString(ParseTables.Users.EMAIL, responseObject.getString("email"));
                         FbDataBundle.putString(ParseTables.Users.NAME, gu.getName());
                         FbDataBundle.putString(ParseTables.Users.USERNAME, gu.getUsername());
-                        FbDataBundle.putString(ParseTables.Users.CITY, gu.getLocation().getLocation().getCity());
+                        FbDataBundle.putString(ParseTables.Users.CITY, "" + gu.getLocation().getLocation().getCity());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
