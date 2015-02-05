@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="in.tosc.studddin.fragments.events.EventsCreateFragment"
-    android:scrollbarAlwaysDrawVerticalTrack="true"
-    >
+    android:scrollbarAlwaysDrawVerticalTrack="true">
 
     <ScrollView
         android:layout_width="match_parent"

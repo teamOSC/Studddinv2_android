@@ -143,7 +143,7 @@ public class MaterialEditText extends MultiAutoCompleteTextView {
 
         primaryColor = typedArray.getColor(R.styleable.MaterialEditText_primaryColor, baseColor);
         setFloatingLabelInternal(typedArray.getInt(R.styleable.MaterialEditText_floatingLabel, 0));
-        errorColor = typedArray.getColor(R.styleable.MaterialEditText_errorColor, Color.parseColor("#009688"));
+        errorColor = typedArray.getColor(R.styleable.MaterialEditText_errorColor, R.styleable.MaterialEditText_BaseErrorColor);
         maxCharacters = typedArray.getInt(R.styleable.MaterialEditText_maxCharacters, 0);
         singleLineEllipsis = typedArray.getBoolean(R.styleable.MaterialEditText_singleLineEllipsis, false);
         regularExpression = typedArray.getString(R.styleable.MaterialEditText_regexExpression);

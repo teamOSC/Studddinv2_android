@@ -30,8 +30,11 @@
                 android:textCursorDrawable="@drawable/text_cursor_cyan"
                 app:baseColor="@color/white"
                 app:maxCharacters="25"
+                app:floatingLabel="highlight"
                 app:primaryColor="@color/colorPrimaryDark"
-                app:singleLineEllipsis="true" />
+                app:singleLineEllipsis="true"
+                app:errorColor="@color/white"
+                app:BaseErrorColor="@color/colorPrimaryDark"/>
         </FrameLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
