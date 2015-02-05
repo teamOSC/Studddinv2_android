@@ -339,7 +339,7 @@ public class ListingsSearchFragment extends Fragment {
             List<String> spinnerList = new ArrayList<>();
             spinnerList.add("Nearest");
             spinnerList.add("Recent");
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, spinnerList);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), R.layout.simple_filter_textview, spinnerList);
             AlertDialog.Builder filterDialog = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater = getActivity().getLayoutInflater();
             v = inflater.inflate(R.layout.listing_filter_dialog, null);
