@@ -19,6 +19,8 @@
         </attr>
         <!-- the color for when something is wrong.(e.g. exceeding max characters) -->
         <attr name="errorColor" format="color" />
+        <!-- the base color for error.(e.g. exceeding max characters) -->
+        <attr name="BaseErrorColor" format="color" />
         <!-- characters count limit. 0 means no limit. -->
         <attr name="maxCharacters" format="integer" />
         <!-- whether to show the bottom ellipsis in singleLine mode -->

@@ -3,23 +3,20 @@
 
     <item android:state_pressed="true">
         <shape>
-            <solid android:color="@color/colorPrimaryDark" />
-            <corners android:radius="@dimen/bbuton_rounded_corner_radius" />
+            <solid android:color="@color/eventsColorPrimaryPressed" />
         </shape>
     </item>
 
     <item android:state_enabled="false">
         <shape>
-            <solid android:color="@color/colorPrimary" />
-            <corners android:radius="@dimen/bbuton_rounded_corner_radius" />
+            <solid android:color="@color/eventsColorPrimaryPressed" />
         </shape>
     </item>
 
 
     <item>
         <shape>
-            <solid android:color="@color/colorPrimary" />
-            <corners android:radius="@dimen/bbuton_rounded_corner_radius" />
+            <solid android:color="@color/eventsColorPrimaryDark" />
         </shape>
     </item>
 
