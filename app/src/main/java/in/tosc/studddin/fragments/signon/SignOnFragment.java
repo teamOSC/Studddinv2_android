@@ -329,7 +329,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                     boolean fullyRegistered = false;
                     try {
                         fullyRegistered = user.getBoolean(ParseTables.Users.USER_FULLY_REGISTERED);
-                    } catch (Exception e) {
+                    } catch (Exception ignored) {
                     }
 
                     if (user.isNew() || (!fullyRegistered)) {
@@ -390,13 +390,9 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                             getActivity(),
                             Plus.AccountApi.getAccountName(mGoogleApiClient),
                             "oauth2:" + Scopes.PLUS_LOGIN);
-                } catch (IOException transientEx) {
+                } catch (IOException | GoogleAuthException transientEx) {
                     // Network or server error, try later
                     Log.e(TAG, transientEx.toString());
-                } catch (UserRecoverableAuthException e) {
-                    Log.e(TAG, e.toString());
-                } catch (GoogleAuthException authEx) {
-                    Log.e(TAG, authEx.toString());
                 }
 
                 return token;
@@ -444,7 +440,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
             url = url.substring(0,
                     url.length() - 2)
                     + "400";
-            Bitmap bitmap = null;
+            Bitmap bitmap;
             bitmap = Utilities.downloadBitmap(url);
             return bitmap;
         }
@@ -465,7 +461,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
 
         protected Bitmap doInBackground(String... urls) {
             String url = urls[0];
-            Bitmap bitmap = null;
+            Bitmap bitmap;
             bitmap = Utilities.downloadBitmap(url);
             return bitmap;
         }
