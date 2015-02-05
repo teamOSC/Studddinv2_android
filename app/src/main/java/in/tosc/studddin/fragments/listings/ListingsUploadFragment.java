@@ -35,6 +35,7 @@ import java.util.List;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.utils.FloatingActionButton;
 import in.tosc.studddin.utils.ProgressBarCircular;
 
@@ -121,7 +122,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                 if (validate) {
                     uploading.setVisibility(View.VISIBLE);
                     ParseObject upload = new ParseObject("Listings");
-                    ParseGeoPoint point = ParseUser.getCurrentUser().getParseGeoPoint("location");
+                    ParseGeoPoint point = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.USER_LOCATION);
                     if (byteArray == null) {
                         Drawable drawable = getResources().getDrawable(R.drawable.listing_placeholder);
                         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
@@ -129,16 +130,16 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream);
                         byteArray = stream.toByteArray();
                     }
-                    ParseFile file = new ParseFile("listing.png", byteArray);
+                    ParseFile file = new ParseFile(ParseTables.Listings.LISTING_PNG, byteArray);
                     file.saveInBackground();
-                    upload.put("image", file);
-                    upload.put("ownerName", ParseUser.getCurrentUser().getString("NAME"));
-                    upload.put("listingName", listing.getText().toString());
-                    upload.put("listingDesc", listing_desc.getText().toString());
-                    upload.put("mobile", mobile.getText().toString());
+                    upload.put(ParseTables.Listings.IMAGE, file);
+                    upload.put(ParseTables.Listings.OWNER_NAME, ParseUser.getCurrentUser().getString("NAME"));
+                    upload.put(ParseTables.Listings.LISTING_NAME, listing.getText().toString());
+                    upload.put(ParseTables.Listings.LISTING_DESC, listing_desc.getText().toString());
+                    upload.put(ParseTables.Listings.MOBILE, mobile.getText().toString());
                     if(point!=null)
-                        upload.put("location", point);
-                    upload.put("category", category.getSelectedItem().toString());
+                        upload.put(ParseTables.Listings.LOCATION, point);
+                    upload.put(ParseTables.Listings.CATEGORY, category.getSelectedItem().toString());
 
                     upload.saveInBackground(new SaveCallback() {
                         @Override
