@@ -39,8 +39,6 @@
         android:divider="@color/grey"
         android:dividerHeight="0dp"
         android:listSelector="@drawable/item_bg" />
-    <!--android:layout_marginTop="10dp"-->
-    <!--/>-->
 
 </LinearLayout>
 
