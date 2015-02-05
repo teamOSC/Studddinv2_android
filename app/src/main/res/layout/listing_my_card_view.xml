@@ -8,13 +8,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp">
+        android:layout_height="wrap_content">
 
 
-        <com.parse.ParseImageView
+        <in.tosc.studddin.ui.ParseCircularImageView
             android:id="@+id/listing_image"
             android:layout_width="100dp"
-            android:layout_height="110dp"
+            android:layout_height="100dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
@@ -36,13 +36,22 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/listing_created_at"
+            android:id="@+id/listing_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/listing_name"
-            android:layout_alignRight="@+id/listing_name"
+            android:layout_alignStart="@+id/listing_name"
+            android:layout_alignLeft="@id/listing_name"
             android:layout_below="@+id/listing_name"
-            android:layout_toRightOf="@+id/listing_image"
+            android:text="New Text" />
+
+        <TextView
+            android:id="@+id/listing_created_at"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/listing_desc"
+            android:layout_alignStart="@+id/listing_desc"
+            android:layout_below="@+id/listing_desc"
             android:text="New Text" />
 
         <ImageView
@@ -50,19 +59,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/listing_delete"
             android:src="@android:drawable/ic_menu_delete"
-            android:layout_alignParentBottom="true"
+            android:layout_marginRight="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_alignTop="@id/listing_created_at"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/listing_desc"
-            android:layout_below="@+id/listing_created_at"
-            android:layout_alignLeft="@+id/listing_created_at"
-            android:layout_alignStart="@+id/listing_created_at" />
-
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>
