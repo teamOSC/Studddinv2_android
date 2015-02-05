@@ -73,7 +73,9 @@ public class AccountInfoFragment extends Fragment {
             a.reset();
         if (v != null) {
             v.clearAnimation();
-            v.startAnimation(a);
+            if (a != null) {
+                v.startAnimation(a);
+            }
             v.setVisibility(View.INVISIBLE);
         }
     }
@@ -121,7 +123,10 @@ public class AccountInfoFragment extends Fragment {
             //TODO: handle errors if any generated
         }
 
-        ParseFile profileFile = currentUser.getParseFile(ParseTables.Users.USER_IMAGE);
+        ParseFile profileFile = null;
+        if (currentUser != null) {
+            profileFile = currentUser.getParseFile(ParseTables.Users.USER_IMAGE);
+        }
         imageProfile.setParseFile(profileFile);
         imageProfile.loadInBackground();
     }
@@ -373,7 +378,7 @@ public class AccountInfoFragment extends Fragment {
                                         Toast.makeText(getActivity(), "Updated Password Successfully", Toast.LENGTH_LONG).show();
                                     } else {
                                         Toast.makeText(getActivity(), "Unable to update password : " + e.getMessage(),
-                                                Toast.LENGTH_LONG);
+                                                Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });

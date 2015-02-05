@@ -172,7 +172,7 @@ public class EventsCreateFragment extends Fragment {
                 hourOfDay = hourOfDay - 12;
                 time = new StringBuilder().append(hourOfDay).append(":").append(min).append(" pm").toString();
             }else {
-                time = new StringBuilder().append(hourOfDay).append(":").append(min).append(" am").toString();
+                time = String.valueOf(hourOfDay) + ":" + min + " am";
             }
             events.put(ParseTables.Events.TIME, time);
             ((MaterialEditText)v.findViewById(R.id.event_time)).setText(time);
