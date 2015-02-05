@@ -27,7 +27,7 @@
                     android:orientation="horizontal">
 
 
-                    <in.tosc.studddin.customview.MaterialEditText
+                    <in.tosc.studddin.ui.MaterialEditText
                         android:id="@+id/notes_search"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -80,7 +80,7 @@
     </LinearLayout>
 
 
-    <in.tosc.studddin.utils.AddFloatingActionButton
+    <in.tosc.studddin.ui.AddFloatingActionButton
         android:id="@+id/notes_button_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

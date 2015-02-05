@@ -11,7 +11,7 @@
         android:layout_height="120dp">
 
 
-        <in.tosc.studddin.utils.ParseCircularImageView
+        <in.tosc.studddin.ui.ParseCircularImageView
             android:id="@+id/listing_image"
             android:layout_width="100dp"
             android:layout_height="100dp"

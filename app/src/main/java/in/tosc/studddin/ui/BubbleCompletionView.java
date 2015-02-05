@@ -1,4 +1,4 @@
-package in.tosc.studddin.customview;
+package in.tosc.studddin.ui;
 
 import android.app.Activity;
 import android.content.Context;

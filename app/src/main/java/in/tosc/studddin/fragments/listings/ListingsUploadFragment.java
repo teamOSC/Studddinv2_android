@@ -34,10 +34,10 @@ import java.util.Date;
 import java.util.List;
 
 import in.tosc.studddin.R;
-import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.externalapi.ParseTables;
-import in.tosc.studddin.utils.FloatingActionButton;
-import in.tosc.studddin.utils.ProgressBarCircular;
+import in.tosc.studddin.ui.FloatingActionButton;
+import in.tosc.studddin.ui.ProgressBarCircular;
 
 /**
  * Created by Prempal on 1/25/2015.

@@ -1,4 +1,4 @@
-package in.tosc.studddin.utils;
+package in.tosc.studddin.ui;
 
 
 import android.animation.AnimatorSet;

@@ -25,7 +25,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import in.tosc.studddin.R;
-import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.externalapi.ParseTables;
 
 /**

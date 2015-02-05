@@ -1,4 +1,4 @@
-package in.tosc.studddin.utils;
+package in.tosc.studddin.ui;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -20,16 +20,14 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
-
-import com.parse.ParseImageView;
+import android.widget.ImageView;
 
 import in.tosc.studddin.R;
 
 /**
  * Created by yogesh on 4/2/15.
  */
-public class ParseCircularImageView extends ParseImageView {
+public class CircularImageView extends ImageView {
     // For logging purposes
     private static final String TAG = CircularImageView.class.getSimpleName();
 
@@ -50,26 +48,24 @@ public class ParseCircularImageView extends ParseImageView {
     private Paint paintSelectorBorder;
     private ColorFilter selectorFilter;
 
-    public ParseCircularImageView(Context context) {
+    public CircularImageView(Context context) {
         this(context, null, R.styleable.CircularImageViewStyle_circularImageViewDefault);
     }
 
-    public ParseCircularImageView(Context context, AttributeSet attrs) {
+    public CircularImageView(Context context, AttributeSet attrs) {
         this(context, attrs, R.styleable.CircularImageViewStyle_circularImageViewDefault);
     }
 
-    public ParseCircularImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CircularImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr);
     }
 
-    /*
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ParseCircularImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public CircularImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs, defStyleAttr);
     }
-    */
 
     /**
      * Initializes paint objects and sets desired attributes.
@@ -326,14 +322,14 @@ public class ParseCircularImageView extends ParseImageView {
 
     private int measureWidth(int measureSpec) {
         int result;
-        int specMode = View.MeasureSpec.getMode(measureSpec);
-        int specSize = View.MeasureSpec.getSize(measureSpec);
+        int specMode = MeasureSpec.getMode(measureSpec);
+        int specSize = MeasureSpec.getSize(measureSpec);
 
-        if (specMode == View.MeasureSpec.EXACTLY) {
+        if (specMode == MeasureSpec.EXACTLY) {
             // The parent has determined an exact size for the child.
             result = specSize;
         }
-        else if (specMode == View.MeasureSpec.AT_MOST) {
+        else if (specMode == MeasureSpec.AT_MOST) {
             // The child can be as large as it wants up to the specified size.
             result = specSize;
         }
@@ -347,13 +343,13 @@ public class ParseCircularImageView extends ParseImageView {
 
     private int measureHeight(int measureSpecHeight) {
         int result;
-        int specMode = View.MeasureSpec.getMode(measureSpecHeight);
-        int specSize = View.MeasureSpec.getSize(measureSpecHeight);
+        int specMode = MeasureSpec.getMode(measureSpecHeight);
+        int specSize = MeasureSpec.getSize(measureSpecHeight);
 
-        if (specMode == View.MeasureSpec.EXACTLY) {
+        if (specMode == MeasureSpec.EXACTLY) {
             // We were told how big to be
             result = specSize;
-        } else if (specMode == View.MeasureSpec.AT_MOST) {
+        } else if (specMode == MeasureSpec.AT_MOST) {
             // The child can be as large as it wants up to the specified size.
             result = specSize;
         } else {
@@ -438,8 +434,5 @@ public class ParseCircularImageView extends ParseImageView {
     public boolean isSelected() {
         return this.isSelected;
     }
-    
-    
 }
-
 

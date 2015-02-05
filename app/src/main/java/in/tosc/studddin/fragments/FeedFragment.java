@@ -38,8 +38,8 @@ import java.util.List;
 
 import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
-import in.tosc.studddin.customview.MaterialEditText;
-import in.tosc.studddin.utils.ProgressBarCircular;
+import in.tosc.studddin.ui.MaterialEditText;
+import in.tosc.studddin.ui.ProgressBarCircular;
 import in.tosc.studddin.utils.Utilities;
 
 /**

@@ -14,7 +14,7 @@
         android:background="@drawable/selector_card_background"
         android:orientation="horizontal">
 
-        <in.tosc.studddin.customview.MaterialEditText
+        <in.tosc.studddin.ui.MaterialEditText
             android:id="@+id/events_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

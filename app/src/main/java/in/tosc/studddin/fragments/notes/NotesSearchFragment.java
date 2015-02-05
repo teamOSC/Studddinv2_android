@@ -27,9 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.tosc.studddin.R;
-import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.fragments.NotesFragment;
-import in.tosc.studddin.utils.FloatingActionButton;
+import in.tosc.studddin.ui.FloatingActionButton;
 import in.tosc.studddin.utils.Utilities;
 
 /**

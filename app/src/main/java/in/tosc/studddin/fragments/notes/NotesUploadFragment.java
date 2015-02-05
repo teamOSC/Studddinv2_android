@@ -27,8 +27,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import in.tosc.studddin.R;
-import in.tosc.studddin.customview.MaterialEditText;
-import in.tosc.studddin.utils.FloatingActionButton;
+import in.tosc.studddin.ui.MaterialEditText;
+import in.tosc.studddin.ui.FloatingActionButton;
 
 /**
  * NotesUploadFragment

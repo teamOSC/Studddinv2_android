@@ -38,7 +38,7 @@
                 android:layout_weight="2"
                 android:orientation="vertical">
 
-                <in.tosc.studddin.utils.TypeFaceTextView
+                <in.tosc.studddin.ui.TypeFaceTextView
                     android:id="@+id/account_info_fullname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                     android:textSize="30sp"
                     app:typeface="fonts/Gotham-Book.ttf"/>
 
-                <in.tosc.studddin.utils.TypeFaceTextView
+                <in.tosc.studddin.ui.TypeFaceTextView
                     android:id="@+id/account_info_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
             android:animateLayoutChanges="true"
             android:orientation="horizontal">
 
-            <in.tosc.studddin.customview.MaterialEditText
+            <in.tosc.studddin.ui.MaterialEditText
                 android:id="@+id/account_info_institute"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -120,7 +120,7 @@
             android:animateLayoutChanges="true"
             android:orientation="horizontal">
 
-            <in.tosc.studddin.customview.MaterialEditText
+            <in.tosc.studddin.ui.MaterialEditText
                 android:id="@+id/account_info_qualification"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -163,7 +163,7 @@
             android:animateLayoutChanges="true"
             android:orientation="horizontal">
 
-            <in.tosc.studddin.customview.MaterialEditText
+            <in.tosc.studddin.ui.MaterialEditText
                 android:id="@+id/account_info_password"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -212,7 +212,7 @@
                 android:animateLayoutChanges="true"
                 android:orientation="horizontal">
 
-                <in.tosc.studddin.customview.MaterialEditText
+                <in.tosc.studddin.ui.MaterialEditText
                     android:id="@+id/account_info_new_password"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -249,7 +249,7 @@
                 android:animateLayoutChanges="true"
                 android:orientation="horizontal">
 
-                <in.tosc.studddin.customview.MaterialEditText
+                <in.tosc.studddin.ui.MaterialEditText
                     android:id="@+id/account_info_confirm_password"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

@@ -51,8 +51,8 @@ import java.util.regex.Pattern;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
-import in.tosc.studddin.customview.BubbleCompletionView;
-import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.ui.BubbleCompletionView;
+import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.utils.FutureUtils;
 import in.tosc.studddin.utils.FutureUtils.FutureShit;

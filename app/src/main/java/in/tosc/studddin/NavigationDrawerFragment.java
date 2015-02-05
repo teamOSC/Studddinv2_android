@@ -32,7 +32,7 @@ import com.parse.ParseUser;
 import java.lang.reflect.Array;
 
 import in.tosc.studddin.externalapi.ParseTables;
-import in.tosc.studddin.utils.ParseCircularImageView;
+import in.tosc.studddin.ui.ParseCircularImageView;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.

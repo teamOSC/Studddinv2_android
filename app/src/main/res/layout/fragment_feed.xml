@@ -17,7 +17,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="?attr/actionBarSize">
 
-            <in.tosc.studddin.customview.MaterialEditText
+            <in.tosc.studddin.ui.MaterialEditText
                 android:id="@+id/feed_search"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

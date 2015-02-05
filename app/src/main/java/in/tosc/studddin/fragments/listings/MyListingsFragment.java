@@ -27,8 +27,8 @@ import java.util.List;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
-import in.tosc.studddin.utils.ParseCircularImageView;
-import in.tosc.studddin.utils.ProgressBarCircular;
+import in.tosc.studddin.ui.ParseCircularImageView;
+import in.tosc.studddin.ui.ProgressBarCircular;
 import in.tosc.studddin.utils.Utilities;
 
 public class MyListingsFragment extends Fragment {

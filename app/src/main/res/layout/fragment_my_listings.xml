@@ -5,7 +5,7 @@
     android:orientation="vertical"
     tools:context="in.tosc.studddin.fragments.ListingsFragment">
 
-    <in.tosc.studddin.utils.ProgressBarCircular
+    <in.tosc.studddin.ui.ProgressBarCircular
         android:id="@+id/progressBar"
         android:layout_width="36dp"
         android:layout_height="36dp"

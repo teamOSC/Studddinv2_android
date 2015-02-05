@@ -42,11 +42,11 @@ import java.util.List;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
-import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.externalapi.FacebookApi;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.externalapi.TwitterApi;
-import in.tosc.studddin.utils.FloatingActionButton;
+import in.tosc.studddin.ui.FloatingActionButton;
 import in.tosc.studddin.utils.Utilities;
 
 

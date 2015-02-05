@@ -13,7 +13,7 @@
         android:background="@drawable/selector_card_background"
         android:orientation="horizontal">
 
-        <in.tosc.studddin.customview.MaterialEditText
+        <in.tosc.studddin.ui.MaterialEditText
             android:id="@+id/listing_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             app:singleLineEllipsis="true" />
     </LinearLayout>
 
-    <in.tosc.studddin.utils.ProgressBarCircular
+    <in.tosc.studddin.ui.ProgressBarCircular
         android:id="@+id/progressBar"
         android:layout_width="36dp"
         android:layout_height="36dp"

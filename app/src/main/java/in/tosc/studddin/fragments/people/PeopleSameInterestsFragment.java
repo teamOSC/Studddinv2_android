@@ -25,7 +25,6 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -33,14 +32,12 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
-import in.tosc.studddin.utils.ParseCircularImageView;
-import in.tosc.studddin.utils.ProgressBarCircular;
+import in.tosc.studddin.ui.ParseCircularImageView;
+import in.tosc.studddin.ui.ProgressBarCircular;
 
 
 public class PeopleSameInterestsFragment extends Fragment {

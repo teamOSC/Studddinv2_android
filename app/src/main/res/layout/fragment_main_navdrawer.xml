@@ -20,7 +20,7 @@
             android:src="@drawable/rsz_cover_placeholder"/>
         </FrameLayout>
 
-        <in.tosc.studddin.utils.ParseCircularImageView
+        <in.tosc.studddin.ui.ParseCircularImageView
             android:id="@+id/nav_drawer_profile_pic"
             android:layout_width="72dp"
             android:layout_height="72dp"
