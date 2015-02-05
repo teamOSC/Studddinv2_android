@@ -9,19 +9,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/feed_search_frame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginTop="?attr/actionBarSize"
-            android:background="@color/colorPrimary">
+    <LinearLayout
+        android:id="@+id/feed_search_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:layout_marginTop="?attr/actionBarSize">
 
             <in.tosc.studddin.customview.MaterialEditText
                 android:id="@+id/feed_search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:descendantFocusability="beforeDescendants"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
@@ -35,7 +36,15 @@
                 app:singleLineEllipsis="true"
                 app:errorColor="@color/white"
                 app:BaseErrorColor="@color/colorPrimaryDark"/>
-        </FrameLayout>
+            <ImageButton
+                android:id="@+id/searchblahblah"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/abc_ic_search_api_mtrl_alpha" />
+        </LinearLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayoutfeed"
