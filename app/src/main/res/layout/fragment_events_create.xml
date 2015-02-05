@@ -155,12 +155,11 @@
 
     <Button
         android:id="@+id/submit_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        android:layout_marginBottom="5dp"
         android:layout_weight="0"
-        android:background="@drawable/bbuton_primary_rounded"
+        android:background="@drawable/btn_sel"
         android:text="@string/submit"
         android:textColor="@android:color/white" />
     
