@@ -206,7 +206,7 @@ public class PeopleSameInterestsFragment extends Fragment {
         List<String> interestslist = Arrays.asList(currentuserinterests.split(","));
 
         for (int c = 0; c < interestslist.size(); c++) {
-            if (!interestslist.get(c).equals("") || !interestslist.get(c).equals(null)) {
+            if (!interestslist.get(c).equals("") || !(interestslist.get(c) == null)) {
 
 
                 ParseQuery<ParseUser> query = ParseUser.getQuery();
@@ -294,7 +294,7 @@ public class PeopleSameInterestsFragment extends Fragment {
         List<String> interestslist = Arrays.asList(currentuserinterests.split(","));
 
         for (int c = 0; c < interestslist.size(); c++) {
-            if (!interestslist.get(c).equals("") || !interestslist.get(c).equals(null)) {
+            if (!interestslist.get(c).equals("") || !(interestslist.get(c) == null)) {
 
 
                 ParseQuery<ParseUser> query = ParseUser.getQuery();
