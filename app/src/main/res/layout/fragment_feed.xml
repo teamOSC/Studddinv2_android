@@ -13,10 +13,10 @@
             android:id="@+id/feed_search_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="65dp"
-            android:background="@drawable/selector_card_background">
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:background="@color/colorPrimary">
 
             <in.tosc.studddin.customview.MaterialEditText
                 android:id="@+id/feed_search"
@@ -28,8 +28,7 @@
                 android:hint="@string/feed_search_hint"
                 android:imeOptions="actionSearch"
                 android:textCursorDrawable="@drawable/text_cursor_cyan"
-                app:baseColor="@color/search_color"
-                app:floatingLabel="highlight"
+                app:baseColor="@color/white"
                 app:maxCharacters="25"
                 app:primaryColor="@color/colorPrimaryDark"
                 app:singleLineEllipsis="true" />
