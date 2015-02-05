@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.fragments.ListingsFragment;
 import in.tosc.studddin.utils.ProgressBarCircular;
 import in.tosc.studddin.utils.Utilities;
@@ -174,10 +175,10 @@ public class ListingsSearchFragment extends Fragment {
                 "Listings");
         if (cache)
             query.fromLocalDatastore();
-        query.whereContainedIn("category", categories);
+        query.whereContainedIn(ParseTables.Listings.CATEGORY, categories);
         if (text == null) {
             if (filterPrefs.getString("sortby", "nearest").compareTo("recent") == 0)
-                query.orderByDescending("createdAt");
+                query.orderByDescending(ParseTables.Listings.CREATED_AT);
         /*else
             query.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));*/
             query.findInBackground(new FindCallback<ParseObject>() {
@@ -206,18 +207,18 @@ public class ListingsSearchFragment extends Fragment {
             });
         }
         if (text != null) {
-            query.whereMatches("listingName", "(" + text + ")", "i");
+            query.whereMatches(ParseTables.Listings.LISTING_NAME, "(" + text + ")", "i");
             ParseQuery<ParseObject> descQuery = new ParseQuery<>(
                     "Listings");
             descQuery.fromLocalDatastore();
-            descQuery.whereContainedIn("category", categories);
-            descQuery.whereMatches("listingDesc", "(" + text + ")", "i");
+            descQuery.whereContainedIn(ParseTables.Listings.CATEGORY, categories);
+            descQuery.whereMatches(ParseTables.Listings.LISTING_DESC, "(" + text + ")", "i");
             List<ParseQuery<ParseObject>> queries = new ArrayList<>();
             queries.add(query);
             queries.add(descQuery);
             ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
             if (filterPrefs.getString("sortby", "nearest").compareTo("recent") == 0)
-                mainQuery.orderByDescending("createdAt");
+                mainQuery.orderByDescending(ParseTables.Listings.CREATED_AT);
             /*else
                 mainQuery.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));*/
             mainQuery.findInBackground(new FindCallback<ParseObject>() {
@@ -257,32 +258,32 @@ public class ListingsSearchFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
-            viewHolder.listing_name.setText(mDataset.get(i).getString("listingName"));
-            viewHolder.owner_name.setText(mDataset.get(i).getString("ownerName"));
-            viewHolder.mobile.setText(mDataset.get(i).getString("mobile"));
-            viewHolder.listing_desc.setText(mDataset.get(i).getString("listingDesc"));
+            viewHolder.listing_name.setText(mDataset.get(i).getString(ParseTables.Listings.LISTING_NAME));
+            viewHolder.owner_name.setText(mDataset.get(i).getString(ParseTables.Listings.OWNER_NAME));
+            viewHolder.mobile.setText(mDataset.get(i).getString(ParseTables.Listings.MOBILE));
+            viewHolder.listing_desc.setText(mDataset.get(i).getString(ParseTables.Listings.LISTING_DESC));
             if (!mCache)
                 viewHolder.listing_image.setPlaceholder(getResources().getDrawable(R.drawable.listing_placeholder));
-            viewHolder.listing_image.setParseFile(mDataset.get(i).getParseFile("image"));
+            viewHolder.listing_image.setParseFile(mDataset.get(i).getParseFile(ParseTables.Listings.IMAGE));
             viewHolder.listing_image.loadInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] bytes, ParseException e) {
                 }
             });
             try{
-                double distance = mDataset.get(i).getParseGeoPoint("location").distanceInKilometersTo(location);
+                double distance = mDataset.get(i).getParseGeoPoint(ParseTables.Listings.LOCATION).distanceInKilometersTo(location);
                 if (distance < 10 && distance > 0)
                     viewHolder.listing_distance.setText(String.format("%.1f", distance) + " km away");
                 else
                     viewHolder.listing_distance.setText((int) distance + " km away");
-                final String latitude = Double.toString(mDataset.get(i).getParseGeoPoint("location").getLatitude());
-                final String longitude = Double.toString(mDataset.get(i).getParseGeoPoint("location").getLongitude());
+                final String latitude = Double.toString(mDataset.get(i).getParseGeoPoint(ParseTables.Listings.LOCATION).getLatitude());
+                final String longitude = Double.toString(mDataset.get(i).getParseGeoPoint(ParseTables.Listings.LOCATION).getLongitude());
                 viewHolder.compass.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         try {
                             Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                                    Uri.parse("geo:0,0?q=" + latitude + "," + longitude + "(" + mDataset.get(i).getString("ownerName") + ")"));
+                                    Uri.parse("geo:0,0?q=" + latitude + "," + longitude + "(" + mDataset.get(i).getString(ParseTables.Listings.OWNER_NAME) + ")"));
                             startActivity(intent);
                         } catch (ActivityNotFoundException e) {
                             startActivity(new Intent(Intent.ACTION_VIEW,
