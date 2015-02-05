@@ -38,6 +38,7 @@ public class MyListingsFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private ProgressBarCircular loader;
     private View rootView;
+    private TextView mEmptyView;
 
     public MyListingsFragment() {
         // Required empty public constructor
@@ -51,6 +52,8 @@ public class MyListingsFragment extends Fragment {
         rootView =  inflater.inflate(R.layout.fragment_my_listings, container, false);
         loader = (ProgressBarCircular) rootView.findViewById(R.id.progressBar);
         loader.setBackgroundColor(getResources().getColor(R.color.pink));
+        mEmptyView = (TextView) rootView.findViewById(R.id.listing_empty);
+        mEmptyView.setVisibility(View.GONE);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listing_recycler_view);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -97,7 +100,7 @@ public class MyListingsFragment extends Fragment {
         loader.setVisibility(View.GONE);
         mRecyclerView.setAdapter(mAdapter);
         if(mAdapter.getItemCount()==0)
-            Toast.makeText(getActivity(),"No listing available. Please create one first.",Toast.LENGTH_LONG).show();
+            mEmptyView.setVisibility(View.VISIBLE);
     }
 
     public class MyListingAdapter extends RecyclerView.Adapter<MyListingAdapter.ViewHolder> {
