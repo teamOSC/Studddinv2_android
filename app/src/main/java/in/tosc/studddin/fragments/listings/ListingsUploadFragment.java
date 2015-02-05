@@ -122,7 +122,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                 if (validate) {
                     uploading.setVisibility(View.VISIBLE);
                     ParseObject upload = new ParseObject("Listings");
-                    ParseGeoPoint point = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.USER_LOCATION);
+                    ParseGeoPoint point = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
                     if (byteArray == null) {
                         Drawable drawable = getResources().getDrawable(R.drawable.listing_placeholder);
                         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();

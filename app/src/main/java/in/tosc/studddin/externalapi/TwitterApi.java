@@ -40,9 +40,9 @@ public class TwitterApi {
                 try {
                     HttpResponse response = client.execute(verifyGet);
                     JSONObject object = new JSONObject(EntityUtils.toString(response.getEntity()));
-                    twitterBundle.putString(ParseTables.Users.USER_USERNAME, twitter.getScreenName());
-                    twitterBundle.putString(ParseTables.Users.USER_NAME, object.getString("name"));
-                    twitterBundle.putString(ParseTables.Users.USER_CITY, object.getString("location"));
+                    twitterBundle.putString(ParseTables.Users.USERNAME, twitter.getScreenName());
+                    twitterBundle.putString(ParseTables.Users.NAME, object.getString("name"));
+                    twitterBundle.putString(ParseTables.Users.CITY, object.getString("location"));
                     return twitterBundle;
                 } catch (IOException e) {
                     e.printStackTrace();

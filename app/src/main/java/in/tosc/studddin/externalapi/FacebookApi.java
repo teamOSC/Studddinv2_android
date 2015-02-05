@@ -40,14 +40,14 @@ public class FacebookApi {
                     JSONObject responseObject = response.getGraphObject().getInnerJSONObject();
                     USER_ID = gu.getId();
                     try {
-                        FbDataBundle.putString(ParseTables.Users.USER_EMAIL, responseObject.getString("email"));
-                        FbDataBundle.putString(ParseTables.Users.USER_NAME, gu.getName());
-                        FbDataBundle.putString(ParseTables.Users.USER_USERNAME, gu.getUsername());
-                        FbDataBundle.putString(ParseTables.Users.USER_CITY, gu.getLocation().getLocation().getCity());
+                        FbDataBundle.putString(ParseTables.Users.EMAIL, responseObject.getString("email"));
+                        FbDataBundle.putString(ParseTables.Users.NAME, gu.getName());
+                        FbDataBundle.putString(ParseTables.Users.USERNAME, gu.getUsername());
+                        FbDataBundle.putString(ParseTables.Users.CITY, gu.getLocation().getLocation().getCity());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    FbDataBundle.putString(ParseTables.Users.USER_DOB, gu.getBirthday());
+                    FbDataBundle.putString(ParseTables.Users.DOB, gu.getBirthday());
                     fgdc.gotData(FbDataBundle);
                 }
             }

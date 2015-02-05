@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -123,7 +122,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         if ((pUser != null)
                 && (pUser.isAuthenticated())
                 && (pUser.getSessionToken() != null)
-                && (pUser.getBoolean(ParseTables.Users.USER_FULLY_REGISTERED))) {
+                && (pUser.getBoolean(ParseTables.Users.FULLY_REGISTERED))) {
             Log.d(TAG, pUser.getUsername() + pUser.getSessionToken());
             Intent i = new Intent(getActivity(), MainActivity.class);
             startActivity(i);
@@ -221,7 +220,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         AccountManager am = AccountManager.get(getActivity());
         Account[] accounts = am.getAccountsByType("com.google");
         if (accounts.length > 0)
-            b.putString(ParseTables.Users.USER_EMAIL, accounts[0].name);
+            b.putString(ParseTables.Users.EMAIL, accounts[0].name);
 
         showSignupDataFragment(b);
     }
@@ -248,7 +247,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                 } else {
                     boolean fullyRegistered = false;
                     try {
-                        fullyRegistered = user.getBoolean(ParseTables.Users.USER_FULLY_REGISTERED);
+                        fullyRegistered = user.getBoolean(ParseTables.Users.FULLY_REGISTERED);
                     } catch (Exception e) {
                         Log.w(TAG, "could not get fully registered data", e);
                     }
@@ -328,7 +327,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                 } else {
                     boolean fullyRegistered = false;
                     try {
-                        fullyRegistered = user.getBoolean(ParseTables.Users.USER_FULLY_REGISTERED);
+                        fullyRegistered = user.getBoolean(ParseTables.Users.FULLY_REGISTERED);
                     } catch (Exception ignored) {
                     }
 
@@ -408,11 +407,11 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
             if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
                 Person currentPerson = Plus.PeopleApi
                         .getCurrentPerson(mGoogleApiClient);
-                b.putString(ParseTables.Users.USER_NAME, currentPerson.getDisplayName());
-                b.putString(ParseTables.Users.USER_EMAIL, Plus.AccountApi.getAccountName(mGoogleApiClient));
+                b.putString(ParseTables.Users.NAME, currentPerson.getDisplayName());
+                b.putString(ParseTables.Users.EMAIL, Plus.AccountApi.getAccountName(mGoogleApiClient));
                 if(currentPerson.getBirthday()!=null){
                     String reverseDate = new StringBuffer(currentPerson.getBirthday()).reverse().toString();
-                    b.putString(ParseTables.Users.USER_DOB, reverseDate);
+                    b.putString(ParseTables.Users.DOB, reverseDate);
                 }
                 SignupDataFragment fragment = showSignupDataFragment(b);
                 String profilePictureURL = currentPerson.getImage().getUrl();

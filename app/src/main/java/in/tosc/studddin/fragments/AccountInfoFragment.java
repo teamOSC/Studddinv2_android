@@ -107,17 +107,17 @@ public class AccountInfoFragment extends Fragment {
     private void fetchInfoFromParse() throws Exception {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
-            if (currentUser.get(ParseTables.Users.USER_EMAIL) != null)
-                tEmail.setText(currentUser.getString(ParseTables.Users.USER_EMAIL));
+            if (currentUser.get(ParseTables.Users.EMAIL) != null)
+                tEmail.setText(currentUser.getString(ParseTables.Users.EMAIL));
 
-            if (currentUser.get(ParseTables.Users.USER_INSTITUTE) != null) {
-                eInstitute.setText(currentUser.getString(ParseTables.Users.USER_INSTITUTE));
+            if (currentUser.get(ParseTables.Users.INSTITUTE) != null) {
+                eInstitute.setText(currentUser.getString(ParseTables.Users.INSTITUTE));
             }
 
-            if (currentUser.get(ParseTables.Users.USER_NAME) != null)
-                tFullName.setText(currentUser.getString(ParseTables.Users.USER_NAME));
+            if (currentUser.get(ParseTables.Users.NAME) != null)
+                tFullName.setText(currentUser.getString(ParseTables.Users.NAME));
 
-            if (currentUser.get(ParseTables.Users.USER_QUALIFICATIONS) != null)
+            if (currentUser.get(ParseTables.Users.QUALIFICATIONS) != null)
                 eQualificaton.setText(currentUser.getString(USER_QUALIFICATIONS));
         } else {
             //TODO: handle errors if any generated
@@ -125,7 +125,7 @@ public class AccountInfoFragment extends Fragment {
 
         ParseFile profileFile = null;
         if (currentUser != null) {
-            profileFile = currentUser.getParseFile(ParseTables.Users.USER_IMAGE);
+            profileFile = currentUser.getParseFile(ParseTables.Users.IMAGE);
         }
         imageProfile.setParseFile(profileFile);
         imageProfile.loadInBackground();
@@ -204,7 +204,7 @@ public class AccountInfoFragment extends Fragment {
 
                 switch (v.getId()) {
                     case R.id.edit_institute_button:
-                        changeAttribute(eInstitute, ParseTables.Users.USER_INSTITUTE);
+                        changeAttribute(eInstitute, ParseTables.Users.INSTITUTE);
                         canEditInstitute.setVisibility(View.INVISIBLE);
                         break;
                     case R.id.edit_qualification_button:
@@ -312,7 +312,7 @@ public class AccountInfoFragment extends Fragment {
     }
 
     private void changeAttribute(EditText e, final String attr) {
-        if (attr.equals(ParseTables.Users.USER_INSTITUTE) || attr.equals(ParseTables.Users.USER_NAME)) {
+        if (attr.equals(ParseTables.Users.INSTITUTE) || attr.equals(ParseTables.Users.NAME)) {
             if (e.getText().toString().isEmpty())
                 Toast.makeText(getActivity(), attr + "cannot be empty", Toast.LENGTH_LONG).show();
         }

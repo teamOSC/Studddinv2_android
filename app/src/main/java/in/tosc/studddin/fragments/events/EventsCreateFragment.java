@@ -88,7 +88,7 @@ public class EventsCreateFragment extends Fragment {
         events.put(ParseTables.Events.DESCRIPTION, ((MaterialEditText) v.findViewById(R.id.event_description)).getText() + "");
         events.put(ParseTables.Events.TYPE, ((MaterialEditText) v.findViewById(R.id.event_type)).getText() + "");
         events.put(ParseTables.Events.LOCATION, ((MaterialEditText) v.findViewById(R.id.event_location)).getText() + "");
-        events.put(ParseTables.Events.USER, ParseUser.getCurrentUser().getString(ParseTables.Users.USER_NAME));
+        events.put(ParseTables.Events.USER, ParseUser.getCurrentUser().getString(ParseTables.Users.NAME));
     }
 
     private boolean checkIfEmpty() {
@@ -121,13 +121,13 @@ public class EventsCreateFragment extends Fragment {
 
     private void pushDataToParse() {
         ParseObject event = new ParseObject("Events");
-        event.put(ParseTables.Events.TITLE, events.get("title"));
-        event.put(ParseTables.Events.DESCRIPTION, events.get("description"));
-        event.put(ParseTables.Events.TYPE, events.get("type"));
-        event.put(ParseTables.Events.LOCATION_DES, events.get("location"));
-        event.put(ParseTables.Events.DATE, events.get("date"));
-        event.put(ParseTables.Events.TIME, events.get("time"));
-        event.put(ParseTables.Events.CREATED_BY, events.get("user"));
+        event.put(ParseTables.Events.TITLE, events.get(ParseTables.Events.TITLE));
+        event.put(ParseTables.Events.DESCRIPTION, events.get(ParseTables.Events.DESCRIPTION));
+        event.put(ParseTables.Events.TYPE, events.get(ParseTables.Events.TYPE));
+        event.put(ParseTables.Events.LOCATION_DES, events.get(ParseTables.Events.LOCATION));
+        event.put(ParseTables.Events.DATE, events.get(ParseTables.Events.DATE));
+        event.put(ParseTables.Events.TIME, events.get(ParseTables.Events.TIME));
+        event.put(ParseTables.Events.CREATED_BY, events.get(ParseTables.Events.USER));
         event.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
