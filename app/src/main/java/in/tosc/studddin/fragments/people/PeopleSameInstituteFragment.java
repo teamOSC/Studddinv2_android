@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.utils.ParseCircularImageView;
 import in.tosc.studddin.utils.ProgressBarCircular;
 
@@ -181,17 +182,17 @@ public class PeopleSameInstituteFragment extends Fragment {
        list3.clear();
 
         currentuser = ParseUser.getCurrentUser().getUsername();
-        String currentuseremail = ParseUser.getCurrentUser().getString("email");
-        String currentuserinterests = ParseUser.getCurrentUser().getString("INTERESTS");
-        String currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
-        String currentusername = ParseUser.getCurrentUser().getString("NAME");
-        String currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
-        userlocation = ParseUser.getCurrentUser().getParseGeoPoint("location");
+        String currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
+        String currentuserinterests = ParseUser.getCurrentUser().getString(ParseTables.Users.INTERESTS);
+        String currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
+        String currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
+        String currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
+        userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
 
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         if (currentuserinstituition != null)
-            query.whereMatches("INSTITUTE", "(" + currentuserinstituition + ")", "i");
+            query.whereMatches(ParseTables.Users.INSTITUTE, "(" + currentuserinstituition + ")", "i");
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> objects, ParseException e) {
                 if (e == null) {
@@ -203,13 +204,13 @@ public class PeopleSameInstituteFragment extends Fragment {
 
                         if (!pu.getUsername().equals(currentuser)) {
                             each = new EachRow3();
-                            each.cname = pu.getString("NAME");
-                            each.cinterests = pu.getString("INTERESTS");
-                            each.cqualification = pu.getString("QUALIFICATIONS");
-                            each.cinstituition = pu.getString("INSTITUTE");
-//                        each.cdistance = pu.getString("NAME");
-                            each.cusername = pu.getString("username");
-                            ParseGeoPoint temploc = pu.getParseGeoPoint("location");
+                            each.cname = pu.getString(ParseTables.Users.NAME);
+                            each.cinterests = pu.getString(ParseTables.Users.INTERESTS);
+                            each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
+                            each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
+//                        each.cdistance = pu.getString(ParseTables.Users.NAME);
+                            each.cusername = pu.getString(ParseTables.Users.USERNAME);
+                            ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
                             if (temploc != null && temploc.getLatitude() != 0) {
                                 if (userlocation != null) {
                                     each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
@@ -221,7 +222,7 @@ public class PeopleSameInstituteFragment extends Fragment {
                             }
 
                             try {
-                                each.fileObject = (ParseFile) pu.get("image");
+                                each.fileObject = (ParseFile) pu.get(ParseTables.Users.IMAGE);
 
                             } catch (Exception e1) {
                                 System.out.print("nahh");
@@ -259,19 +260,19 @@ public class PeopleSameInstituteFragment extends Fragment {
         list3.clear();
 
         currentuser = ParseUser.getCurrentUser().getUsername();
-        String currentuseremail = ParseUser.getCurrentUser().getString("email");
-        String currentuserinterests = ParseUser.getCurrentUser().getString("INTERESTS");
-        String currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
-        String currentusername = ParseUser.getCurrentUser().getString("NAME");
-        String currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
-        userlocation = ParseUser.getCurrentUser().getParseGeoPoint("location");
+        String currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
+        String currentuserinterests = ParseUser.getCurrentUser().getString(ParseTables.Users.INTERESTS);
+        String currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
+        String currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
+        String currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
+        userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
 
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereMatches("NAME", "(" + textSearch + ")", "i");
+        query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
 
         if (currentuserinstituition != null)
-            query.whereMatches("INSTITUTE", "(" + currentuserinstituition + ")", "i");
+            query.whereMatches(ParseTables.Users.INSTITUTE, "(" + currentuserinstituition + ")", "i");
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> objects, ParseException e) {
                 if (e == null) {
@@ -283,13 +284,13 @@ public class PeopleSameInstituteFragment extends Fragment {
 
                         if (!pu.getUsername().equals(currentuser)) {
                             each = new EachRow3();
-                            each.cname = pu.getString("NAME");
-                            each.cinterests = pu.getString("INTERESTS");
-                            each.cqualification = pu.getString("QUALIFICATIONS");
-                            each.cinstituition = pu.getString("INSTITUTE");
-//                        each.cdistance = pu.getString("NAME");
-                            each.cusername = pu.getString("username");
-                            ParseGeoPoint temploc = pu.getParseGeoPoint("location");
+                            each.cname = pu.getString(ParseTables.Users.NAME);
+                            each.cinterests = pu.getString(ParseTables.Users.INTERESTS);
+                            each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
+                            each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
+//                        each.cdistance = pu.getString(ParseTables.Users.NAME);
+                            each.cusername = pu.getString(ParseTables.Users.USERNAME);
+                            ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
                             if (temploc != null && temploc.getLatitude() != 0) {
                                 if (userlocation != null) {
                                     each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
@@ -301,7 +302,7 @@ public class PeopleSameInstituteFragment extends Fragment {
                             }
 
                             try {
-                                each.fileObject = (ParseFile) pu.get("image");
+                                each.fileObject = (ParseFile) pu.get(ParseTables.Users.IMAGE);
 
                             } catch (Exception e1) {
                                 System.out.print("nahh");
