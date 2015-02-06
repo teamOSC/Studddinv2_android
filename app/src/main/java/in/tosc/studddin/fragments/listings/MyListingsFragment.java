@@ -68,10 +68,10 @@ public class MyListingsFragment extends Fragment {
 
     private void fetchMyListings(final boolean cache){
         ParseQuery<ParseObject> query = new ParseQuery<>(
-                "Listings");
+                ParseTables.Listings.LISTINGS);
         if (cache)
             query.fromLocalDatastore();
-        query.whereEqualTo(ParseTables.Listings.OWNER_NAME, ParseUser.getCurrentUser().getString("NAME"));
+        query.whereEqualTo(ParseTables.Listings.OWNER_NAME, ParseUser.getCurrentUser().getString(ParseTables.Users.NAME));
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> parseObjects, ParseException e) {

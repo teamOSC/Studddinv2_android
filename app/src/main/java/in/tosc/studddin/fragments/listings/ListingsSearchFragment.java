@@ -85,7 +85,7 @@ public class ListingsSearchFragment extends Fragment {
         editor.putString("sortby", "nearest");
         editor.commit();
 
-        location = ParseUser.getCurrentUser().getParseGeoPoint("location");
+        location = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Listings.LOCATION);
     }
 
     @Override
@@ -173,7 +173,7 @@ public class ListingsSearchFragment extends Fragment {
         if (filterPrefs.getBoolean("misc", true))
             categories.add("Misc.");
         ParseQuery<ParseObject> query = new ParseQuery<>(
-                "Listings");
+                ParseTables.Listings.LISTINGS);
         if (cache)
             query.fromLocalDatastore();
         query.whereContainedIn(ParseTables.Listings.CATEGORY, categories);
@@ -181,7 +181,7 @@ public class ListingsSearchFragment extends Fragment {
             if (filterPrefs.getString("sortby", "nearest").equalsIgnoreCase("recent"))
                 query.orderByDescending(ParseTables.Listings.CREATED_AT);
             else
-                query.whereNear("location",location);
+                query.whereNear(ParseTables.Listings.LOCATION,location);
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(final List<ParseObject> parseObjects, ParseException e) {
