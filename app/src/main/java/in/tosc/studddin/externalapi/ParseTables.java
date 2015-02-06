@@ -15,7 +15,7 @@ public class ParseTables {
         public static final String INSTITUTE = "INSTITUTE";
         public static final String CITY = "CITY";
         public static final String EMAIL = "email";
-        public static final String INTERESTS = "INTERESTS";
+        public static final String INTERESTS = "interests";
         public static final String QUALIFICATIONS = "QUALIFICATIONS";
         public static final String LOCATION = "location";
         public static final String IMAGE = "image";
