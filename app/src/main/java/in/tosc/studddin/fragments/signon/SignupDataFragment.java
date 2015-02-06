@@ -42,6 +42,7 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
+import com.tokenautocomplete.FilteredArrayAdapter;
 import com.tokenautocomplete.TokenCompleteTextView;
 
 import java.io.ByteArrayOutputStream;
@@ -466,8 +467,18 @@ public class SignupDataFragment extends Fragment implements
                 for (ParseObject interest : result) {
                     interests.add(interest.getString("name"));
                 }
-                ArrayAdapter mAdapter = new ArrayAdapter(getActivity(),
-                        android.R.layout.simple_list_item_1, interests);
+                interests.add("Add new interest");
+                FilteredArrayAdapter mAdapter = new FilteredArrayAdapter<String>(getActivity(),
+                        android.R.layout.simple_list_item_1, interests) {
+                    @Override
+                    protected boolean keepObject(String obj, String mask) {
+                        mask = mask.toLowerCase();
+                        if (obj.equals("Add new interest")) {
+                            return true;
+                        }
+                        return obj.toLowerCase().startsWith(mask);
+                    }
+                };
                 Log.d(TAG, "Got the data");
                 editText.setAdapter(mAdapter);
                 editText.setTokenListener(new TokenCompleteTextView.TokenListener() {
