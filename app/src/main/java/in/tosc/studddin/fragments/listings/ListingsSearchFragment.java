@@ -224,7 +224,10 @@ public class ListingsSearchFragment extends Fragment {
             //   mainQuery.whereNear("location",location);
             mainQuery.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> results, ParseException e) {
-                    doneFetching(results, cache);
+                    if(e==null)
+                        doneFetching(results, cache);
+                    else
+                        e.printStackTrace(); // shouldn't happen
                 }
             });
         }
@@ -273,7 +276,7 @@ public class ListingsSearchFragment extends Fragment {
             });
             try{
                 double distance = mDataset.get(i).getParseGeoPoint(ParseTables.Listings.LOCATION).distanceInKilometersTo(location);
-                if (distance < 10 && distance > 0)
+                if (distance < 10 && distance >= 0.1)
                     viewHolder.listing_distance.setText(String.format("%.1f", distance) + " km away");
                 else
                     viewHolder.listing_distance.setText((int) distance + " km away");

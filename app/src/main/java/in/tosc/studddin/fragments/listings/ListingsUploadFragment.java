@@ -34,9 +34,9 @@ import java.util.Date;
 import java.util.List;
 
 import in.tosc.studddin.R;
-import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.ui.FloatingActionButton;
+import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.ui.ProgressBarCircular;
 
 /**
@@ -121,7 +121,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
 
                 if (validate) {
                     uploading.setVisibility(View.VISIBLE);
-                    ParseObject upload = new ParseObject("Listings");
+                    ParseObject upload = new ParseObject(ParseTables.Listings.LISTINGS);
                     ParseGeoPoint point = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
                     if (byteArray == null) {
                         Drawable drawable = getResources().getDrawable(R.drawable.listing_placeholder);
@@ -130,25 +130,29 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream);
                         byteArray = stream.toByteArray();
                     }
-                    ParseFile file = new ParseFile(ParseTables.Listings.LISTING_PNG, byteArray);
-                    file.saveInBackground();
-                    upload.put(ParseTables.Listings.IMAGE, file);
-                    upload.put(ParseTables.Listings.OWNER_NAME, ParseUser.getCurrentUser().getString("NAME"));
-                    upload.put(ParseTables.Listings.LISTING_NAME, listing.getText().toString());
-                    upload.put(ParseTables.Listings.LISTING_DESC, listing_desc.getText().toString());
-                    upload.put(ParseTables.Listings.MOBILE, mobile.getText().toString());
-                    if(point!=null)
-                        upload.put(ParseTables.Listings.LOCATION, point);
-                    upload.put(ParseTables.Listings.CATEGORY, category.getSelectedItem().toString());
+                    try{
+                        ParseFile file = new ParseFile(ParseTables.Listings.LISTING_PNG, byteArray);
+                        file.saveInBackground();
+                        upload.put(ParseTables.Listings.IMAGE, file);
+                        upload.put(ParseTables.Listings.OWNER_NAME, ParseUser.getCurrentUser().getString(ParseTables.Users.NAME));
+                        upload.put(ParseTables.Listings.LISTING_NAME, listing.getText().toString());
+                        upload.put(ParseTables.Listings.LISTING_DESC, listing_desc.getText().toString());
+                        upload.put(ParseTables.Listings.MOBILE, mobile.getText().toString());
+                        if(point!=null)
+                            upload.put(ParseTables.Listings.LOCATION, point);
+                        upload.put(ParseTables.Listings.CATEGORY, category.getSelectedItem().toString());
 
-                    upload.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            uploading.setVisibility(View.GONE);
-                            Toast.makeText(getActivity(), getString(R.string.upload_complete),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                        upload.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                uploading.setVisibility(View.GONE);
+                                Toast.makeText(getActivity(), getString(R.string.upload_complete),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }catch(Exception e){
+                        Toast.makeText(getActivity(),"Please connect to the Internet",Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
         }
