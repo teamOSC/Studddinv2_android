@@ -420,6 +420,11 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                         } catch (Exception ignored) {
                                         }
                                         if (user.isNew() || (!fullyRegistered)) {
+
+                                            SignupDataFragment fragment = null;
+                                            String profilePictureURL = null;
+                                            String coverPictureURL = null;
+
                                             try {
                                                 if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
                                                     Person currentPerson = Plus.PeopleApi
@@ -430,16 +435,17 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                                         String reverseDate = new StringBuffer(currentPerson.getBirthday()).reverse().toString();
                                                         b.putString(ParseTables.Users.DOB, reverseDate);
                                                     }
-                                                    SignupDataFragment fragment = showSignupDataFragment(b);
-                                                    String profilePictureURL = currentPerson.getImage().getUrl();
-                                                    String coverPictureURL = currentPerson.getCover().getCoverPhoto().getUrl();
-                                                    new FetchProfilePicture(fragment).execute(profilePictureURL);
-                                                    new FetchCoverPicture(fragment).execute(coverPictureURL);
+                                                    fragment = showSignupDataFragment(b);
+                                                    profilePictureURL = currentPerson.getImage().getUrl();
+                                                    coverPictureURL = currentPerson.getCover().getCoverPhoto().getUrl();
                                                 } else {
                                                     Log.d(TAG, "Person info is null");
                                                 }
                                             } catch (Exception exception) {
                                                 exception.printStackTrace();
+                                            } finally {
+                                                new FetchProfilePicture(fragment).execute(profilePictureURL);
+                                                new FetchCoverPicture(fragment).execute(coverPictureURL);
                                             }
 
                                         } else {
