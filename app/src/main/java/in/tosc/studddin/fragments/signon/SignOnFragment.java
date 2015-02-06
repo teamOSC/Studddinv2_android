@@ -27,7 +27,9 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
+import com.parse.FunctionCallback;
 import com.parse.LogInCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseTwitterUtils;
@@ -38,15 +40,16 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
-import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.externalapi.FacebookApi;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.externalapi.TwitterApi;
 import in.tosc.studddin.ui.FloatingActionButton;
+import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.utils.Utilities;
 
 
@@ -400,32 +403,66 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
             @Override
             protected void onPostExecute(String token) {
                 Log.d(TAG, "Access token retrieved:" + token);
+                final HashMap<String, Object> params = new HashMap<>();
+                params.put("code", token);
+                params.put("email", Plus.AccountApi.getAccountName(mGoogleApiClient));
+                ParseCloud.callFunctionInBackground("accessGoogleUser", params, new FunctionCallback<Object>() {
+                    @Override
+                    public void done(Object returnObj, ParseException e) {
+                        if (e == null) {
+                            ParseUser.becomeInBackground(returnObj.toString(), new LogInCallback() {
+                                public void done(ParseUser user, ParseException e) {
+                                    if (user != null && e == null) {
+                                        Log.i(TAG, "Google + user validated");
+                                        boolean fullyRegistered = false;
+                                        try {
+                                            fullyRegistered = user.getBoolean(ParseTables.Users.FULLY_REGISTERED);
+                                        } catch (Exception ignored) {
+                                        }
+                                        if (user.isNew() || (!fullyRegistered)) {
+                                            try {
+                                                if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                                                    Person currentPerson = Plus.PeopleApi
+                                                            .getCurrentPerson(mGoogleApiClient);
+                                                    b.putString(ParseTables.Users.NAME, currentPerson.getDisplayName());
+                                                    b.putString(ParseTables.Users.EMAIL, Plus.AccountApi.getAccountName(mGoogleApiClient));
+                                                    if (currentPerson.getBirthday() != null) {
+                                                        String reverseDate = new StringBuffer(currentPerson.getBirthday()).reverse().toString();
+                                                        b.putString(ParseTables.Users.DOB, reverseDate);
+                                                    }
+                                                    SignupDataFragment fragment = showSignupDataFragment(b);
+                                                    String profilePictureURL = currentPerson.getImage().getUrl();
+                                                    String coverPictureURL = currentPerson.getCover().getCoverPhoto().getUrl();
+                                                    new FetchProfilePicture(fragment).execute(profilePictureURL);
+                                                    new FetchCoverPicture(fragment).execute(coverPictureURL);
+                                                } else {
+                                                    Log.d(TAG, "Person info is null");
+                                                }
+                                            } catch (Exception exception) {
+                                                exception.printStackTrace();
+                                            }
+
+                                        } else {
+                                            Log.w(TAG, "User logged in through G Plus");
+                                            SignupDataFragment.goToMainActivity(getActivity());
+                                        }
+                                    } else if (e != null) {
+                                        e.printStackTrace();
+                                        mGoogleApiClient.disconnect();
+                                    } else
+                                        Log.i(TAG, "The Google token could not be validated");
+                                }
+                            });
+                        } else {
+                            e.printStackTrace();
+                            mGoogleApiClient.disconnect();
+                        }
+                    }
+                });
             }
         }.execute();
-
-        try {
-            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-                Person currentPerson = Plus.PeopleApi
-                        .getCurrentPerson(mGoogleApiClient);
-                b.putString(ParseTables.Users.NAME, currentPerson.getDisplayName());
-                b.putString(ParseTables.Users.EMAIL, Plus.AccountApi.getAccountName(mGoogleApiClient));
-                if(currentPerson.getBirthday()!=null){
-                    String reverseDate = new StringBuffer(currentPerson.getBirthday()).reverse().toString();
-                    b.putString(ParseTables.Users.DOB, reverseDate);
-                }
-                SignupDataFragment fragment = showSignupDataFragment(b);
-                String profilePictureURL = currentPerson.getImage().getUrl();
-                String coverPictureURL = currentPerson.getCover().getCoverPhoto().getUrl();
-                new FetchProfilePicture(fragment).execute(profilePictureURL);
-                new FetchCoverPicture(fragment).execute(coverPictureURL);
-            } else {
-                Log.d(TAG,"Person info is null");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
+
 
     private class FetchProfilePicture extends AsyncTask<String, Void, Bitmap> {
         SignupDataFragment fragment;
