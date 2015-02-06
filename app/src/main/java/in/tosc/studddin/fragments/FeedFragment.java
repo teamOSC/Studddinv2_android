@@ -19,6 +19,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,8 +38,8 @@ import java.util.List;
 
 import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
-import in.tosc.studddin.customview.MaterialEditText;
-import in.tosc.studddin.utils.ProgressBarCircular;
+import in.tosc.studddin.ui.MaterialEditText;
+import in.tosc.studddin.ui.ProgressBarCircular;
 import in.tosc.studddin.utils.Utilities;
 
 /**
@@ -62,6 +64,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     private RecyclerView recyclerView;
     private MaterialEditText searchEditText;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ImageButton searchButton;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -91,7 +94,16 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         searchEditText = (MaterialEditText) rootView.findViewById(R.id.feed_search);
         searchEditText.setOnKeyListener(this);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.feed_recycler_view);
-        
+        searchButton = (ImageButton) rootView.findViewById(R.id.searchblahblah);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchEditText.setFocusableInTouchMode(true);
+                searchEditText.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+            }
+        });
         context = getActivity();
         RecyclerView.LayoutManager mVerticalLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);

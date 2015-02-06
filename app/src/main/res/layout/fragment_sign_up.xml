@@ -42,7 +42,7 @@
                     android:minWidth="130dp"
                     android:src="@drawable/image_default" />
 
-                <in.tosc.studddin.customview.MaterialEditText
+                <in.tosc.studddin.ui.MaterialEditText
                     android:id="@+id/user_name"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
                     app:floatingLabel="highlight"
                     app:primaryColor="@color/colorPrimaryDark" />
 
-                <in.tosc.studddin.customview.MaterialEditText
+                <in.tosc.studddin.ui.MaterialEditText
                     android:id="@+id/user_password"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                     app:floatingLabel="highlight"
                     app:primaryColor="@color/colorPrimaryDark" />
 
-                <in.tosc.studddin.customview.MaterialEditText
+                <in.tosc.studddin.ui.MaterialEditText
                     android:id="@+id/user_dob"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                     app:floatingLabel="highlight"
                     app:primaryColor="@color/colorPrimaryDark" />
 
-                <in.tosc.studddin.customview.MaterialEditText
+                <in.tosc.studddin.ui.MaterialEditText
                     android:id="@+id/user_institute"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/white" />
 
-                <in.tosc.studddin.customview.MaterialEditText
+                <in.tosc.studddin.ui.MaterialEditText
                     android:id="@+id/user_email"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
                     app:floatingLabel="highlight"
                     app:primaryColor="@color/colorPrimaryDark" />
 
-                <in.tosc.studddin.customview.MaterialEditText
+                <in.tosc.studddin.ui.MaterialEditText
                     android:id="@+id/user_qualifications"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                     app:floatingLabel="highlight"
                     app:primaryColor="@color/colorPrimaryDark" />
 
-                <in.tosc.studddin.customview.BubbleCompletionView
+                <in.tosc.studddin.ui.BubbleCompletionView
                     android:id="@+id/user_interests"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

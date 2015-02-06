@@ -35,7 +35,7 @@
                 android:layout_marginTop="50dp"
                 android:background="@drawable/attachpin" />
 
-            <in.tosc.studddin.customview.MaterialEditText
+            <in.tosc.studddin.ui.MaterialEditText
                 android:id="@+id/notes_topic"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -51,7 +51,7 @@
                 app:baseColor="@color/search_color"
                 app:primaryColor="@color/colorPrimaryDark" />
 
-            <in.tosc.studddin.customview.MaterialEditText
+            <in.tosc.studddin.ui.MaterialEditText
                 android:id="@+id/notes_subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                 app:baseColor="@color/search_color"
                 app:primaryColor="@color/colorPrimaryDark" />
 
-            <in.tosc.studddin.customview.MaterialEditText
+            <in.tosc.studddin.ui.MaterialEditText
                 android:id="@+id/notes_branch"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="10dp"
@@ -87,7 +87,7 @@
         </RelativeLayout>
     </ScrollView>
 
-    <in.tosc.studddin.utils.FloatingActionButton
+    <in.tosc.studddin.ui.FloatingActionButton
         android:id="@+id/notes_upload"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="40dp"

@@ -34,10 +34,10 @@ import java.util.Date;
 import java.util.List;
 
 import in.tosc.studddin.R;
-import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.externalapi.ParseTables;
-import in.tosc.studddin.utils.FloatingActionButton;
-import in.tosc.studddin.utils.ProgressBarCircular;
+import in.tosc.studddin.ui.FloatingActionButton;
+import in.tosc.studddin.ui.ProgressBarCircular;
 
 /**
  * Created by Prempal on 1/25/2015.
@@ -122,7 +122,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                 if (validate) {
                     uploading.setVisibility(View.VISIBLE);
                     ParseObject upload = new ParseObject("Listings");
-                    ParseGeoPoint point = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.USER_LOCATION);
+                    ParseGeoPoint point = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
                     if (byteArray == null) {
                         Drawable drawable = getResources().getDrawable(R.drawable.listing_placeholder);
                         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();

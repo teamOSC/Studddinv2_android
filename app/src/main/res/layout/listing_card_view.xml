@@ -8,10 +8,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp">
+        android:layout_height="wrap_content">
 
 
-        <in.tosc.studddin.utils.ParseCircularImageView
+        <in.tosc.studddin.ui.ParseCircularImageView
             android:id="@+id/listing_image"
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -40,9 +40,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/listing_name"
-            android:layout_alignRight="@+id/listing_name"
+            android:layout_alignStart="@+id/listing_name"
+            android:layout_alignLeft="@id/listing_name"
             android:layout_below="@+id/listing_name"
-            android:layout_toRightOf="@+id/listing_image"
             android:text="New Text" />
 
         <TextView
@@ -59,39 +59,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/owner_name"
-            android:layout_toRightOf="@+id/listing_image"
+            android:layout_alignLeft="@+id/owner_name"
+            android:layout_alignStart="@+id/owner_name"
             android:autoLink="phone"
             android:text="New Text" />
 
-        <FrameLayout
-            android:id="@+id/frameLayout2"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true">
-
-            <TextView
-                android:id="@+id/listing_distance"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|bottom"
-                android:gravity="center"
-                android:text="New Text" />
-
-        </FrameLayout>
-
-        <ImageView
-            android:id="@+id/compass"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/frameLayout2"
-            android:layout_alignParentEnd="true"
+            android:text="New Text"
+            android:id="@+id/listing_distance"
+            android:gravity="center"
+            android:layout_marginRight="2dp"
+            android:layout_below="@+id/compass"
             android:layout_alignParentRight="true"
-            android:layout_gravity="center"
-            android:layout_marginEnd="18dp"
-            android:layout_marginRight="18dp"
-            android:src="@android:drawable/ic_menu_compass" />
+            android:layout_alignParentEnd="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/compass"
+            android:src="@android:drawable/ic_menu_compass"
+            android:layout_alignTop="@id/owner_name"
+            android:layout_alignLeft="@+id/listing_distance"
+            android:layout_alignStart="@+id/listing_distance"
+            android:layout_marginRight="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
 
     </RelativeLayout>

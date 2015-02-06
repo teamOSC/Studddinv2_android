@@ -19,7 +19,7 @@
             android:layout_height="0dp"
             android:layout_weight="2" />
 
-        <in.tosc.studddin.customview.MaterialEditText
+        <in.tosc.studddin.ui.MaterialEditText
             android:id="@+id/sign_in_user_name"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
@@ -33,7 +33,7 @@
             app:baseColor="@color/search_color"
             app:primaryColor="@color/colorPrimaryDark" />
 
-        <in.tosc.studddin.customview.MaterialEditText
+        <in.tosc.studddin.ui.MaterialEditText
             android:id="@+id/sign_in_user_password"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
@@ -88,7 +88,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <in.tosc.studddin.utils.FloatingActionButton
+            <in.tosc.studddin.ui.FloatingActionButton
                 android:id="@+id/signon_button_facebook"
                 android:layout_width="@dimen/signin_button_size"
                 android:layout_height="@dimen/signin_button_size"
@@ -106,7 +106,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <in.tosc.studddin.utils.FloatingActionButton
+            <in.tosc.studddin.ui.FloatingActionButton
                 android:id="@+id/signon_button_twitter"
                 android:layout_width="@dimen/signin_button_size"
                 android:layout_height="@dimen/signin_button_size"
@@ -125,7 +125,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <in.tosc.studddin.utils.FloatingActionButton
+            <in.tosc.studddin.ui.FloatingActionButton
                 android:id="@+id/signon_button_google"
                 android:layout_width="@dimen/signin_button_size"
                 android:layout_height="@dimen/signin_button_size"

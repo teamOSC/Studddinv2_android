@@ -32,7 +32,7 @@ import com.parse.ParseUser;
 import java.lang.reflect.Array;
 
 import in.tosc.studddin.externalapi.ParseTables;
-import in.tosc.studddin.utils.ParseCircularImageView;
+import in.tosc.studddin.ui.ParseCircularImageView;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -145,11 +145,11 @@ public class NavigationDrawerFragment extends Fragment {
 
         mProfilePic = ((ParseCircularImageView) mDrawerLinearLayout.findViewById(R.id.nav_drawer_profile_pic));
         mProfilePic.setPlaceholder(getResources().getDrawable(R.drawable.com_facebook_profile_default_icon));
-        mProfilePic.setParseFile(ParseUser.getCurrentUser().getParseFile(ParseTables.Users.USER_IMAGE));
+        mProfilePic.setParseFile(ParseUser.getCurrentUser().getParseFile(ParseTables.Users.IMAGE));
 
         mCoverPic = ((ParseImageView) mDrawerLinearLayout.findViewById(R.id.nav_drawer_cover_picture));
         mCoverPic.setPlaceholder(getResources().getDrawable(R.drawable.rsz_cover_placeholder));
-        mCoverPic.setParseFile(ParseUser.getCurrentUser().getParseFile(ParseTables.Users.USER_COVER));
+        mCoverPic.setParseFile(ParseUser.getCurrentUser().getParseFile(ParseTables.Users.COVER));
 
         return mDrawerLinearLayout;
     }

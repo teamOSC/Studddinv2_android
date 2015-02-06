@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <in.tosc.studddin.utils.FloatingActionButton
+    <in.tosc.studddin.ui.FloatingActionButton
         android:id="@+id/listing_upload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-    <in.tosc.studddin.utils.ProgressBarCircular
+    <in.tosc.studddin.ui.ProgressBarCircular
         android:id="@+id/upload_progress"
         android:layout_width="36dp"
         android:layout_height="36dp"
@@ -42,7 +42,7 @@
         android:layout_marginLeft="50dp"
         android:layout_marginStart="50dp">
 
-        <in.tosc.studddin.customview.MaterialEditText
+        <in.tosc.studddin.ui.MaterialEditText
             android:id="@+id/et_listing"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
             app:baseColor="@color/search_color"
             app:primaryColor="@color/colorPrimaryDark" />
 
-        <in.tosc.studddin.customview.MaterialEditText
+        <in.tosc.studddin.ui.MaterialEditText
             android:id="@+id/et_mobile"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
             app:baseColor="@color/search_color"
             app:primaryColor="@color/colorPrimaryDark" />
 
-        <in.tosc.studddin.customview.MaterialEditText
+        <in.tosc.studddin.ui.MaterialEditText
             android:id="@+id/listing_desc"
             android:layout_width="200dp"
             android:layout_height="wrap_content"

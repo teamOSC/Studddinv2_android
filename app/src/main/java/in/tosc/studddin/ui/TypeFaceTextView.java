@@ -1,7 +1,9 @@
-package in.tosc.studddin.utils;
+package in.tosc.studddin.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
+
+import in.tosc.studddin.utils.CustomType;
 
 /**
  * Created by yogesh on 2/2/15.

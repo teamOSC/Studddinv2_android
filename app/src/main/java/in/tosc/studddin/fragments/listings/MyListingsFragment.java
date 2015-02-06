@@ -26,8 +26,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import in.tosc.studddin.R;
-import in.tosc.studddin.utils.ParseCircularImageView;
-import in.tosc.studddin.utils.ProgressBarCircular;
+import in.tosc.studddin.externalapi.ParseTables;
+import in.tosc.studddin.ui.ParseCircularImageView;
+import in.tosc.studddin.ui.ProgressBarCircular;
 import in.tosc.studddin.utils.Utilities;
 
 public class MyListingsFragment extends Fragment {
@@ -67,16 +68,16 @@ public class MyListingsFragment extends Fragment {
                 "Listings");
         if (cache)
             query.fromLocalDatastore();
-        query.whereEqualTo("ownerName", ParseUser.getCurrentUser().getString("NAME"));
+        query.whereEqualTo(ParseTables.Listings.OWNER_NAME, ParseUser.getCurrentUser().getString("NAME"));
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
                     if (!cache) {
-                        ParseObject.unpinAllInBackground("listings", new DeleteCallback() {
+                        ParseObject.unpinAllInBackground(ParseTables.Listings.LISTINGS, new DeleteCallback() {
                             @Override
                             public void done(ParseException e) {
-                                ParseObject.pinAllInBackground("listings", parseObjects);
+                                ParseObject.pinAllInBackground(ParseTables.Listings.LISTINGS, parseObjects);
                                 doneFetching(parseObjects, cache);
                             }
                         });
@@ -117,13 +118,13 @@ public class MyListingsFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
-            viewHolder.listing_name.setText(mDataset.get(i).getString("listingName"));
+            viewHolder.listing_name.setText(mDataset.get(i).getString(ParseTables.Listings.LISTING_NAME));
             SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yy");
             viewHolder.createdAt.setText(sdf.format(mDataset.get(i).getCreatedAt()));
-            viewHolder.listing_desc.setText(mDataset.get(i).getString("listingDesc"));
+            viewHolder.listing_desc.setText(mDataset.get(i).getString(ParseTables.Listings.LISTING_DESC));
             if (!mCache)
                 viewHolder.listing_image.setPlaceholder(getResources().getDrawable(R.drawable.listing_placeholder));
-            viewHolder.listing_image.setParseFile(mDataset.get(i).getParseFile("image"));
+            viewHolder.listing_image.setParseFile(mDataset.get(i).getParseFile(ParseTables.Listings.IMAGE));
             viewHolder.listing_image.loadInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] bytes, ParseException e) {

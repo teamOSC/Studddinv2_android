@@ -16,7 +16,7 @@
         android:layout_marginRight="18dp"
         android:layout_centerVertical="true" />
 
-    <in.tosc.studddin.utils.TypeFaceTextView
+    <in.tosc.studddin.ui.TypeFaceTextView
         android:id="@+id/title_navigation"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

@@ -21,11 +21,9 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -38,7 +36,6 @@ import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
@@ -46,7 +43,6 @@ import com.tokenautocomplete.FilteredArrayAdapter;
 import com.tokenautocomplete.TokenCompleteTextView;
 
 import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,9 +52,8 @@ import java.util.regex.Pattern;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
-import in.tosc.studddin.customview.BubbleCompletionView;
-import in.tosc.studddin.customview.MaterialAutoCompleteTextView;
-import in.tosc.studddin.customview.MaterialEditText;
+import in.tosc.studddin.ui.BubbleCompletionView;
+import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.utils.FutureUtils;
 import in.tosc.studddin.utils.FutureUtils.FutureShit;
@@ -248,10 +243,10 @@ public class SignupDataFragment extends Fragment implements
     }
 
     private void autoFillData() {
-        setDataToFields(R.id.user_name, ParseTables.Users.USER_NAME);
-        setDataToFields(R.id.user_dob, ParseTables.Users.USER_DOB);
-        setDataToFields(R.id.user_institute, ParseTables.Users.USER_INSTITUTE);
-        setDataToFields(R.id.user_email, ParseTables.Users.USER_EMAIL);
+        setDataToFields(R.id.user_name, ParseTables.Users.NAME);
+        setDataToFields(R.id.user_dob, ParseTables.Users.DOB);
+        setDataToFields(R.id.user_institute, ParseTables.Users.INSTITUTE);
+        setDataToFields(R.id.user_email, ParseTables.Users.EMAIL);
     }
 
     private void initializeEditTexts(int id) {
@@ -263,44 +258,44 @@ public class SignupDataFragment extends Fragment implements
     }
 
     private void getInput() {
-        input.put(ParseTables.Users.USER_NAME, getStringFromEditText(R.id.user_name));
-        input.put(ParseTables.Users.USER_PASSWORD, getStringFromEditText(R.id.user_password));
-        input.put(ParseTables.Users.USER_DOB, getStringFromEditText(R.id.user_dob));
-        input.put(ParseTables.Users.USER_INSTITUTE, getStringFromEditText(R.id.user_institute));
-        input.put(ParseTables.Users.USER_EMAIL, getStringFromEditText(R.id.user_email));
-        input.put(ParseTables.Users.USER_QUALIFICATIONS, getStringFromEditText(R.id.user_qualifications));
+        input.put(ParseTables.Users.NAME, getStringFromEditText(R.id.user_name));
+        input.put(ParseTables.Users.PASSWORD, getStringFromEditText(R.id.user_password));
+        input.put(ParseTables.Users.DOB, getStringFromEditText(R.id.user_dob));
+        input.put(ParseTables.Users.INSTITUTE, getStringFromEditText(R.id.user_institute));
+        input.put(ParseTables.Users.EMAIL, getStringFromEditText(R.id.user_email));
+        input.put(ParseTables.Users.QUALIFICATIONS, getStringFromEditText(R.id.user_qualifications));
     }
 
     private boolean validateInput() {
         //validate input stored in input
         boolean f = true;
-        if (input.get(ParseTables.Users.USER_NAME).isEmpty()) {
+        if (input.get(ParseTables.Users.NAME).isEmpty()) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.enter_name), Toast.LENGTH_LONG).show();
             f = false;
         }
-        if (input.get(ParseTables.Users.USER_PASSWORD).isEmpty()) {
+        if (input.get(ParseTables.Users.PASSWORD).isEmpty()) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.enter_name), Toast.LENGTH_LONG).show();
             f = false;
         }
 
-        if (f && input.get(ParseTables.Users.USER_INSTITUTE).isEmpty()) {
+        if (f && input.get(ParseTables.Users.INSTITUTE).isEmpty()) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.enter_institute), Toast.LENGTH_LONG).show();
             f = false;
         }
 
-        if (f && input.get(ParseTables.Users.USER_EMAIL).isEmpty()) {
+        if (f && input.get(ParseTables.Users.EMAIL).isEmpty()) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.enter_email),
                     Toast.LENGTH_LONG).show();
             f = false;
         }
 
-        if (f && input.get(ParseTables.Users.USER_QUALIFICATIONS).isEmpty()) {
+        if (f && input.get(ParseTables.Users.QUALIFICATIONS).isEmpty()) {
             Toast.makeText(getActivity(), getString(R.string.enter_qualifications),
                     Toast.LENGTH_LONG).show();
             f = false;
         }
 
-        if (f && !isEmailValid(input.get(ParseTables.Users.USER_EMAIL))) {
+        if (f && !isEmailValid(input.get(ParseTables.Users.EMAIL))) {
             Toast.makeText(getActivity(), "Please enter a valid email id",
                     Toast.LENGTH_LONG).show();
             f = false;
@@ -329,25 +324,25 @@ public class SignupDataFragment extends Fragment implements
     private void pushInputToParse() throws ParseException {
         ParseUser user = ParseUser.getCurrentUser();
 
-        user.setUsername(input.get(ParseTables.Users.USER_EMAIL));
-        user.setPassword(input.get(ParseTables.Users.USER_PASSWORD));
-        user.setEmail(input.get(ParseTables.Users.USER_EMAIL));
+        user.setUsername(input.get(ParseTables.Users.EMAIL));
+        user.setPassword(input.get(ParseTables.Users.PASSWORD));
+        user.setEmail(input.get(ParseTables.Users.EMAIL));
 
-        user.put(ParseTables.Users.USER_NAME, input.get(ParseTables.Users.USER_NAME));
-        user.put(ParseTables.Users.USER_INSTITUTE, input.get(ParseTables.Users.USER_INSTITUTE));
-        user.put(ParseTables.Users.USER_QUALIFICATIONS, input.get(ParseTables.Users.USER_QUALIFICATIONS));
+        user.put(ParseTables.Users.NAME, input.get(ParseTables.Users.NAME));
+        user.put(ParseTables.Users.INSTITUTE, input.get(ParseTables.Users.INSTITUTE));
+        user.put(ParseTables.Users.QUALIFICATIONS, input.get(ParseTables.Users.QUALIFICATIONS));
 
         if (profileBitmap != null) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             profileBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
             ParseFile profile = new ParseFile("profilePicture.png", stream.toByteArray());
             profile.save();
-            user.put(ParseTables.Users.USER_IMAGE, profile);
+            user.put(ParseTables.Users.IMAGE, profile);
         }
         try{
-            ParseFile cover = new ParseFile("coverPicture.png",userDataBundle.getByteArray(ParseTables.Users.USER_COVER));
+            ParseFile cover = new ParseFile("coverPicture.png",userDataBundle.getByteArray(ParseTables.Users.COVER));
             cover.save();
-            user.put(ParseTables.Users.USER_COVER, cover);
+            user.put(ParseTables.Users.COVER, cover);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -356,10 +351,10 @@ public class SignupDataFragment extends Fragment implements
         }
         if (currentUserLoc != null) {
             ParseGeoPoint geoPoint = new ParseGeoPoint(currentUserLoc.getLatitude(), currentUserLoc.getLongitude());
-            user.put(ParseTables.Users.USER_LOCATION, geoPoint);
+            user.put(ParseTables.Users.LOCATION, geoPoint);
         }
 
-        user.put(ParseTables.Users.USER_FULLY_REGISTERED, true);
+        user.put(ParseTables.Users.FULLY_REGISTERED, true);
 
         if (user.getSessionToken() != null) {
             Log.d(TAG, "saving user in background");
@@ -405,7 +400,7 @@ public class SignupDataFragment extends Fragment implements
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] bytes = stream.toByteArray();
-        userDataBundle.putByteArray(ParseTables.Users.USER_COVER,bytes);
+        userDataBundle.putByteArray(ParseTables.Users.COVER,bytes);
     }
 
     @Override

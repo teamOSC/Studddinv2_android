@@ -25,7 +25,6 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -33,13 +32,12 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import in.tosc.studddin.R;
-import in.tosc.studddin.utils.ParseCircularImageView;
-import in.tosc.studddin.utils.ProgressBarCircular;
+import in.tosc.studddin.externalapi.ParseTables;
+import in.tosc.studddin.ui.ParseCircularImageView;
+import in.tosc.studddin.ui.ProgressBarCircular;
 
 
 public class PeopleSameInterestsFragment extends Fragment {
@@ -189,12 +187,12 @@ public class PeopleSameInterestsFragment extends Fragment {
         list3.clear();
 
         currentuser = ParseUser.getCurrentUser().getUsername();
-        currentuseremail = ParseUser.getCurrentUser().getString("email");
-        currentuserinterests = ParseUser.getCurrentUser().getString("INTERESTS");
-        currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
-        currentusername = ParseUser.getCurrentUser().getString("NAME");
-        currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
-        userlocation = ParseUser.getCurrentUser().getParseGeoPoint("location");
+        currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
+        currentuserinterests = ParseUser.getCurrentUser().getString(ParseTables.Users.INTERESTS);
+        currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
+        currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
+        currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
+        userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
 
 
         if (currentuserinterests == null) {
@@ -205,11 +203,11 @@ public class PeopleSameInterestsFragment extends Fragment {
         List<String> interestslist = Arrays.asList(currentuserinterests.split(","));
 
         for (int c = 0; c < interestslist.size(); c++) {
-            if (!interestslist.get(c).equals("") || !interestslist.get(c).equals(null)) {
+            if (!interestslist.get(c).equals("") || !(interestslist.get(c) == null)) {
 
 
                 ParseQuery<ParseUser> query = ParseUser.getQuery();
-                query.whereMatches("INTERESTS", "(" + interestslist.get(c) + ")", "i");
+                query.whereMatches(ParseTables.Users.INTERESTS, "(" + interestslist.get(c) + ")", "i");
                 query.findInBackground(new FindCallback<ParseUser>() {
                     public void done(List<ParseUser> objects, ParseException e) {
                         if (e == null) {
@@ -223,13 +221,13 @@ public class PeopleSameInterestsFragment extends Fragment {
                                     if (!existingelement.containsKey(pu.getUsername())) {
 
                                         each = new EachRow3();
-                                        each.cname = pu.getString("NAME");
-                                        each.cinterests = pu.getString("INTERESTS");
-                                        each.cqualification = pu.getString("QUALIFICATIONS");
-                                        each.cinstituition = pu.getString("INSTITUTE");
-                                        // each.cdistance = pu.getString("NAME");
-                                        each.cusername = pu.getString("username");
-                                        ParseGeoPoint temploc = pu.getParseGeoPoint("location");
+                                        each.cname = pu.getString(ParseTables.Users.NAME);
+                                        each.cinterests = pu.getString(ParseTables.Users.INTERESTS);
+                                        each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
+                                        each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
+                                        // each.cdistance = pu.getString(ParseTables.Users.NAME);
+                                        each.cusername = pu.getString(ParseTables.Users.USERNAME);
+                                        ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
                                         if (temploc != null && temploc.getLatitude() != 0) {
                                             if (userlocation != null) {
                                                 each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
@@ -241,7 +239,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                                         }
 
                                         try {
-                                            each.fileObject = (ParseFile) pu.get("image");
+                                            each.fileObject = (ParseFile) pu.get(ParseTables.Users.IMAGE);
 
                                         } catch (Exception e1) {
                                             System.out.print("nahh");
@@ -277,12 +275,12 @@ public class PeopleSameInterestsFragment extends Fragment {
         list3.clear();
 
         currentuser = ParseUser.getCurrentUser().getUsername();
-        currentuseremail = ParseUser.getCurrentUser().getString("email");
-        currentuserinterests = ParseUser.getCurrentUser().getString("INTERESTS");
-        currentuserinstituition = ParseUser.getCurrentUser().getString("INSTITUTE");
-        currentusername = ParseUser.getCurrentUser().getString("NAME");
-        currentuserqualification = ParseUser.getCurrentUser().getString("QUALIFICATIONS");
-        userlocation = ParseUser.getCurrentUser().getParseGeoPoint("location");
+        currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
+        currentuserinterests = ParseUser.getCurrentUser().getString(ParseTables.Users.INTERESTS);
+        currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
+        currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
+        currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
+        userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
 
 
         if (currentuserinterests == null) {
@@ -293,13 +291,13 @@ public class PeopleSameInterestsFragment extends Fragment {
         List<String> interestslist = Arrays.asList(currentuserinterests.split(","));
 
         for (int c = 0; c < interestslist.size(); c++) {
-            if (!interestslist.get(c).equals("") || !interestslist.get(c).equals(null)) {
+            if (!interestslist.get(c).equals("") || !(interestslist.get(c) == null)) {
 
 
                 ParseQuery<ParseUser> query = ParseUser.getQuery();
-                query.whereMatches("NAME", "(" + textSearch + ")", "i");
+                query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
 
-                query.whereMatches("INTERESTS", "(" + interestslist.get(c) + ")", "i");
+                query.whereMatches(ParseTables.Users.INTERESTS, "(" + interestslist.get(c) + ")", "i");
                 query.findInBackground(new FindCallback<ParseUser>() {
                     public void done(List<ParseUser> objects, ParseException e) {
                         if (e == null) {
@@ -313,13 +311,13 @@ public class PeopleSameInterestsFragment extends Fragment {
                                     if (!existingelement.containsKey(pu.getUsername())) {
 
                                         each = new EachRow3();
-                                        each.cname = pu.getString("NAME");
-                                        each.cinterests = pu.getString("INTERESTS");
-                                        each.cqualification = pu.getString("QUALIFICATIONS");
-                                        each.cinstituition = pu.getString("INSTITUTE");
-                                        // each.cdistance = pu.getString("NAME");
-                                        each.cusername = pu.getString("username");
-                                        ParseGeoPoint temploc = pu.getParseGeoPoint("location");
+                                        each.cname = pu.getString(ParseTables.Users.NAME);
+                                        each.cinterests = pu.getString(ParseTables.Users.INTERESTS);
+                                        each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
+                                        each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
+                                        // each.cdistance = pu.getString(ParseTables.Users.NAME);
+                                        each.cusername = pu.getString(ParseTables.Users.USERNAME);
+                                        ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
                                         if (temploc != null && temploc.getLatitude() != 0) {
                                             if (userlocation != null) {
                                                 each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
@@ -331,7 +329,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                                         }
 
                                         try {
-                                            each.fileObject = (ParseFile) pu.get("image");
+                                            each.fileObject = (ParseFile) pu.get(ParseTables.Users.IMAGE);
 
                                         } catch (Exception e1) {
                                             System.out.print("nahh");

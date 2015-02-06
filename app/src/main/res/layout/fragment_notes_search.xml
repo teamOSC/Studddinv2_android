@@ -27,11 +27,10 @@
                     android:orientation="horizontal">
 
 
-                    <in.tosc.studddin.customview.MaterialEditText
+                    <in.tosc.studddin.ui.MaterialEditText
                         android:id="@+id/notes_search"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-
                         android:layout_weight="4"
                         android:descendantFocusability="beforeDescendants"
                         android:layout_marginLeft="5dp"
@@ -51,7 +50,7 @@
                         android:id="@+id/searchblahblah"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="0.7"
                         android:background="@android:color/transparent"
                         android:scaleType="centerInside"
                         android:src="@drawable/abc_ic_search_api_mtrl_alpha" />
@@ -81,7 +80,7 @@
     </LinearLayout>
 
 
-    <in.tosc.studddin.utils.AddFloatingActionButton
+    <in.tosc.studddin.ui.AddFloatingActionButton
         android:id="@+id/notes_button_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
