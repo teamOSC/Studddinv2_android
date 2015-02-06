@@ -178,10 +178,10 @@ public class ListingsSearchFragment extends Fragment {
             query.fromLocalDatastore();
         query.whereContainedIn(ParseTables.Listings.CATEGORY, categories);
         if (text == null) {
-            if (filterPrefs.getString("sortby", "nearest").compareTo("recent") == 0)
+            if (filterPrefs.getString("sortby", "nearest").equalsIgnoreCase("recent"))
                 query.orderByDescending(ParseTables.Listings.CREATED_AT);
-        /*else
-            query.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));*/
+            else
+                query.whereNear("location",location);
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(final List<ParseObject> parseObjects, ParseException e) {
@@ -218,10 +218,10 @@ public class ListingsSearchFragment extends Fragment {
             queries.add(query);
             queries.add(descQuery);
             ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
-            if (filterPrefs.getString("sortby", "nearest").compareTo("recent") == 0)
+            //if (filterPrefs.getString("sortby", "nearest").compareTo("recent") == 0)
                 mainQuery.orderByDescending(ParseTables.Listings.CREATED_AT);
-            /*else
-                mainQuery.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));*/
+            //else
+            //   mainQuery.whereNear("location",location);
             mainQuery.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> results, ParseException e) {
                     doneFetching(results, cache);
