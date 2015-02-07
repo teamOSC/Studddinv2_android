@@ -36,6 +36,7 @@ import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
@@ -80,7 +81,7 @@ public class SignupDataFragment extends Fragment implements
     FutureShit futureShit;
 
     private List<ParseObject> interests;
-    private List<Integer> selectedInterests = new ArrayList();
+    private List<ParseObject> selectedInterests = new ArrayList();
 
     public SignupDataFragment() {
         // Required empty public constructor
@@ -332,6 +333,13 @@ public class SignupDataFragment extends Fragment implements
         user.put(ParseTables.Users.INSTITUTE, input.get(ParseTables.Users.INSTITUTE));
         user.put(ParseTables.Users.QUALIFICATIONS, input.get(ParseTables.Users.QUALIFICATIONS));
 
+        for (ParseObject object : selectedInterests) {
+            ParseRelation<ParseUser> relation = object.getRelation("users");
+            relation.add(user);
+            object.saveInBackground();
+        }
+        user.put(ParseTables.Users.INTERESTS, selectedInterests);
+
         if (profileBitmap != null) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             profileBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -458,13 +466,13 @@ public class SignupDataFragment extends Fragment implements
             @Override
             public void execute(List<ParseObject> result) {
                 interests = result;
-                final List<String> interests = new ArrayList();
+                final List<String> interestChoices = new ArrayList();
                 for (ParseObject interest : result) {
-                    interests.add(interest.getString("name"));
+                    interestChoices.add(interest.getString("name"));
                 }
-                interests.add("Add new interest");
+                interestChoices.add("Add new interest");
                 FilteredArrayAdapter mAdapter = new FilteredArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_list_item_1, interests) {
+                        android.R.layout.simple_list_item_1, interestChoices) {
                     @Override
                     protected boolean keepObject(String obj, String mask) {
                         mask = mask.toLowerCase();
@@ -479,12 +487,14 @@ public class SignupDataFragment extends Fragment implements
                 editText.setTokenListener(new TokenCompleteTextView.TokenListener() {
                     @Override
                     public void onTokenAdded(Object o) {
-                        selectedInterests.add(interests.indexOf(o));
+                        String key = (String) o;
+                        key = key.toString();
+                        selectedInterests.add(interests.get(interestChoices.indexOf(key)));
                     }
 
                     @Override
                     public void onTokenRemoved(Object o) {
-                        selectedInterests.remove(interests.indexOf(o));
+                        selectedInterests.remove(interestChoices.indexOf(o));
                     }
                 });
             }
