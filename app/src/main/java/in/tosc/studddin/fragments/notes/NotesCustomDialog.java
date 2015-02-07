@@ -97,8 +97,8 @@ public class NotesCustomDialog extends Dialog {
                         if(!parseFileList.isEmpty()) {
                             for(ParseFile pFile : parseFileList) {
 
-                                ParseFile parseFile = pFile;
-                                String imageFileURL = parseFile.getUrl();
+                                ;
+                                String imageFileURL = pFile.getUrl();
                                 Uri uri = Uri.parse(imageFileURL);
                                 DownloadManager.Request dr = new DownloadManager.Request(uri);
                                 dr.setTitle("Notes: " + notesTopicName.get(position)+ ".jpg");
@@ -111,28 +111,11 @@ public class NotesCustomDialog extends Dialog {
                             }
                         }
 
-//                        ParseFile notesParseFile = (ParseFile) notesZipParseObject.get("imageZip");
-//
-//                        String zipFileURL = notesZipParseFile.getUrl();
-//                        if (DEBUG) Log.d(TAG, ""+ zipFileURL);
-//                        Uri uri = Uri.parse(zipFileURL);
-//                        DownloadManager.Request dr = new DownloadManager.Request(uri);
-//                        dr.setTitle("Notes: " + notesTopicName.get(position) +" "+
-//                                notesSubjectName.get(position) + " "+
-//                                notesBranchName.get(position) +".zip");
-//                        dr.setDescription("");
-//
-//                        dr.setDestinationInExternalPublicDir("/LearnHut_Notes/", "noteszipfile " + notesSubjectName.get(position) +" "+
-//                                notesTopicName.get(position) + " "+
-//                                notesCollegeName.get(position) + " " +
-//                                notesBranchName.get(position) +".zip");
-//                        downloadManager.enqueue(dr);
-//                        Toast.makeText(getContext(), "Download Start", Toast.LENGTH_SHORT).show();
-//
+
 
                     }
                 });
-//
+
 
             }
         });

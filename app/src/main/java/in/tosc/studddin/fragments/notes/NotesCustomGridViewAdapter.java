@@ -19,9 +19,9 @@ import in.tosc.studddin.R;
 /**
  * Created by raghav on 25/01/15.
  */
-public class NotesCustomGridViewAdapter extends RecyclerView.Adapter<NotesCustomGridViewAdapter.ViewHolder> implements View.OnClickListener {
+public class NotesCustomGridViewAdapter extends RecyclerView.Adapter<NotesCustomGridViewAdapter.ViewHolder> {
 
-    Context mContext;
+    private Context mContext;
     private int gridLayout;
 
     private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, uploadedBy;
@@ -82,24 +82,15 @@ public class NotesCustomGridViewAdapter extends RecyclerView.Adapter<NotesCustom
         return notesTopicName.size();
     }
 
-    @Override
-    public void onClick(View v) {
-        final ViewHolder holder = (ViewHolder) v.getTag();
-        NotesCustomDialog notesCustomDialog = new NotesCustomDialog(mContext,
-                        notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, holder.getPosition(), uploadedBy);
-                notesCustomDialog.setTitle(mContext.getString(R.string.notes_details));
-//                notesCustomDialog.show();
-    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView branchNameTxtView, subjectNameTxtView, topicNameTxtView;
+        public TextView  topicNameTxtView;
         public ParseImageView notesImage;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-//            branchNameTxtView = (TextView) itemView.findViewById(R.id.notes_gridview_branchname);
-//            subjectNameTxtView = (TextView) itemView.findViewById(R.id.notes_gridview_subjectname);
+
             topicNameTxtView = (TextView) itemView.findViewById(R.id.notes_gridview_topicname);
             notesImage = (ParseImageView) itemView.findViewById(R.id.notes_gridview_image_view);
 
