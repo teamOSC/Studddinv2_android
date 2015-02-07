@@ -57,7 +57,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:background="@drawable/abc_textfield_search_activated_mtrl_alpha">
         <in.tosc.studddin.ui.MaterialEditText
             android:id="@+id/event_type"
@@ -74,7 +73,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:background="@drawable/abc_textfield_search_activated_mtrl_alpha">
             <in.tosc.studddin.ui.MaterialEditText
                 android:id="@+id/event_location"
@@ -129,7 +127,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/abc_textfield_search_activated_mtrl_alpha">
 
         <in.tosc.studddin.ui.MaterialEditText
@@ -138,8 +136,7 @@
             android:layout_weight="1"
             android:id="@+id/event_date"
             android:hint="click on date"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="7dp"
+            android:layout_margin="10dp"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
             app:baseColor="@color/search_color"
             app:primaryColor="@color/colorPrimaryDark"
@@ -160,7 +157,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/abc_textfield_search_activated_mtrl_alpha">
 
         <in.tosc.studddin.ui.MaterialEditText
@@ -169,8 +166,7 @@
             android:layout_weight="1"
             android:id="@+id/event_time"
             android:hint="click on time"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="7dp"
+            android:layout_margin="10dp"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
             app:baseColor="@color/search_color"
             app:primaryColor="@color/colorPrimaryDark"
