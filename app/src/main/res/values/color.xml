@@ -7,6 +7,8 @@
     <color name="search_color">#982360</color>
     <color name="search_grey">#9E9E9E</color>
     <color name="app_background">#00BCD4</color>
+    <color name="textview_dark">#212121</color>
+    <color name="textview_light">#616161</color>
 
     <!-- App Main colors -->
     <color name="colorPrimary">#607D8B</color>

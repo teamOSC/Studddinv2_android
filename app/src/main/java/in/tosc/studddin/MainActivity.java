@@ -54,6 +54,9 @@ public class MainActivity extends ActionBarActivity
                 setSupportActionBar(toolbar);
                 toolbar.setTitle(myTitle);
                 toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+                //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //    toolbar.setElevation(10f); }
+
             }
         }
 
