@@ -19,7 +19,6 @@
             android:id="@+id/event_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_margin="10dp"
             android:gravity="center"
             android:text="Name"
@@ -31,10 +30,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/event_name"
-            android:layout_centerHorizontal="true"
             android:layout_margin="10dp"
             android:text="Date"
             android:textColor="#000000" />
+        <com.parse.ParseImageView
+            android:layout_width="80dp"
+            android:layout_height="90dp"
+            android:id="@+id/event_image"
+            android:layout_alignParentRight="true"
+            />
 
         <RelativeLayout
             android:id="@+id/expanded_area"
@@ -73,11 +77,29 @@
                 android:text="Type"
                 android:textColor="#000000" />
             <TextView
-                android:id="@+id/event_creator"
+                android:id="@+id/event_url"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_below="@+id/event_location"
+                android:gravity="center"
+                android:text="Type"
+                android:textColor="#000000" />
+            <TextView
+                android:id="@+id/event_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_below="@+id/event_url"
+                android:gravity="center"
+                android:text="Type"
+                android:textColor="#000000" />
+            <TextView
+                android:id="@+id/event_creator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_below="@+id/event_contact"
                 android:gravity="center"
                 android:text="Type"
                 android:textColor="#000000" />
@@ -86,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/event_delete"
                 android:background="@drawable/cross"
-                android:layout_below="@+id/event_location"
+                android:layout_below="@+id/event_contact"
                 android:visibility="gone"
                 />
         </RelativeLayout>

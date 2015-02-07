@@ -87,6 +87,42 @@
                 app:baseColor="@color/search_color"
                 app:primaryColor="@color/colorPrimaryDark" />
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/abc_textfield_search_activated_mtrl_alpha">
+            <in.tosc.studddin.ui.MaterialEditText
+                android:id="@+id/event_link"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:hint="Link"
+                android:inputType="textUri"
+                android:textCursorDrawable="@drawable/text_cursor_cyan"
+                app:baseColor="@color/search_color"
+                app:primaryColor="@color/colorPrimaryDark" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/abc_textfield_search_activated_mtrl_alpha">
+            <in.tosc.studddin.ui.MaterialEditText
+                android:id="@+id/event_contact"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:hint="Contact"
+                android:inputType="number"
+                android:textCursorDrawable="@drawable/text_cursor_cyan"
+                app:baseColor="@color/search_color"
+                app:primaryColor="@color/colorPrimaryDark" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -151,6 +187,33 @@
             android:textColor="@android:color/white"
             />
     </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/abc_textfield_search_activated_mtrl_alpha">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/event_image"
+                android:hint="click on time"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="7dp"
+                />
+            <ImageButton
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_weight="0"
+                android:text="Set Time"
+                android:id="@+id/upload_image"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_camera_alt_black_48dp"
+                android:textColor="@android:color/white"
+                />
+        </LinearLayout>
 
     <Button
         android:id="@+id/submit_button"
@@ -161,7 +224,7 @@
         android:background="@drawable/btn_sel"
         android:text="@string/submit"
         android:textColor="@android:color/white" />
-    
+
     </LinearLayout>
     </ScrollView>
 
