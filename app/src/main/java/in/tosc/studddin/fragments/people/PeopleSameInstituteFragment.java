@@ -26,6 +26,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -50,6 +51,8 @@ public class PeopleSameInstituteFragment extends Fragment {
     String currentuserqualification = "";
     String currentuser = "";
     ParseGeoPoint userlocation = new ParseGeoPoint(0, 0);
+
+    ArrayList<ParseObject> interests = new ArrayList<>() ;
 
 
     EditText search;
@@ -205,7 +208,19 @@ public class PeopleSameInstituteFragment extends Fragment {
                         if (!pu.getUsername().equals(currentuser)) {
                             each = new EachRow3();
                             each.cname = pu.getString(ParseTables.Users.NAME);
-                            each.cinterests = pu.getString(ParseTables.Users.INTERESTS);
+
+
+                            ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
+
+                            if(personInterests!=null) {
+                                StringBuilder stringBuilder = new StringBuilder("");
+                                for (ParseObject parseObject : personInterests) {
+                                    stringBuilder.append(parseObject.getString("name") + ", ");
+                                }
+                                stringBuilder.setLength(stringBuilder.length() - 2);
+                                each.cinterests = stringBuilder.toString();
+                            }
+
                             each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
                             each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
 //                        each.cdistance = pu.getString(ParseTables.Users.NAME);
@@ -267,6 +282,20 @@ public class PeopleSameInstituteFragment extends Fragment {
         String currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
 
+        if(interests!=null) {
+            StringBuilder stringBuilder = new StringBuilder("");
+            for (ParseObject parseObject : interests) {
+                stringBuilder.append(parseObject.getString("name") + ", ");
+            }
+            stringBuilder.setLength(stringBuilder.length() - 2);
+            currentuserinterests = stringBuilder.toString();
+        }
+
+
+        if (currentuserinterests == null) {
+            currentuserinterests = "";
+        }
+
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
@@ -285,7 +314,18 @@ public class PeopleSameInstituteFragment extends Fragment {
                         if (!pu.getUsername().equals(currentuser)) {
                             each = new EachRow3();
                             each.cname = pu.getString(ParseTables.Users.NAME);
-                            each.cinterests = pu.getString(ParseTables.Users.INTERESTS);
+
+                            ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
+
+                            if(personInterests!=null) {
+                                StringBuilder stringBuilder = new StringBuilder("");
+                                for (ParseObject parseObject : personInterests) {
+                                    stringBuilder.append(parseObject.getString("name") + ", ");
+                                }
+                                stringBuilder.setLength(stringBuilder.length() - 2);
+                                each.cinterests = stringBuilder.toString();
+                            }
+
                             each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
                             each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
 //                        each.cdistance = pu.getString(ParseTables.Users.NAME);

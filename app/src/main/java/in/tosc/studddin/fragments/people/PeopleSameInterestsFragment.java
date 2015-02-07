@@ -25,6 +25,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -56,6 +57,10 @@ public class PeopleSameInterestsFragment extends Fragment {
     ParseGeoPoint userlocation = new ParseGeoPoint(0, 0);
 
     EditText search;
+
+    ArrayList<ParseObject> interests = new ArrayList<>() ;
+    ArrayList<String> currentUserInterestsList = new ArrayList<String>() ;
+
 
     ArrayList<EachRow3> list3 = new ArrayList<PeopleSameInterestsFragment.EachRow3>();
     EachRow3 each;
@@ -185,86 +190,109 @@ public class PeopleSameInterestsFragment extends Fragment {
     private void loaddata() {
 
         list3.clear();
+        currentUserInterestsList.clear();
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
-        currentuserinterests = ParseUser.getCurrentUser().getString(ParseTables.Users.INTERESTS);
         currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
         currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
         currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
 
+        interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
+
+        if (interests != null) {
+            StringBuilder stringBuilder = new StringBuilder("");
+            for (ParseObject parseObject : interests) {
+                currentUserInterestsList.add(parseObject.getString("name"));
+                stringBuilder.append(parseObject.getString("name") + ", ");
+            }
+            stringBuilder.setLength(stringBuilder.length() - 2);
+            currentuserinterests = stringBuilder.toString();
+        }
 
         if (currentuserinterests == null) {
             currentuserinterests = "";
         }
 
-
-        List<String> interestslist = Arrays.asList(currentuserinterests.split(","));
-
-        for (int c = 0; c < interestslist.size(); c++) {
-            if (!interestslist.get(c).equals("") || !(interestslist.get(c) == null)) {
+        if (currentUserInterestsList != null) {
+            for (int c = 0; c < currentUserInterestsList.size(); c++) {
+                if (!currentUserInterestsList.get(c).equals("") || !(currentUserInterestsList.get(c) == null)) {
 
 
-                ParseQuery<ParseUser> query = ParseUser.getQuery();
-                query.whereMatches(ParseTables.Users.INTERESTS, "(" + interestslist.get(c) + ")", "i");
-                query.findInBackground(new FindCallback<ParseUser>() {
-                    public void done(List<ParseUser> objects, ParseException e) {
-                        if (e == null) {
+                    ParseQuery<ParseUser> query = ParseUser.getQuery();
+                    query.whereMatches(ParseTables.Users.INTERESTS, "(" + currentUserInterestsList.get(c) + ")", "i");
+                    query.findInBackground(new FindCallback<ParseUser>() {
+                        public void done(List<ParseUser> objects, ParseException e) {
+                            if (e == null) {
 
-                            for (ParseUser pu : objects) {
-                                //access the data associated with the ParseUser using the get method
-                                //pu.getString("key") or pu.get("key")
+                                for (ParseUser pu : objects) {
+                                    //access the data associated with the ParseUser using the get method
+                                    //pu.getString("key") or pu.get("key")
 
-                                if (!pu.getUsername().equals(currentuser)) {
+                                    if (!pu.getUsername().equals(currentuser)) {
 
-                                    if (!existingelement.containsKey(pu.getUsername())) {
+                                        if (!existingelement.containsKey(pu.getUsername())) {
 
-                                        each = new EachRow3();
-                                        each.cname = pu.getString(ParseTables.Users.NAME);
-                                        each.cinterests = pu.getString(ParseTables.Users.INTERESTS);
-                                        each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
-                                        each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
-                                        // each.cdistance = pu.getString(ParseTables.Users.NAME);
-                                        each.cusername = pu.getString(ParseTables.Users.USERNAME);
-                                        ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
-                                        if (temploc != null && temploc.getLatitude() != 0) {
-                                            if (userlocation != null) {
-                                                each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
-                                            } else {
-                                                each.cdistance = "13 km";
+                                            each = new EachRow3();
+                                            each.cname = pu.getString(ParseTables.Users.NAME);
+
+
+                                            ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
+
+                                            if(personInterests!=null) {
+                                                StringBuilder stringBuilder = new StringBuilder("");
+                                                for (ParseObject parseObject : personInterests) {
+                                                    stringBuilder.append(parseObject.getString("name") + ", ");
+                                                }
+                                                stringBuilder.setLength(stringBuilder.length() - 2);
+                                                each.cinterests = stringBuilder.toString();
                                             }
-                                        } else {
-                                            each.cdistance = "16 km";
+
+
+                                            each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
+                                            each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
+                                            // each.cdistance = pu.getString(ParseTables.Users.NAME);
+                                            each.cusername = pu.getString(ParseTables.Users.USERNAME);
+                                            ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
+                                            if (temploc != null && temploc.getLatitude() != 0) {
+                                                if (userlocation != null) {
+                                                    each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
+                                                } else {
+                                                    each.cdistance = "13 km";
+                                                }
+                                            } else {
+                                                each.cdistance = "16 km";
+                                            }
+
+                                            try {
+                                                each.fileObject = (ParseFile) pu.get(ParseTables.Users.IMAGE);
+
+                                            } catch (Exception e1) {
+                                                System.out.print("nahh");
+                                            }
+
+
+                                            list3.add(each);
+                                            existingelement.put(pu.getUsername(), true);
                                         }
-
-                                        try {
-                                            each.fileObject = (ParseFile) pu.get(ParseTables.Users.IMAGE);
-
-                                        } catch (Exception e1) {
-                                            System.out.print("nahh");
-                                        }
-
-
-                                        list3.add(each);
-                                        existingelement.put(pu.getUsername(), true);
                                     }
                                 }
+
+                                // The query was successful.
+                            } else {
+                                // Something went wrong.
                             }
+                            q = new MyAdapter3(getActivity(), 0, list3);
+                            q.notifyDataSetChanged();
 
-                            // The query was successful.
-                        } else {
-                            // Something went wrong.
+                            lv.setAdapter(q);
+                            progressBar.setVisibility(View.GONE);
+                            lv.setVisibility(View.VISIBLE);
                         }
-                        q = new MyAdapter3(getActivity(), 0, list3);
-                        q.notifyDataSetChanged();
+                    });
 
-                        lv.setAdapter(q);
-                        progressBar.setVisibility(View.GONE);
-                        lv.setVisibility(View.VISIBLE);
-                    }
-                });
-
+                }
             }
         }
     }
@@ -276,11 +304,22 @@ public class PeopleSameInterestsFragment extends Fragment {
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
-        currentuserinterests = ParseUser.getCurrentUser().getString(ParseTables.Users.INTERESTS);
         currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
         currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
         currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
+
+        interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
+
+        if(interests!=null) {
+            StringBuilder stringBuilder = new StringBuilder("");
+            for (ParseObject parseObject : interests) {
+                stringBuilder.append(parseObject.getString("name") + ", ");
+            }
+            stringBuilder.setLength(stringBuilder.length() - 2);
+            currentuserinterests = stringBuilder.toString();
+        }
+
 
 
         if (currentuserinterests == null) {
@@ -312,7 +351,18 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                                         each = new EachRow3();
                                         each.cname = pu.getString(ParseTables.Users.NAME);
-                                        each.cinterests = pu.getString(ParseTables.Users.INTERESTS);
+
+                                        ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
+
+                                        if(personInterests!=null) {
+                                            StringBuilder stringBuilder = new StringBuilder("");
+                                            for (ParseObject parseObject : personInterests) {
+                                                stringBuilder.append(parseObject.getString("name") + ", ");
+                                            }
+                                            stringBuilder.setLength(stringBuilder.length() - 2);
+                                            each.cinterests = stringBuilder.toString();
+                                        }
+
                                         each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
                                         each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
                                         // each.cdistance = pu.getString(ParseTables.Users.NAME);

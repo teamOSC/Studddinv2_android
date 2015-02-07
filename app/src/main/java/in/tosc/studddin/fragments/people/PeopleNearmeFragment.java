@@ -26,8 +26,12 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -51,6 +55,7 @@ public class PeopleNearmeFragment extends Fragment {
     String currentuser = "";
     ParseGeoPoint userlocation = new ParseGeoPoint(0, 0);
 
+    ArrayList<ParseObject> interests = new ArrayList<>() ;
 
     EditText search;
 
@@ -181,16 +186,25 @@ public class PeopleNearmeFragment extends Fragment {
 
     private void loaddata() {
 
-      list3.clear();
-
+        list3.clear();
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
-        currentuserinterests = ParseUser.getCurrentUser().getString(ParseTables.Users.INTERESTS);
         currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
         currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
         currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
+
+        interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
+
+        if(interests!=null) {
+            StringBuilder stringBuilder = new StringBuilder("");
+            for (ParseObject parseObject : interests) {
+                    stringBuilder.append(parseObject.getString("name") + ", ");
+            }
+                stringBuilder.setLength(stringBuilder.length() - 2);
+                currentuserinterests = stringBuilder.toString();
+        }
 
 
         // DUMMY DATA SO THAT IT DISPLAYS SOMETHING
@@ -203,6 +217,7 @@ public class PeopleNearmeFragment extends Fragment {
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereNear(ParseTables.Users.LOCATION, userlocation);
+        query.include(ParseTables.Users.INTERESTS);
 
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> objects, ParseException e) {
@@ -218,7 +233,18 @@ public class PeopleNearmeFragment extends Fragment {
 
                             each = new EachRow3();
                             each.cname = pu.getString(ParseTables.Users.NAME);
-                            each.cinterests = pu.getString(ParseTables.Users.INTERESTS);
+
+                            ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
+
+                            if(personInterests!=null) {
+                                StringBuilder stringBuilder = new StringBuilder("");
+                                for (ParseObject parseObject : personInterests) {
+                                    stringBuilder.append(parseObject.getString("name") + ", ");
+                                }
+                                    stringBuilder.setLength(stringBuilder.length() - 2);
+                                    each.cinterests = stringBuilder.toString();
+                            }
+
                             each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
                             each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
 //                                          each.cdistance = pu.getString(ParseTables.Users.NAME);
@@ -269,11 +295,26 @@ public class PeopleNearmeFragment extends Fragment {
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
-        currentuserinterests = ParseUser.getCurrentUser().getString(ParseTables.Users.INTERESTS);
         currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
         currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
         currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
+
+        interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
+
+        if(interests!=null) {
+            StringBuilder stringBuilder = new StringBuilder("");
+            for (ParseObject parseObject : interests) {
+                stringBuilder.append(parseObject.getString("name") + ", ");
+            }
+            stringBuilder.setLength(stringBuilder.length() - 2);
+            currentuserinterests = stringBuilder.toString();
+        }
+
+
+        if (currentuserinterests == null) {
+            currentuserinterests = "";
+        }
 
  // DUMMY DATA SO THAT IT DISPLAYS SOMETHING
         if (userlocation==null ||  userlocation.getLatitude() == 0)
