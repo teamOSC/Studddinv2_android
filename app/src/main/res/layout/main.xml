@@ -59,7 +59,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="5dp">
+        android:padding="0dp">
 
         <Button
             android:id="@+id/btnGalleryPick"
@@ -74,7 +74,7 @@
             style="@style/btn"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="0dp"
             android:background="@drawable/btn_sel"
             android:text="@string/notes_gallery_pick_multiple_pictures" />
     </LinearLayout>
