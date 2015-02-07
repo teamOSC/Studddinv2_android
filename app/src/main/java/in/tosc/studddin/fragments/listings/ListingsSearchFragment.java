@@ -19,6 +19,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -178,13 +179,14 @@ public class ListingsSearchFragment extends Fragment {
             query.fromLocalDatastore();
         query.whereContainedIn(ParseTables.Listings.CATEGORY, categories);
         if (text == null) {
-            if (filterPrefs.getString("sortby", "nearest").equalsIgnoreCase("recent"))
+            //if (filterPrefs.getString("sortby", "nearest").equalsIgnoreCase("recent"))
                 query.orderByDescending(ParseTables.Listings.CREATED_AT);
-            else
-                query.whereNear(ParseTables.Listings.LOCATION,location);
+            //else
+                //query.whereNear(ParseTables.Listings.LOCATION,location);
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(final List<ParseObject> parseObjects, ParseException e) {
+                    Log.d("Objects: ","" +parseObjects);
                     if (e == null) {
                         if (categories.size() == 3 && !cache) {
                             ParseObject.unpinAllInBackground("listings", new DeleteCallback() {
@@ -197,6 +199,7 @@ public class ListingsSearchFragment extends Fragment {
                         } else
                             doneFetching(parseObjects, cache);
                     } else {
+                        e.printStackTrace();
                         if (onRefresh) {
                             onRefresh = false;
                             swipeRefreshLayout.setRefreshing(false);
@@ -235,7 +238,6 @@ public class ListingsSearchFragment extends Fragment {
 
     private void doneFetching(List<ParseObject> parseObjects, boolean cache) {
         mAdapter = new ListingAdapter(parseObjects, cache);
-        mAdapter.notifyDataSetChanged();
         if (onRefresh) {
             onRefresh = false;
             swipeRefreshLayout.setRefreshing(false);
