@@ -5,6 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,14 +15,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -27,9 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.tosc.studddin.R;
-import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.fragments.NotesFragment;
 import in.tosc.studddin.ui.FloatingActionButton;
+import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.utils.Utilities;
 
 /**
@@ -49,10 +51,14 @@ public class NotesSearchFragment extends Fragment {
     private String mParam1;
 
     private String mParam2;
-    GridView notesGridView;
+    //GridView notesGridView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ImageButton searchButton;
+    private RecyclerView mRecyclerView;
+    private GridLayoutManager gridLayoutManager;
+    private ArrayList<ArrayList<ParseFile>> notesFirstImage;
 
+    private NotesCustomGridViewAdapter notesCustomGridViewAdapter;
     private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, uploadedBy;
 
     private boolean onRefresh = false;
@@ -100,13 +106,19 @@ public class NotesSearchFragment extends Fragment {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_notes_search, container, false);
 
-        notesGridView = (GridView) rootView.findViewById(R.id.notes_gridview);
+        //notesGridView = (GridView) rootView.findViewById(R.id.notes_gridview);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.notes_gridview);
+        gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
+
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         notesCollegeName = new ArrayList<String>();
         notesBranchName = new ArrayList<String>();
         notesSubjectName = new ArrayList<String>();
         notesTopicName = new ArrayList<String>();
         uploadedBy = new ArrayList<String>();
+        notesFirstImage = new ArrayList<ArrayList<ParseFile>>();
 
         addNotesButton = (FloatingActionButton) rootView.findViewById(R.id.notes_button_add);
         searchEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_search);
@@ -148,19 +160,24 @@ public class NotesSearchFragment extends Fragment {
 
 
 
-
-        notesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                NotesCustomDialog notesCustomDialog = new NotesCustomDialog(getActivity(),
-                        notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, position, uploadedBy);
-                notesCustomDialog.setTitle(getString(R.string.notes_details));
-                notesCustomDialog.show();
-
-            }
-        });
+//        mRecyclerView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                NotesCustomDialog notesCustomDialog = new NotesCustomDialog(getActivity(),
+//                        notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, position, uploadedBy);
+//                notesCustomDialog.setTitle(getString(R.string.notes_details));
+//                notesCustomDialog.show();
+//            }
+//        });
+//        notesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view,
+//                                    int position, long id) {
+//
+//
+//
+//            }
+//        });
 
 
 
@@ -191,6 +208,8 @@ public class NotesSearchFragment extends Fragment {
         query.orderByDescending("createdAt");
 
 
+
+
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
@@ -201,11 +220,14 @@ public class NotesSearchFragment extends Fragment {
                     notesCollegeName.add((String) notes.get("collegeName"));
                     notesTopicName.add((String) notes.get("topicName"));
                     uploadedBy.add((String) notes.get("userName"));
+                    notesFirstImage.add((ArrayList<ParseFile>) notes.get("notesImages"));
+
+
 
                 }
-                NotesCustomGridViewAdapter adapter = new NotesCustomGridViewAdapter(getActivity(), notesCollegeName, notesBranchName, notesTopicName, notesSubjectName);
+                notesCustomGridViewAdapter = new NotesCustomGridViewAdapter(getActivity(), notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, notesFirstImage, uploadedBy);
 
-                notesGridView.setAdapter(adapter);
+                mRecyclerView.setAdapter(notesCustomGridViewAdapter);
             }
 
         });
