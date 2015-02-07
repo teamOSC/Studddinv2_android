@@ -444,8 +444,10 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                             } catch (Exception exception) {
                                                 exception.printStackTrace();
                                             } finally {
-                                                new FetchProfilePicture(fragment).execute(profilePictureURL);
-                                                new FetchCoverPicture(fragment).execute(coverPictureURL);
+                                                if(profilePictureURL!=null)
+                                                    new FetchProfilePicture(fragment).execute(profilePictureURL);
+                                                if(coverPictureURL!=null)
+                                                    new FetchCoverPicture(fragment).execute(coverPictureURL);
                                             }
 
                                         } else {
