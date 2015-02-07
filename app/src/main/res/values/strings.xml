@@ -79,6 +79,7 @@
     <string name="event_location">Location</string>
     <string name="event_date">Date</string>
     <string name="event_created">Event created</string>
+    <string name="placeholder_dialog_events">You haven\'t created an event yet!</string>
 
     <string name="user_uid">UserID</string>
     <string name="new_password">New Password</string>
@@ -94,5 +95,8 @@
     <string name="notes_downloading">Downloading...</string>
     <string name="notes_details">Details:</string>
     <string name="dialog_download_starting">Download Start</string>
+    <string name="placeholder_dialog_listing">You haven\'t posted an item to sell yet!</string>
+    
+    <string name="lets_get_going">lets get going</string>
 
 </resources>
