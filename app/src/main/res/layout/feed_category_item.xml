@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/abc_popup_background_mtrl_mult"
-    android:orientation="vertical">
 
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/list_item_card_view"
         android:layout_width="match_parent"
@@ -14,30 +10,45 @@
         android:layout_gravity="center"
         android:layout_margin="6dp"
         android:elevation="10sp"
+        app:cardElevation="10dp"
         card_view:cardCornerRadius="6dp">
-
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_width="200dp"
-            android:layout_height="150dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:id="@+id/data_holder">
 
             <ImageView
                 android:id="@+id/feed_item_image"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:layout_margin="10dp"/>
 
-            <in.tosc.studddin.ui.TypeFaceTextView
-                android:id="@+id/feed_item_text_view"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="4"
-                android:ellipsize="end"
-                android:maxLines="3"
-                android:text="test"
-                android:textSize="15sp"
-                app:typeface="fonts/Gotham-Book.ttf"/>
+                <in.tosc.studddin.ui.TypeFaceTextView
+                    android:id="@+id/feed_item_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:ellipsize="end"
+                    android:text="test"
+                    android:textSize="15sp"
+                    android:layout_weight="6"
+                    app:typeface="fonts/Gotham-Book.ttf"/>
+
         </LinearLayout>
+         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:id="@+id/feed_category_tag"
+            android:text="From"
+             android:layout_below="@+id/data_holder"
+             android:layout_alignEnd="@+id/data_holder"/>
+    </RelativeLayout>
+
 
     </android.support.v7.widget.CardView>
-</LinearLayout>
