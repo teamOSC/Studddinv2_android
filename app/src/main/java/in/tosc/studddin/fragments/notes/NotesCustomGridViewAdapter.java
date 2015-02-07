@@ -1,11 +1,16 @@
 package in.tosc.studddin.fragments.notes;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.parse.GetDataCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseImageView;
 
 import java.util.ArrayList;
 
@@ -14,63 +19,91 @@ import in.tosc.studddin.R;
 /**
  * Created by raghav on 25/01/15.
  */
-public class NotesCustomGridViewAdapter extends BaseAdapter {
+public class NotesCustomGridViewAdapter extends RecyclerView.Adapter<NotesCustomGridViewAdapter.ViewHolder> implements View.OnClickListener {
 
-    private Context mContext;
-    private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName;
+    Context mContext;
+    private int gridLayout;
 
+    private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, uploadedBy;
+    private ArrayList<ArrayList<ParseFile>> notesFirstImage;
 
-    public NotesCustomGridViewAdapter(Context c, ArrayList<String> notesCollegeName, ArrayList<String> notesBranchName, ArrayList<String> notesTopicName, ArrayList<String> notesSubjectName) {
+    public NotesCustomGridViewAdapter(Context c, ArrayList<String> notesCollegeName, ArrayList<String> notesBranchName,
+                                      ArrayList<String> notesTopicName, ArrayList<String> notesSubjectName,
+                                      ArrayList<ArrayList<ParseFile>> notesFirstImage, ArrayList<String> uploadedBy) {
 
         mContext = c;
         this.notesBranchName = notesBranchName;
         this.notesCollegeName = notesCollegeName;
         this.notesSubjectName = notesSubjectName;
         this.notesTopicName = notesTopicName;
+        this.notesFirstImage = notesFirstImage;
+        this.uploadedBy = uploadedBy;
+        gridLayout = R.layout.notes_search_gridview_item;
 
 
     }
 
     @Override
-    public int getCount() {
-        return notesBranchName.size();
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View grid = LayoutInflater.from(parent.getContext()).inflate(gridLayout, parent, false);
+
+        return new ViewHolder(grid);
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+
+        holder.topicNameTxtView.setText(notesTopicName.get(position));
+
+        holder.notesImage.setParseFile(notesFirstImage.get(position).get(0));
+        holder.notesImage.loadInBackground(new GetDataCallback() {
+            @Override
+            public void done(byte[] bytes, ParseException e) {
+            }
+        });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NotesCustomDialog notesCustomDialog = new NotesCustomDialog(mContext,
+                        notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, position, uploadedBy);
+                notesCustomDialog.setTitle(mContext.getString(R.string.notes_details));
+                notesCustomDialog.show();
+            }
+        });
+
+
+    }
+
+
+    @Override
+    public int getItemCount() {
+        return notesTopicName.size();
     }
 
     @Override
-    public long getItemId(int position) {
-        return 0;
+    public void onClick(View v) {
+        final ViewHolder holder = (ViewHolder) v.getTag();
+        NotesCustomDialog notesCustomDialog = new NotesCustomDialog(mContext,
+                        notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, holder.getPosition(), uploadedBy);
+                notesCustomDialog.setTitle(mContext.getString(R.string.notes_details));
+//                notesCustomDialog.show();
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View grid;
-        LayoutInflater inflater = (LayoutInflater) mContext
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        grid = new View(mContext);
-        if (convertView == null) {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView branchNameTxtView, subjectNameTxtView, topicNameTxtView;
+        public ParseImageView notesImage;
 
 
+        public ViewHolder(View itemView) {
+            super(itemView);
+//            branchNameTxtView = (TextView) itemView.findViewById(R.id.notes_gridview_branchname);
+//            subjectNameTxtView = (TextView) itemView.findViewById(R.id.notes_gridview_subjectname);
+            topicNameTxtView = (TextView) itemView.findViewById(R.id.notes_gridview_topicname);
+            notesImage = (ParseImageView) itemView.findViewById(R.id.notes_gridview_image_view);
 
-                grid = inflater.inflate(R.layout.notes_search_gridview_item, null);
-                TextView branchNameTxtView = (TextView) grid.findViewById(R.id.notes_gridview_branchname);
-                TextView subjectNameTxtView = (TextView) grid.findViewById(R.id.notes_gridview_subjectname);
-                TextView topicNameTxtView = (TextView) grid.findViewById(R.id.notes_gridview_topicname);
-
-
-                branchNameTxtView.setText(notesBranchName.get(position));
-                topicNameTxtView.setText(notesTopicName.get(position));
-                subjectNameTxtView.setText(notesSubjectName.get(position));
-
-
-
-        } else {
-            grid = (View) convertView;
         }
-        return grid;
+
     }
 }
