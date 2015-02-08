@@ -241,8 +241,7 @@ public class PeopleNearmeFragment extends Fragment {
                         //access the data associated with the ParseUser using the get method
                         //pu.getString("key") or pu.get("key")
 
-                        if (!pu.getUsername().equals(currentuser)) {
-
+                        if (!pu.getUsername().equals(currentuser) && pu.getBoolean(ParseTables.Users.FULLY_REGISTERED)) {
 
                             each = new EachRow3();
                             each.cname = pu.getString(ParseTables.Users.NAME);
@@ -362,8 +361,7 @@ public class PeopleNearmeFragment extends Fragment {
                         //access the data associated with the ParseUser using the get method
                         //pu.getString("key") or pu.get("key")
 
-                        if (!pu.getUsername().equals(currentuser)) {
-
+                        if (!pu.getUsername().equals(currentuser) && pu.getBoolean(ParseTables.Users.FULLY_REGISTERED)) {
 
                             each = new EachRow3();
                             each.cname = pu.getString(ParseTables.Users.NAME);

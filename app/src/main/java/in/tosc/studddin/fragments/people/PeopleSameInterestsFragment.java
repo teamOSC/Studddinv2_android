@@ -236,8 +236,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                                                 //access the data associated with the ParseUser using the get method
                                                 //pu.getString("key") or pu.get("key")
 
-                                                if (!pu.getUsername().equals(currentuser)) {
-
+                                                if (!pu.getUsername().equals(currentuser) && pu.getBoolean(ParseTables.Users.FULLY_REGISTERED)) {
                                                     if (!existingelement.containsKey(pu.getUsername())) {
 
                                                         each = new EachRow3();
@@ -368,8 +367,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                                                 //access the data associated with the ParseUser using the get method
                                                 //pu.getString("key") or pu.get("key")
 
-                                                if (!pu.getUsername().equals(currentuser)) {
-
+                                                if (!pu.getUsername().equals(currentuser) && pu.getBoolean(ParseTables.Users.FULLY_REGISTERED)) {
                                                     if (!existingelement.containsKey(pu.getUsername())) {
 
                                                         each = new EachRow3();
