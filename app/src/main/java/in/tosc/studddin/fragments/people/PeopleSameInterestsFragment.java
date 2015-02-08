@@ -204,7 +204,11 @@ public class PeopleSameInterestsFragment extends Fragment {
         if (interests != null) {
             StringBuilder stringBuilder = new StringBuilder("");
             for (ParseObject parseObject : interests) {
-                currentUserInterestsList.add(parseObject.getString("name"));
+                try {
+                    currentUserInterestsList.add(parseObject.fetchIfNeeded().getString("name"));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 try {
                     stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
                 } catch (ParseException e) {
@@ -324,7 +328,11 @@ public class PeopleSameInterestsFragment extends Fragment {
         if (interests != null) {
             StringBuilder stringBuilder = new StringBuilder("");
             for (ParseObject parseObject : interests) {
-                currentUserInterestsList.add(parseObject.getString("name"));
+                try {
+                    currentUserInterestsList.add(parseObject.fetchIfNeeded().getString("name"));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 try {
                     stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
                 } catch (ParseException e) {
