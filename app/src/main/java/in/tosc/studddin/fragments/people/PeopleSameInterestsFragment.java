@@ -206,14 +206,13 @@ public class PeopleSameInterestsFragment extends Fragment {
             for (ParseObject parseObject : interests) {
                 try {
                     currentUserInterestsList.add(parseObject.fetchIfNeeded().getString("name"));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                try {
+                    Toast.makeText(getActivity() , parseObject.fetchIfNeeded().getString("name")+"s" , Toast.LENGTH_LONG).show();                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
                     stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+
             }
             stringBuilder.setLength(stringBuilder.length() - 2);
             currentuserinterests = stringBuilder.toString();
@@ -335,14 +334,13 @@ public class PeopleSameInterestsFragment extends Fragment {
             for (ParseObject parseObject : interests) {
                 try {
                     currentUserInterestsList.add(parseObject.fetchIfNeeded().getString("name"));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                try {
+                    Toast.makeText(getActivity() , parseObject.fetchIfNeeded().getString("name") , Toast.LENGTH_LONG).show();
                     stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+
             }
             stringBuilder.setLength(stringBuilder.length() - 2);
             currentuserinterests = stringBuilder.toString();
