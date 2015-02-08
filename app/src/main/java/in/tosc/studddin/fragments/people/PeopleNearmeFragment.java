@@ -200,12 +200,20 @@ public class PeopleNearmeFragment extends Fragment {
         if(interests!=null) {
             StringBuilder stringBuilder = new StringBuilder("");
             for (ParseObject parseObject : interests) {
-                    stringBuilder.append(parseObject.getString("name") + ", ");
+                try {
+                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
                 stringBuilder.setLength(stringBuilder.length() - 2);
                 currentuserinterests = stringBuilder.toString();
         }
 
+
+        if (currentuserinterests == null) {
+            currentuserinterests = "";
+        }
 
         // DUMMY DATA SO THAT IT DISPLAYS SOMETHING
         if (userlocation==null ||  userlocation.getLatitude() == 0)
@@ -239,7 +247,11 @@ public class PeopleNearmeFragment extends Fragment {
                             if(personInterests!=null) {
                                 StringBuilder stringBuilder = new StringBuilder("");
                                 for (ParseObject parseObject : personInterests) {
-                                    stringBuilder.append(parseObject.getString("name") + ", ");
+                                    try {
+                                        stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                                    } catch (ParseException e1) {
+                                        e1.printStackTrace();
+                                    }
                                 }
                                     stringBuilder.setLength(stringBuilder.length() - 2);
                                     each.cinterests = stringBuilder.toString();

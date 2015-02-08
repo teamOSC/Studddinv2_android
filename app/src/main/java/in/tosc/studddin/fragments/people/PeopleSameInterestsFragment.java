@@ -243,7 +243,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                                             if(personInterests!=null) {
                                                 StringBuilder stringBuilder = new StringBuilder("");
                                                 for (ParseObject parseObject : personInterests) {
-                                                    stringBuilder.append(parseObject.getString("name") + ", ");
+                                                    stringBuilder.append(parseObject.getString("name")).append(", ");
                                                 }
                                                 stringBuilder.setLength(stringBuilder.length() - 2);
                                                 each.cinterests = stringBuilder.toString();
@@ -314,7 +314,11 @@ public class PeopleSameInterestsFragment extends Fragment {
         if(interests!=null) {
             StringBuilder stringBuilder = new StringBuilder("");
             for (ParseObject parseObject : interests) {
-                stringBuilder.append(parseObject.getString("name") + ", ");
+                try {
+                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
             stringBuilder.setLength(stringBuilder.length() - 2);
             currentuserinterests = stringBuilder.toString();
@@ -357,7 +361,11 @@ public class PeopleSameInterestsFragment extends Fragment {
                                         if(personInterests!=null) {
                                             StringBuilder stringBuilder = new StringBuilder("");
                                             for (ParseObject parseObject : personInterests) {
-                                                stringBuilder.append(parseObject.getString("name") + ", ");
+                                                try {
+                                                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                                                } catch (ParseException e1) {
+                                                    e1.printStackTrace();
+                                                }
                                             }
                                             stringBuilder.setLength(stringBuilder.length() - 2);
                                             each.cinterests = stringBuilder.toString();
