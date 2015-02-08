@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -59,6 +60,8 @@ public class PeopleSameInterestsFragment extends Fragment {
 
     EditText search;
 
+    ParseUser User = ParseUser.getCurrentUser();
+
 
     ArrayList<EachRow3> list3 = new ArrayList<PeopleSameInterestsFragment.EachRow3>();
     EachRow3 each;
@@ -79,7 +82,7 @@ public class PeopleSameInterestsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_people_same_interests, container, false);
 
         progressBar = (ProgressBarCircular) view.findViewById(R.id.progressbar_people);
-        progressBar.setBackgroundColor(getResources().getColor(R.color.peopleColorPrimaryDark));
+        progressBar.setBackgroundColor(getResources().getColor(R.color.pink));
         search = (EditText) view.findViewById(R.id.people_search);
         lv = (ListView) view.findViewById(R.id.listviewpeople);
 
@@ -190,132 +193,139 @@ public class PeopleSameInterestsFragment extends Fragment {
         list3.clear();
 
 
-        currentuser = ParseUser.getCurrentUser().getUsername();
-        currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
-        currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
-        currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
-        currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
-        userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
+        currentuser = User.getUsername();
+        currentuseremail = User.getString(ParseTables.Users.EMAIL);
+        currentuserinstituition = User.getString(ParseTables.Users.INSTITUTE);
+        currentusername =User.getString(ParseTables.Users.NAME);
+        currentuserqualification =User.getString(ParseTables.Users.QUALIFICATIONS);
+        userlocation = User.getParseGeoPoint(ParseTables.Users.LOCATION);
 
-        ArrayList<ParseObject> interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
-        ArrayList<String> currentUserInterestsList = new ArrayList<>();
-
-
-        if(interests!=null && !interests.isEmpty()) {
-            StringBuilder stringBuilder = new StringBuilder("");
-            for (ParseObject parseObject : interests) {
-                try {
-                    currentUserInterestsList.add(parseObject.fetchIfNeeded().getString("name"));
-                    Toast.makeText(getActivity() , parseObject.fetchIfNeeded().getString("name")+"s" , Toast.LENGTH_LONG).show();                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
-                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-            }
-            stringBuilder.setLength(stringBuilder.length() - 2);
-            currentuserinterests = stringBuilder.toString();
-        }
-
-        if (currentuserinterests == null) {
-            currentuserinterests = "";
-        }
-
-        if (!currentUserInterestsList.isEmpty()) {
-            for (int c = 0; c < currentUserInterestsList.size(); c++) {
-                if (!currentUserInterestsList.get(c).equals("") || !(currentUserInterestsList.get(c) == null)) {
+//          ArrayList<ParseObject> interests = (ArrayList<ParseObject>) User.get(ParseTables.Users.INTERESTS);
+//         ^^ can't fetch array list in back ground, therefore using a query with .include(ParseTables.Users.INTERESTS)
 
 
-                    ParseQuery<ParseUser> query = ParseUser.getQuery();
-                    query.whereEqualTo(ParseTables.Users.INTERESTS, currentUserInterestsList.get(c));
-                    query.include(ParseTables.Users.INTERESTS);
-
-                    query.findInBackground(new FindCallback<ParseUser>() {
-                        public void done(List<ParseUser> objects, ParseException e) {
-                            if (e == null) {
-
-                                for (ParseUser pu : objects) {
-                                    //access the data associated with the ParseUser using the get method
-                                    //pu.getString("key") or pu.get("key")
-
-                                    if (!pu.getUsername().equals(currentuser)) {
-
-                                        if (!existingelement.containsKey(pu.getUsername())) {
-
-                                            each = new EachRow3();
-                                            each.cname = pu.getString(ParseTables.Users.NAME);
+        ParseQuery<ParseUser> currentuserInterestsQuery = ParseUser.getQuery();
+        currentuserInterestsQuery.whereEqualTo("username", currentuser);
+        currentuserInterestsQuery.include(ParseTables.Users.INTERESTS);
+        currentuserInterestsQuery.getFirstInBackground(new GetCallback<ParseUser>() {
+            public void done(ParseUser user, ParseException e) {
+                if (user == null) {
+                    Log.d("query", "failed.");
+                } else {
+                    ArrayList<ParseObject> currentUserInterestsList = (ArrayList<ParseObject>) User.get(ParseTables.Users.INTERESTS);
 
 
-                                            ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
+                    if (currentuserinterests == null) {
+                        currentuserinterests = "";
+                    }
 
-                                            if(!personInterests.isEmpty()) {
-                                                StringBuilder stringBuilder = new StringBuilder("");
-                                                for (ParseObject parseObject : personInterests) {
-                                                    try {
-                                                        stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
-                                                    } catch (ParseException e1) {
-                                                        e1.printStackTrace();
+                    if (!currentUserInterestsList.isEmpty()) {
+                        for (int c = 0; c < currentUserInterestsList.size(); c++) {
+                            if (!currentUserInterestsList.get(c).equals("") || !(currentUserInterestsList.get(c) == null)) {
+
+
+                                ParseQuery<ParseUser> query = ParseUser.getQuery();
+                                query.include(ParseTables.Users.INTERESTS);
+                                query.whereEqualTo(ParseTables.Users.INTERESTS, currentUserInterestsList.get(c));
+
+                                query.findInBackground(new FindCallback<ParseUser>() {
+                                    public void done(List<ParseUser> objects, ParseException e) {
+                                        if (e == null) {
+
+                                            for (ParseUser pu : objects) {
+                                                //access the data associated with the ParseUser using the get method
+                                                //pu.getString("key") or pu.get("key")
+
+                                                if (!pu.getUsername().equals(currentuser)) {
+
+                                                    if (!existingelement.containsKey(pu.getUsername())) {
+
+                                                        each = new EachRow3();
+                                                        each.cname = pu.getString(ParseTables.Users.NAME);
+
+
+                                                        ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
+
+                                                        if(!personInterests.isEmpty()) {
+                                                            StringBuilder stringBuilder = new StringBuilder("");
+                                                            for (ParseObject parseObject : personInterests) {
+                                                                try {
+                                                                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                                                                } catch (ParseException e1) {
+                                                                    e1.printStackTrace();
+                                                                }
+                                                            }
+                                                            stringBuilder.setLength(stringBuilder.length() - 2);
+                                                            each.cinterests = stringBuilder.toString();
+                                                        }
+
+
+                                                        each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
+                                                        each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
+                                                        // each.cdistance = pu.getString(ParseTables.Users.NAME);
+                                                        each.cusername = pu.getString(ParseTables.Users.USERNAME);
+                                                        ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
+                                                        if (temploc != null && temploc.getLatitude() != 0) {
+                                                            if (userlocation != null) {
+                                                                each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
+                                                            } else {
+                                                                each.cdistance = "13 km";
+                                                            }
+                                                        } else {
+                                                            each.cdistance = "16 km";
+                                                        }
+
+                                                        try {
+                                                            each.fileObject = (ParseFile) pu.get(ParseTables.Users.IMAGE);
+
+                                                        } catch (Exception e1) {
+                                                            System.out.print("nahh");
+                                                        }
+
+
+                                                        list3.add(each);
+                                                        existingelement.put(pu.getUsername(), true);
                                                     }
                                                 }
-                                                stringBuilder.setLength(stringBuilder.length() - 2);
-                                                each.cinterests = stringBuilder.toString();
                                             }
 
-
-                                            each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
-                                            each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
-                                            // each.cdistance = pu.getString(ParseTables.Users.NAME);
-                                            each.cusername = pu.getString(ParseTables.Users.USERNAME);
-                                            ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
-                                            if (temploc != null && temploc.getLatitude() != 0) {
-                                                if (userlocation != null) {
-                                                    each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
-                                                } else {
-                                                    each.cdistance = "13 km";
-                                                }
-                                            } else {
-                                                each.cdistance = "16 km";
-                                            }
-
-                                            try {
-                                                each.fileObject = (ParseFile) pu.get(ParseTables.Users.IMAGE);
-
-                                            } catch (Exception e1) {
-                                                System.out.print("nahh");
-                                            }
-
-
-                                            list3.add(each);
-                                            existingelement.put(pu.getUsername(), true);
+                                            // The query was successful.
+                                        } else {
+                                            // Something went wrong.
                                         }
+                                        q = new MyAdapter3(getActivity(), 0, list3);
+                                        q.notifyDataSetChanged();
+
+                                        lv.setAdapter(q);
+                                        progressBar.setVisibility(View.GONE);
+                                        lv.setVisibility(View.VISIBLE);
                                     }
-                                }
+                                });
 
-                                // The query was successful.
-                            } else {
-                                // Something went wrong.
                             }
-                            q = new MyAdapter3(getActivity(), 0, list3);
-                            q.notifyDataSetChanged();
-
-                            lv.setAdapter(q);
-                            progressBar.setVisibility(View.GONE);
-                            lv.setVisibility(View.VISIBLE);
                         }
-                    });
+                    }else{
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+
+
 
                 }
             }
-        }else{
-            progressBar.setVisibility(View.GONE);
-        }
+        });
+
+
+
+
+
     }
 
 
     private void loaddataAfterSearch(String textSearch) {
 
 
+        final String textSearchFilter = textSearch;
         list3.clear();
 
         currentuser = ParseUser.getCurrentUser().getUsername();
@@ -325,119 +335,115 @@ public class PeopleSameInterestsFragment extends Fragment {
         currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
 
-        ArrayList<ParseObject> interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
-        ArrayList<String> currentUserInterestsList = new ArrayList<>();
+        ParseQuery<ParseUser> currentuserInterestsQuery = ParseUser.getQuery();
+        currentuserInterestsQuery.whereEqualTo("username", currentuser);
+        currentuserInterestsQuery.include(ParseTables.Users.INTERESTS);
+        currentuserInterestsQuery.getFirstInBackground(new GetCallback<ParseUser>() {
+            public void done(ParseUser user, ParseException e) {
+                if (user == null) {
+                    Log.d("query", "failed.");
+                } else {
+                    ArrayList<ParseObject> currentUserInterestsList = (ArrayList<ParseObject>) User.get(ParseTables.Users.INTERESTS);
 
 
-        if(interests!=null && !interests.isEmpty()) {
-            StringBuilder stringBuilder = new StringBuilder("");
-            for (ParseObject parseObject : interests) {
-                try {
-                    currentUserInterestsList.add(parseObject.fetchIfNeeded().getString("name"));
-                    Toast.makeText(getActivity() , parseObject.fetchIfNeeded().getString("name") , Toast.LENGTH_LONG).show();
-                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                    if (currentuserinterests == null) {
+                        currentuserinterests = "";
+                    }
 
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-            }
-            stringBuilder.setLength(stringBuilder.length() - 2);
-            currentuserinterests = stringBuilder.toString();
-        }
-
-        if (currentuserinterests == null) {
-            currentuserinterests = "";
-        }
-
-        if (!currentUserInterestsList.isEmpty()) {
-
-            for (int c = 0; c < currentUserInterestsList.size(); c++) {
-                if (!currentUserInterestsList.get(c).equals("") || !(currentUserInterestsList.get(c) == null)) {
+                    if (!currentUserInterestsList.isEmpty()) {
+                        for (int c = 0; c < currentUserInterestsList.size(); c++) {
+                            if (!currentUserInterestsList.get(c).equals("") || !(currentUserInterestsList.get(c) == null)) {
 
 
+                                ParseQuery<ParseUser> query = ParseUser.getQuery();
+                                query.whereMatches(ParseTables.Users.NAME, "(" + textSearchFilter + ")", "i");
+                                query.include(ParseTables.Users.INTERESTS);
+                                query.whereEqualTo(ParseTables.Users.INTERESTS, currentUserInterestsList.get(c));
 
-                ParseQuery<ParseUser> query = ParseUser.getQuery();
-                query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
-                    query.include(ParseTables.Users.INTERESTS);
-                    query.whereEqualTo(ParseTables.Users.INTERESTS, currentUserInterestsList.get(c));
-                query.findInBackground(new FindCallback<ParseUser>() {
-                    public void done(List<ParseUser> objects, ParseException e) {
-                        if (e == null) {
+                                query.findInBackground(new FindCallback<ParseUser>() {
+                                    public void done(List<ParseUser> objects, ParseException e) {
+                                        if (e == null) {
 
-                            for (ParseUser pu : objects) {
-                                //access the data associated with the ParseUser using the get method
-                                //pu.getString("key") or pu.get("key")
+                                            for (ParseUser pu : objects) {
+                                                //access the data associated with the ParseUser using the get method
+                                                //pu.getString("key") or pu.get("key")
 
-                                if (!pu.getUsername().equals(currentuser)) {
+                                                if (!pu.getUsername().equals(currentuser)) {
 
-                                    if (!existingelement.containsKey(pu.getUsername())) {
+                                                    if (!existingelement.containsKey(pu.getUsername())) {
 
-                                        each = new EachRow3();
-                                        each.cname = pu.getString(ParseTables.Users.NAME);
+                                                        each = new EachRow3();
+                                                        each.cname = pu.getString(ParseTables.Users.NAME);
 
-                                        ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
 
-                                        if(!personInterests.isEmpty()) {
-                                            StringBuilder stringBuilder = new StringBuilder("");
-                                            for (ParseObject parseObject : personInterests) {
-                                                try {
-                                                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
-                                                } catch (ParseException e1) {
-                                                    e1.printStackTrace();
+                                                        ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
+
+                                                        if(!personInterests.isEmpty()) {
+                                                            StringBuilder stringBuilder = new StringBuilder("");
+                                                            for (ParseObject parseObject : personInterests) {
+                                                                try {
+                                                                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                                                                } catch (ParseException e1) {
+                                                                    e1.printStackTrace();
+                                                                }
+                                                            }
+                                                            stringBuilder.setLength(stringBuilder.length() - 2);
+                                                            each.cinterests = stringBuilder.toString();
+                                                        }
+
+
+                                                        each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
+                                                        each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
+                                                        // each.cdistance = pu.getString(ParseTables.Users.NAME);
+                                                        each.cusername = pu.getString(ParseTables.Users.USERNAME);
+                                                        ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
+                                                        if (temploc != null && temploc.getLatitude() != 0) {
+                                                            if (userlocation != null) {
+                                                                each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
+                                                            } else {
+                                                                each.cdistance = "13 km";
+                                                            }
+                                                        } else {
+                                                            each.cdistance = "16 km";
+                                                        }
+
+                                                        try {
+                                                            each.fileObject = (ParseFile) pu.get(ParseTables.Users.IMAGE);
+
+                                                        } catch (Exception e1) {
+                                                            System.out.print("nahh");
+                                                        }
+
+
+                                                        list3.add(each);
+                                                        existingelement.put(pu.getUsername(), true);
+                                                    }
                                                 }
                                             }
-                                            stringBuilder.setLength(stringBuilder.length() - 2);
-                                            each.cinterests = stringBuilder.toString();
-                                        }
 
-                                        each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
-                                        each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
-                                        // each.cdistance = pu.getString(ParseTables.Users.NAME);
-                                        each.cusername = pu.getString(ParseTables.Users.USERNAME);
-                                        ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
-                                        if (temploc != null && temploc.getLatitude() != 0) {
-                                            if (userlocation != null) {
-                                                each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
-                                            } else {
-                                                each.cdistance = "13 km";
-                                            }
+                                            // The query was successful.
                                         } else {
-                                            each.cdistance = "16 km";
+                                            // Something went wrong.
                                         }
+                                        q = new MyAdapter3(getActivity(), 0, list3);
+                                        q.notifyDataSetChanged();
 
-                                        try {
-                                            each.fileObject = (ParseFile) pu.get(ParseTables.Users.IMAGE);
-
-                                        } catch (Exception e1) {
-                                            System.out.print("nahh");
-                                        }
-
-
-                                        list3.add(each);
-                                        existingelement.put(pu.getUsername(), true);
+                                        lv.setAdapter(q);
+                                        progressBar.setVisibility(View.GONE);
+                                        lv.setVisibility(View.VISIBLE);
                                     }
-                                }
+                                });
+
                             }
-
-                            // The query was successful.
-                        } else {
-                            // Something went wrong.
                         }
-                        q = new MyAdapter3(getActivity(), 0, list3);
-                        q.notifyDataSetChanged();
-
-                        lv.setAdapter(q);
+                    }else{
                         progressBar.setVisibility(View.GONE);
-                        lv.setVisibility(View.VISIBLE);
                     }
-                });
-
+                }
             }
-        }
-    }else {
-            progressBar.setVisibility(View.GONE);
-        }
+        });
+
+
     }
 
 
