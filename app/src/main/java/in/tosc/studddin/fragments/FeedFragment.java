@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,12 +33,15 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
 import in.tosc.studddin.ui.MaterialEditText;
-import in.tosc.studddin.ui.ProgressBarCircular;
 import in.tosc.studddin.utils.Utilities;
 
 /**
@@ -57,14 +59,17 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     private static final String FEED_TABLE = "Feed";
     private static final String EVENTS_TABLE = "Events";
     private static final String KEY_LOCAL_DATASTORE = "feed";
+    public static final String feedTags[] = {"Interests","Around","College"};
     private static Context context;
     View rootView;
     List<String> interestList = new ArrayList();
-    private FeedRootAdapter mAdapter;
+    private FeedCategoryAdapter mAdapter;
     private RecyclerView recyclerView;
     private MaterialEditText searchEditText;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ImageButton searchButton;
+    private HashSet<ParseObject> hashParseObjects = new HashSet<>();
+    private static List<FeedCategoryDataWrapper> toBeAdded[];
 
     public FeedFragment() {
         // Required empty public constructor
@@ -110,17 +115,27 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
 
         recyclerView.setLayoutManager(mVerticalLayoutManager);
 
-        mAdapter = new FeedRootAdapter();
+//        mAdapter = new FeedRootAdapter();
+        mAdapter = new FeedCategoryAdapter();
         recyclerView.setAdapter(mAdapter);
+
         
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayoutfeed);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if (Utilities.isNetworkAvailable(getActivity())) {
-                    getFeed();
+                    Thread t = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            getFeed();
+                        }
+                    });
+                    t.start();
+
                     Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_SHORT).show();
-                } else {
+                }
+                 else {
                     swipeRefreshLayout.setRefreshing(false);
                     Toast.makeText(getActivity(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
                 }
@@ -143,14 +158,48 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             }
         });
 
+        toBeAdded = new ArrayList[3];
+        toBeAdded[0] = new ArrayList<>();
+        toBeAdded[1] = new ArrayList<>();
+        toBeAdded[2] = new ArrayList<>();
+
+
         return rootView;
     }
 
     private void updateAll() {
-        updateUI(CATEGORY_INTERESTS, FEED_TABLE, 0);
-        updateUI(CATEGORY_COLLEGE, EVENTS_TABLE, 0);
-        updateUI(CATEGORY_AROUND, FEED_TABLE, 0);
-        getFeed();
+        CountDownLatch l = new CountDownLatch(3);
+        toBeAdded[0].clear();
+        toBeAdded[1].clear();
+        toBeAdded[2].clear();
+        updateUI(CATEGORY_INTERESTS, FEED_TABLE, 0,l);
+        updateUI(CATEGORY_COLLEGE, EVENTS_TABLE, 0,l);
+        updateUI(CATEGORY_AROUND, FEED_TABLE, 0,l);
+        try {
+            l.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        List<FeedCategoryDataWrapper> f = new ArrayList<>();
+        f.addAll(toBeAdded[0]);
+        f.addAll(toBeAdded[1]);
+        f.addAll(toBeAdded[2]);
+        Collections.shuffle(f);
+        mAdapter.setDataSet(f);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getFeed();
+            }
+        }).start();
     }
 
     @Override
@@ -198,7 +247,14 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     @Override
     public void onResume() {
         super.onResume();
-        updateAll();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                updateAll();
+            }
+        });
+
+        t.start();
     }
 
     private int getCategoryResource(int i) throws UnsupportedOperationException {
@@ -229,9 +285,14 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         }, url).execute(); */
     }
 
+
     public void getFeed() {
 
+        toBeAdded[0].clear();
+        toBeAdded[1].clear();
+        toBeAdded[2].clear();
         /* Get data related to interest*/
+        final CountDownLatch latch = new CountDownLatch(3);
         ParseQuery<ParseObject> interestQuery = ParseQuery.getQuery(FEED_TABLE).setLimit(10);
         interestQuery.whereContainedIn("category", interestList);
         interestQuery.findInBackground(new FindCallback<ParseObject>() {
@@ -240,13 +301,12 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
                 if (e == null) {
                     ParseObject.unpinAllInBackground(KEY_LOCAL_DATASTORE);
                     ParseObject.pinAllInBackground(KEY_LOCAL_DATASTORE, parseObjects);
-                    updateUI(CATEGORY_INTERESTS, FEED_TABLE, 1);
+                    updateUI(CATEGORY_INTERESTS, FEED_TABLE, 1,latch);
                 } else {
                     Log.e(TAG, "Getting feed query broke");
                 }
             }
         });
-
         /*Get data related to user's college*/
         ParseQuery<ParseObject> collegeQuery = ParseQuery.getQuery(EVENTS_TABLE).setLimit(10);
         collegeQuery.findInBackground(new FindCallback<ParseObject>() {
@@ -254,16 +314,15 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
                     ParseObject.unpinAllInBackground(KEY_LOCAL_DATASTORE);
-                    ParseObject.pinAllInBackground(parseObjects);
+                    ParseObject.pinAllInBackground(KEY_LOCAL_DATASTORE,parseObjects);
                     Log.w(TAG, "Calling update UI from getFeed College");
                     Log.w(TAG, "Random = " + parseObjects.get(0).getString(KEY_TITLE));
-                    updateUI(CATEGORY_COLLEGE, EVENTS_TABLE, 1);
+                    updateUI(CATEGORY_COLLEGE, EVENTS_TABLE, 1,latch);
                 } else {
                     Log.e(TAG, "Getting feed query broke");
                 }
             }
         });
-
         /*Get data related to the around the user*/
         ParseQuery<ParseObject> aroundQuery = ParseQuery.getQuery(FEED_TABLE).setLimit(10);
         aroundQuery.findInBackground(new FindCallback<ParseObject>() {
@@ -271,124 +330,85 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
                     ParseObject.unpinAllInBackground(KEY_LOCAL_DATASTORE);
-                    ParseObject.pinAllInBackground(parseObjects);
+                    ParseObject.pinAllInBackground(KEY_LOCAL_DATASTORE,parseObjects);
                     Log.w(TAG, "Calling update UI from getFeed Around");
-                    updateUI(CATEGORY_AROUND, FEED_TABLE, 1);
+                    updateUI(CATEGORY_AROUND, FEED_TABLE, 1,latch);
                 } else {
                     Log.e(TAG, "Getting feed query broke");
                 }
             }
         });
-    }
 
-    private synchronized void updateUI(final int i, String tableName, final int flag) {
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Log.d(TAG,"Interrupted");
+        }
+
+        List<FeedCategoryDataWrapper> f = new ArrayList<>();
+        f.addAll(toBeAdded[0]);
+        f.addAll(toBeAdded[1]);
+        f.addAll(toBeAdded[2]);
+        Collections.shuffle(f);
+        mAdapter.setDataSet(f);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+    private synchronized void updateUI(final int i, String tableName, final int flag, final CountDownLatch l) {
         if (this.isAdded()) {
             ParseQuery<ParseObject> query = ParseQuery.getQuery(tableName).fromLocalDatastore().setLimit(10);
-//            query.whereContainedIn("category", interestList);
+            // query.whereContainedIn("category", interestList);
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> parseObjects, ParseException e) {
                     if (e == null) {
-                        int resourceId = 0;
-                        try {
-                            resourceId = getCategoryResource(i);
-                        } catch (UnsupportedOperationException ex) {
-                            Log.e(TAG, "Unsupported Operation");
-                        }
+
                         if (FeedFragment.this.isAdded()) {
-                            mAdapter.setDataSet(i, parseObjects, true, getString(resourceId));
-                            mAdapter.invalidateData(i);
+//                            mAdapter.setDataSet(i, parseObjects, true, getString(resourceId));
+                            for(int iter = 0; iter < parseObjects.size(); iter++) {
+                                if (!(hashParseObjects.contains(parseObjects.get(iter)))) {
+                                    toBeAdded[i].add(FeedCategoryDataWrapper.newInstance(feedTags[i], parseObjects.get(iter)));
+                                    hashParseObjects.add(parseObjects.get(iter));
+                                }
+
+                            }
                         }
                     } else {
                         Log.e(TAG, "Query failed");
                         e.printStackTrace();
                     }
+                    l.countDown();
+                    Log.d(TAG, "LOL" + Long.toString(l.getCount()));
                 }
             });
+
         }
     }
 
-    private static class FeedRootAdapter extends RecyclerView.Adapter<FeedRootAdapter.ViewHolder> {
-        private static final int CATEGORY_COUNT = 3;
-
-        //Adapters for each category
-        private FeedCategoryAdapter[] adapters = new FeedCategoryAdapter[CATEGORY_COUNT];
-        private FeedRootWrapper[] mDataset = new FeedRootWrapper[CATEGORY_COUNT];
-
-        public FeedRootAdapter() {
-            for (int i = 0; i < CATEGORY_COUNT; ++i) {
-                adapters[i] = new FeedCategoryAdapter();
-                mDataset[i] = new FeedRootWrapper();
-            }
-        }
-
-        public void setDataSet(int i, List<ParseObject> parseObjects, boolean isLoaded, String categoryName) {
-            mDataset[i].setData(parseObjects, isLoaded, categoryName);
-        }
-
-        public void invalidateData(int i) {
-            adapters[i].notifyDataSetChanged();
-            notifyItemChanged(i);
-        }
-
-        @Override
-        public FeedRootAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                             int viewType) {
-            // create a new view
-            CardView v = (CardView) LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.feed_root_list_card_view, parent, false);
-            return new ViewHolder(v);
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.mTextView.setText(mDataset[position].string);
-            if (mDataset[position].isLoaded) {
-                holder.progressBar.setVisibility(View.GONE);
-                holder.mHorizontalRecyclerView.setVisibility(View.VISIBLE);
-                FeedCategoryAdapter mFeedCategoryAdapter = new FeedCategoryAdapter();
-                mFeedCategoryAdapter.setDataset(mDataset[position].parseObjects);
-                holder.mHorizontalRecyclerView.setAdapter(mFeedCategoryAdapter);
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return mDataset.length;
-        }
-
-        public static class ViewHolder extends RecyclerView.ViewHolder {
-            public CardView mCardView;
-            public TextView mTextView;
-            public RecyclerView mHorizontalRecyclerView;
-            public ProgressBarCircular progressBar;
-
-            public ViewHolder(CardView v) {
-                super(v);
-                mCardView = v;
-                mTextView = (TextView) mCardView.findViewById(R.id.feed_category_text);
-                mTextView.setVisibility(View.VISIBLE);
-                mHorizontalRecyclerView = (RecyclerView)
-                        mCardView.findViewById(R.id.feed_category_horizontal_recycler_view);
-                RecyclerView.LayoutManager mHorizontalLayoutManager = new LinearLayoutManager(context,
-                        LinearLayoutManager.HORIZONTAL, false);
-                mHorizontalRecyclerView.setLayoutManager(mHorizontalLayoutManager);
-                progressBar = (ProgressBarCircular) mCardView.findViewById(R.id.feed_category_progress_bar);
-                progressBar.setBackgroundColor(context.getResources().getColor(R.color.pink));
-            }
-        }
-    }
 
     private static class FeedCategoryAdapter extends RecyclerView.Adapter<FeedCategoryAdapter.FeedCategoryViewHolder> {
 
-        List<ParseObject> parseObjects = new ArrayList();
+        List<FeedCategoryDataWrapper> feedData = new ArrayList();
 
-        public void setDataset(List<ParseObject> parseObjects) {
-            this.parseObjects = parseObjects;
+        public void setDataSet(List<FeedCategoryDataWrapper> feedData) {
+
+            Log.d(TAG,"Old Size of Feed" + Integer.toString(this.feedData.size()));
+            if(this.feedData != null) {
+                this.feedData.addAll(0,feedData);
+            }
+
+            else
+                this.feedData = feedData;
+            Log.d(TAG,"New Size of Feed" + Integer.toString(this.feedData.size()));
         }
 
         @Override
         public FeedCategoryAdapter.FeedCategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LinearLayout view = (LinearLayout) LayoutInflater.from(parent.getContext())
+            CardView view = (CardView) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.feed_category_item, parent, false);
             return new FeedCategoryAdapter.FeedCategoryViewHolder(view);
         }
@@ -396,9 +416,10 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         @Override
         public void onBindViewHolder(FeedCategoryViewHolder holder, int position) {
 
-            final ParseObject object = parseObjects.get(position);
+            final ParseObject object = feedData.get(position).parseObject;
             holder.mTextView.setText(object.getString(KEY_TITLE));
             Ion.with(holder.mImageView).load(object.getString(KEY_IMAGE_URL));
+            holder.mFeedTag.setText(feedData.get(position).feedTag);
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -414,39 +435,59 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
 
         @Override
         public int getItemCount() {
-            if (parseObjects == null)
+            if (feedData == null)
                 return 0;
-            return parseObjects.size();
+            return feedData.size();
         }
 
         public static class FeedCategoryViewHolder extends RecyclerView.ViewHolder {
-            public LinearLayout view;
+            public CardView view;
             public TextView mTextView;
             public ImageView mImageView;
+            public TextView mFeedTag;
 
-            public FeedCategoryViewHolder(LinearLayout v) {
+            public FeedCategoryViewHolder(CardView v) {
                 super(v);
                 this.view = v;
                 mTextView = (TextView) this.view.findViewById(R.id.feed_item_text_view);
                 mImageView = (ImageView) this.view.findViewById(R.id.feed_item_image);
+                mFeedTag = (TextView) this.view.findViewById(R.id.feed_category_tag);
             }
         }
     }
 
-    private static class FeedRootWrapper {
-        public String string;
-        public List<ParseObject> parseObjects;
-        public boolean isLoaded = false;
-
-        public void setData(List<ParseObject> parseObjects, boolean isLoaded, String categoryTitle) {
-            this.parseObjects = parseObjects;
-            this.string = categoryTitle;
-            this.isLoaded = isLoaded;
+    private static class FeedCategoryDataWrapper {
+        public String feedTag;
+        ParseObject parseObject;
+        FeedCategoryDataWrapper(String s,ParseObject p) {
+            this.feedTag = s;
+            this.parseObject = p;
         }
-
-        public void setData(List<ParseObject> parseObjects) {
-            setData(parseObjects, isLoaded, string);
+        public static FeedCategoryDataWrapper newInstance(String s,ParseObject p) {
+            FeedCategoryDataWrapper fcdw = new FeedCategoryDataWrapper(s,p);
+            return fcdw;
         }
     }
+
+    private List<FeedCategoryDataWrapper> makeListOfFeedData(List<ParseObject> parseObjects,int from) {
+        List<FeedCategoryDataWrapper> feedCategoryDataWrapperList = new ArrayList<>(parseObjects.size());
+        if(parseObjects.size() != 0) {
+            Log.e(TAG,"The size of array is : " + Integer.toString(feedCategoryDataWrapperList.size()));
+            for (int i = 0; i < parseObjects.size(); i++) {
+                feedCategoryDataWrapperList.add(FeedCategoryDataWrapper.newInstance(feedTags[from],parseObjects.get(i)));
+            }
+        }
+        return feedCategoryDataWrapperList;
+    }
+
+//    private void notifyAdapter() {
+//        try {
+//            mAdapterNotifier.wait();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        mAdapter.notifyDataSetChanged();
+//
+//    }
 
 }
