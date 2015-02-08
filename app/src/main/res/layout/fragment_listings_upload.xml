@@ -5,6 +5,118 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:weightSum="7">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        >
+        <in.tosc.studddin.ui.MaterialEditText
+            android:id="@+id/et_listing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:hint="Listing Name"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            app:baseColor="@color/search_color"
+            app:primaryColor="@color/colorPrimaryDark"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="0dp"
+        >
+        <in.tosc.studddin.ui.MaterialEditText
+            android:id="@+id/et_mobile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:digits="0123456789+"
+            android:hint="Mobile"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:inputType="phone"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            app:baseColor="@color/search_color"
+            app:primaryColor="@color/colorPrimaryDark"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="0dp"
+        >
+        <in.tosc.studddin.ui.MaterialEditText
+            android:id="@+id/listing_desc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Listing Description"
+            android:maxLength="100"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:imeOptions="actionDone"
+            android:textCursorDrawable="@drawable/text_cursor_cyan"
+            app:baseColor="@color/search_color"
+            app:primaryColor="@color/colorPrimaryDark"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="0dp"
+        >
+        <in.tosc.studddin.ui.ProgressBarCircular
+            android:id="@+id/upload_progress"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:textSize="24sp"
+            android:visibility="gone" />
+
+        
+        <Spinner
+            android:id="@+id/listing_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:layout_marginTop="0dp"
+            >
+        <ImageView
+            android:id="@+id/listing_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/image_placeholder" />
+        </LinearLayout>
+
+    </LinearLayout>
+    
     <in.tosc.studddin.ui.FloatingActionButton
         android:id="@+id/listing_upload"
         android:layout_width="wrap_content"
@@ -19,76 +131,5 @@
         fab:fab_colorPressed="@color/note_button_pressed"
         fab:fab_icon="@drawable/ic_file_upload_white_48dp"
         fab:fab_title="upload" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <in.tosc.studddin.ui.MaterialEditText
-            android:id="@+id/et_listing"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:singleLine="true"
-            android:imeOptions="actionNext"
-            android:hint="Listing Name"
-            android:textCursorDrawable="@drawable/text_cursor_cyan"
-            app:baseColor="@color/search_color"
-            app:primaryColor="@color/colorPrimaryDark" />
-
-        <in.tosc.studddin.ui.MaterialEditText
-            android:id="@+id/et_mobile"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:digits="0123456789+"
-            android:hint="Mobile"
-            android:singleLine="true"
-            android:imeOptions="actionNext"
-            android:inputType="phone"
-            android:textCursorDrawable="@drawable/text_cursor_cyan"
-            app:baseColor="@color/search_color"
-            app:primaryColor="@color/colorPrimaryDark" />
-
-        <in.tosc.studddin.ui.MaterialEditText
-            android:id="@+id/listing_desc"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:hint="Listing Description"
-            android:maxLength="100"
-            android:inputType="textMultiLine"
-            android:maxLines="3"
-            android:imeOptions="actionDone"
-            android:textCursorDrawable="@drawable/text_cursor_cyan"
-            app:baseColor="@color/search_color"
-            app:primaryColor="@color/colorPrimaryDark" />
-
-        <in.tosc.studddin.ui.ProgressBarCircular
-            android:id="@+id/upload_progress"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center_horizontal|bottom"
-            android:textSize="24sp"
-            android:visibility="gone" />
-
-        <Spinner
-            android:id="@+id/listing_category"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp" />
-
-        <ImageView
-            android:id="@+id/listing_image"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/imageview_selector_listing_camera" />
-
-    </LinearLayout>
 
 </RelativeLayout>

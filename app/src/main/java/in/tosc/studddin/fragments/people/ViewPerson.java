@@ -8,10 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.ui.CircularImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,7 +20,7 @@ public class ViewPerson extends Fragment {
 
     TextView name, interests, qualifications, distance, institute;
     String sname, sinterests, squalifications, sdistance, sinstitute;
-    ImageView pic;
+    CircularImageView pic;
     byte[] data;
 
 
@@ -45,7 +45,7 @@ public class ViewPerson extends Fragment {
             Log.e("pic", String.valueOf(data));
         }
 
-        pic = (ImageView) rootView.findViewById(R.id.person_image);
+        pic = (CircularImageView) rootView.findViewById(R.id.person_image);
         name = (TextView) rootView.findViewById(R.id.person_name);
         institute = (TextView) rootView.findViewById(R.id.person_institute);
         interests = (TextView) rootView.findViewById(R.id.person_interests);

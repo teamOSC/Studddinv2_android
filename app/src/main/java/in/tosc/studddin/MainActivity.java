@@ -1,7 +1,6 @@
 package in.tosc.studddin;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -55,6 +54,9 @@ public class MainActivity extends ActionBarActivity
                 setSupportActionBar(toolbar);
                 toolbar.setTitle(myTitle);
                 toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+                //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //    toolbar.setElevation(10f); }
+
             }
         }
 
@@ -87,7 +89,6 @@ public class MainActivity extends ActionBarActivity
             case 1:
                 if (DEBUG) Log.d(TAG, "notes fragment");
                 mTitle = "Notes";
-                this.getApplicationContext().setTheme(R.style.AppThemeNotes);
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new NotesFragment())
                         .commit();

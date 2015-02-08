@@ -76,7 +76,7 @@ public class PeopleNearmeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_people_nearme, container, false);
         progressBar = (ProgressBarCircular) view.findViewById(R.id.progressbar_people);
-        progressBar.setBackgroundColor(getResources().getColor(R.color.pink));
+        progressBar.setBackgroundColor(getResources().getColor(R.color.peopleColorPrimaryDark));
 
         search = (EditText) view.findViewById(R.id.people_search);
 

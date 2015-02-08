@@ -79,7 +79,7 @@ public class PeopleSameInterestsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_people_same_interests, container, false);
 
         progressBar = (ProgressBarCircular) view.findViewById(R.id.progressbar_people);
-        progressBar.setBackgroundColor(getResources().getColor(R.color.pink));
+        progressBar.setBackgroundColor(getResources().getColor(R.color.peopleColorPrimaryDark));
         search = (EditText) view.findViewById(R.id.people_search);
         lv = (ListView) view.findViewById(R.id.listviewpeople);
 

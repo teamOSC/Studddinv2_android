@@ -29,7 +29,7 @@
         android:id="@+id/listing_image"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:src="@drawable/imageview_selector_listing_camera"
+        android:src="@drawable/image_placeholder"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/listing_upload"
         android:layout_toStartOf="@+id/listing_upload" />

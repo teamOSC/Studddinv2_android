@@ -8,16 +8,19 @@
     android:scrollbarAlwaysDrawVerticalTrack="true">
 
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="7"
+        android:weightSum="14"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:layout_marginTop="10dp"
             >
         <in.tosc.studddin.ui.MaterialEditText
@@ -36,7 +39,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:layout_marginTop="10dp"
             >
         <in.tosc.studddin.ui.MaterialEditText
@@ -55,7 +58,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             >
@@ -75,7 +78,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             >
@@ -95,7 +98,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:orientation="horizontal"
         android:layout_marginBottom="10dp"
         >
@@ -128,7 +131,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:orientation="horizontal"
         android:layout_marginBottom="10dp"
         >
@@ -163,13 +166,13 @@
         android:id="@+id/submit_button"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:layout_gravity="bottom|center"
         android:background="@drawable/btn_sel"
         android:text="@string/submit"
         android:textColor="@android:color/white" />
     
     </LinearLayout>
-
+    </ScrollView>
 
 </LinearLayout>

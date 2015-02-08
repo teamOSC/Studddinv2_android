@@ -50,7 +50,7 @@ public class MyListingsFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView =  inflater.inflate(R.layout.fragment_my_listings, container, false);
         loader = (ProgressBarCircular) rootView.findViewById(R.id.progressBar);
-        loader.setBackgroundColor(getResources().getColor(R.color.pink));
+        loader.setBackgroundColor(getResources().getColor(R.color.listingsColorPrimaryDark));
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listing_recycler_view);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
