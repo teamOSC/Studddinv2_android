@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
@@ -223,7 +224,7 @@ public class PeopleSameInterestsFragment extends Fragment {
             currentuserinterests = "";
         }
 
-        if (currentUserInterestsList != null) {
+        if (!currentUserInterestsList.isEmpty()) {
             for (int c = 0; c < currentUserInterestsList.size(); c++) {
                 if (!currentUserInterestsList.get(c).equals("") || !(currentUserInterestsList.get(c) == null)) {
 
@@ -308,6 +309,8 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                 }
             }
+        }else{
+            progressBar.setVisibility(View.GONE);
         }
     }
 
@@ -349,7 +352,7 @@ public class PeopleSameInterestsFragment extends Fragment {
             currentuserinterests = "";
         }
 
-        if (currentUserInterestsList != null) {
+        if (!currentUserInterestsList.isEmpty()) {
 
             for (int c = 0; c < currentUserInterestsList.size(); c++) {
                 if (!currentUserInterestsList.get(c).equals("") || !(currentUserInterestsList.get(c) == null)) {
@@ -434,7 +437,9 @@ public class PeopleSameInterestsFragment extends Fragment {
 
             }
         }
-    }
+    }else {
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
 
