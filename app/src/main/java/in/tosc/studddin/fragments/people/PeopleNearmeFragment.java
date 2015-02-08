@@ -341,6 +341,7 @@ public class PeopleNearmeFragment extends Fragment {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereNear(ParseTables.Users.LOCATION, userlocation);
         query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
+        query.include(ParseTables.Users.INTERESTS);
 
 
         query.findInBackground(new FindCallback<ParseUser>() {

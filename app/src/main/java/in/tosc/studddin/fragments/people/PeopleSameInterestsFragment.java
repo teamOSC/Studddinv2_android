@@ -230,6 +230,8 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                     ParseQuery<ParseUser> query = ParseUser.getQuery();
                     query.whereMatches(ParseTables.Users.INTERESTS, "(" + currentUserInterestsList.get(c) + ")", "i");
+                    query.include(ParseTables.Users.INTERESTS);
+
                     query.findInBackground(new FindCallback<ParseUser>() {
                         public void done(List<ParseUser> objects, ParseException e) {
                             if (e == null) {
@@ -356,7 +358,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                 ParseQuery<ParseUser> query = ParseUser.getQuery();
                 query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
-
+                    query.include(ParseTables.Users.INTERESTS);
                 query.whereMatches(ParseTables.Users.INTERESTS, "(" + currentUserInterestsList.get(c) + ")", "i");
                 query.findInBackground(new FindCallback<ParseUser>() {
                     public void done(List<ParseUser> objects, ParseException e) {

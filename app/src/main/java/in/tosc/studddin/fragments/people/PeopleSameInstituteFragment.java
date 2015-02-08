@@ -211,6 +211,8 @@ public class PeopleSameInstituteFragment extends Fragment {
         }
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.include(ParseTables.Users.INTERESTS);
+
         if (currentuserinstituition != null)
             query.whereMatches(ParseTables.Users.INSTITUTE, "(" + currentuserinstituition + ")", "i");
         query.findInBackground(new FindCallback<ParseUser>() {
@@ -325,6 +327,7 @@ public class PeopleSameInstituteFragment extends Fragment {
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
+        query.include(ParseTables.Users.INTERESTS);
 
         if (currentuserinstituition != null)
             query.whereMatches(ParseTables.Users.INSTITUTE, "(" + currentuserinstituition + ")", "i");
