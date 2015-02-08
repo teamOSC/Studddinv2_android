@@ -195,9 +195,14 @@ public class PeopleNearmeFragment extends Fragment {
         currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
 
-        interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
+        try {
+            interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
+        }catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
 
-        if(interests!=null) {
+        if(interests!=null && !interests.isEmpty() ) {
             StringBuilder stringBuilder = new StringBuilder("");
             for (ParseObject parseObject : interests) {
                 try {
@@ -244,7 +249,7 @@ public class PeopleNearmeFragment extends Fragment {
 
                             ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
 
-                            if(personInterests!=null) {
+                            if(!personInterests.isEmpty()) {
                                 StringBuilder stringBuilder = new StringBuilder("");
                                 for (ParseObject parseObject : personInterests) {
                                     try {
@@ -311,9 +316,13 @@ public class PeopleNearmeFragment extends Fragment {
         currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
 
-        interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
-
-        if(interests!=null) {
+        try {
+            interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
+        }catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+        if(interests!=null && !interests.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder("");
             for (ParseObject parseObject : interests) {
                 try {
@@ -362,7 +371,7 @@ public class PeopleNearmeFragment extends Fragment {
 
                             ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
 
-                            if(personInterests!=null) {
+                            if(!personInterests.isEmpty()) {
                                 StringBuilder stringBuilder = new StringBuilder("");
                                 for (ParseObject parseObject : personInterests) {
                                     try {

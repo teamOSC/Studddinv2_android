@@ -59,9 +59,6 @@ public class PeopleSameInterestsFragment extends Fragment {
 
     EditText search;
 
-    ArrayList<ParseObject> interests = new ArrayList<>() ;
-    ArrayList<String> currentUserInterestsList = new ArrayList<String>() ;
-
 
     ArrayList<EachRow3> list3 = new ArrayList<PeopleSameInterestsFragment.EachRow3>();
     EachRow3 each;
@@ -191,7 +188,7 @@ public class PeopleSameInterestsFragment extends Fragment {
     private void loaddata() {
 
         list3.clear();
-        currentUserInterestsList.clear();
+
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
@@ -200,9 +197,11 @@ public class PeopleSameInterestsFragment extends Fragment {
         currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
 
-        interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
+        ArrayList<ParseObject> interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
+        ArrayList<String> currentUserInterestsList = new ArrayList<>();
 
-        if (interests != null) {
+
+        if(interests!=null && !interests.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder("");
             for (ParseObject parseObject : interests) {
                 try {
@@ -230,7 +229,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
 
                     ParseQuery<ParseUser> query = ParseUser.getQuery();
-                    query.whereMatches(ParseTables.Users.INTERESTS, "(" + currentUserInterestsList.get(c) + ")", "i");
+                    query.whereEqualTo(ParseTables.Users.INTERESTS, currentUserInterestsList.get(c));
                     query.include(ParseTables.Users.INTERESTS);
 
                     query.findInBackground(new FindCallback<ParseUser>() {
@@ -251,7 +250,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                                             ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
 
-                                            if(personInterests!=null) {
+                                            if(!personInterests.isEmpty()) {
                                                 StringBuilder stringBuilder = new StringBuilder("");
                                                 for (ParseObject parseObject : personInterests) {
                                                     try {
@@ -319,7 +318,6 @@ public class PeopleSameInterestsFragment extends Fragment {
 
 
         list3.clear();
-        currentUserInterestsList.clear();
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
@@ -328,9 +326,11 @@ public class PeopleSameInterestsFragment extends Fragment {
         currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
 
-        interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
+        ArrayList<ParseObject> interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
+        ArrayList<String> currentUserInterestsList = new ArrayList<>();
 
-        if (interests != null) {
+
+        if(interests!=null && !interests.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder("");
             for (ParseObject parseObject : interests) {
                 try {
@@ -362,7 +362,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                 ParseQuery<ParseUser> query = ParseUser.getQuery();
                 query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
                     query.include(ParseTables.Users.INTERESTS);
-                query.whereMatches(ParseTables.Users.INTERESTS, "(" + currentUserInterestsList.get(c) + ")", "i");
+                    query.whereEqualTo(ParseTables.Users.INTERESTS, currentUserInterestsList.get(c));
                 query.findInBackground(new FindCallback<ParseUser>() {
                     public void done(List<ParseUser> objects, ParseException e) {
                         if (e == null) {
@@ -380,7 +380,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                                         ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
 
-                                        if(personInterests!=null) {
+                                        if(!personInterests.isEmpty()) {
                                             StringBuilder stringBuilder = new StringBuilder("");
                                             for (ParseObject parseObject : personInterests) {
                                                 try {
