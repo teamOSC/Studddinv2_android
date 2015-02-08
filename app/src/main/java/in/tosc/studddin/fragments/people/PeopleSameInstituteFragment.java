@@ -299,11 +299,12 @@ public class PeopleSameInstituteFragment extends Fragment {
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         String currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
-        String currentuserinterests = ParseUser.getCurrentUser().getString(ParseTables.Users.INTERESTS);
         String currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
         String currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
         String currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
+
+        interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
 
         if(interests!=null) {
             StringBuilder stringBuilder = new StringBuilder("");
@@ -318,11 +319,9 @@ public class PeopleSameInstituteFragment extends Fragment {
             currentuserinterests = stringBuilder.toString();
         }
 
-
         if (currentuserinterests == null) {
             currentuserinterests = "";
         }
-
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
@@ -342,6 +341,7 @@ public class PeopleSameInstituteFragment extends Fragment {
                             each = new EachRow3();
                             each.cname = pu.getString(ParseTables.Users.NAME);
 
+
                             ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
 
                             if(personInterests!=null) {
@@ -356,6 +356,7 @@ public class PeopleSameInstituteFragment extends Fragment {
                                 stringBuilder.setLength(stringBuilder.length() - 2);
                                 each.cinterests = stringBuilder.toString();
                             }
+
 
                             each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
                             each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);

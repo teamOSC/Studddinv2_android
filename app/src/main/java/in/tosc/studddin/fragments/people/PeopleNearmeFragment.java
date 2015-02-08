@@ -304,7 +304,6 @@ public class PeopleNearmeFragment extends Fragment {
 
         list3.clear();
 
-
         currentuser = ParseUser.getCurrentUser().getUsername();
         currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
         currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
@@ -317,7 +316,11 @@ public class PeopleNearmeFragment extends Fragment {
         if(interests!=null) {
             StringBuilder stringBuilder = new StringBuilder("");
             for (ParseObject parseObject : interests) {
-                stringBuilder.append(parseObject.getString("name") + ", ");
+                try {
+                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
             stringBuilder.setLength(stringBuilder.length() - 2);
             currentuserinterests = stringBuilder.toString();
@@ -328,7 +331,7 @@ public class PeopleNearmeFragment extends Fragment {
             currentuserinterests = "";
         }
 
- // DUMMY DATA SO THAT IT DISPLAYS SOMETHING
+        // DUMMY DATA SO THAT IT DISPLAYS SOMETHING
         if (userlocation==null ||  userlocation.getLatitude() == 0)
         {
            userlocation = new ParseGeoPoint(28.7434552 , 77.1205612);
@@ -354,7 +357,24 @@ public class PeopleNearmeFragment extends Fragment {
 
                             each = new EachRow3();
                             each.cname = pu.getString(ParseTables.Users.NAME);
-                            each.cinterests = pu.getString(ParseTables.Users.INTERESTS);
+
+
+                            ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
+
+                            if(personInterests!=null) {
+                                StringBuilder stringBuilder = new StringBuilder("");
+                                for (ParseObject parseObject : personInterests) {
+                                    try {
+                                        stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                                    } catch (ParseException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                }
+                                stringBuilder.setLength(stringBuilder.length() - 2);
+                                each.cinterests = stringBuilder.toString();
+                            }
+
+
                             each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
                             each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
 //                                          each.cdistance = pu.getString(ParseTables.Users.NAME);

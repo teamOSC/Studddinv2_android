@@ -205,7 +205,11 @@ public class PeopleSameInterestsFragment extends Fragment {
             StringBuilder stringBuilder = new StringBuilder("");
             for (ParseObject parseObject : interests) {
                 currentUserInterestsList.add(parseObject.getString("name"));
-                stringBuilder.append(parseObject.getString("name") + ", ");
+                try {
+                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
             stringBuilder.setLength(stringBuilder.length() - 2);
             currentuserinterests = stringBuilder.toString();
@@ -243,7 +247,11 @@ public class PeopleSameInterestsFragment extends Fragment {
                                             if(personInterests!=null) {
                                                 StringBuilder stringBuilder = new StringBuilder("");
                                                 for (ParseObject parseObject : personInterests) {
-                                                    stringBuilder.append(parseObject.getString("name")).append(", ");
+                                                    try {
+                                                        stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                                                    } catch (ParseException e1) {
+                                                        e1.printStackTrace();
+                                                    }
                                                 }
                                                 stringBuilder.setLength(stringBuilder.length() - 2);
                                                 each.cinterests = stringBuilder.toString();
@@ -300,7 +308,9 @@ public class PeopleSameInterestsFragment extends Fragment {
 
     private void loaddataAfterSearch(String textSearch) {
 
+
         list3.clear();
+        currentUserInterestsList.clear();
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
@@ -311,9 +321,10 @@ public class PeopleSameInterestsFragment extends Fragment {
 
         interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
 
-        if(interests!=null) {
+        if (interests != null) {
             StringBuilder stringBuilder = new StringBuilder("");
             for (ParseObject parseObject : interests) {
+                currentUserInterestsList.add(parseObject.getString("name"));
                 try {
                     stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
                 } catch (ParseException e) {
@@ -324,23 +335,21 @@ public class PeopleSameInterestsFragment extends Fragment {
             currentuserinterests = stringBuilder.toString();
         }
 
-
-
         if (currentuserinterests == null) {
             currentuserinterests = "";
         }
 
+        if (currentUserInterestsList != null) {
 
-        List<String> interestslist = Arrays.asList(currentuserinterests.split(","));
+            for (int c = 0; c < currentUserInterestsList.size(); c++) {
+                if (!currentUserInterestsList.get(c).equals("") || !(currentUserInterestsList.get(c) == null)) {
 
-        for (int c = 0; c < interestslist.size(); c++) {
-            if (!interestslist.get(c).equals("") || !(interestslist.get(c) == null)) {
 
 
                 ParseQuery<ParseUser> query = ParseUser.getQuery();
                 query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
 
-                query.whereMatches(ParseTables.Users.INTERESTS, "(" + interestslist.get(c) + ")", "i");
+                query.whereMatches(ParseTables.Users.INTERESTS, "(" + currentUserInterestsList.get(c) + ")", "i");
                 query.findInBackground(new FindCallback<ParseUser>() {
                     public void done(List<ParseUser> objects, ParseException e) {
                         if (e == null) {
@@ -416,6 +425,8 @@ public class PeopleSameInterestsFragment extends Fragment {
             }
         }
     }
+    }
+
 
 
                 class MyAdapter3 extends ArrayAdapter<EachRow3> {
