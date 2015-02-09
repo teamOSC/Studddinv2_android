@@ -225,13 +225,14 @@
                 android:layout_marginRight="7dp"
                 />
             <ImageButton
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
                 android:layout_weight="0"
+                android:layout_margin="5dp"
                 android:text="Set Time"
                 android:id="@+id/upload_image"
                 android:layout_gravity="center"
-                android:background="@drawable/ic_camera_alt_black_48dp"
+                android:background="@drawable/camera"
                 android:textColor="@android:color/white"
                 />
         </LinearLayout>
