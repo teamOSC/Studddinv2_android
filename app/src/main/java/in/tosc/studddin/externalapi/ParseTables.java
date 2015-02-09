@@ -24,7 +24,7 @@ public class ParseTables {
     }
 
     public static class Listings {
-        public static final String LISTINGS = "listings";
+        public static final String LISTINGS = "Listings";
         public static final String IMAGE = "image";
         public static final String OWNER_NAME = "ownerName";
         public static final String LISTING_NAME = "listingName";
