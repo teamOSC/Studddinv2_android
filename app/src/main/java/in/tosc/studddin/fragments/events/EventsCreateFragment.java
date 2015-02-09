@@ -4,7 +4,14 @@ package in.tosc.studddin.fragments.events;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
@@ -13,15 +20,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import in.tosc.studddin.R;
@@ -38,6 +52,10 @@ public class EventsCreateFragment extends Fragment {
     private static HashMap<String, String> events;
     ImageButton setDate;
     ImageButton setTime;
+    ImageButton uploadPicture;
+    public static byte[] byteArray;
+    public static String mCurrentPhotoPath;
+    public static ImageView eventImage;
 
     public EventsCreateFragment() {
         // Required empty public constructor
@@ -57,6 +75,14 @@ public class EventsCreateFragment extends Fragment {
         create = (Button) v.findViewById(R.id.submit_button);
         setDate = (ImageButton) v.findViewById(R.id.date_picker);
         setTime = (ImageButton) v.findViewById(R.id.time_picker);
+        uploadPicture = (ImageButton) v.findViewById(R.id.upload_image);
+        eventImage = (ImageView)v.findViewById(R.id.event_image);
+        uploadPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage();
+            }
+        });
         setTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +115,8 @@ public class EventsCreateFragment extends Fragment {
         events.put(ParseTables.Events.TYPE, ((MaterialEditText) v.findViewById(R.id.event_type)).getText() + "");
         events.put(ParseTables.Events.LOCATION, ((MaterialEditText) v.findViewById(R.id.event_location)).getText() + "");
         events.put(ParseTables.Events.USER, ParseUser.getCurrentUser().getString(ParseTables.Users.NAME));
+        events.put(ParseTables.Events.URL, ((MaterialEditText) v.findViewById(R.id.event_link)).getText() + "");
+        events.put(ParseTables.Events.CONTACT, ((MaterialEditText) v.findViewById(R.id.event_contact)).getText() + "");
     }
 
     private boolean checkIfEmpty() {
@@ -116,11 +144,30 @@ public class EventsCreateFragment extends Fragment {
             Toast.makeText(getActivity().getApplicationContext(), "Please enter time", Toast.LENGTH_LONG).show();
             return false;
         }
+        if (events.get(ParseTables.Events.CONTACT).isEmpty()) {
+            Toast.makeText(getActivity().getApplicationContext(), "Please enter contact", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (events.get(ParseTables.Events.URL).isEmpty()) {
+            Toast.makeText(getActivity().getApplicationContext(), "Please enter link", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
         return true;
     }
 
     private void pushDataToParse() {
         ParseObject event = new ParseObject("Events");
+        if (byteArray == null) {
+            Drawable drawable = getResources().getDrawable(R.drawable.listing_placeholder);
+            Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream);
+            byteArray = stream.toByteArray();
+        }
+        ParseFile file = new ParseFile(ParseTables.Events.EVENT_PNG, byteArray);
+        file.saveInBackground();
+        event.put(ParseTables.Events.IMAGE, file);
         event.put(ParseTables.Events.TITLE, events.get(ParseTables.Events.TITLE));
         event.put(ParseTables.Events.DESCRIPTION, events.get(ParseTables.Events.DESCRIPTION));
         event.put(ParseTables.Events.TYPE, events.get(ParseTables.Events.TYPE));
@@ -128,6 +175,8 @@ public class EventsCreateFragment extends Fragment {
         event.put(ParseTables.Events.DATE, events.get(ParseTables.Events.DATE));
         event.put(ParseTables.Events.TIME, events.get(ParseTables.Events.TIME));
         event.put(ParseTables.Events.CREATED_BY, events.get(ParseTables.Events.USER));
+        event.put(ParseTables.Events.URL, events.get(ParseTables.Events.URL));
+        event.put(ParseTables.Events.CONTACT, events.get(ParseTables.Events.CONTACT));
         event.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -137,13 +186,12 @@ public class EventsCreateFragment extends Fragment {
         });
     }
 
-
-
     public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
 
         @Override
         public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            String date = new StringBuilder().append(dayOfMonth).append("/").append(monthOfYear).append("/").append(year).toString();
+            monthOfYear++;
+            String date = String.valueOf(dayOfMonth) + "/" + monthOfYear + "/" + year;
             events.put(ParseTables.Events.DATE, date);
             ((MaterialEditText)v.findViewById(R.id.event_date)).setText(date);
         }
@@ -170,7 +218,7 @@ public class EventsCreateFragment extends Fragment {
             }
             if(hourOfDay > 12){
                 hourOfDay = hourOfDay - 12;
-                time = new StringBuilder().append(hourOfDay).append(":").append(min).append(" pm").toString();
+                time = String.valueOf(hourOfDay) + ":" + min + " pm";
             }else {
                 time = String.valueOf(hourOfDay) + ":" + min + " am";
             }
@@ -186,7 +234,47 @@ public class EventsCreateFragment extends Fragment {
 
             return new TimePickerDialog(getActivity(), this, hour, minute, DateFormat.is24HourFormat(getActivity()));
         }
+
     }
 
+    public void chooseImage(){
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        File photoFile = null;
+        try {
+            photoFile = createImageFile();
+        } catch (IOException ex) {
+
+        }
+        // Continue only if the File was successfully created
+        if (photoFile != null) {
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                    Uri.fromFile(photoFile));
+        }
+
+        Intent chooser = new Intent(Intent.ACTION_CHOOSER);
+        chooser.putExtra(Intent.EXTRA_INTENT, galleryIntent);
+        chooser.putExtra(Intent.EXTRA_TITLE, "Upload Events Photo");
+
+        Intent[] intentArray = {cameraIntent};
+        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
+        startActivityForResult(chooser, 0);
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
 
 }

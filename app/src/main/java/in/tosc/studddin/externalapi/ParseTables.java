@@ -47,6 +47,9 @@ public class ParseTables {
         public static final String TIME = "time";
         public static final String CREATED_BY = "createdBy";
         public static final String CREATED_AT = "createdAt";
-
+        public static final String EVENT_PNG = "event.png";
+        public static final String IMAGE = "image";
+        public static final String URL = "url";
+        public static final String CONTACT = "contact";
     }
 }
