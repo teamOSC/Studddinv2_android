@@ -239,7 +239,6 @@
         android:text="@string/submit"
         android:textColor="@android:color/white" />
 
-    </LinearLayout>
 
 
 </LinearLayout>
