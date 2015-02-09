@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="6dp"
-        android:elevation="10sp"
+        android:elevation="5dp"
         app:cardElevation="10dp"
         card_view:cardCornerRadius="6dp">
         <RelativeLayout
@@ -40,6 +40,12 @@
                     app:typeface="fonts/Gotham-Book.ttf"/>
 
         </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/data_holder"
+                android:layout_alignEnd="@+id/data_holder"
+                android:background="@drawable/abc_menu_hardkey_panel_mtrl_mult">
          <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,6 +54,7 @@
             android:text="From"
              android:layout_below="@+id/data_holder"
              android:layout_alignEnd="@+id/data_holder"/>
+            </LinearLayout>
     </RelativeLayout>
 
 
