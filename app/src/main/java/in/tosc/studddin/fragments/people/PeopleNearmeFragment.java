@@ -26,8 +26,12 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -51,6 +55,7 @@ public class PeopleNearmeFragment extends Fragment {
     String currentuser = "";
     ParseGeoPoint userlocation = new ParseGeoPoint(0, 0);
 
+    ArrayList<ParseObject> interests = new ArrayList<>() ;
 
     EditText search;
 
@@ -181,17 +186,39 @@ public class PeopleNearmeFragment extends Fragment {
 
     private void loaddata() {
 
-      list3.clear();
-
+        list3.clear();
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
-        currentuserinterests = ParseUser.getCurrentUser().getString(ParseTables.Users.INTERESTS);
         currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
         currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
         currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
 
+        try {
+            interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
+        }catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+
+        if(interests!=null && !interests.isEmpty() ) {
+            StringBuilder stringBuilder = new StringBuilder("");
+            for (ParseObject parseObject : interests) {
+                try {
+                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+                stringBuilder.setLength(stringBuilder.length() - 2);
+                currentuserinterests = stringBuilder.toString();
+        }
+
+
+        if (currentuserinterests == null) {
+            currentuserinterests = "";
+        }
 
         // DUMMY DATA SO THAT IT DISPLAYS SOMETHING
         if (userlocation==null ||  userlocation.getLatitude() == 0)
@@ -203,6 +230,7 @@ public class PeopleNearmeFragment extends Fragment {
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereNear(ParseTables.Users.LOCATION, userlocation);
+        query.include(ParseTables.Users.INTERESTS);
 
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(List<ParseUser> objects, ParseException e) {
@@ -213,12 +241,26 @@ public class PeopleNearmeFragment extends Fragment {
                         //access the data associated with the ParseUser using the get method
                         //pu.getString("key") or pu.get("key")
 
-                        if (!pu.getUsername().equals(currentuser)) {
-
+                        if (!pu.getUsername().equals(currentuser) && pu.getBoolean(ParseTables.Users.FULLY_REGISTERED)) {
 
                             each = new EachRow3();
                             each.cname = pu.getString(ParseTables.Users.NAME);
-                            each.cinterests = pu.getString(ParseTables.Users.INTERESTS);
+
+                            ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
+
+                            if(!personInterests.isEmpty()) {
+                                StringBuilder stringBuilder = new StringBuilder("");
+                                for (ParseObject parseObject : personInterests) {
+                                    try {
+                                        stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                                    } catch (ParseException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                }
+                                    stringBuilder.setLength(stringBuilder.length() - 2);
+                                    each.cinterests = stringBuilder.toString();
+                            }
+
                             each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
                             each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
 //                                          each.cdistance = pu.getString(ParseTables.Users.NAME);
@@ -266,16 +308,38 @@ public class PeopleNearmeFragment extends Fragment {
 
         list3.clear();
 
-
         currentuser = ParseUser.getCurrentUser().getUsername();
         currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
-        currentuserinterests = ParseUser.getCurrentUser().getString(ParseTables.Users.INTERESTS);
         currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
         currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
         currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
 
- // DUMMY DATA SO THAT IT DISPLAYS SOMETHING
+        try {
+            interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
+        }catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+        if(interests!=null && !interests.isEmpty()) {
+            StringBuilder stringBuilder = new StringBuilder("");
+            for (ParseObject parseObject : interests) {
+                try {
+                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            stringBuilder.setLength(stringBuilder.length() - 2);
+            currentuserinterests = stringBuilder.toString();
+        }
+
+
+        if (currentuserinterests == null) {
+            currentuserinterests = "";
+        }
+
+        // DUMMY DATA SO THAT IT DISPLAYS SOMETHING
         if (userlocation==null ||  userlocation.getLatitude() == 0)
         {
            userlocation = new ParseGeoPoint(28.7434552 , 77.1205612);
@@ -285,6 +349,7 @@ public class PeopleNearmeFragment extends Fragment {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereNear(ParseTables.Users.LOCATION, userlocation);
         query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
+        query.include(ParseTables.Users.INTERESTS);
 
 
         query.findInBackground(new FindCallback<ParseUser>() {
@@ -296,12 +361,28 @@ public class PeopleNearmeFragment extends Fragment {
                         //access the data associated with the ParseUser using the get method
                         //pu.getString("key") or pu.get("key")
 
-                        if (!pu.getUsername().equals(currentuser)) {
-
+                        if (!pu.getUsername().equals(currentuser) && pu.getBoolean(ParseTables.Users.FULLY_REGISTERED)) {
 
                             each = new EachRow3();
                             each.cname = pu.getString(ParseTables.Users.NAME);
-                            each.cinterests = pu.getString(ParseTables.Users.INTERESTS);
+
+
+                            ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
+
+                            if(!personInterests.isEmpty()) {
+                                StringBuilder stringBuilder = new StringBuilder("");
+                                for (ParseObject parseObject : personInterests) {
+                                    try {
+                                        stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                                    } catch (ParseException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                }
+                                stringBuilder.setLength(stringBuilder.length() - 2);
+                                each.cinterests = stringBuilder.toString();
+                            }
+
+
                             each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
                             each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
 //                                          each.cdistance = pu.getString(ParseTables.Users.NAME);

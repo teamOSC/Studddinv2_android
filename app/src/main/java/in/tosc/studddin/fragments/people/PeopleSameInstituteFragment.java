@@ -26,6 +26,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseImageView;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -50,6 +51,8 @@ public class PeopleSameInstituteFragment extends Fragment {
     String currentuserqualification = "";
     String currentuser = "";
     ParseGeoPoint userlocation = new ParseGeoPoint(0, 0);
+
+    ArrayList<ParseObject> interests = new ArrayList<>() ;
 
 
     EditText search;
@@ -183,14 +186,38 @@ public class PeopleSameInstituteFragment extends Fragment {
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         String currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
-        String currentuserinterests = ParseUser.getCurrentUser().getString(ParseTables.Users.INTERESTS);
         String currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
         String currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
         String currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
 
+        try {
+            interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
+        }catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+
+        if(interests!=null && !interests.isEmpty()) {
+            StringBuilder stringBuilder = new StringBuilder("");
+            for (ParseObject parseObject : interests) {
+                try {
+                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            stringBuilder.setLength(stringBuilder.length() - 2);
+            currentuserinterests = stringBuilder.toString();
+        }
+
+        if (currentuserinterests == null) {
+            currentuserinterests = "";
+        }
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.include(ParseTables.Users.INTERESTS);
+
         if (currentuserinstituition != null)
             query.whereMatches(ParseTables.Users.INSTITUTE, "(" + currentuserinstituition + ")", "i");
         query.findInBackground(new FindCallback<ParseUser>() {
@@ -202,10 +229,27 @@ public class PeopleSameInstituteFragment extends Fragment {
                         //access the data associated with the ParseUser using the get method
                         //pu.getString("key") or pu.get("key")
 
-                        if (!pu.getUsername().equals(currentuser)) {
-                            each = new EachRow3();
+                        if (!pu.getUsername().equals(currentuser) && pu.getBoolean(ParseTables.Users.FULLY_REGISTERED)) {                            each = new EachRow3();
                             each.cname = pu.getString(ParseTables.Users.NAME);
-                            each.cinterests = pu.getString(ParseTables.Users.INTERESTS);
+
+
+
+                            ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
+
+                            if(!personInterests.isEmpty()) {
+                                StringBuilder stringBuilder = new StringBuilder("");
+                                for (ParseObject parseObject : personInterests) {
+                                    try {
+                                        stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                                    } catch (ParseException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                }
+                                stringBuilder.setLength(stringBuilder.length() - 2);
+                                each.cinterests = stringBuilder.toString();
+                            }
+
+
                             each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
                             each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
 //                        each.cdistance = pu.getString(ParseTables.Users.NAME);
@@ -261,15 +305,38 @@ public class PeopleSameInstituteFragment extends Fragment {
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         String currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
-        String currentuserinterests = ParseUser.getCurrentUser().getString(ParseTables.Users.INTERESTS);
         String currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
         String currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
         String currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
 
+        try {
+            interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
+        }catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+
+        if(interests!=null && !interests.isEmpty()) {
+            StringBuilder stringBuilder = new StringBuilder("");
+            for (ParseObject parseObject : interests) {
+                try {
+                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            stringBuilder.setLength(stringBuilder.length() - 2);
+            currentuserinterests = stringBuilder.toString();
+        }
+
+        if (currentuserinterests == null) {
+            currentuserinterests = "";
+        }
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
+        query.include(ParseTables.Users.INTERESTS);
 
         if (currentuserinstituition != null)
             query.whereMatches(ParseTables.Users.INSTITUTE, "(" + currentuserinstituition + ")", "i");
@@ -282,10 +349,26 @@ public class PeopleSameInstituteFragment extends Fragment {
                         //access the data associated with the ParseUser using the get method
                         //pu.getString("key") or pu.get("key")
 
-                        if (!pu.getUsername().equals(currentuser)) {
-                            each = new EachRow3();
+                        if (!pu.getUsername().equals(currentuser) && pu.getBoolean(ParseTables.Users.FULLY_REGISTERED)) {                            each = new EachRow3();
                             each.cname = pu.getString(ParseTables.Users.NAME);
-                            each.cinterests = pu.getString(ParseTables.Users.INTERESTS);
+
+
+                            ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
+
+                            if(!personInterests.isEmpty()) {
+                                StringBuilder stringBuilder = new StringBuilder("");
+                                for (ParseObject parseObject : personInterests) {
+                                    try {
+                                        stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                                    } catch (ParseException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                }
+                                stringBuilder.setLength(stringBuilder.length() - 2);
+                                each.cinterests = stringBuilder.toString();
+                            }
+
+
                             each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
                             each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
 //                        each.cdistance = pu.getString(ParseTables.Users.NAME);
