@@ -335,6 +335,7 @@ public class SignupDataFragment extends Fragment implements
         user.put(ParseTables.Users.QUALIFICATIONS, input.get(ParseTables.Users.QUALIFICATIONS));
 
         for (ParseObject object : selectedInterests) {
+            object.save();
             ParseRelation<ParseUser> relation = object.getRelation("users");
             relation.add(user);
             object.saveInBackground();
