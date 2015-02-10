@@ -35,7 +35,6 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -355,6 +354,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if(swipeRefreshLayout.isRefreshing())
+                    swipeRefreshLayout.setRefreshing(false);
                 mAdapter.notifyDataSetChanged();
             }
         });
