@@ -19,6 +19,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -85,7 +86,7 @@ public class ListingsSearchFragment extends Fragment {
         editor.putString("sortby", "nearest");
         editor.commit();
 
-        location = ParseUser.getCurrentUser().getParseGeoPoint("location");
+        location = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Listings.LOCATION);
     }
 
     @Override
@@ -173,18 +174,19 @@ public class ListingsSearchFragment extends Fragment {
         if (filterPrefs.getBoolean("misc", true))
             categories.add("Misc.");
         ParseQuery<ParseObject> query = new ParseQuery<>(
-                "Listings");
+                ParseTables.Listings.LISTINGS);
         if (cache)
             query.fromLocalDatastore();
         query.whereContainedIn(ParseTables.Listings.CATEGORY, categories);
         if (text == null) {
-            if (filterPrefs.getString("sortby", "nearest").compareTo("recent") == 0)
+            //if (filterPrefs.getString("sortby", "nearest").equalsIgnoreCase("recent"))
                 query.orderByDescending(ParseTables.Listings.CREATED_AT);
-        /*else
-            query.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));*/
+            //else
+                //query.whereNear(ParseTables.Listings.LOCATION,location);
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(final List<ParseObject> parseObjects, ParseException e) {
+                    Log.d("Objects: ","" +parseObjects);
                     if (e == null) {
                         if (categories.size() == 3 && !cache) {
                             ParseObject.unpinAllInBackground("listings", new DeleteCallback() {
@@ -197,6 +199,7 @@ public class ListingsSearchFragment extends Fragment {
                         } else
                             doneFetching(parseObjects, cache);
                     } else {
+                        e.printStackTrace();
                         if (onRefresh) {
                             onRefresh = false;
                             swipeRefreshLayout.setRefreshing(false);
@@ -218,13 +221,16 @@ public class ListingsSearchFragment extends Fragment {
             queries.add(query);
             queries.add(descQuery);
             ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
-            if (filterPrefs.getString("sortby", "nearest").compareTo("recent") == 0)
+            //if (filterPrefs.getString("sortby", "nearest").compareTo("recent") == 0)
                 mainQuery.orderByDescending(ParseTables.Listings.CREATED_AT);
-            /*else
-                mainQuery.whereNear("location",new ParseGeoPoint(28.7500749,77.11766519999992));*/
+            //else
+            //   mainQuery.whereNear("location",location);
             mainQuery.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> results, ParseException e) {
-                    doneFetching(results, cache);
+                    if(e==null)
+                        doneFetching(results, cache);
+                    else
+                        e.printStackTrace(); // shouldn't happen
                 }
             });
         }
@@ -232,7 +238,6 @@ public class ListingsSearchFragment extends Fragment {
 
     private void doneFetching(List<ParseObject> parseObjects, boolean cache) {
         mAdapter = new ListingAdapter(parseObjects, cache);
-        mAdapter.notifyDataSetChanged();
         if (onRefresh) {
             onRefresh = false;
             swipeRefreshLayout.setRefreshing(false);
@@ -273,7 +278,7 @@ public class ListingsSearchFragment extends Fragment {
             });
             try{
                 double distance = mDataset.get(i).getParseGeoPoint(ParseTables.Listings.LOCATION).distanceInKilometersTo(location);
-                if (distance < 10 && distance > 0)
+                if (distance < 10 && distance >= 0.1)
                     viewHolder.listing_distance.setText(String.format("%.1f", distance) + " km away");
                 else
                     viewHolder.listing_distance.setText((int) distance + " km away");

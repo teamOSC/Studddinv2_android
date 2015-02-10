@@ -3,13 +3,11 @@ package in.tosc.studddin.fragments.events;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,14 +20,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.DeleteCallback;
-import com.parse.Parse;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import in.tosc.studddin.R;
@@ -99,6 +98,33 @@ public class EventsListFragment extends Fragment {
         private String event_type;
         private String event_user;
         private String event_location;
+        private ParseFile event_image;
+        private String event_contact;
+        private String event_url;
+
+        public String getEvent_contact() {
+            return event_contact;
+        }
+
+        public void setEvent_contact(String event_contact) {
+            this.event_contact = event_contact;
+        }
+
+        public String getEvent_url() {
+            return event_url;
+        }
+
+        public void setEvent_url(String event_url) {
+            this.event_url = event_url;
+        }
+
+        public ParseFile getEvent_image() {
+            return event_image;
+        }
+
+        public void setEvent_image(ParseFile event_image) {
+            this.event_image = event_image;
+        }
 
         public String getEvent_location() {
             return event_location;
@@ -176,6 +202,15 @@ public class EventsListFragment extends Fragment {
             holder.event_date.setText(parents.get(position).getEventDate());
             holder.event_creator.setText(parents.get(position).getEvent_user());
             holder.event_location.setText(parents.get(position).getEvent_location());
+            holder.event_image.setParseFile(parents.get(position).getEvent_image());
+            holder.event_image.loadInBackground(new GetDataCallback() {
+                @Override
+                public void done(byte[] bytes, ParseException e) {
+
+                }
+            });
+            holder.event_contact.setText(parents.get(position).getEvent_contact());
+            holder.event_url.setText(parents.get(position).getEvent_url());
             if(check_my_events){
                 holder.event_creator.setVisibility(View.GONE);
                 holder.event_delete.setVisibility(View.VISIBLE);
@@ -218,7 +253,10 @@ public class EventsListFragment extends Fragment {
             RelativeLayout expanded_area;
             TextView event_creator;
             TextView event_location;
+            ParseImageView event_image;
             Button event_delete;
+            TextView event_contact;
+            TextView event_url;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -230,6 +268,9 @@ public class EventsListFragment extends Fragment {
                 this.event_creator = (TextView) itemView.findViewById(R.id.event_creator);
                 this.event_location = (TextView) itemView.findViewById(R.id.event_location);
                 this.event_delete = (Button) itemView.findViewById(R.id.event_delete);
+                this.event_image = (ParseImageView)itemView.findViewById(R.id.event_image);
+                this.event_contact = (TextView) itemView.findViewById(R.id.event_contact);
+                this.event_url = (TextView) itemView.findViewById(R.id.event_url);
                 event_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -289,6 +330,9 @@ public class EventsListFragment extends Fragment {
                 parent.setEventType((String) listing.get(ParseTables.Events.TYPE));
                 parent.setEvent_user((String) listing.get(ParseTables.Events.CREATED_BY));
                 parent.setEvent_location((String) listing.get(ParseTables.Events.LOCATION_DES));
+                parent.setEvent_image(listing.getParseFile(ParseTables.Events.IMAGE));
+                parent.setEvent_contact((String) listing.get(ParseTables.Events.CONTACT));
+                parent.setEvent_url((String) listing.get(ParseTables.Events.URL));
                 parents.add(parent);
             }
             return null;

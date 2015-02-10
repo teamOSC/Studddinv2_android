@@ -13,6 +13,15 @@
         android:indeterminate="true"
         android:textSize="24sp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listing_empty"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:text="No listing found. Why don't you create one?"
+        />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/listing_recycler_view"
         android:layout_width="match_parent"

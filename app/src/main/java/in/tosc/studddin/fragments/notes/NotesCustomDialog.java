@@ -1,6 +1,5 @@
 package in.tosc.studddin.fragments.notes;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -39,7 +38,7 @@ public class NotesCustomDialog extends Dialog {
     Context c;
     private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, uploadedBy;
 
-    public NotesCustomDialog(Activity activity, ArrayList<String> notesCollegeName,
+    public NotesCustomDialog(Context activity, ArrayList<String> notesCollegeName,
                              ArrayList<String> notesBranchName, ArrayList<String> notesTopicName,
                              ArrayList<String> notesSubjectName, int position, ArrayList<String> uploadedBy) {
         super(activity);
