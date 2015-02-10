@@ -101,9 +101,11 @@ public class MyListingsFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
         loader.setVisibility(View.GONE);
         mRecyclerView.setAdapter(mAdapter);
-        if(mAdapter.getItemCount()==0)
+        if(mAdapter.getItemCount()==0){
             mEmptyView.setVisibility(View.VISIBLE);
             mListings.setVisibility(View.GONE);
+        }
+
     }
 
     public class MyListingAdapter extends RecyclerView.Adapter<MyListingAdapter.ViewHolder> {
