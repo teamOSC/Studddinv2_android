@@ -12,7 +12,7 @@
         android:layout_height="fill_parent"
         android:id="@+id/events_main_list"
         android:orientation="vertical"
-        >
+        android:visibility="visible">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -64,7 +64,7 @@
         android:orientation="vertical"
         android:weightSum="3"
         android:id="@+id/empty_events"
-        >
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="fill_parent"

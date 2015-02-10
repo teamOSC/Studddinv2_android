@@ -105,6 +105,7 @@ public class MyListingsFragment extends Fragment {
             mEmptyView.setVisibility(View.VISIBLE);
             mListings.setVisibility(View.GONE);
         }
+
     }
 
     public class MyListingAdapter extends RecyclerView.Adapter<MyListingAdapter.ViewHolder> {
