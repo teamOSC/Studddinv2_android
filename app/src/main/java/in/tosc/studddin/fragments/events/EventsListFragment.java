@@ -1,13 +1,17 @@
 package in.tosc.studddin.fragments.events;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,11 +19,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.DeleteCallback;
+import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -29,7 +36,10 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
@@ -41,13 +51,15 @@ import in.tosc.studddin.fragments.EventsFragment;
 public class EventsListFragment extends Fragment {
 
     RecyclerView eventlist;
-    ArrayList<Parent> parents;
-    List<ParseObject> listings;
     RecyclerView.Adapter adapter;
-    FetchData f;
     SwipeRefreshLayout swipeRefreshLayout;
     private boolean refresh = false;
     private boolean check_my_events=false;
+    ParseImageView expandedImage;
+    View v;
+    LinearLayout eventMainLayout;
+    LinearLayout emptyEvent;
+    ArrayList<Bitmap> eventImages;
 
     public EventsListFragment(){
 
@@ -73,8 +85,11 @@ public class EventsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_events_list, container, false);
+        v = inflater.inflate(R.layout.fragment_events_list, container, false);
+        eventImages = new ArrayList<>();
         eventlist = (RecyclerView) v.findViewById(R.id.listviewevents);
+        eventMainLayout = (LinearLayout) v.findViewById(R.id.events_main_list);
+        emptyEvent = (LinearLayout) v.findViewById(R.id.empty_events);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         eventlist.setLayoutManager(layoutManager);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
@@ -82,107 +97,21 @@ public class EventsListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 refresh = true;
-                f = new FetchData(check_my_events);
-                f.execute();
+                fetchData();
             }
         });
-        f = new FetchData(check_my_events);
-        f.execute();
+        fetchData();
+
         return v;
-    }
-
-    public class Parent {
-        private String event_name;
-        private String event_date;
-        private String event_description;
-        private String event_type;
-        private String event_user;
-        private String event_location;
-        private ParseFile event_image;
-        private String event_contact;
-        private String event_url;
-
-        public String getEvent_contact() {
-            return event_contact;
-        }
-
-        public void setEvent_contact(String event_contact) {
-            this.event_contact = event_contact;
-        }
-
-        public String getEvent_url() {
-            return event_url;
-        }
-
-        public void setEvent_url(String event_url) {
-            this.event_url = event_url;
-        }
-
-        public ParseFile getEvent_image() {
-            return event_image;
-        }
-
-        public void setEvent_image(ParseFile event_image) {
-            this.event_image = event_image;
-        }
-
-        public String getEvent_location() {
-            return event_location;
-        }
-
-        public void setEvent_location(String event_location) {
-            this.event_location = event_location;
-        }
-
-        public String getEvent_user() {
-            return event_user;
-        }
-
-        public void setEvent_user(String event_user) {
-            this.event_user = event_user;
-        }
-
-        public String getEventName() {
-            return event_name;
-        }
-
-        public void setEventName(String s) {
-            this.event_name = s;
-        }
-
-        public String getEventDate() {
-            return event_date;
-        }
-
-        public void setEventDate(String s) {
-            this.event_date = s;
-        }
-
-        public String getEventDescription() {
-            return event_description;
-        }
-
-        public void setEventDescription(String d) {
-            this.event_description = d;
-        }
-
-        public String getEventType() {
-            return event_type;
-        }
-
-        public void setEventType(String d) {
-            this.event_type = d;
-        }
-
     }
 
     public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> implements View.OnClickListener {
 
         private int expandedPosition = -1;
-        private ArrayList<Parent> parents;
+        private List<ParseObject> events;
 
-        public EventAdapter(ArrayList<Parent> parent) {
-            parents = parent;
+        public EventAdapter(List<ParseObject> events) {
+            this.events = events;
         }
 
         @Override
@@ -195,22 +124,23 @@ public class EventsListFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.event_name.setText(parents.get(position).getEventName());
-            holder.event_description.setText(parents.get(position).getEventDescription());
-            holder.event_type.setText(parents.get(position).getEventType());
-            holder.event_date.setText(parents.get(position).getEventDate());
-            holder.event_creator.setText(parents.get(position).getEvent_user());
-            holder.event_location.setText(parents.get(position).getEvent_location());
-            holder.event_image.setParseFile(parents.get(position).getEvent_image());
+        public void onBindViewHolder(final ViewHolder holder, int position) {
+            holder.event_name.setText((String)events.get(position).get(ParseTables.Events.TITLE));
+            holder.event_description.setText((String)events.get(position).get(ParseTables.Events.DESCRIPTION));
+            holder.event_type.setText((String)events.get(position).get(ParseTables.Events.TYPE));
+            holder.event_date.setText(events.get(position).get(ParseTables.Events.DATE)+" "+events.get(position).get(ParseTables.Events.TIME));
+            holder.event_creator.setText((String)events.get(position).get(ParseTables.Events.CREATED_BY));
+            holder.event_location.setText((String)events.get(position).get(ParseTables.Events.LOCATION_DES));
+            holder.event_image.setParseFile(events.get(position).getParseFile(ParseTables.Events.IMAGE));
             holder.event_image.loadInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] bytes, ParseException e) {
-
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    eventImages.add(bitmap);
                 }
             });
-            holder.event_contact.setText(parents.get(position).getEvent_contact());
-            holder.event_url.setText(parents.get(position).getEvent_url());
+            holder.event_contact.setText((String)events.get(position).get(ParseTables.Events.CONTACT));
+            holder.event_url.setText((String)events.get(position).get(ParseTables.Events.URL));
             if(check_my_events){
                 holder.event_creator.setVisibility(View.GONE);
                 holder.event_delete.setVisibility(View.VISIBLE);
@@ -225,7 +155,7 @@ public class EventsListFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return parents.size();
+            return events.size();
         }
 
         @Override
@@ -274,12 +204,13 @@ public class EventsListFragment extends Fragment {
                 event_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ParseObject event = listings.get(getPosition());
+                        ParseObject event = events.get(getPosition());
                         event.deleteInBackground(new DeleteCallback() {
                             @Override
                             public void done(ParseException e) {
                                 if(e == null){
-                                    new FetchData(check_my_events).execute();
+                                    eventImages.remove(getPosition());
+                                    fetchData();
                                 }
                                 else{
                                     Toast.makeText(getActivity().getApplicationContext(), "Internet Connection Problem", Toast.LENGTH_SHORT).show();
@@ -288,56 +219,42 @@ public class EventsListFragment extends Fragment {
                         });
                     }
                 });
+                event_image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        zoomIn(eventImages.get(getPosition()));
+                        Log.d("Image", events.get(getPosition()).getString(ParseTables.Events.TITLE));
+                    }
+                });
             }
         }
     }
 
-    private class FetchData extends AsyncTask<Void, Void, Void> {
-        private boolean check;
-
-        public FetchData(Boolean check_myevents){
-            check = check_myevents;
+    public void fetchData(){
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+                "Events");
+        query.orderByAscending(ParseTables.Events.CREATED_AT);
+        if(check_my_events){
+            query.whereEqualTo(ParseTables.Events.CREATED_BY, ParseUser.getCurrentUser().getString("NAME"));
         }
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            adapter = new EventAdapter(parents);
-            eventlist.setAdapter(adapter);
-            if (refresh == true) {
-                swipeRefreshLayout.setRefreshing(false);
-                refresh = false;
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+                doneFetching(parseObjects);
             }
-        }
+        });
+    }
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            parents = new ArrayList<Parent>();
-            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
-                    "Events");
-            query.orderByAscending(ParseTables.Events.CREATED_AT);
-            if(check){
-                query.whereEqualTo(ParseTables.Events.CREATED_BY, ParseUser.getCurrentUser().getString("NAME"));
-            }
-            try {
-                listings = query.find();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            for (ParseObject listing : listings) {
-                Parent parent = new Parent();
-                parent.setEventName((String) listing.get(ParseTables.Events.TITLE));
-                parent.setEventDate(listing.get(ParseTables.Events.DATE) + "  " + listing.get(ParseTables.Events.TIME));
-                parent.setEventDescription((String) listing.get(ParseTables.Events.DESCRIPTION));
-                parent.setEventType((String) listing.get(ParseTables.Events.TYPE));
-                parent.setEvent_user((String) listing.get(ParseTables.Events.CREATED_BY));
-                parent.setEvent_location((String) listing.get(ParseTables.Events.LOCATION_DES));
-                parent.setEvent_image(listing.getParseFile(ParseTables.Events.IMAGE));
-                parent.setEvent_contact((String) listing.get(ParseTables.Events.CONTACT));
-                parent.setEvent_url((String) listing.get(ParseTables.Events.URL));
-                parents.add(parent);
-            }
-            return null;
+    public void doneFetching(List<ParseObject> events){
+        adapter = new EventAdapter(events);
+        eventlist.setAdapter(adapter);
+        if (refresh == true) {
+            swipeRefreshLayout.setRefreshing(false);
+            refresh = false;
         }
-
+        if(check_my_events && adapter.getItemCount() == 0){
+            eventMainLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -356,5 +273,22 @@ public class EventsListFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void zoomIn(Bitmap bitmap){
+        expandedImage = (ParseImageView)v.findViewById(R.id.expanded_image_view);
+        expandedImage.setImageBitmap(bitmap);
+        expandedImage.setVisibility(View.VISIBLE);
+        eventMainLayout.setVisibility(View.GONE);
+        emptyEvent.setVisibility(View.GONE);
+
+        expandedImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eventMainLayout.setVisibility(View.VISIBLE);
+                emptyEvent.setVisibility(View.VISIBLE);
+                expandedImage.setVisibility(View.GONE);
+            }
+        });
     }
 }

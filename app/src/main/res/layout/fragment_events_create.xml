@@ -7,6 +7,13 @@
     tools:context="in.tosc.studddin.fragments.events.EventsCreateFragment"
     android:scrollbarAlwaysDrawVerticalTrack="true">
 
+    <in.tosc.studddin.ui.ProgressBarCircular
+        android:id="@+id/upload_progress"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:textSize="24sp"
+        android:visibility="gone" />
 
     <ScrollView
         android:layout_width="fill_parent"
