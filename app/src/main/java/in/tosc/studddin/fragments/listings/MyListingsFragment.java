@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +39,8 @@ public class MyListingsFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private ProgressBarCircular loader;
     private View rootView;
-    private TextView mEmptyView;
+    private LinearLayout mEmptyView;
+    private LinearLayout mListings;
 
     public MyListingsFragment() {
         // Required empty public constructor
@@ -52,8 +54,8 @@ public class MyListingsFragment extends Fragment {
         rootView =  inflater.inflate(R.layout.fragment_my_listings, container, false);
         loader = (ProgressBarCircular) rootView.findViewById(R.id.progressBar);
         loader.setBackgroundColor(getResources().getColor(R.color.listingsColorPrimaryDark));
-        mEmptyView = (TextView) rootView.findViewById(R.id.listing_empty);
-        mEmptyView.setVisibility(View.GONE);
+        mEmptyView = (LinearLayout) rootView.findViewById(R.id.listing_empty);
+        mListings = (LinearLayout) rootView.findViewById(R.id.my_listing);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listing_recycler_view);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -101,6 +103,7 @@ public class MyListingsFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
         if(mAdapter.getItemCount()==0)
             mEmptyView.setVisibility(View.VISIBLE);
+            mListings.setVisibility(View.GONE);
     }
 
     public class MyListingAdapter extends RecyclerView.Adapter<MyListingAdapter.ViewHolder> {

@@ -1,31 +1,76 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="in.tosc.studddin.fragments.ListingsFragment">
 
-    <in.tosc.studddin.ui.ProgressBarCircular
-        android:id="@+id/progressBar"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_gravity="center_horizontal"
-        android:indeterminate="true"
-        android:textSize="24sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listing_empty"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:text="No listing found. Why don't you create one?"
-        />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/listing_recycler_view"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layoutAnimation="@anim/slide_in_gogo" />
+        android:layout_height="match_parent"
+        android:id="@+id/my_listing"
+        android:visibility="visible"
+        android:orientation="vertical">
+
+        <in.tosc.studddin.ui.ProgressBarCircular
+            android:id="@+id/progressBar"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_horizontal"
+            android:indeterminate="true"
+            android:textSize="24sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/listing_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layoutAnimation="@anim/slide_in_gogo" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:id="@+id/listing_empty"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_gravity="center"
+                android:background="@drawable/swatches"/>
+        </LinearLayout>
+        <in.tosc.studddin.ui.TypeFaceTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:text="@string/placeholder_dialog_listing"
+            android:textSize="30sp"
+            android:padding="15dp"
+            app:typeface="fonts/Gotham-Bold.ttf"/>
+
+        <in.tosc.studddin.ui.TypeFaceTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:text="@string/lets_get_going"
+            android:textSize="12sp"
+            android:padding="15dp"
+            app:typeface="fonts/Gotham-MediumItalic.ttf"/>
+
+    </LinearLayout>
+
+
 
 </LinearLayout>
