@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import in.tosc.studddin.R;
 import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.ui.FloatingActionButton;
+import in.tosc.studddin.ui.ProgressBarCircular;
 
 /**
  * NotesUploadFragment
@@ -36,11 +37,10 @@ import in.tosc.studddin.ui.FloatingActionButton;
 public class NotesUploadFragment extends Fragment {
 
 
-    static byte[] byteArray;
+
     static String[] imagePaths = new String[0];
-    String zipFileName = "/mnt/sdcard/noteszipfile.zip";
-    private Button attachButton;
-    private FloatingActionButton uploadButton;
+
+    private ProgressBarCircular uploadingNotes;
     private EditText topicNameEdTxt, branchNameEdTxt, subjectNameEdTxt;
     private ArrayList<ParseFile> parseFileList;
     private String topicNameString = "", branchNameString = "", subjectNameString = "";
@@ -78,11 +78,12 @@ public class NotesUploadFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_notes_upload, container, false);
 
 
-        attachButton = (Button) rootView.findViewById(R.id.notes_attach);
-        uploadButton = (FloatingActionButton) rootView.findViewById(R.id.notes_upload);
+        Button attachButton = (Button) rootView.findViewById(R.id.notes_attach);
+        FloatingActionButton uploadButton = (FloatingActionButton) rootView.findViewById(R.id.notes_upload);
         topicNameEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_topic);
         branchNameEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_branch);
         subjectNameEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_subject);
+        uploadingNotes = (ProgressBarCircular) rootView.findViewById(R.id.notes_upload_progress);
 
         parseFileList = new ArrayList<>();
 
@@ -103,6 +104,7 @@ public class NotesUploadFragment extends Fragment {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 topicNameString = topicNameEdTxt.getText().toString();
                 branchNameString = branchNameEdTxt.getText().toString();
                 subjectNameString = subjectNameEdTxt.getText().toString();
@@ -127,12 +129,11 @@ public class NotesUploadFragment extends Fragment {
                         notesUploadProgress.setCancelable(false);
                         notesUploadProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                         notesUploadProgress.show();
+                        uploadingNotes.setVisibility(View.VISIBLE);
 
-
-
-                        for(int i = 0; i < imagePaths.length; i++){
+                        for (int i = 0; i < imagePaths.length; i++) {
                             byte[] imageToBeUploaded = convertToByteArray(imagePaths[i]);
-                            if(imageToBeUploaded == null) {
+                            if (imageToBeUploaded == null) {
                                 Toast.makeText(getActivity(), "File size beyond limit", Toast.LENGTH_SHORT)
                                         .show();
                             }
@@ -163,6 +164,7 @@ public class NotesUploadFragment extends Fragment {
                                 // uploading.setVisibility(View.GONE);
                                 Log.d("Raghav", "File Uploaded");
                                 notesUploadProgress.dismiss();
+                                uploadingNotes.setVisibility(View.GONE);
                                 Toast.makeText(getActivity(), getString(R.string.upload_complete),
                                         Toast.LENGTH_SHORT).show();
                             }

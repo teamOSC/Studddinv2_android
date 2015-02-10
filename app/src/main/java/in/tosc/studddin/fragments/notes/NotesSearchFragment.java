@@ -51,7 +51,7 @@ public class NotesSearchFragment extends Fragment {
     private String mParam1;
 
     private String mParam2;
-    //GridView notesGridView;
+
     private SwipeRefreshLayout swipeRefreshLayout;
     private ImageButton searchButton;
     private RecyclerView mRecyclerView;
@@ -132,19 +132,22 @@ public class NotesSearchFragment extends Fragment {
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
             }
         });
-//        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
-//
-//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                if (Utilities.isNetworkAvailable(getActivity())) {
-//                    getNotes();
-//                } else {
-//                    swipeRefreshLayout.setRefreshing(false);
-//                    Toast.makeText(getActivity(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+        swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (Utilities.isNetworkAvailable(getActivity())) {
+                    getNotes();
+                    swipeRefreshLayout.setRefreshing(false);
+
+                } else {
+                    swipeRefreshLayout.setRefreshing(false);
+                    Toast.makeText(getActivity(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        });
         if (Utilities.isNetworkAvailable(getActivity())) {
 
             getNotes();
@@ -156,28 +159,6 @@ public class NotesSearchFragment extends Fragment {
 
 
         searchEdTxt = (EditText) rootView.findViewById(R.id.notes_search);
-
-
-
-
-//        mRecyclerView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                NotesCustomDialog notesCustomDialog = new NotesCustomDialog(getActivity(),
-//                        notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, position, uploadedBy);
-//                notesCustomDialog.setTitle(getString(R.string.notes_details));
-//                notesCustomDialog.show();
-//            }
-//        });
-//        notesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view,
-//                                    int position, long id) {
-//
-//
-//
-//            }
-//        });
 
 
 
@@ -225,7 +206,8 @@ public class NotesSearchFragment extends Fragment {
 
 
                 }
-                notesCustomGridViewAdapter = new NotesCustomGridViewAdapter(getActivity(), notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, notesFirstImage, uploadedBy);
+                notesCustomGridViewAdapter = new NotesCustomGridViewAdapter(getActivity(), notesCollegeName,
+                        notesBranchName, notesTopicName, notesSubjectName, notesFirstImage, uploadedBy);
 
                 mRecyclerView.setAdapter(notesCustomGridViewAdapter);
             }
