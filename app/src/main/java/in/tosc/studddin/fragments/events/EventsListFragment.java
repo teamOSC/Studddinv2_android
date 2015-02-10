@@ -90,6 +90,7 @@ public class EventsListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 refresh = true;
+                eventImages = new ArrayList<Bitmap>();
                 fetchData();
             }
         });
@@ -246,7 +247,6 @@ public class EventsListFragment extends Fragment {
             refresh = false;
         }
         if(check_my_events && adapter.getItemCount() == 0){
-            emptyEvent.setVisibility(View.VISIBLE);
             eventMainLayout.setVisibility(View.GONE);
         }
     }
