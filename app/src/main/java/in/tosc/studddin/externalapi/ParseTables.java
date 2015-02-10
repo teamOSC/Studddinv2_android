@@ -52,4 +52,9 @@ public class ParseTables {
         public static final String URL = "url";
         public static final String CONTACT = "contact";
     }
+
+    public static class Interests {
+        public static final String NAME = "name";
+        public static final String USERS = "users";
+    }
 }

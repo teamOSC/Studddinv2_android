@@ -63,7 +63,8 @@ import in.tosc.studddin.utils.FutureUtils.FutureShit;
  * SignupDataFragment
  */
 public class SignupDataFragment extends Fragment implements
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        TokenCompleteTextView.TokenListener{
 
     private static final String TAG = "SignupDataFragment";
     public boolean viewReady = false, bitmapReady = false;
@@ -82,6 +83,8 @@ public class SignupDataFragment extends Fragment implements
 
     private List<ParseObject> interests;
     private List<ParseObject> selectedInterests = new ArrayList();
+    public static String lastEnteredInterest = "";
+    public static final String ADD_NEW_INTEREST = "Add new interest";
 
     public SignupDataFragment() {
         // Required empty public constructor
@@ -174,8 +177,6 @@ public class SignupDataFragment extends Fragment implements
         initializeEditTexts(R.id.user_email);
         initializeEditTexts(R.id.user_qualifications);
 
-
-        //Testing bubbles
         final BubbleCompletionView interestEditText =
                 (BubbleCompletionView) rootView.findViewById(R.id.user_interests);
         getInterests(interestEditText);
@@ -442,16 +443,12 @@ public class SignupDataFragment extends Fragment implements
                 approxUserLoc = location;
             }
 
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
 
-            public void onProviderEnabled(String provider) {
-            }
+            public void onProviderEnabled(String provider) {}
 
-            public void onProviderDisabled(String provider) {
-            }
+            public void onProviderDisabled(String provider) {}
         };
-
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 50, locationListener);
     }
 
@@ -470,13 +467,15 @@ public class SignupDataFragment extends Fragment implements
                 for (ParseObject interest : result) {
                     interestChoices.add(interest.getString("name"));
                 }
-                interestChoices.add("Add new interest");
+                final int origInterestCount = interestChoices.size();
+                interestChoices.add(ADD_NEW_INTEREST);
                 FilteredArrayAdapter mAdapter = new FilteredArrayAdapter<String>(getActivity(),
                         android.R.layout.simple_list_item_1, interestChoices) {
                     @Override
                     protected boolean keepObject(String obj, String mask) {
                         mask = mask.toLowerCase();
-                        if (obj.equals("Add new interest")) {
+                        lastEnteredInterest = mask;
+                        if (obj.equals(ADD_NEW_INTEREST)) {
                             return true;
                         }
                         return obj.toLowerCase().startsWith(mask);
@@ -488,17 +487,43 @@ public class SignupDataFragment extends Fragment implements
                     @Override
                     public void onTokenAdded(Object o) {
                         String key = (String) o;
-                        key = key.toString();
-                        selectedInterests.add(interests.get(interestChoices.indexOf(key)));
+                        if (key.equals(ADD_NEW_INTEREST)) {
+                            ParseObject newInterest = new ParseObject("Interests");
+                            newInterest.put(ParseTables.Interests.NAME, lastEnteredInterest);
+                            selectedInterests.add(newInterest);
+                            interests.add(newInterest);
+                            interestChoices.add(lastEnteredInterest);
+                            for (String interest : interestChoices) {
+                                Log.d(TAG, "interest = " + interest);
+                            }
+                        } else {
+                            key = key.toLowerCase();
+                            selectedInterests.add(interests.get(interestChoices.indexOf(key)));
+                        }
                     }
 
                     @Override
                     public void onTokenRemoved(Object o) {
-                        selectedInterests.remove(interestChoices.indexOf(o));
+                        String key = (String) o;
+                        key = key.toString();
+                        //Because I add an extra entry "Add new interest" :|
+                        int index = interestChoices.indexOf(key);
+                        if (index >= origInterestCount-1)
+                            index -= 1;
+                        selectedInterests.remove(interests.get(index));
                     }
                 });
             }
         }
         );
+    }
+
+    //TODO: Make use of these instead of inlining it as above
+    @Override
+    public void onTokenAdded(Object o) {
+    }
+
+    @Override
+    public void onTokenRemoved(Object o) {
     }
 }
