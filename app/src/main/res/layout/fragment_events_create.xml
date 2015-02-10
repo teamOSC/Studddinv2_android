@@ -7,7 +7,17 @@
     tools:context="in.tosc.studddin.fragments.events.EventsCreateFragment"
     android:scrollbarAlwaysDrawVerticalTrack="true">
 
+    <in.tosc.studddin.ui.ProgressBarCircular
+        android:id="@+id/upload_progress"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:textSize="24sp"
+        android:visibility="gone" />
 
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,18 +25,19 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/abc_textfield_search_activated_mtrl_alpha"
             >
         <in.tosc.studddin.ui.MaterialEditText
             android:id="@+id/event_name"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:hint="@string/event_name"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
             app:baseColor="@color/search_color"
@@ -34,18 +45,19 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/abc_textfield_search_activated_mtrl_alpha"
             >
         <in.tosc.studddin.ui.MaterialEditText
             android:id="@+id/event_description"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:hint="@string/event_description"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
             app:baseColor="@color/search_color"
@@ -62,11 +74,10 @@
 
         <in.tosc.studddin.ui.MaterialEditText
             android:id="@+id/event_type"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:hint="Type"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
             app:baseColor="@color/search_color"
@@ -83,11 +94,10 @@
 
             <in.tosc.studddin.ui.MaterialEditText
                 android:id="@+id/event_location"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:hint="Location"
                 android:textCursorDrawable="@drawable/text_cursor_cyan"
                 app:baseColor="@color/search_color"
@@ -97,6 +107,7 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/abc_textfield_search_activated_mtrl_alpha">
@@ -115,6 +126,7 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/abc_textfield_search_activated_mtrl_alpha">
@@ -130,7 +142,7 @@
                 app:baseColor="@color/search_color"
                 app:primaryColor="@color/colorPrimaryDark" />
         </LinearLayout>
-    </LinearLayout>
+
 
 
     <LinearLayout
@@ -203,9 +215,11 @@
     </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/abc_textfield_search_activated_mtrl_alpha">
 
             <ImageView
@@ -218,13 +232,14 @@
                 android:layout_marginRight="7dp"
                 />
             <ImageButton
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
                 android:layout_weight="0"
+                android:layout_margin="5dp"
                 android:text="Set Time"
                 android:id="@+id/upload_image"
                 android:layout_gravity="center"
-                android:background="@drawable/ic_camera_alt_black_48dp"
+                android:background="@drawable/camera"
                 android:textColor="@android:color/white"
                 />
         </LinearLayout>
@@ -239,6 +254,8 @@
         android:text="@string/submit"
         android:textColor="@android:color/white" />
 
+    </LinearLayout>
 
+    </ScrollView>
 
 </LinearLayout>

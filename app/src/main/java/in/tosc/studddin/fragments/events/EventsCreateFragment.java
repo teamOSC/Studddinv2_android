@@ -41,6 +41,7 @@ import java.util.HashMap;
 import in.tosc.studddin.R;
 import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.externalapi.ParseTables;
+import in.tosc.studddin.ui.ProgressBarCircular;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,6 +57,7 @@ public class EventsCreateFragment extends Fragment {
     public static byte[] byteArray;
     public static String mCurrentPhotoPath;
     public static ImageView eventImage;
+    ProgressBarCircular progressBarCircular;
 
     public EventsCreateFragment() {
         // Required empty public constructor
@@ -76,6 +78,7 @@ public class EventsCreateFragment extends Fragment {
         setDate = (ImageButton) v.findViewById(R.id.date_picker);
         setTime = (ImageButton) v.findViewById(R.id.time_picker);
         uploadPicture = (ImageButton) v.findViewById(R.id.upload_image);
+        progressBarCircular = (ProgressBarCircular) v.findViewById(R.id.upload_progress);
         eventImage = (ImageView)v.findViewById(R.id.event_image);
         uploadPicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +103,9 @@ public class EventsCreateFragment extends Fragment {
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBarCircular.setBackgroundColor(getResources().getColor(R.color.eventsColorPrimary));
+                progressBarCircular.setVisibility(View.VISIBLE);
+                create.setClickable(false);
                 addInput();
                 if (checkIfEmpty()) {
                     pushDataToParse();
@@ -180,6 +186,8 @@ public class EventsCreateFragment extends Fragment {
         event.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
+                progressBarCircular.setVisibility(View.GONE);
+                create.setClickable(true);
                 Toast.makeText(getActivity().getApplicationContext(),
                         getString(R.string.event_created), Toast.LENGTH_SHORT).show();
             }

@@ -138,7 +138,7 @@ public class EventsFragment extends Fragment {
         Bitmap bitmap = BitmapFactory.decodeFile(path, bmOptions);
         EventsCreateFragment.eventImage.setImageBitmap(bitmap);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         EventsCreateFragment.byteArray = stream.toByteArray();
     }
 

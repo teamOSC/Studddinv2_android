@@ -8,11 +8,20 @@
 
 
     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/events_main_list"
+        android:orientation="vertical"
+        >
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:background="@drawable/selector_card_background"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/search"
+        >
 
         <in.tosc.studddin.ui.MaterialEditText
             android:id="@+id/events_search"
@@ -39,12 +48,62 @@
             android:id="@+id/listviewevents"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
             android:dividerHeight="0dp"
             android:layoutAnimation="@anim/slide_in_gogo"
             android:scrollbars="none" />
+
+
     </android.support.v4.widget.SwipeRefreshLayout>
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:orientation="vertical"
+        android:weightSum="3"
+        android:id="@+id/empty_events"
+        >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_gravity="center"
+                android:background="@drawable/biker"/>
+        </LinearLayout>
+        <in.tosc.studddin.ui.TypeFaceTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:text="@string/placeholder_dialog_events"
+            android:textSize="30sp"
+            android:padding="15dp"
+            app:typeface="fonts/Gotham-Bold.ttf"/>
+
+        <in.tosc.studddin.ui.TypeFaceTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:text="@string/lets_get_going"
+            android:textSize="12sp"
+            android:padding="15dp"
+            app:typeface="fonts/Gotham-MediumItalic.ttf"/>
+
+    </LinearLayout>
+    <com.parse.ParseImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/expanded_image_view"
+        />
+
 
 
 </LinearLayout>

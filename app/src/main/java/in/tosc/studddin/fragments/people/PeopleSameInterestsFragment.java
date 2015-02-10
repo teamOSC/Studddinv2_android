@@ -18,7 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -33,7 +32,6 @@ import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -82,7 +80,7 @@ public class PeopleSameInterestsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_people_same_interests, container, false);
 
         progressBar = (ProgressBarCircular) view.findViewById(R.id.progressbar_people);
-        progressBar.setBackgroundColor(getResources().getColor(R.color.pink));
+        progressBar.setBackgroundColor(getResources().getColor(R.color.peopleColorPrimaryDark));
         search = (EditText) view.findViewById(R.id.people_search);
         lv = (ListView) view.findViewById(R.id.listviewpeople);
 
