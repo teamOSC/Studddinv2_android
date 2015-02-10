@@ -9,9 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="6dp"
-        android:elevation="5dp"
-        app:cardElevation="10dp"
-        card_view:cardCornerRadius="6dp">
+        card_view:cardCornerRadius="4dp">
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">

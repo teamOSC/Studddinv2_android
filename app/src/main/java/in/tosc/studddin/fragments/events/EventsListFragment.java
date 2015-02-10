@@ -3,9 +3,7 @@ package in.tosc.studddin.fragments.events;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
@@ -19,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,17 +26,13 @@ import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
@@ -253,6 +246,7 @@ public class EventsListFragment extends Fragment {
             refresh = false;
         }
         if(check_my_events && adapter.getItemCount() == 0){
+            emptyEvent.setVisibility(View.VISIBLE);
             eventMainLayout.setVisibility(View.GONE);
         }
     }

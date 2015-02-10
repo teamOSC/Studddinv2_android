@@ -281,7 +281,7 @@ public class ListingsSearchFragment extends Fragment {
                 if (distance < 10 && distance >= 0.1)
                     viewHolder.listing_distance.setText(String.format("%.1f", distance) + " km away");
                 else
-                    viewHolder.listing_distance.setText((int) distance + " km away");
+                    viewHolder.listing_distance.setText((int) distance + " km");
                 final String latitude = Double.toString(mDataset.get(i).getParseGeoPoint(ParseTables.Listings.LOCATION).getLatitude());
                 final String longitude = Double.toString(mDataset.get(i).getParseGeoPoint(ParseTables.Listings.LOCATION).getLongitude());
                 viewHolder.compass.setOnClickListener(new View.OnClickListener() {
