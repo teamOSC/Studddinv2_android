@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="6dp"
-        card_view:cardCornerRadius="4dp">
+        card_view:cardCornerRadius="4dp"
+        android:foreground="?selectableItemBackground">
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
