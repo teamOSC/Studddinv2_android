@@ -14,8 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:orientation="horizontal"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:orientation="horizontal">
 
             <in.tosc.studddin.ui.MaterialEditText
                 android:id="@+id/feed_search"
