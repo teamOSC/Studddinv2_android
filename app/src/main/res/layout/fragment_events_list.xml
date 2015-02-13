@@ -8,110 +8,115 @@
 
 
     <LinearLayout
+        android:id="@+id/events_main_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/events_main_list"
         android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/selector_card_background"
-        android:orientation="horizontal"
-        android:id="@+id/search"
-        >
-
-        <in.tosc.studddin.ui.MaterialEditText
-            android:id="@+id/events_search"
+        <LinearLayout
+            android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:hint="@string/feed_search_hint"
-            android:textCursorDrawable="@drawable/text_cursor_cyan"
-            app:baseColor="@color/search_color"
-            app:floatingLabel="highlight"
-            app:maxCharacters="25"
-            app:primaryColor="@color/colorPrimaryDark"
-            app:singleLineEllipsis="true" />
+            android:layout_margin="5dp"
+            android:background="@drawable/selector_card_background"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <in.tosc.studddin.ui.MaterialEditText
+                android:id="@+id/events_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:hint="@string/feed_search_hint"
+                android:textCursorDrawable="@drawable/text_cursor_cyan"
+                app:baseColor="@color/search_color"
+                app:floatingLabel="highlight"
+                app:maxCharacters="25"
+                app:primaryColor="@color/colorPrimaryDark"
+                app:singleLineEllipsis="true" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/listviewevents"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginTop="8dp"
-            android:dividerHeight="0dp"
-            android:layoutAnimation="@anim/slide_in_gogo"
-            android:scrollbars="none" />
-
-
-    </android.support.v4.widget.SwipeRefreshLayout>
         </LinearLayout>
 
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/listviewevents"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="8dp"
+                android:dividerHeight="0dp"
+                android:layoutAnimation="@anim/slide_in_gogo"
+                android:scrollbars="none" />
+
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
+
     <ScrollView
+        android:id="@+id/empty_events"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/empty_events">
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="4"
-        android:orientation="vertical"
-        android:weightSum="3">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="96dp"
-                android:layout_height="96dp"
-                android:layout_gravity="center"
-                android:background="@drawable/biker"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="4"
+                android:orientation="vertical"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/biker" />
+                </LinearLayout>
+
+                <in.tosc.studddin.ui.TypeFaceTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:padding="15dp"
+                    android:text="@string/placeholder_dialog_events"
+                    android:textSize="30sp"
+                    app:typeface="fonts/Gotham-Bold.ttf" />
+
+                <in.tosc.studddin.ui.TypeFaceTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    android:padding="15dp"
+                    android:text="@string/lets_get_going"
+                    android:textSize="12sp"
+                    app:typeface="fonts/Gotham-MediumItalic.ttf" />
+
+            </LinearLayout>
+
+            <com.parse.ParseImageView
+                android:id="@+id/expanded_image_view"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="gone" />
         </LinearLayout>
-        <in.tosc.studddin.ui.TypeFaceTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:text="@string/placeholder_dialog_events"
-            android:textSize="30sp"
-            android:padding="15dp"
-            app:typeface="fonts/Gotham-Bold.ttf"/>
-
-        <in.tosc.studddin.ui.TypeFaceTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:text="@string/lets_get_going"
-            android:textSize="12sp"
-            android:padding="15dp"
-            app:typeface="fonts/Gotham-MediumItalic.ttf"/>
-
-    </LinearLayout>
-    <com.parse.ParseImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/expanded_image_view"
-        android:visibility="gone"
-        />
-        </LinearLayout>
-</ScrollView>
+    </ScrollView>
 
 
 </LinearLayout>
