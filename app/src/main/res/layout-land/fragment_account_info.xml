@@ -1,0 +1,366 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="in.tosc.studddin.fragments.AccountInfoFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="30">
+
+        <LinearLayout
+            android:id="@+id/account_info_container_uid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            android:layout_weight="1"
+            android:background="@color/accountColorPrimary"
+            android:elevation="10dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <in.tosc.studddin.ui.ParseCircularImageView
+                    android:id="@+id/account_info_picture"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/image_default" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <in.tosc.studddin.ui.TypeFaceTextView
+                    android:id="@+id/account_info_fullname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:text="@string/user_name"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    app:typeface="fonts/Gotham-Book.ttf"/>
+
+                <in.tosc.studddin.ui.TypeFaceTextView
+                    android:id="@+id/account_info_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/email_id"
+                    android:textAlignment="center"
+                    android:padding="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:typeface="fonts/Gotham-Light.ttf"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="29"
+            android:background="@drawable/abc_menu_hardkey_panel_mtrl_mult">
+
+        <LinearLayout
+            android:id="@+id/account_info_container_institute"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/account_info_container_uid"
+            android:animateLayoutChanges="true"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <in.tosc.studddin.ui.MaterialEditText
+                android:id="@+id/account_info_institute"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+                android:layout_weight="4"
+                android:descendantFocusability="beforeDescendants"
+                android:focusable="false"
+                android:hint="@string/institute_name"
+                android:textCursorDrawable="@drawable/text_cursor_cyan"
+                app:baseColor="@color/search_color"
+                app:primaryColor="@color/colorPrimaryDark" />
+
+
+            <ImageButton
+                android:id="@+id/cancel_edit_institute_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/cross"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/edit_institute_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/pencil" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/account_info_container_qualification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/account_info_container_institute"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <in.tosc.studddin.ui.MaterialEditText
+                android:id="@+id/account_info_qualification"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+                android:layout_weight="4"
+                android:descendantFocusability="beforeDescendants"
+                android:focusable="false"
+                android:focusableInTouchMode="true"
+                android:hint="@string/qualifications"
+                android:textCursorDrawable="@drawable/text_cursor_cyan"
+                app:baseColor="@color/search_color"
+                app:primaryColor="@color/colorPrimaryDark" />
+
+            <ImageButton
+                android:id="@+id/cancel_edit_qualification_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/cross"
+                android:visibility="invisible" />
+
+
+            <ImageButton
+                android:id="@+id/edit_qualification_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/pencil" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/account_info_container_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/account_info_container_qualification"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <in.tosc.studddin.ui.MaterialEditText
+                android:id="@+id/account_info_password"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+                android:layout_weight="4"
+                android:descendantFocusability="beforeDescendants"
+                android:focusable="false"
+                android:hint="@string/user_password"
+                android:inputType="textPassword"
+                android:textCursorDrawable="@drawable/text_cursor_cyan"
+                app:baseColor="@color/search_color"
+                app:primaryColor="@color/colorPrimaryDark" />
+
+            <ImageButton
+                android:id="@+id/cancel_edit_password_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/cross"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/edit_password_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/pencil" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/new_password_form_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/account_info_container_password"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/account_info_container_new_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:orientation="horizontal">
+
+                <in.tosc.studddin.ui.MaterialEditText
+                    android:id="@+id/account_info_new_password"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+                    android:layout_weight="4"
+                    android:descendantFocusability="beforeDescendants"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/new_password"
+                    android:inputType="textPassword"
+                    android:textCursorDrawable="@drawable/text_cursor_cyan"
+                    app:baseColor="@color/search_color"
+                    app:primaryColor="@color/colorPrimaryDark" />
+
+                <FrameLayout
+                    android:id="@+id/empty_button_new_password"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <FrameLayout
+                    android:id="@+id/empty_button_new_password_2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/account_info_container_confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/account_info_container_new_password"
+                android:animateLayoutChanges="true"
+                android:orientation="horizontal">
+
+                <in.tosc.studddin.ui.MaterialEditText
+                    android:id="@+id/account_info_confirm_password"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/fragment_sign_up_edit_text_margin"
+                    android:layout_weight="4"
+                    android:descendantFocusability="beforeDescendants"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/confirm_password"
+                    android:inputType="textPassword"
+                    android:textCursorDrawable="@drawable/text_cursor_cyan"
+                    app:baseColor="@color/search_color"
+                    app:primaryColor="@color/colorPrimaryDark" />
+
+                <FrameLayout
+                    android:id="@+id/empty_button_confirm_password"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <FrameLayout
+                    android:id="@+id/empty_button_confirm_password_2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_below="@id/new_password_form_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <in.tosc.studddin.ui.FloatingActionButton
+                    android:id="@+id/connect_button_facebook"
+                    android:layout_width="@dimen/signin_button_size"
+                    android:layout_height="@dimen/signin_button_size"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="@dimen/signin_button_margin"
+                    app:fab_size="normal"
+                    fab:fab_colorNormal="@color/blue_semi_transparent"
+                    fab:fab_colorPressed="@color/blue_semi_transparent_pressed"
+                    fab:fab_icon="@drawable/image_fb" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <in.tosc.studddin.ui.FloatingActionButton
+                    android:id="@+id/connect_button_twitter"
+                    android:layout_width="@dimen/signin_button_size"
+                    android:layout_height="@dimen/signin_button_size"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="@dimen/signin_button_margin"
+                    app:fab_size="normal"
+                    fab:fab_colorNormal="@color/twitter_blue"
+                    fab:fab_colorPressed="@color/twitter_blue_pressed"
+                    fab:fab_icon="@drawable/image_twitter" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <in.tosc.studddin.ui.FloatingActionButton
+                    android:id="@+id/connect_button_google"
+                    android:layout_width="@dimen/signin_button_size"
+                    android:layout_height="@dimen/signin_button_size"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="@dimen/signin_button_margin"
+                    app:fab_size="normal"
+                    fab:fab_colorNormal="@color/google_red"
+                    fab:fab_colorPressed="@color/google_red_pressed"
+                    fab:fab_icon="@drawable/image_google" />
+            </RelativeLayout>
+
+        </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
