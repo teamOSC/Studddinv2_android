@@ -12,7 +12,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimary">
+            android:background="#009688">
         <com.parse.ParseImageView
             android:id="@+id/nav_drawer_cover_picture"
             android:layout_width="fill_parent"
