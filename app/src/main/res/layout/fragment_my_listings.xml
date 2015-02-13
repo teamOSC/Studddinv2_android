@@ -29,13 +29,17 @@
 
     </LinearLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listing_empty"
+        android:orientation="vertical"
+        android:visibility="gone">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="4"
-        android:id="@+id/listing_empty"
         android:orientation="vertical"
-        android:visibility="gone"
         android:weightSum="3">
 
         <LinearLayout
@@ -70,7 +74,7 @@
             app:typeface="fonts/Gotham-MediumItalic.ttf"/>
 
     </LinearLayout>
-
+    </ScrollView>
 
 
 </LinearLayout>

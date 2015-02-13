@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +52,7 @@ public class EventsListFragment extends Fragment {
     ParseImageView expandedImage;
     View v;
     LinearLayout eventMainLayout;
-    LinearLayout emptyEvent;
+    ScrollView emptyEvent;
     ArrayList<Bitmap> eventImages;
 
     public EventsListFragment(){
@@ -82,7 +83,7 @@ public class EventsListFragment extends Fragment {
         eventImages = new ArrayList<>();
         eventlist = (RecyclerView) v.findViewById(R.id.listviewevents);
         eventMainLayout = (LinearLayout) v.findViewById(R.id.events_main_list);
-        emptyEvent = (LinearLayout) v.findViewById(R.id.empty_events);
+        emptyEvent = (ScrollView) v.findViewById(R.id.empty_events);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         eventlist.setLayoutManager(layoutManager);
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);

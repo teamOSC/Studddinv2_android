@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +40,7 @@ public class MyListingsFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private ProgressBarCircular loader;
     private View rootView;
-    private LinearLayout mEmptyView;
+    private ScrollView mEmptyView;
     private LinearLayout mListings;
 
     public MyListingsFragment() {
@@ -54,7 +55,7 @@ public class MyListingsFragment extends Fragment {
         rootView =  inflater.inflate(R.layout.fragment_my_listings, container, false);
         loader = (ProgressBarCircular) rootView.findViewById(R.id.progressBar);
         loader.setBackgroundColor(getResources().getColor(R.color.listingsColorPrimaryDark));
-        mEmptyView = (LinearLayout) rootView.findViewById(R.id.listing_empty);
+        mEmptyView = (ScrollView) rootView.findViewById(R.id.listing_empty);
         mListings = (LinearLayout) rootView.findViewById(R.id.my_listing);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listing_recycler_view);
         mLayoutManager = new LinearLayoutManager(getActivity());

@@ -56,14 +56,21 @@
     </android.support.v4.widget.SwipeRefreshLayout>
         </LinearLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/empty_events">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_weight="4"
         android:orientation="vertical"
-        android:weightSum="3"
-        android:id="@+id/empty_events"
-        >
+        android:weightSum="3">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -103,7 +110,8 @@
         android:id="@+id/expanded_image_view"
         android:visibility="gone"
         />
-
+        </LinearLayout>
+</ScrollView>
 
 
 </LinearLayout>
