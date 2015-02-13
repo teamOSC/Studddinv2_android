@@ -7,7 +7,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:background="@color/colorPrimary">
         <FrameLayout
             android:layout_width="match_parent"
@@ -17,6 +17,7 @@
             android:id="@+id/nav_drawer_cover_picture"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:scaleType="fitXY"
             android:src="@drawable/rsz_cover_placeholder"/>
         </FrameLayout>
 
