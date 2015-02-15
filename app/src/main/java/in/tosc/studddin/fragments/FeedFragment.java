@@ -125,15 +125,12 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             @Override
             public void onRefresh() {
                 if (Utilities.isNetworkAvailable(getActivity())) {
-                    Thread t = new Thread(new Runnable() {
+                    new Thread(new Runnable() {
                         @Override
                         public void run() {
                             getFeed();
                         }
-                    });
-                    t.start();
-
-                    Toast.makeText(getActivity(), "Refreshing...", Toast.LENGTH_SHORT).show();
+                    }).start();
                 }
                  else {
                     swipeRefreshLayout.setRefreshing(false);
@@ -368,6 +365,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
                     if (e == null) {
 
                         if (FeedFragment.this.isAdded()) {
+                            swipeRefreshLayout.setRefreshing(false);
 //                            mAdapter.setDataSet(i, parseObjects, true, getString(resourceId));
                             for(int iter = 0; iter < parseObjects.size(); iter++) {
                                 if (!(hashParseObjects.contains(parseObjects.get(iter)))) {
