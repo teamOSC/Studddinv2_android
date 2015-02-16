@@ -38,7 +38,7 @@
         android:background="@color/white"
         android:choiceMode="singleChoice"
         android:divider="@color/grey"
-        android:dividerHeight="0dp"
+        android:dividerHeight="1dp"
         android:listSelector="@drawable/item_bg" />
 
 </LinearLayout>
