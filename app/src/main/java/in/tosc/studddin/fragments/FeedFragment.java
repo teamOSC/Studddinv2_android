@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,7 +36,6 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -65,7 +65,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     List<String> interestList = new ArrayList();
     private FeedCategoryAdapter mAdapter;
     private RecyclerView recyclerView;
-    private MaterialEditText searchEditText;
+    private EditText searchEditText;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ImageButton searchButton;
     private HashSet<ParseObject> hashParseObjects = new HashSet<>();
@@ -96,7 +96,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         int p = getActivity().getResources().getColor(R.color.colorPrimary);
         int s = getActivity().getResources().getColor(R.color.colorPrimaryDark);
         ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(), p, s);
-        searchEditText = (MaterialEditText) rootView.findViewById(R.id.feed_search);
+        searchEditText = (EditText) rootView.findViewById(R.id.feed_search);
         searchEditText.setOnKeyListener(this);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.feed_recycler_view);
         searchButton = (ImageButton) rootView.findViewById(R.id.searchblahblah);

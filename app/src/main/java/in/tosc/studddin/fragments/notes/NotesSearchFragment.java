@@ -121,7 +121,7 @@ public class NotesSearchFragment extends Fragment {
         notesFirstImage = new ArrayList<ArrayList<ParseFile>>();
 
         addNotesButton = (FloatingActionButton) rootView.findViewById(R.id.notes_button_add);
-        searchEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_search);
+        searchEdTxt = (EditText) rootView.findViewById(R.id.notes_search);
         searchButton = (ImageButton) rootView.findViewById(R.id.searchblahblah);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override

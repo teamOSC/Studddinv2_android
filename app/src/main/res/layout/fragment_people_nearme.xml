@@ -7,25 +7,45 @@
     android:orientation="vertical"
     tools:context="in.tosc.studddin.fragments.people.PeopleNearmeFragment">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/feed_search_frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/selector_card_background"
-        android:orientation="horizontal">
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:layout_margin="6dp"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="1dp">
 
-        <in.tosc.studddin.ui.MaterialEditText
-            android:id="@+id/people_search"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
             android:layout_weight="1"
-            android:hint="@string/notes_search"
-            app:baseColor="@color/search_color"
-            app:floatingLabel="highlight"
-            app:primaryColor="@color/colorPrimaryDark" />
+            android:orientation="horizontal"
+            android:weightSum="4">
 
-    </LinearLayout>
+            <ImageButton
+                android:id="@+id/searchblahblah"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_action_search" />
+
+            <EditText
+                android:id="@+id/people_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:hint="Search here"
+                android:imeOptions="actionDone"
+                android:paddingRight="60dp"
+                android:singleLine="true" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
     <in.tosc.studddin.ui.ProgressBarCircular
         android:id="@+id/progressbar_people"
