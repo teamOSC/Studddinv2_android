@@ -352,6 +352,8 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if(swipeRefreshLayout.isRefreshing())
+                    swipeRefreshLayout.setRefreshing(false);
                 mAdapter.notifyDataSetChanged();
             }
         });
