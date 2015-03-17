@@ -7,7 +7,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="135dp"
         android:background="@color/colorPrimary">
         <FrameLayout
             android:layout_width="match_parent"
@@ -38,7 +38,7 @@
         android:background="@color/white"
         android:choiceMode="singleChoice"
         android:divider="@color/grey"
-        android:dividerHeight="1dp"
+        android:dividerHeight="0dp"
         android:listSelector="@drawable/item_bg" />
 
 </LinearLayout>

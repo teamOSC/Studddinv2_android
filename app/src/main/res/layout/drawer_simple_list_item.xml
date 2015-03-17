@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:textColor="@drawable/textcolor_selector"
     android:textSize="15sp"
-    android:padding="15dp">
+    android:padding="15dp"
+    android:textStyle="bold">
 
 </TextView>
