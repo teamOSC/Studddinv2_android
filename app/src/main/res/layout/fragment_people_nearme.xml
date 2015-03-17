@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="in.tosc.studddin.fragments.people.PeopleNearmeFragment">
+    tools:context="in.tosc.studddin.fragments.people.PeopleNearmeFragment"
+    android:background="@android:color/white">
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -56,7 +57,7 @@
 
     <ListView
         android:id="@+id/listviewpeople"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
@@ -64,7 +65,8 @@
         android:dividerHeight="2dp"
         android:layoutAnimation="@anim/slide_in_gogo"
         android:scrollbars="none"
-        android:visibility="gone" />
+        android:visibility="gone"
+        />
 
 
 </LinearLayout>
