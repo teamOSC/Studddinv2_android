@@ -30,8 +30,8 @@
             android:hint="@string/user_username"
             android:inputType="textEmailAddress"
             android:textAlignment="center"
-            app:baseColor="@color/search_color"
-            app:primaryColor="@color/colorPrimaryDark" />
+            app:baseColor="@color/white"
+            app:primaryColor="@color/white" />
 
         <in.tosc.studddin.ui.MaterialEditText
             android:id="@+id/sign_in_user_password"
@@ -42,8 +42,8 @@
             android:hint="@string/user_password"
             android:inputType="textWebPassword"
             android:textAlignment="center"
-            app:baseColor="@color/search_color"
-            app:primaryColor="@color/colorPrimaryDark" />
+            app:baseColor="@color/white"
+            app:primaryColor="@color/white" />
 
     </LinearLayout>
 
@@ -153,7 +153,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/sign_in_guest"
-            android:textColor="@color/signin_guest"
+            android:textColor="@color/white"
             android:textSize="15sp" />
     </LinearLayout>
 

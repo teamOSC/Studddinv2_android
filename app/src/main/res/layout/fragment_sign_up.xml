@@ -53,9 +53,9 @@
                     android:singleLine="true"
                     android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    app:baseColor="@color/search_color"
                     app:floatingLabel="highlight"
-                    app:primaryColor="@color/colorPrimaryDark" />
+                    app:baseColor="@color/white"
+                    app:primaryColor="@color/white"/>
 
                 <in.tosc.studddin.ui.MaterialEditText
                     android:id="@+id/user_password"
@@ -70,9 +70,9 @@
                     android:completionThreshold="1"
                     android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    app:baseColor="@color/search_color"
                     app:floatingLabel="highlight"
-                    app:primaryColor="@color/colorPrimaryDark" />
+                    app:baseColor="@color/white"
+                    app:primaryColor="@color/white"/>
 
                 <in.tosc.studddin.ui.MaterialEditText
                     android:id="@+id/user_dob"
@@ -86,9 +86,9 @@
                     android:singleLine="true"
                     android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    app:baseColor="@color/search_color"
                     app:floatingLabel="highlight"
-                    app:primaryColor="@color/colorPrimaryDark" />
+                    app:baseColor="@color/white"
+                    app:primaryColor="@color/white" />
 
                 <in.tosc.studddin.ui.MaterialEditText
                     android:id="@+id/user_institute"
@@ -101,9 +101,9 @@
                     android:hint="@string/institute_name"
                     android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    app:baseColor="@color/search_color"
                     app:floatingLabel="highlight"
-                    app:primaryColor="@color/colorPrimaryDark" />
+                    app:baseColor="@color/white"
+                    app:primaryColor="@color/white"/>
 
                 <Button
                     android:id="@+id/user_location"
@@ -127,9 +127,9 @@
                     android:singleLine="true"
                     android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    app:baseColor="@color/search_color"
                     app:floatingLabel="highlight"
-                    app:primaryColor="@color/colorPrimaryDark" />
+                    app:baseColor="@color/white"
+                    app:primaryColor="@color/white"/>
 
                 <in.tosc.studddin.ui.MaterialEditText
                     android:id="@+id/user_qualifications"
@@ -142,9 +142,9 @@
                     android:hint="@string/qualifications"
                     android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    app:baseColor="@color/search_color"
                     app:floatingLabel="highlight"
-                    app:primaryColor="@color/colorPrimaryDark" />
+                    app:baseColor="@color/white"
+                    app:primaryColor="@color/white"/>
 
                 <in.tosc.studddin.ui.BubbleCompletionView
                     android:id="@+id/user_interests"
@@ -154,10 +154,10 @@
                     android:layout_margin="10dp"
                     android:hint="@string/interests"
                     android:textAlignment="center"
-                    android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    app:baseColor="@color/search_color"
                     app:floatingLabel="highlight"
-                    app:primaryColor="@color/colorPrimaryDark" />
+                    app:baseColor="@color/white"
+                    app:primaryColor="@color/white"
+                    android:textColor="@color/white"/>
 
             </RelativeLayout>
         </ScrollView>
@@ -178,7 +178,8 @@
             android:background="@drawable/bbuton_primary_rounded"
             android:gravity="center"
             android:text="@string/submit"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:padding="15dp"/>
 
     </LinearLayout>
 

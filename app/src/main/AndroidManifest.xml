@@ -23,7 +23,8 @@
         <activity
             android:name=".SignOnActivity"
             android:label="@string/app_name"
-            android:screenOrientation="locked">
+            android:screenOrientation="locked"
+            android:theme="@style/AppTheme.Custom">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

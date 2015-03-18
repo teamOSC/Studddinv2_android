@@ -31,6 +31,8 @@
         <item name="colorPrimaryDark">@color/note_button_pressed</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="AppTheme.Custom" parent="Theme.AppCompat.Light.NoActionBar">
@@ -38,6 +40,8 @@
         <item name="colorPrimaryDark">@color/note_button_pressed</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
     
     <!-- Feed Theme -->
