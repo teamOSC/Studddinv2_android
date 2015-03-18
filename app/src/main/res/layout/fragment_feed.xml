@@ -33,7 +33,8 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_action_search" />
+                    android:src="@drawable/ic_action_search"
+                    android:paddingBottom="15dp"/>
 
                 <EditText
                     android:id="@+id/feed_search"
