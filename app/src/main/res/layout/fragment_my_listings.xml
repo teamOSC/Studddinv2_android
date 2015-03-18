@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="in.tosc.studddin.fragments.ListingsFragment">
+    tools:context="in.tosc.studddin.fragments.ListingsFragment"
+    android:background="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"

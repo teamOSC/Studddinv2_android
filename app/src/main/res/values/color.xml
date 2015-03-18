@@ -66,5 +66,6 @@
     <color name="dialog_bg">#f0f0f0</color>
     <color name="grey">#757575</color>
     <drawable name="light_black_">#33000000</drawable>
+    <color name="divider_grey">#E0E0E0</color>
 
 </resources>

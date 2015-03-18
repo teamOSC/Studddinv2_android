@@ -14,7 +14,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.internal.widget.TintCheckBox;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -31,6 +30,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +51,7 @@ import java.util.List;
 import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.fragments.ListingsFragment;
+import in.tosc.studddin.ui.DividerItemDecoration;
 import in.tosc.studddin.ui.ParseCircularImageView;
 import in.tosc.studddin.ui.ProgressBarCircular;
 import in.tosc.studddin.utils.Utilities;
@@ -96,6 +97,7 @@ public class ListingsSearchFragment extends Fragment {
         loader = (ProgressBarCircular) rootView.findViewById(R.id.progressBar);
         loader.setBackgroundColor(getResources().getColor(R.color.listingsColorPrimaryDark));
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.listing_recycler_view);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         EditText search = (EditText) rootView.findViewById(R.id.listing_search);
@@ -257,7 +259,7 @@ public class ListingsSearchFragment extends Fragment {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            CardView v = (CardView) LayoutInflater.from(viewGroup.getContext())
+            LinearLayout v = (LinearLayout) LayoutInflater.from(viewGroup.getContext())
                     .inflate(in.tosc.studddin.R.layout.listing_card_view, viewGroup, false);
             return new ViewHolder(v);
         }
@@ -316,7 +318,7 @@ public class ListingsSearchFragment extends Fragment {
             TextView listing_distance;
             ImageView compass;
 
-            public ViewHolder(CardView v) {
+            public ViewHolder(LinearLayout v) {
                 super(v);
                 this.listing_name = (TextView) v.findViewById(R.id.listing_name);
                 this.compass = (ImageView) v.findViewById(R.id.compass);
