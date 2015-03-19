@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TimePicker;
@@ -39,7 +40,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 import in.tosc.studddin.R;
-import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.ui.ProgressBarCircular;
 
@@ -116,13 +116,13 @@ public class EventsCreateFragment extends Fragment {
     }
 
     public void addInput() {
-        events.put(ParseTables.Events.TITLE, ((MaterialEditText) v.findViewById(R.id.event_name)).getText() + "");
-        events.put(ParseTables.Events.DESCRIPTION, ((MaterialEditText) v.findViewById(R.id.event_description)).getText() + "");
-        events.put(ParseTables.Events.TYPE, ((MaterialEditText) v.findViewById(R.id.event_type)).getText() + "");
-        events.put(ParseTables.Events.LOCATION, ((MaterialEditText) v.findViewById(R.id.event_location)).getText() + "");
+        events.put(ParseTables.Events.TITLE, ((EditText) v.findViewById(R.id.event_name)).getText() + "");
+        events.put(ParseTables.Events.DESCRIPTION, ((EditText) v.findViewById(R.id.event_description)).getText() + "");
+        events.put(ParseTables.Events.TYPE, ((EditText) v.findViewById(R.id.event_type)).getText() + "");
+        events.put(ParseTables.Events.LOCATION, ((EditText) v.findViewById(R.id.event_location)).getText() + "");
         events.put(ParseTables.Events.USER, ParseUser.getCurrentUser().getString(ParseTables.Users.NAME));
-        events.put(ParseTables.Events.URL, ((MaterialEditText) v.findViewById(R.id.event_link)).getText() + "");
-        events.put(ParseTables.Events.CONTACT, ((MaterialEditText) v.findViewById(R.id.event_contact)).getText() + "");
+        events.put(ParseTables.Events.URL, ((EditText) v.findViewById(R.id.event_link)).getText() + "");
+        events.put(ParseTables.Events.CONTACT, ((EditText) v.findViewById(R.id.event_contact)).getText() + "");
     }
 
     private boolean checkIfEmpty() {
@@ -201,7 +201,7 @@ public class EventsCreateFragment extends Fragment {
             monthOfYear++;
             String date = String.valueOf(dayOfMonth) + "/" + monthOfYear + "/" + year;
             events.put(ParseTables.Events.DATE, date);
-            ((MaterialEditText)v.findViewById(R.id.event_date)).setText(date);
+            ((EditText)v.findViewById(R.id.event_date)).setText(date);
         }
 
         @Override
@@ -231,7 +231,7 @@ public class EventsCreateFragment extends Fragment {
                 time = String.valueOf(hourOfDay) + ":" + min + " am";
             }
             events.put(ParseTables.Events.TIME, time);
-            ((MaterialEditText)v.findViewById(R.id.event_time)).setText(time);
+            ((EditText)v.findViewById(R.id.event_time)).setText(time);
         }
 
         @Override
