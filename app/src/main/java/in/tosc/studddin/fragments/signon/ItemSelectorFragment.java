@@ -15,6 +15,12 @@ public class ItemSelectorFragment extends Fragment {
 
     View rootView;
 
+    Bundle incomingBundle;
+
+    public static final int TYPE_INTEREST = 0;
+
+    public static final String TYPE = "type";
+
     public ItemSelectorFragment() {
         // Required empty public constructor
     }
@@ -29,6 +35,7 @@ public class ItemSelectorFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_sign_up, container, false);
+        incomingBundle = getArguments();
         return rootView;
     }
 }
