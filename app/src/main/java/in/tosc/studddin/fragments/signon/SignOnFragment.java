@@ -225,7 +225,8 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         if (accounts.length > 0)
             b.putString(ParseTables.Users.EMAIL, accounts[0].name);
 
-        showSignupDataFragment(b);
+//        showSignupDataFragment(b);
+        showInterestFragment(b);
     }
 
     public void doFacebookSignOn(View v) {
@@ -269,6 +270,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                         FacebookApi.getFacebookData(new FacebookApi.FbGotDataCallback() {
                             @Override
                             public void gotData(final Bundle bundle) {
+                                /*
                                 final SignupDataFragment fragment = showSignupDataFragment(bundle);
                                 FacebookApi.getProfilePicture(new FacebookApi.FbGotProfilePictureCallback() {
                                     @Override
@@ -283,7 +285,8 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                     public void gotCoverPicture(Bitmap coverPicture) {
                                         fragment.setCoverPicture(coverPicture);
                                     }
-                                });
+                                });*/
+                                showInterestFragment(bundle);
                             }
                         });
                     } else {
@@ -341,7 +344,9 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                         TwitterApi.getTwitterData(new TwitterApi.TwitterDataCallback() {
                             @Override
                             public void gotData(Bundle bundle) {
-                                final SignupDataFragment fragment = showSignupDataFragment(bundle);
+//                                final SignupDataFragment fragment = showSignupDataFragment(bundle);
+                                showInterestFragment(bundle);
+                                /*
                                 TwitterApi.getUserInfo(new TwitterApi.TwitterInfoCallback() {
                                     @Override
                                     public void gotInfo(JSONObject object, Bitmap profileBitmap, Bitmap coverBitmap) throws JSONException {
@@ -350,7 +355,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                         fragment.setProfilePicture();
                                         fragment.setCoverPicture(coverBitmap);
                                     }
-                                });
+                                });*/
                             }
                         });
                     } else {
@@ -422,6 +427,24 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                         } catch (Exception ignored) {
                                         }
                                         if (user.isNew() || (!fullyRegistered)) {
+                                            try {
+                                                if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                                                    Person currentPerson = Plus.PeopleApi
+                                                            .getCurrentPerson(mGoogleApiClient);
+                                                    b.putString(ParseTables.Users.NAME, currentPerson.getDisplayName());
+                                                    b.putString(ParseTables.Users.EMAIL, Plus.AccountApi.getAccountName(mGoogleApiClient));
+                                                    if (currentPerson.getBirthday() != null) {
+                                                        String reverseDate = new StringBuffer(currentPerson.getBirthday()).reverse().toString();
+                                                        b.putString(ParseTables.Users.DOB, reverseDate);
+                                                    }
+                                                    showInterestFragment(b);
+                                                }
+                                            } catch (Exception ex) {
+                                                ex.printStackTrace();
+                                            }
+
+
+                                            /*
 
                                             SignupDataFragment fragment = null;
                                             String profilePictureURL = null;
@@ -451,6 +474,8 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                                 if(coverPictureURL!=null)
                                                     new FetchCoverPicture(fragment).execute(coverPictureURL);
                                             }
+
+                                            */
 
                                         } else {
                                             Log.w(TAG, "User logged in through G Plus");
@@ -547,8 +572,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         }
     }
 
-    private void showInterestFragment() {
-        Bundle bundle = new Bundle();
+    private void showInterestFragment(Bundle bundle) {
         bundle.putInt(ItemSelectorFragment.TYPE, ItemSelectorFragment.TYPE_INTEREST);
         ItemSelectorFragment fragment = ItemSelectorFragment.newInstance(bundle);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
