@@ -23,7 +23,7 @@ import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
 
 /**
- * Created by root on 8/4/15.
+ * Class used for selection of Interests and College during the SignUp
  */
 public class ItemSelectorFragment extends Fragment {
 
@@ -143,7 +143,7 @@ public class ItemSelectorFragment extends Fragment {
                     text = mainList.get(position).getString(ParseTables.Interests.NAME);
                     break;
                 case TYPE_COLLEGE:
-                    //TODO: get college name
+                    text = mainList.get(position).getString(ParseTables.College.NAME);
                     break;
                 default:
                     throw new UnsupportedOperationException("Unknown ItemSelector Type");
