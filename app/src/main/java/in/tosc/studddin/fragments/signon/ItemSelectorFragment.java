@@ -55,7 +55,7 @@ public class ItemSelectorFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_sign_up, container, false);
+        rootView = inflater.inflate(R.layout.fragment_item_selector, container, false);
         parentActivity = getActivity();
         incomingBundle = getArguments();
 
