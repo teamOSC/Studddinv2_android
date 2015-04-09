@@ -67,10 +67,10 @@ public class ItemSelectorFragment extends Fragment {
         int type = incomingBundle.getInt(TYPE);
         switch (type) {
             case TYPE_INTEREST:
-                //TODO: Get the list of interest and inflate in the recycler view
+                inflateInterests();
                 break;
             case TYPE_COLLEGE:
-                //TODO: Get the list of college and inflate in the recycler view
+                inflateColleges();
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown ItemSelector Type");
@@ -78,8 +78,8 @@ public class ItemSelectorFragment extends Fragment {
         return rootView;
     }
 
-    private void inflateInterests(final int type) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseTables.Tables.Interests);
+    private void inflateInterests() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseTables.Interests._NAME);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
@@ -87,7 +87,22 @@ public class ItemSelectorFragment extends Fragment {
                     e.printStackTrace();
                     return;
                 }
-                mAdapter = new ItemAdapter(list, type);
+                mAdapter = new ItemAdapter(list, TYPE_INTEREST);
+                itemRecyclerView.setAdapter(mAdapter);
+            }
+        });
+    }
+
+    private void inflateColleges() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseTables.College._NAME);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e != null) {
+                    e.printStackTrace();
+                    return;
+                }
+                mAdapter = new ItemAdapter(list, TYPE_COLLEGE);
                 itemRecyclerView.setAdapter(mAdapter);
             }
         });

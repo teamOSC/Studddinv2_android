@@ -5,10 +5,6 @@ package in.tosc.studddin.externalapi;
  */
 public class ParseTables {
 
-    public static final class Tables {
-        public static final String Interests = "Interests";
-    }
-
     public static class Users {
         public static final String NAME = "NAME";
         public static final String USERNAME = "USERNAME";
@@ -56,7 +52,13 @@ public class ParseTables {
     }
 
     public static class Interests {
+        public static final String _NAME = "Interests";
         public static final String NAME = "name";
         public static final String USERS = "users";
+    }
+
+    public static class College {
+        public static final String _NAME = "College";
+        public static final String NAME = "name";
     }
 }
