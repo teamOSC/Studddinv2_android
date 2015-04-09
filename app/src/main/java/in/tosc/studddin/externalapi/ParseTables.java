@@ -4,9 +4,7 @@ package in.tosc.studddin.externalapi;
  * Created by championswimmer on 5/2/15.
  */
 public class ParseTables {
-    /**
-     * Created by championswimmer on 26/1/15.
-     */
+
     public static class Users {
         public static final String NAME = "NAME";
         public static final String USERNAME = "USERNAME";
@@ -54,7 +52,13 @@ public class ParseTables {
     }
 
     public static class Interests {
+        public static final String _NAME = "Interests";
         public static final String NAME = "name";
         public static final String USERS = "users";
+    }
+
+    public static class College {
+        public static final String _NAME = "College";
+        public static final String NAME = "name";
     }
 }

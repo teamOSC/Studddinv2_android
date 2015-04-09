@@ -19,6 +19,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
+            android:paddingBottom="5dp"
             android:layout_gravity="center"
             android:layout_weight="8"
             android:orientation="vertical">
@@ -75,52 +76,10 @@
                     app:primaryColor="@color/white"/>
 
                 <in.tosc.studddin.ui.MaterialEditText
-                    android:id="@+id/user_dob"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/user_password"
-                    android:layout_margin="10dp"
-                    android:hint="@string/user_dob"
-                    android:inputType="date"
-                    android:imeOptions="actionNext"
-                    android:singleLine="true"
-                    android:textAlignment="center"
-                    android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    app:floatingLabel="highlight"
-                    app:baseColor="@color/white"
-                    app:primaryColor="@color/white" />
-
-                <in.tosc.studddin.ui.MaterialEditText
-                    android:id="@+id/user_institute"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/user_dob"
-                    android:layout_margin="10dp"
-                    android:imeOptions="actionNext"
-                    android:singleLine="true"
-                    android:hint="@string/institute_name"
-                    android:textAlignment="center"
-                    android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    app:floatingLabel="highlight"
-                    app:baseColor="@color/white"
-                    app:primaryColor="@color/white"/>
-
-                <Button
-                    android:id="@+id/user_location"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/user_institute"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/bbuton_primary_rounded"
-                    android:text="@string/user_location"
-                    android:textAlignment="center"
-                    android:textColor="@color/white" />
-
-                <in.tosc.studddin.ui.MaterialEditText
                     android:id="@+id/user_email"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/user_location"
+                    android:layout_below="@id/user_password"
                     android:layout_margin="10dp"
                     android:hint="@string/email_id"
                     android:imeOptions="actionNext"
@@ -131,33 +90,16 @@
                     app:baseColor="@color/white"
                     app:primaryColor="@color/white"/>
 
-                <in.tosc.studddin.ui.MaterialEditText
-                    android:id="@+id/user_qualifications"
+                <Button
+                    android:id="@+id/user_location"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/user_email"
                     android:layout_margin="10dp"
-                    android:imeOptions="actionNext"
-                    android:singleLine="true"
-                    android:hint="@string/qualifications"
+                    android:background="@drawable/bbuton_primary_rounded"
+                    android:text="@string/user_location"
                     android:textAlignment="center"
-                    android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    app:floatingLabel="highlight"
-                    app:baseColor="@color/white"
-                    app:primaryColor="@color/white"/>
-
-                <in.tosc.studddin.ui.BubbleCompletionView
-                    android:id="@+id/user_interests"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/user_qualifications"
-                    android:layout_margin="10dp"
-                    android:hint="@string/interests"
-                    android:textAlignment="center"
-                    app:floatingLabel="highlight"
-                    app:baseColor="@color/white"
-                    app:primaryColor="@color/white"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white" />
 
             </RelativeLayout>
         </ScrollView>

@@ -28,9 +28,6 @@ public class BubbleCompletionView extends TokenCompleteTextView {
     protected View getViewForObject(Object object) {
         String p = (String)object;
 
-        if (p.equals(SignupDataFragment.ADD_NEW_INTEREST)) {
-            p = SignupDataFragment.lastEnteredInterest;
-        }
         LayoutInflater l = (LayoutInflater)getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         LinearLayout view = (LinearLayout)l.inflate(R.layout.bubble_token,
                 (ViewGroup)this.getParent(), false);
