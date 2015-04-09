@@ -225,8 +225,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         if (accounts.length > 0)
             b.putString(ParseTables.Users.EMAIL, accounts[0].name);
 
-//        showSignupDataFragment(b);
-        showInterestFragment(b);
+        showSignupDataFragment(b);
     }
 
     public void doFacebookSignOn(View v) {
