@@ -4,9 +4,11 @@ package in.tosc.studddin.externalapi;
  * Created by championswimmer on 5/2/15.
  */
 public class ParseTables {
-    /**
-     * Created by championswimmer on 26/1/15.
-     */
+
+    public static final class Tables {
+        public static final String Interests = "Interests";
+    }
+
     public static class Users {
         public static final String NAME = "NAME";
         public static final String USERNAME = "USERNAME";

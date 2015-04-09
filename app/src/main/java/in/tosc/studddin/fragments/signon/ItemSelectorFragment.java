@@ -11,9 +11,16 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.externalapi.ParseTables;
 
 /**
  * Created by root on 8/4/15.
@@ -25,11 +32,12 @@ public class ItemSelectorFragment extends Fragment {
     Bundle incomingBundle;
 
     public static final int TYPE_INTEREST = 0;
+    public static final int TYPE_COLLEGE = 1;
 
     public static final String TYPE = "type";
 
-    private RecyclerView interestsRecyclerView;
-    private RecyclerView.Adapter interestsAdapter;
+    private RecyclerView itemRecyclerView;
+    private ItemAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private Activity parentActivity;
@@ -51,15 +59,43 @@ public class ItemSelectorFragment extends Fragment {
         parentActivity = getActivity();
         incomingBundle = getArguments();
 
-        interestsRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_interests);
-        interestsRecyclerView.setHasFixedSize(true);
+        itemRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_interests);
+        itemRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(parentActivity);
-        interestsRecyclerView.setLayoutManager(mLayoutManager);
+        itemRecyclerView.setLayoutManager(mLayoutManager);
+
+        int type = incomingBundle.getInt(TYPE);
+        switch (type) {
+            case TYPE_INTEREST:
+                //TODO: Get the list of interest and inflate in the recycler view
+                break;
+            case TYPE_COLLEGE:
+                //TODO: Get the list of college and inflate in the recycler view
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown ItemSelector Type");
+        }
         return rootView;
     }
 
-    public static class InterestsAdapter extends RecyclerView.Adapter<InterestsAdapter.ViewHolder> {
-        private ArrayList<String> interests;
+    private void inflateInterests(final int type) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseTables.Tables.Interests);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e != null) {
+                    e.printStackTrace();
+                    return;
+                }
+                mAdapter = new ItemAdapter(list, type);
+                itemRecyclerView.setAdapter(mAdapter);
+            }
+        });
+    }
+
+    public static class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+        private List<ParseObject> mainList;
+        private int type;
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
             public CheckBox mCheckBox;
@@ -69,12 +105,13 @@ public class ItemSelectorFragment extends Fragment {
             }
         }
 
-        public InterestsAdapter(ArrayList<String> myDataset) {
-            interests = myDataset;
+        public ItemAdapter(List<ParseObject> myDataset, int type) {
+            mainList = myDataset;
+            this.type = type;
         }
 
         @Override
-        public InterestsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+        public ItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                        int viewType) {
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.row_item_selector, parent, false);
@@ -85,12 +122,24 @@ public class ItemSelectorFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.mCheckBox.setText(interests.get(position));
+            String text = "";
+            switch (type) {
+                case TYPE_INTEREST:
+                    text = mainList.get(position).getString(ParseTables.Interests.NAME);
+                    break;
+                case TYPE_COLLEGE:
+                    //TODO: get college name
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Unknown ItemSelector Type");
+
+            }
+            holder.mCheckBox.setText(text);
         }
 
         @Override
         public int getItemCount() {
-            return interests.size();
+            return mainList.size();
         }
     }
 }
