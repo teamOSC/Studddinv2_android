@@ -9,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -21,6 +23,7 @@ import java.util.List;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
+import in.tosc.studddin.ui.ProgressBarCircular;
 
 /**
  * Class used for selection of Interests and College during the SignUp
@@ -37,6 +40,8 @@ public class ItemSelectorFragment extends Fragment {
     public static final String TYPE = "type";
 
     private RecyclerView itemRecyclerView;
+    private ProgressBar progressBar;
+
     private ItemAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -56,13 +61,11 @@ public class ItemSelectorFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_item_selector, container, false);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progressbar_item_selector);
+        itemRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_interests);
+
         parentActivity = getActivity();
         incomingBundle = getArguments();
-
-        itemRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_interests);
-        itemRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(parentActivity);
-        itemRecyclerView.setLayoutManager(mLayoutManager);
 
         int type = incomingBundle.getInt(TYPE);
         switch (type) {
@@ -87,8 +90,7 @@ public class ItemSelectorFragment extends Fragment {
                     e.printStackTrace();
                     return;
                 }
-                mAdapter = new ItemAdapter(list, TYPE_INTEREST);
-                itemRecyclerView.setAdapter(mAdapter);
+                showItemsList(list, TYPE_INTEREST);
             }
         });
     }
@@ -102,10 +104,20 @@ public class ItemSelectorFragment extends Fragment {
                     e.printStackTrace();
                     return;
                 }
-                mAdapter = new ItemAdapter(list, TYPE_COLLEGE);
-                itemRecyclerView.setAdapter(mAdapter);
+                showItemsList(list, TYPE_COLLEGE);
             }
         });
+    }
+
+    private void showItemsList(List<ParseObject> list, int type) {
+        progressBar.setVisibility(View.GONE);
+        itemRecyclerView.setVisibility(View.VISIBLE);
+
+        itemRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(parentActivity);
+        itemRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new ItemAdapter(list, type);
+        itemRecyclerView.setAdapter(mAdapter);
     }
 
     public static class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
@@ -123,6 +135,10 @@ public class ItemSelectorFragment extends Fragment {
         public ItemAdapter(List<ParseObject> myDataset, int type) {
             mainList = myDataset;
             this.type = type;
+        }
+
+        public void updateDataSet(List<ParseObject> mDataSet) {
+            this.mainList = mDataSet;
         }
 
         @Override
