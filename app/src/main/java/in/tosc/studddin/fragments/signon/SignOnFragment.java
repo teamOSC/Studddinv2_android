@@ -241,7 +241,9 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
             public void done(ParseUser user, ParseException err) {
                 try {
                     Log.w(TAG, "user = " + user.getUsername());
-                    Log.w(TAG, "pe = " + err.getCode() + err.getMessage());
+                    if (err != null) {
+                        Log.w(TAG, "pe = " + err.getCode() + err.getMessage());
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

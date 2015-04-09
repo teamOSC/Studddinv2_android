@@ -424,6 +424,9 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
                 @Override
                 public void onClick(View v) {
                     String uriString = object.getString(KEY_LINK);
+                    if (!uriString.startsWith("http")) {
+                        uriString = "http://" + uriString;
+                    }
                     if (uriString != null) {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW,
                                 Uri.parse(uriString));
