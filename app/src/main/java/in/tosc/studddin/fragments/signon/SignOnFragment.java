@@ -373,17 +373,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         }
     }
 
-    public SignupDataFragment showSignupDataFragment(Bundle b) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
-
-        SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
-
-        transaction.replace(R.id.signon_container, newFragment).addToBackStack("SignIn").commit();
-        return newFragment;
-    }
-
     @Override
     public void onConnected(Bundle bundle) {
         mSignInClicked = false;
@@ -579,5 +568,16 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
 
         transaction.replace(R.id.signon_container, fragment).addToBackStack("SignIn").commit();
+    }
+
+    public SignupDataFragment showSignupDataFragment(Bundle b) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
+
+        SignupDataFragment newFragment = SignupDataFragment.newInstance(b);
+
+        transaction.replace(R.id.signon_container, newFragment).addToBackStack("SignIn").commit();
+        return newFragment;
     }
 }

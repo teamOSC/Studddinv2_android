@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <CheckBox
-        android:id="@+id/checkbox_interest"
+        android:id="@+id/checkbox_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

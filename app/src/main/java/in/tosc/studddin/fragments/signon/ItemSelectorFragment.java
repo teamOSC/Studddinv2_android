@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -68,6 +69,13 @@ public class ItemSelectorFragment extends Fragment {
         incomingBundle = getArguments();
 
         int type = incomingBundle.getInt(TYPE);
+
+        itemRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(parentActivity);
+        itemRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new ItemAdapter(new ArrayList<ParseObject>(), type);
+        itemRecyclerView.setAdapter(mAdapter);
+
         switch (type) {
             case TYPE_INTEREST:
                 inflateInterests();
@@ -113,11 +121,8 @@ public class ItemSelectorFragment extends Fragment {
         progressBar.setVisibility(View.GONE);
         itemRecyclerView.setVisibility(View.VISIBLE);
 
-        itemRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(parentActivity);
-        itemRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new ItemAdapter(list, type);
-        itemRecyclerView.setAdapter(mAdapter);
+        mAdapter.updateDataSet(list);
+        mAdapter.notifyDataSetChanged();
     }
 
     public static class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
@@ -125,10 +130,11 @@ public class ItemSelectorFragment extends Fragment {
         private int type;
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
+//            public LinearLayout mLinearLayout;
             public CheckBox mCheckBox;
-            public ViewHolder(CheckBox v) {
+            public ViewHolder(LinearLayout v) {
                 super(v);
-                mCheckBox = v;
+                mCheckBox = (CheckBox) v.findViewById(R.id.checkbox_item);
             }
         }
 
@@ -144,10 +150,9 @@ public class ItemSelectorFragment extends Fragment {
         @Override
         public ItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                        int viewType) {
-            View v = LayoutInflater.from(parent.getContext())
+            LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.row_item_selector, parent, false);
-            CheckBox mCheckBox = (CheckBox) v.findViewById(R.id.checkbox_interest);
-            ViewHolder vh = new ViewHolder(mCheckBox);
+            ViewHolder vh = new ViewHolder(v);
             return vh;
         }
 
