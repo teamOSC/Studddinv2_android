@@ -32,7 +32,7 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/abc_textfield_search_activated_mtrl_alpha"
             >
-        <in.tosc.studddin.ui.MaterialEditText
+        <EditText
             android:id="@+id/event_name"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -40,8 +40,8 @@
             android:layout_weight="1"
             android:hint="@string/event_name"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
-            app:baseColor="@color/search_color"
-            app:primaryColor="@color/colorPrimaryDark" />
+            android:padding="10dp"
+            android:background="@drawable/edittext_background_rounded"/>
         </LinearLayout>
 
         <LinearLayout
@@ -52,7 +52,7 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/abc_textfield_search_activated_mtrl_alpha"
             >
-        <in.tosc.studddin.ui.MaterialEditText
+        <EditText
             android:id="@+id/event_description"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -60,8 +60,8 @@
             android:layout_weight="1"
             android:hint="@string/event_description"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
-            app:baseColor="@color/search_color"
-            app:primaryColor="@color/colorPrimaryDark" />
+            android:padding="10dp"
+            android:background="@drawable/edittext_background_rounded"/>
             </LinearLayout>
 
         <LinearLayout
@@ -72,7 +72,7 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/abc_textfield_search_activated_mtrl_alpha">
 
-        <in.tosc.studddin.ui.MaterialEditText
+        <EditText
             android:id="@+id/event_type"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -80,8 +80,8 @@
             android:layout_weight="1"
             android:hint="Type"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
-            app:baseColor="@color/search_color"
-            app:primaryColor="@color/colorPrimaryDark" />
+            android:padding="10dp"
+            android:background="@drawable/edittext_background_rounded"/>
             </LinearLayout>
 
         <LinearLayout
@@ -92,7 +92,7 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/abc_textfield_search_activated_mtrl_alpha">
 
-            <in.tosc.studddin.ui.MaterialEditText
+            <EditText
                 android:id="@+id/event_location"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -100,8 +100,8 @@
                 android:layout_weight="1"
                 android:hint="Location"
                 android:textCursorDrawable="@drawable/text_cursor_cyan"
-                app:baseColor="@color/search_color"
-                app:primaryColor="@color/colorPrimaryDark" />
+                android:padding="10dp"
+                android:background="@drawable/edittext_background_rounded"/>
         </LinearLayout>
 
         <LinearLayout
@@ -111,7 +111,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/abc_textfield_search_activated_mtrl_alpha">
-            <in.tosc.studddin.ui.MaterialEditText
+            <EditText
                 android:id="@+id/event_link"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -120,8 +120,8 @@
                 android:hint="Link"
                 android:inputType="textUri"
                 android:textCursorDrawable="@drawable/text_cursor_cyan"
-                app:baseColor="@color/search_color"
-                app:primaryColor="@color/colorPrimaryDark" />
+                android:padding="10dp"
+                android:background="@drawable/edittext_background_rounded"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
@@ -130,7 +130,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/abc_textfield_search_activated_mtrl_alpha">
-            <in.tosc.studddin.ui.MaterialEditText
+            <EditText
                 android:id="@+id/event_contact"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -139,8 +139,8 @@
                 android:hint="Contact"
                 android:inputType="number"
                 android:textCursorDrawable="@drawable/text_cursor_cyan"
-                app:baseColor="@color/search_color"
-                app:primaryColor="@color/colorPrimaryDark" />
+                android:padding="10dp"
+                android:background="@drawable/edittext_background_rounded" />
         </LinearLayout>
 
 
@@ -155,7 +155,7 @@
         android:background="@drawable/abc_textfield_search_activated_mtrl_alpha">
 
 
-        <in.tosc.studddin.ui.MaterialEditText
+        <EditText
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -163,8 +163,8 @@
             android:hint="click on date"
             android:layout_margin="10dp"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
-            app:baseColor="@color/search_color"
-            app:primaryColor="@color/colorPrimaryDark"
+            android:padding="10dp"
+            android:background="@drawable/edittext_background_rounded"
             android:editable="false"
             />
         <ImageButton
@@ -189,7 +189,7 @@
         android:background="@drawable/abc_textfield_search_activated_mtrl_alpha">
 
 
-        <in.tosc.studddin.ui.MaterialEditText
+        <EditText
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -197,8 +197,8 @@
             android:hint="click on time"
             android:layout_margin="10dp"
             android:textCursorDrawable="@drawable/text_cursor_cyan"
-            app:baseColor="@color/search_color"
-            app:primaryColor="@color/colorPrimaryDark"
+            android:padding="10dp"
+            android:background="@drawable/edittext_background_rounded"
             android:editable="false"
             />
         <ImageButton
@@ -249,7 +249,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_gravity="bottom|center"
+        android:layout_gravity="bottom|center_horizontal|center_vertical|center"
         android:background="@drawable/btn_sel"
         android:text="@string/submit"
         android:textColor="@android:color/white" />

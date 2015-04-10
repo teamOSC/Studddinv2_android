@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="signin_guest">#BDBDBD</color>
+    <color name="divider">#EEEEEE</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="edittext_color">#009688</color>
@@ -9,6 +10,7 @@
     <color name="app_background">#00BCD4</color>
     <color name="textview_dark">#212121</color>
     <color name="textview_light">#616161</color>
+    <color name="material_drawer_primary_text">#212121</color>
 
     <!-- App Main colors -->
     <color name="colorPrimary">#607D8B</color>
