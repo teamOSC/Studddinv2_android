@@ -64,8 +64,7 @@ import in.tosc.studddin.utils.FutureUtils.FutureShit;
  */
 @Deprecated
 public class SignupDataFragment extends Fragment implements
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        TokenCompleteTextView.TokenListener{
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "SignupDataFragment";
     public boolean viewReady = false, bitmapReady = false;
@@ -79,13 +78,6 @@ public class SignupDataFragment extends Fragment implements
     private GoogleApiClient mGoogleApiClient;
     private Location currentUserLoc;
     private Location approxUserLoc;
-
-    FutureShit futureShit;
-
-    private List<ParseObject> interests;
-    private List<ParseObject> selectedInterests = new ArrayList();
-    public static String lastEnteredInterest = "";
-    public static final String ADD_NEW_INTEREST = "Add new interest";
 
     public SignupDataFragment() {
         // Required empty public constructor
@@ -173,15 +165,7 @@ public class SignupDataFragment extends Fragment implements
 
         initializeEditTexts(R.id.user_name);
         initializeEditTexts(R.id.user_password);
-        initializeEditTexts(R.id.user_dob);
-        initializeEditTexts(R.id.user_institute);
         initializeEditTexts(R.id.user_email);
-        initializeEditTexts(R.id.user_qualifications);
-
-        final BubbleCompletionView interestEditText =
-                (BubbleCompletionView) rootView.findViewById(R.id.user_interests);
-        getInterests(interestEditText);
-        futureShit.getShitDone();
 
         if (userDataBundle != null) {
             autoFillData();
@@ -247,8 +231,6 @@ public class SignupDataFragment extends Fragment implements
 
     private void autoFillData() {
         setDataToFields(R.id.user_name, ParseTables.Users.NAME);
-        setDataToFields(R.id.user_dob, ParseTables.Users.DOB);
-        setDataToFields(R.id.user_institute, ParseTables.Users.INSTITUTE);
         setDataToFields(R.id.user_email, ParseTables.Users.EMAIL);
     }
 
@@ -263,10 +245,7 @@ public class SignupDataFragment extends Fragment implements
     private void getInput() {
         input.put(ParseTables.Users.NAME, getStringFromEditText(R.id.user_name));
         input.put(ParseTables.Users.PASSWORD, getStringFromEditText(R.id.user_password));
-        input.put(ParseTables.Users.DOB, getStringFromEditText(R.id.user_dob));
-        input.put(ParseTables.Users.INSTITUTE, getStringFromEditText(R.id.user_institute));
         input.put(ParseTables.Users.EMAIL, getStringFromEditText(R.id.user_email));
-        input.put(ParseTables.Users.QUALIFICATIONS, getStringFromEditText(R.id.user_qualifications));
     }
 
     private boolean validateInput() {
@@ -332,16 +311,6 @@ public class SignupDataFragment extends Fragment implements
         user.setEmail(input.get(ParseTables.Users.EMAIL));
 
         user.put(ParseTables.Users.NAME, input.get(ParseTables.Users.NAME));
-        user.put(ParseTables.Users.INSTITUTE, input.get(ParseTables.Users.INSTITUTE));
-        user.put(ParseTables.Users.QUALIFICATIONS, input.get(ParseTables.Users.QUALIFICATIONS));
-
-        for (ParseObject object : selectedInterests) {
-            object.save();
-            ParseRelation<ParseUser> relation = object.getRelation(ParseTables.Interests.USERS);
-            relation.add(user);
-            object.save();
-        }
-        user.put(ParseTables.Users.INTERESTS, selectedInterests);
 
         if (profileBitmap != null) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -455,6 +424,7 @@ public class SignupDataFragment extends Fragment implements
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 50, locationListener);
     }
 
+    /*
     private void getInterests(final BubbleCompletionView editText) {
         futureShit = new FutureShit(new Callable<List<ParseObject>>() {
             @Override
@@ -520,13 +490,5 @@ public class SignupDataFragment extends Fragment implements
         }
         );
     }
-
-    //TODO: Make use of these instead of inlining it as above
-    @Override
-    public void onTokenAdded(Object o) {
-    }
-
-    @Override
-    public void onTokenRemoved(Object o) {
-    }
+    */
 }

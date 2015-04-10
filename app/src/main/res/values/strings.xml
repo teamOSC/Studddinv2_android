@@ -34,7 +34,8 @@
     <string name="enter_password">Please Enter password</string>
     <string name="enter_institute">Please Enter Institute</string>
     <string name="enter_email">Please enter an email address</string>
-    <string name="enter_qualifications">Please enter qualifications</string>
+    <string name="enter_qualifications">Please enter qualification</string>
+    <string name="enter_interest">Enter your interest</string>
     <string name="empty_interests">empty interests</string>
     <string name="hello_blank_fragment">Settings</string>
 
