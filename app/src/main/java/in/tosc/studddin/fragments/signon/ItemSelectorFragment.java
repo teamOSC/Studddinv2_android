@@ -5,10 +5,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,6 +35,8 @@ import in.tosc.studddin.ui.ProgressBarCircular;
  */
 public class ItemSelectorFragment extends Fragment {
 
+    private static final String TAG = "ItemSelectorFragment";
+
     View rootView;
 
     Bundle incomingBundle;
@@ -42,6 +48,7 @@ public class ItemSelectorFragment extends Fragment {
 
     private RecyclerView itemRecyclerView;
     private ProgressBar progressBar;
+    private Button submitButton;
 
     private ItemAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -64,11 +71,19 @@ public class ItemSelectorFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_item_selector, container, false);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressbar_item_selector);
         itemRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_interests);
+        submitButton = (Button) rootView.findViewById(R.id.button_item_submit);
 
         parentActivity = getActivity();
         incomingBundle = getArguments();
 
-        int type = incomingBundle.getInt(TYPE);
+        final int type = incomingBundle.getInt(TYPE);
+
+        submitButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pushDataToParse(type);
+            }
+        });
 
         itemRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(parentActivity);
@@ -125,16 +140,27 @@ public class ItemSelectorFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
+    public void pushDataToParse(int type) {
+        //TODO: Push the data to parse
+    }
+
     public static class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         private List<ParseObject> mainList;
         private int type;
 
-        public static class ViewHolder extends RecyclerView.ViewHolder {
+        public static class ViewHolder extends RecyclerView.ViewHolder implements
+                View.OnClickListener{
 //            public LinearLayout mLinearLayout;
             public CheckBox mCheckBox;
             public ViewHolder(LinearLayout v) {
                 super(v);
                 mCheckBox = (CheckBox) v.findViewById(R.id.checkbox_item);
+                mCheckBox.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "checked position = " + getPosition());
             }
         }
 
