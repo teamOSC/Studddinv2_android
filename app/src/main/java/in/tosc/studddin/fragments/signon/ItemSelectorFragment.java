@@ -1,10 +1,16 @@
 package in.tosc.studddin.fragments.signon;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Explode;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -29,6 +35,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.ui.ProgressBarCircular;
@@ -58,6 +65,8 @@ public class ItemSelectorFragment extends Fragment {
 
     private Activity parentActivity;
 
+    private ProgressDialog progressDialog;
+
     public ItemSelectorFragment() {
         // Required empty public constructor
     }
@@ -84,6 +93,9 @@ public class ItemSelectorFragment extends Fragment {
         submitButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog = new ProgressDialog(parentActivity);
+                progressDialog.setMessage("Saving...");
+                progressDialog.show();
                 pushDataToParse(type);
             }
         });
@@ -143,27 +155,65 @@ public class ItemSelectorFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
-    public void pushDataToParse(int type) {
-        SparseArray<Boolean> selectedList = mAdapter.getSelectedList();
-        for (int i = 0; i < selectedList.size(); ++i) {
-            Log.d(TAG, "Selected = " + selectedList.get(i) + " position = " + i);
-        }
-        List<ParseObject> mainList = mAdapter.getDataSet();
-        List<ParseObject> selectedParseObjects = new ArrayList();
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser != null) {
-            for (int i = 0; i < mainList.size(); ++i) {
-                if (selectedList.get(i)) {
-                    selectedParseObjects.add(mainList.get(i));
+    public void pushDataToParse(final int type) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SparseArray<Boolean> selectedList = mAdapter.getSelectedList();
+                if (selectedList == null) {
+                    throw new NullPointerException("selected list hi null hai.");
+                }
+                Log.d(TAG, "size of selected list - " + selectedList.size());
+                List<ParseObject> mainList = mAdapter.getDataSet();
+                List<ParseObject> selectedParseObjects = new ArrayList();
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                if (currentUser != null) {
+                    for (int i = 0; i < mainList.size(); ++i) {
+                        if (selectedList.get(i) != null && selectedList.get(i) == true) {
+                            selectedParseObjects.add(mainList.get(i));
+                        }
+                    }
+                    if (type == TYPE_INTEREST) {
+                        for (ParseObject selectedParseObject : selectedParseObjects) {
+                            selectedParseObject.put(ParseTables.Interests.USERS, currentUser);
+                            try {
+                                selectedParseObject.save();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        currentUser.put(ParseTables.Users.INTERESTS, selectedParseObjects);
+                        try {
+                            currentUser.save();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        progressDialog.dismiss();
+                        parentActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                goToMainActivity(parentActivity);
+                            }
+                        });
+                    }
+                } else {
+                    Toast.makeText(parentActivity, "You are not logged in. Please login.", Toast.LENGTH_SHORT).show();
                 }
             }
-            for (ParseObject selectedParseObject : selectedParseObjects) {
-                selectedParseObject.put(ParseTables.Interests.USERS, currentUser);
-            }
-            currentUser.put(ParseTables.Users.INTERESTS, selectedParseObjects);
+        }).start();
+    }
+
+    public static void goToMainActivity(Activity act) {
+        Intent i = new Intent(act, MainActivity.class);
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+            Activity activity = act;
+            Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
+            activity.getWindow().setExitTransition(new Explode().setDuration(1500));
+            ActivityCompat.startActivityForResult(activity, i, 0, options);
         } else {
-            Toast.makeText(parentActivity, "You are not logged in. Please login.", Toast.LENGTH_SHORT).show();
+            act.startActivity(i);
         }
+        act.finish();
     }
 
     public static class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
