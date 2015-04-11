@@ -247,19 +247,8 @@ public class SignupDataFragment extends Fragment implements
             f = false;
         }
 
-        if (f && input.get(ParseTables.Users.INSTITUTE).isEmpty()) {
-            Toast.makeText(getActivity(), getActivity().getString(R.string.enter_institute), Toast.LENGTH_LONG).show();
-            f = false;
-        }
-
         if (f && input.get(ParseTables.Users.EMAIL).isEmpty()) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.enter_email),
-                    Toast.LENGTH_LONG).show();
-            f = false;
-        }
-
-        if (f && input.get(ParseTables.Users.QUALIFICATIONS).isEmpty()) {
-            Toast.makeText(getActivity(), getString(R.string.enter_qualifications),
                     Toast.LENGTH_LONG).show();
             f = false;
         }
@@ -293,7 +282,7 @@ public class SignupDataFragment extends Fragment implements
     private void pushInputToParse() throws ParseException {
         ParseUser user = ParseUser.getCurrentUser();
 
-//        user.setUsername(input.get(ParseTables.Users.EMAIL));
+        user.setUsername(input.get(ParseTables.Users.EMAIL));
         user.setPassword(input.get(ParseTables.Users.PASSWORD));
         user.setEmail(input.get(ParseTables.Users.EMAIL));
 
@@ -306,13 +295,14 @@ public class SignupDataFragment extends Fragment implements
             profile.save();
             user.put(ParseTables.Users.IMAGE, profile);
         }
+        /*
         try{
             ParseFile cover = new ParseFile("coverPicture.png",userDataBundle.getByteArray(ParseTables.Users.COVER));
             cover.save();
             user.put(ParseTables.Users.COVER, cover);
         }catch(Exception e){
             e.printStackTrace();
-        }
+        }*/
         if (currentUserLoc == null) {
             currentUserLoc = approxUserLoc;
         }
