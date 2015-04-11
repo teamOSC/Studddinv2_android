@@ -4,6 +4,7 @@ package in.tosc.studddin.fragments.signon;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
@@ -288,7 +289,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                     }
                                 });*/
                                 new PushUserIntoParse().execute(bundle);
-                                showInterestFragment(bundle);
+//                                showInterestFragment(bundle);
                             }
                         });
                     } else {
@@ -348,7 +349,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                             public void gotData(Bundle bundle) {
 //                                final SignupDataFragment fragment = showSignupDataFragment(bundle);
                                 new PushUserIntoParse().execute(bundle);
-                                showInterestFragment(bundle);
+//                                showInterestFragment(bundle);
                                 /*
                                 TwitterApi.getUserInfo(new TwitterApi.TwitterInfoCallback() {
                                     @Override
@@ -430,7 +431,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                                         b.putString(ParseTables.Users.DOB, reverseDate);
                                                     }
                                                     new PushUserIntoParse().execute(b);
-                                                    showInterestFragment(b);
                                                 }
                                             } catch (Exception ex) {
                                                 ex.printStackTrace();
@@ -491,9 +491,18 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         }.execute();
     }
 
-    private class PushUserIntoParse extends AsyncTask<Bundle, Void, Void> {
+    private class PushUserIntoParse extends AsyncTask<Bundle, Void, Bundle> {
+        private ProgressDialog mProgressDialog;
+
         @Override
-        protected Void doInBackground(Bundle... bundles) {
+        protected void onPreExecute() {
+            mProgressDialog = new ProgressDialog(getActivity());
+            mProgressDialog.setMessage("Signing Up...");
+            mProgressDialog.show();
+        }
+
+        @Override
+        protected Bundle doInBackground(Bundle... bundles) {
             Bundle bundle = bundles[0];
             ParseUser currentUser = ParseUser.getCurrentUser();
             if (bundle.getString(ParseTables.Users.NAME) != null) {
@@ -510,7 +519,13 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            return null;
+            return bundle;
+        }
+
+        @Override
+        protected void onPostExecute(Bundle b) {
+            mProgressDialog.dismiss();
+            showInterestFragment(b);
         }
     }
 
