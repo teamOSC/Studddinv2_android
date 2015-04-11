@@ -144,6 +144,9 @@ public class PeopleNearmeFragment extends Fragment {
 
                 newFragment.setArguments(in);
 
+
+
+
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
@@ -180,7 +183,8 @@ public class PeopleNearmeFragment extends Fragment {
                     in.putByteArray("pic", bitmapdata);
                     System.out.print("pic2" + String.valueOf(bitmapdata));
 
-                    transaction.replace(R.id.container, newFragment).addToBackStack("PeopleNearMe").commit();
+//                    transaction.replace(R.id.container, newFragment).addToBackStack("PeopleNearMe").commit();
+                    transaction.add(R.id.container, newFragment).hide(PeopleNearmeFragment.this).addToBackStack(PeopleNearmeFragment.class.getName()).commit();
 
                 }
 
@@ -258,7 +262,7 @@ public class PeopleNearmeFragment extends Fragment {
 
                 ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
 
-                if(!personInterests.isEmpty()) {
+                if(personInterests!=null && !personInterests.isEmpty()) {
                     StringBuilder stringBuilder = new StringBuilder("");
                     for (ParseObject parseObject : personInterests) {
                         try {
@@ -358,7 +362,7 @@ public class PeopleNearmeFragment extends Fragment {
 
                             ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
 
-                            if(!personInterests.isEmpty()) {
+                            if(personInterests!=null && !personInterests.isEmpty()) {
                                 StringBuilder stringBuilder = new StringBuilder("");
                                 for (ParseObject parseObject : personInterests) {
                                     try {
@@ -511,6 +515,7 @@ public class PeopleNearmeFragment extends Fragment {
         Bitmap cbmp;
         ParseFile fileObject;
     }
+
 
 
 }
