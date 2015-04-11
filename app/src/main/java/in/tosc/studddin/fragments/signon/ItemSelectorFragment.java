@@ -149,16 +149,18 @@ public class ItemSelectorFragment extends Fragment {
             Log.d(TAG, "Selected = " + selectedList.get(i) + " position = " + i);
         }
         List<ParseObject> mainList = mAdapter.getDataSet();
+        List<ParseObject> selectedParseObjects = new ArrayList();
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             for (int i = 0; i < mainList.size(); ++i) {
                 if (selectedList.get(i)) {
-                    ParseObject interest = mainList.get(i);
-                    if (type == TYPE_INTEREST) {
-                        interest.put(ParseTables.Interests.USERS, currentUser);
-                    }
+                    selectedParseObjects.add(mainList.get(i));
                 }
             }
+            for (ParseObject selectedParseObject : selectedParseObjects) {
+                selectedParseObject.put(ParseTables.Interests.USERS, currentUser);
+            }
+            currentUser.put(ParseTables.Users.INTERESTS, selectedParseObjects);
         } else {
             Toast.makeText(parentActivity, "You are not logged in. Please login.", Toast.LENGTH_SHORT).show();
         }
