@@ -182,6 +182,7 @@ public class ItemSelectorFragment extends Fragment {
                             }
                         }
                         currentUser.put(ParseTables.Users.INTERESTS, selectedParseObjects);
+                        currentUser.put(ParseTables.Users.FULLY_REGISTERED, true);
                         try {
                             currentUser.save();
                         } catch (ParseException e) {
