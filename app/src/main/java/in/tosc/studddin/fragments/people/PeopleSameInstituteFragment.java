@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
@@ -38,6 +39,7 @@ import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.ui.ParseCircularImageView;
 import in.tosc.studddin.ui.ProgressBarCircular;
+import in.tosc.studddin.utils.Utilities;
 
 public class PeopleSameInstituteFragment extends Fragment {
     ProgressBarCircular progressBar;
@@ -80,7 +82,10 @@ public class PeopleSameInstituteFragment extends Fragment {
 
 
 
-        loaddata();
+        if (Utilities.isNetworkAvailable(getActivity()))
+            loaddata(false);
+        else
+            loaddata(true);
 
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -180,7 +185,7 @@ public class PeopleSameInstituteFragment extends Fragment {
         return view;
     }
 
-    private void loaddata() {
+    private void loaddata(final boolean cache) {
 
        list3.clear();
 
@@ -200,79 +205,30 @@ public class PeopleSameInstituteFragment extends Fragment {
 
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
+        if (cache)
+            query.fromLocalDatastore();
         query.include(ParseTables.Users.INTERESTS);
 
         if (currentuserinstituition != null)
             query.whereMatches(ParseTables.Users.INSTITUTE, "(" + currentuserinstituition + ")", "i");
         query.findInBackground(new FindCallback<ParseUser>() {
-            public void done(List<ParseUser> objects, ParseException e) {
+            public void done(final List<ParseUser> objects, ParseException e) {
                 if (e == null) {
 
 
-                    for (ParseUser pu : objects) {
-                        //access the data associated with the ParseUser using the get method
-                        //pu.getString("key") or pu.get("key")
 
-                        if (!pu.getUsername().equals(currentuser) && pu.getBoolean(ParseTables.Users.FULLY_REGISTERED)) {                            each = new EachRow3();
-                            each.cname = pu.getString(ParseTables.Users.NAME);
-
-
-
-                            ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
-
-                            if(!personInterests.isEmpty()) {
-                                StringBuilder stringBuilder = new StringBuilder("");
-                                for (ParseObject parseObject : personInterests) {
-                                    try {
-                                        stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
-                                    } catch (ParseException e1) {
-                                        e1.printStackTrace();
-                                    }
-                                }
-                                stringBuilder.setLength(stringBuilder.length() - 2);
-                                each.cinterests = stringBuilder.toString();
+                    if (!cache) {
+                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_SAME_INSTITUTE, new DeleteCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_SAME_INSTITUTE, objects);
+                                doneFetchingPeople(objects, cache);
                             }
+                        });
+                    } else
+                        doneFetchingPeople(objects, cache);
 
-
-                            each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
-                            each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
-//                        each.cdistance = pu.getString(ParseTables.Users.NAME);
-                            each.cusername = pu.getString(ParseTables.Users.USERNAME);
-                            ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
-                            if (temploc != null && temploc.getLatitude() != 0) {
-                                if (userlocation != null) {
-                                    each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
-                                } else {
-                                    each.cdistance = "13 km";
-                                }
-                            } else {
-                                each.cdistance = "16 km";
-                            }
-
-                            try {
-                                each.fileObject = (ParseFile) pu.get(ParseTables.Users.IMAGE);
-
-                            } catch (Exception e1) {
-                                System.out.print("nahh");
-                            }
-
-
-                            list3.add(each);
-
-                        }
-
-                    }
-
-
-                    q = new MyAdapter3(getActivity(), 0, list3);
-                    q.notifyDataSetChanged();
-
-                    lv.setAdapter(q);
-                    progressBar.setVisibility(View.GONE);
-                    lv.setVisibility(View.VISIBLE);
-
-
-                    // The query was successful.
+                                     // The query was successful.
                 } else {
                     // Something went wrong.
                 }
@@ -280,6 +236,72 @@ public class PeopleSameInstituteFragment extends Fragment {
         });
 
 
+    }
+
+    public void doneFetchingPeople(List<ParseUser> objects, boolean cache) {
+
+
+        for (ParseUser pu : objects) {
+            //access the data associated with the ParseUser using the get method
+            //pu.getString("key") or pu.get("key")
+
+            if (!pu.getUsername().equals(currentuser) && pu.getBoolean(ParseTables.Users.FULLY_REGISTERED)) {
+                each = new EachRow3();
+                each.cname = pu.getString(ParseTables.Users.NAME);
+
+
+                ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
+
+                if (!personInterests.isEmpty()) {
+                    StringBuilder stringBuilder = new StringBuilder("");
+                    for (ParseObject parseObject : personInterests) {
+                        try {
+                            stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    stringBuilder.setLength(stringBuilder.length() - 2);
+                    each.cinterests = stringBuilder.toString();
+                }
+
+
+                each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
+                each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
+//                        each.cdistance = pu.getString(ParseTables.Users.NAME);
+                each.cusername = pu.getString(ParseTables.Users.USERNAME);
+                ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
+                if (temploc != null && temploc.getLatitude() != 0) {
+                    if (userlocation != null) {
+                        each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
+                    } else {
+                        each.cdistance = "13 km";
+                    }
+                } else {
+                    each.cdistance = "16 km";
+                }
+
+                try {
+                    each.fileObject = (ParseFile) pu.get(ParseTables.Users.IMAGE);
+
+                } catch (Exception e1) {
+                    System.out.print("nahh");
+                }
+
+
+                list3.add(each);
+
+            }
+
+        }
+
+
+        q = new MyAdapter3(getActivity(), 0, list3);
+        q.notifyDataSetChanged();
+
+        lv.setAdapter(q);
+        progressBar.setVisibility(View.GONE);
+        lv.setVisibility(View.VISIBLE);
     }
 
 

@@ -63,7 +63,9 @@ public class ParseTables {
     }
 
     public static class People {
-        public static final String PEOPLE= "People";
+        public static final String PEOPLE_NEAR_ME= "PeopleNearMe";
+        public static final String PEOPLE_SAME_INSTITUTE= "PeopleSameInstitute";
+        public static final String PEOPLE_SAME_INTERESTS= "PeopleSameInterests";
     }
 
 }

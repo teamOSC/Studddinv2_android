@@ -227,10 +227,10 @@ public class PeopleNearmeFragment extends Fragment {
                 if (e == null) {
 
                     if (!cache) {
-                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE, new DeleteCallback() {
+                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_NEAR_ME, new DeleteCallback() {
                             @Override
                             public void done(ParseException e) {
-                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE, objects);
+                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_NEAR_ME, objects);
                                 doneFetchingPeople(objects, cache);
                             }
                         });
