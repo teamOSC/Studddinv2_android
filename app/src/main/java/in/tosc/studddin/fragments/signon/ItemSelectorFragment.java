@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -42,6 +43,7 @@ public class ItemSelectorFragment extends Fragment {
 
     private RecyclerView itemRecyclerView;
     private ProgressBar progressBar;
+    private Button submitButton;
 
     private ItemAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -64,11 +66,19 @@ public class ItemSelectorFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_item_selector, container, false);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressbar_item_selector);
         itemRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_interests);
+        submitButton = (Button) rootView.findViewById(R.id.button_item_submit);
 
         parentActivity = getActivity();
         incomingBundle = getArguments();
 
-        int type = incomingBundle.getInt(TYPE);
+        final int type = incomingBundle.getInt(TYPE);
+
+        submitButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pushDataToParse(type);
+            }
+        });
 
         itemRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(parentActivity);
@@ -123,6 +133,10 @@ public class ItemSelectorFragment extends Fragment {
 
         mAdapter.updateDataSet(list);
         mAdapter.notifyDataSetChanged();
+    }
+
+    public void pushDataToParse(int type) {
+        //TODO: Push the data to parse
     }
 
     public static class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
