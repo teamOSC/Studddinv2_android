@@ -16,17 +16,13 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -39,7 +35,6 @@ import java.util.List;
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
-import in.tosc.studddin.ui.ProgressBarCircular;
 
 /**
  * Class used for selection of Interests and College during the SignUp
