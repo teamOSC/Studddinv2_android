@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,14 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,16 +144,31 @@ public class ItemSelectorFragment extends Fragment {
     }
 
     public void pushDataToParse(int type) {
-        //TODO: Push the data to parse
+        SparseArray<Boolean> selectedList = mAdapter.getSelectedList();
+        for (int i = 0; i < selectedList.size(); ++i) {
+            Log.d(TAG, "Selected = " + selectedList.get(i) + " position = " + i);
+        }
+        List<ParseObject> mainList = mAdapter.getDataSet();
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            for (int i = 0; i < mainList.size(); ++i) {
+                if (selectedList.get(i)) {
+                    ParseObject interest = mainList.get(i);
+                    interest.put(ParseTables.Interests.USERS, currentUser);
+                }
+            }
+        } else {
+            Toast.makeText(parentActivity, "You are not logged in. Please login.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         private List<ParseObject> mainList;
+        private SparseArray<Boolean> selectedList = new SparseArray();
         private int type;
 
-        public static class ViewHolder extends RecyclerView.ViewHolder implements
-                View.OnClickListener{
-//            public LinearLayout mLinearLayout;
+        public class ViewHolder extends RecyclerView.ViewHolder implements
+                CheckBox.OnClickListener {
             public CheckBox mCheckBox;
             public ViewHolder(LinearLayout v) {
                 super(v);
@@ -161,6 +179,11 @@ public class ItemSelectorFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "checked position = " + getPosition());
+                if (mCheckBox.isChecked()) {
+                    selectedList.put(getPosition(), true);
+                } else {
+                    selectedList.put(getPosition(), false);
+                }
             }
         }
 
@@ -202,6 +225,14 @@ public class ItemSelectorFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mainList.size();
+        }
+
+        public SparseArray<Boolean> getSelectedList() {
+            return selectedList;
+        }
+
+        public List<ParseObject> getDataSet() {
+            return mainList;
         }
     }
 }
