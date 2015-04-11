@@ -30,6 +30,7 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -165,7 +166,7 @@ public class ItemSelectorFragment extends Fragment {
                 }
                 Log.d(TAG, "size of selected list - " + selectedList.size());
                 List<ParseObject> mainList = mAdapter.getDataSet();
-                List<ParseObject> selectedParseObjects = new ArrayList();
+                ArrayList<ParseObject> selectedParseObjects = new ArrayList();
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 if (currentUser != null) {
                     for (int i = 0; i < mainList.size(); ++i) {
@@ -175,7 +176,9 @@ public class ItemSelectorFragment extends Fragment {
                     }
                     if (type == TYPE_INTEREST) {
                         for (ParseObject selectedParseObject : selectedParseObjects) {
-                            selectedParseObject.put(ParseTables.Interests.USERS, currentUser);
+                            ParseRelation<ParseUser> relation = selectedParseObject
+                                    .getRelation(ParseTables.Interests.USERS);
+                            relation.add(currentUser);
                             try {
                                 selectedParseObject.save();
                             } catch (ParseException e) {
