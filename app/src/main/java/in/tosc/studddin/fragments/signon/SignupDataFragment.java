@@ -306,7 +306,7 @@ public class SignupDataFragment extends Fragment implements
     private void pushInputToParse() throws ParseException {
         ParseUser user = ParseUser.getCurrentUser();
 
-        user.setUsername(input.get(ParseTables.Users.EMAIL));
+//        user.setUsername(input.get(ParseTables.Users.EMAIL));
         user.setPassword(input.get(ParseTables.Users.PASSWORD));
         user.setEmail(input.get(ParseTables.Users.EMAIL));
 

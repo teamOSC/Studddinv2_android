@@ -285,6 +285,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                         fragment.setCoverPicture(coverPicture);
                                     }
                                 });*/
+                                new PushUserIntoParse().execute(bundle);
                                 showInterestFragment(bundle);
                             }
                         });
@@ -344,6 +345,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                             @Override
                             public void gotData(Bundle bundle) {
 //                                final SignupDataFragment fragment = showSignupDataFragment(bundle);
+                                new PushUserIntoParse().execute(bundle);
                                 showInterestFragment(bundle);
                                 /*
                                 TwitterApi.getUserInfo(new TwitterApi.TwitterInfoCallback() {
@@ -425,6 +427,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                                         String reverseDate = new StringBuffer(currentPerson.getBirthday()).reverse().toString();
                                                         b.putString(ParseTables.Users.DOB, reverseDate);
                                                     }
+                                                    new PushUserIntoParse().execute(b);
                                                     showInterestFragment(b);
                                                 }
                                             } catch (Exception ex) {
@@ -486,6 +489,28 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         }.execute();
     }
 
+    private class PushUserIntoParse extends AsyncTask<Bundle, Void, Void> {
+        @Override
+        protected Void doInBackground(Bundle... bundles) {
+            Bundle bundle = bundles[0];
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            if (bundle.getString(ParseTables.Users.NAME) != null) {
+                currentUser.put(ParseTables.Users.NAME, bundle.getString(ParseTables.Users.NAME));
+            }
+            if (bundle.getString(ParseTables.Users.EMAIL) != null) {
+                currentUser.put(ParseTables.Users.EMAIL, bundle.getString(ParseTables.Users.EMAIL));
+            }
+            if (bundle.getString(ParseTables.Users.DOB) != null) {
+                currentUser.put(ParseTables.Users.DOB, bundle.getString(ParseTables.Users.DOB));
+            }
+            try {
+                currentUser.save();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 
     private class FetchProfilePicture extends AsyncTask<String, Void, Bitmap> {
         SignupDataFragment fragment;

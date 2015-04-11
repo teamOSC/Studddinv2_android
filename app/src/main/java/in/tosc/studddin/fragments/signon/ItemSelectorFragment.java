@@ -154,7 +154,9 @@ public class ItemSelectorFragment extends Fragment {
             for (int i = 0; i < mainList.size(); ++i) {
                 if (selectedList.get(i)) {
                     ParseObject interest = mainList.get(i);
-                    interest.put(ParseTables.Interests.USERS, currentUser);
+                    if (type == TYPE_INTEREST) {
+                        interest.put(ParseTables.Interests.USERS, currentUser);
+                    }
                 }
             }
         } else {
