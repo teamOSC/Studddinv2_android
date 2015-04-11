@@ -61,4 +61,9 @@ public class ParseTables {
         public static final String _NAME = "College";
         public static final String NAME = "name";
     }
+
+    public static class People {
+        public static final String PEOPLE= "People";
+    }
+
 }
