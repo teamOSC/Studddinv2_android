@@ -198,22 +198,6 @@ public class PeopleSameInstituteFragment extends Fragment {
             e.printStackTrace();
         }
 
-        if(interests!=null && !interests.isEmpty()) {
-            StringBuilder stringBuilder = new StringBuilder("");
-            for (ParseObject parseObject : interests) {
-                try {
-                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-            stringBuilder.setLength(stringBuilder.length() - 2);
-            currentuserinterests = stringBuilder.toString();
-        }
-
-        if (currentuserinterests == null) {
-            currentuserinterests = "";
-        }
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.include(ParseTables.Users.INTERESTS);
@@ -315,23 +299,6 @@ public class PeopleSameInstituteFragment extends Fragment {
         }catch (NullPointerException e)
         {
             e.printStackTrace();
-        }
-
-        if(interests!=null && !interests.isEmpty()) {
-            StringBuilder stringBuilder = new StringBuilder("");
-            for (ParseObject parseObject : interests) {
-                try {
-                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-            stringBuilder.setLength(stringBuilder.length() - 2);
-            currentuserinterests = stringBuilder.toString();
-        }
-
-        if (currentuserinterests == null) {
-            currentuserinterests = "";
         }
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();

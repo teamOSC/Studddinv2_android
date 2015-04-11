@@ -209,30 +209,11 @@ public class PeopleNearmeFragment extends Fragment {
             e.printStackTrace();
         }
 
-        if(interests!=null && !interests.isEmpty() ) {
-            StringBuilder stringBuilder = new StringBuilder("");
-            for (ParseObject parseObject : interests) {
-                try {
-                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-                stringBuilder.setLength(stringBuilder.length() - 2);
-                currentuserinterests = stringBuilder.toString();
-        }
-
-
-        if (currentuserinterests == null) {
-            currentuserinterests = "";
-        }
-
         // DUMMY DATA SO THAT IT DISPLAYS SOMETHING
         if (userlocation==null ||  userlocation.getLatitude() == 0)
         {
             userlocation = new ParseGeoPoint(28.7434552 , 77.1205612);
         }
-
 
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
@@ -345,23 +326,7 @@ public class PeopleNearmeFragment extends Fragment {
         {
             e.printStackTrace();
         }
-        if(interests!=null && !interests.isEmpty()) {
-            StringBuilder stringBuilder = new StringBuilder("");
-            for (ParseObject parseObject : interests) {
-                try {
-                    stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-            stringBuilder.setLength(stringBuilder.length() - 2);
-            currentuserinterests = stringBuilder.toString();
-        }
 
-
-        if (currentuserinterests == null) {
-            currentuserinterests = "";
-        }
 
         // DUMMY DATA SO THAT IT DISPLAYS SOMETHING
         if (userlocation==null ||  userlocation.getLatitude() == 0)
