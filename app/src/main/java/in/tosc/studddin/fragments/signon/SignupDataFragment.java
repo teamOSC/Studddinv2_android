@@ -21,7 +21,6 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -34,30 +33,19 @@ import com.parse.LocationCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
-import com.tokenautocomplete.FilteredArrayAdapter;
-import com.tokenautocomplete.TokenCompleteTextView;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
-import in.tosc.studddin.ui.BubbleCompletionView;
 import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.externalapi.ParseTables;
-import in.tosc.studddin.utils.FutureUtils;
-import in.tosc.studddin.utils.FutureUtils.FutureShit;
 
 /**
  * SignupDataFragment
@@ -423,72 +411,4 @@ public class SignupDataFragment extends Fragment implements
         };
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 50, locationListener);
     }
-
-    /*
-    private void getInterests(final BubbleCompletionView editText) {
-        futureShit = new FutureShit(new Callable<List<ParseObject>>() {
-            @Override
-            public List<ParseObject> call() throws Exception {
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Interests");
-                return query.find();
-            }
-        }, new FutureUtils.FutureCallback<List<ParseObject>>() {
-            @Override
-            public void execute(List<ParseObject> result) {
-                interests = result;
-                final List<String> interestChoices = new ArrayList();
-                for (ParseObject interest : result) {
-                    interestChoices.add(interest.getString("name"));
-                }
-                final int origInterestCount = interestChoices.size();
-                interestChoices.add(ADD_NEW_INTEREST);
-                FilteredArrayAdapter mAdapter = new FilteredArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_list_item_1, interestChoices) {
-                    @Override
-                    protected boolean keepObject(String obj, String mask) {
-                        mask = mask.toLowerCase();
-                        lastEnteredInterest = mask;
-                        if (obj.equals(ADD_NEW_INTEREST)) {
-                            return true;
-                        }
-                        return obj.toLowerCase().startsWith(mask);
-                    }
-                };
-                Log.d(TAG, "Got the data");
-                editText.setAdapter(mAdapter);
-                editText.setTokenListener(new TokenCompleteTextView.TokenListener() {
-                    @Override
-                    public void onTokenAdded(Object o) {
-                        String key = (String) o;
-                        if (key.equals(ADD_NEW_INTEREST)) {
-                            ParseObject newInterest = new ParseObject("Interests");
-                            newInterest.put(ParseTables.Interests.NAME, lastEnteredInterest);
-                            selectedInterests.add(newInterest);
-                            interests.add(newInterest);
-                            interestChoices.add(lastEnteredInterest);
-                            for (String interest : interestChoices) {
-                                Log.d(TAG, "interest = " + interest);
-                            }
-                        } else {
-                            key = key.toLowerCase();
-                            selectedInterests.add(interests.get(interestChoices.indexOf(key)));
-                        }
-                    }
-
-                    @Override
-                    public void onTokenRemoved(Object o) {
-                        String key = (String) o;
-                        key = key.toString();
-                        //Because I add an extra entry "Add new interest" :|
-                        int index = interestChoices.indexOf(key);
-                        if (index >= origInterestCount-1)
-                            index -= 1;
-                        selectedInterests.remove(interests.get(index));
-                    }
-                });
-            }
-        }
-        );
-    }
-    */
 }
