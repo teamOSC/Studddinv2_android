@@ -50,7 +50,6 @@ import in.tosc.studddin.externalapi.ParseTables;
 /**
  * SignupDataFragment
  */
-@Deprecated
 public class SignupDataFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -331,7 +330,6 @@ public class SignupDataFragment extends Fragment implements
                 public void done(ParseException e) {
                     if (e == null) {
                         // Hooray! Let them use the app now.
-                        Log.d(TAG, "Going to fuckin main Activity");
                         goToMainActivity(getActivity());
                     } else {
                         e.printStackTrace();
