@@ -208,6 +208,8 @@ public class PeopleSameInterestsFragment extends Fragment {
 
 
         ParseQuery<ParseUser> currentuserInterestsQuery = ParseUser.getQuery();
+        if (cache)
+            currentuserInterestsQuery.fromLocalDatastore();
         currentuserInterestsQuery.whereEqualTo("username", currentuser);
         currentuserInterestsQuery.include(ParseTables.Users.INTERESTS);
         currentuserInterestsQuery.getFirstInBackground(new GetCallback<ParseUser>() {
@@ -215,8 +217,28 @@ public class PeopleSameInterestsFragment extends Fragment {
                 if (user == null) {
                     Log.d("query", "failed.");
                 } else {
-                        doneFetchingUserInterests(mCache);
-                    // The query was successful.
+
+                    final ArrayList<ParseObject> currentUserInterestsList = (ArrayList<ParseObject>) User.get(ParseTables.Users.INTERESTS);
+                    if(currentuserinterests==null)
+
+                    {
+                        currentuserinterests = "";
+                    }
+
+                    if (!cache) {
+                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS, new DeleteCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS, currentUserInterestsList);
+                                doneFetchingUserInterests(currentUserInterestsList, mCache);
+                            }
+                        });
+                    } else
+                        doneFetchingUserInterests(currentUserInterestsList, mCache);
+
+
+
+                      // The query was successful.
                 }
             }
         });
@@ -225,14 +247,9 @@ public class PeopleSameInterestsFragment extends Fragment {
 
 
 
-    public void doneFetchingUserInterests(final boolean cache) {
+    public void doneFetchingUserInterests(ArrayList<ParseObject> currentUserInterestsList, final boolean cache) {
 
-    ArrayList<ParseObject> currentUserInterestsList = (ArrayList<ParseObject>) User.get(ParseTables.Users.INTERESTS);
-    if(currentuserinterests==null)
 
-    {
-        currentuserinterests = "";
-    }
 
     if(!currentUserInterestsList.isEmpty())
 
