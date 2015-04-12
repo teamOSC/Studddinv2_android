@@ -9,20 +9,8 @@ android {
         applicationId "in.tosc.studddin"
         minSdkVersion 10
         targetSdkVersion 21
-        versionCode 30
-        versionName "0.3.0"
-    }
-    buildTypes {
-        debug {
-            debuggable true
-        }
-        travis {
-            debuggable true
-        }
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+        versionCode 31
+        versionName "0.3.1"
     }
     signingConfigs {
         debug {
@@ -42,6 +30,19 @@ android {
             storePassword '$System.env.KEY_PASSWORD'
         }
         release {
+        }
+    }
+    buildTypes {
+        debug {
+            debuggable true
+        }
+        travis {
+            debuggable true
+            signingConfig signingConfigs.travis
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
