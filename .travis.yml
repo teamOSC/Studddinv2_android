@@ -3,7 +3,7 @@ branches:
   only:
   - master
   - stable
-script: ./gradlew clean assembleTravis
+script: ./gradlew clean assembleDebug
 android:
   components:
   - platform-tools

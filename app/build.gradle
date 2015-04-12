@@ -14,20 +14,10 @@ android {
     }
     signingConfigs {
         debug {
-            if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-                storeFile file("${System.getenv('USERPROFILE')}\\.android\\debug.jks")
-            } else {
-                storeFile file("${System.getenv('HOME')}/.android/debug.jks")
-            }
+            storeFile file("keystore/debug.jks")
             keyAlias 'teamosc'
             keyPassword 'teamosc'
             storePassword 'teamosc'
-        }
-        travis {
-            storeFile file("keystore/debug.jks")
-            keyAlias '$System.env.KEY_PASSWORD'
-            keyPassword '$System.env.KEY_PASSWORD'
-            storePassword '$System.env.KEY_PASSWORD'
         }
         release {
         }
@@ -35,10 +25,7 @@ android {
     buildTypes {
         debug {
             debuggable true
-        }
-        travis {
-            debuggable true
-            signingConfig signingConfigs.travis
+            signingConfig signingConfigs.debug
         }
         release {
             minifyEnabled false
