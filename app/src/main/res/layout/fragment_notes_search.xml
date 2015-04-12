@@ -89,8 +89,8 @@
         android:layout_marginRight="20dp"
         android:onClick="jumpToPage"
         fab:fab_addButtonPlusIconColor="@color/white"
-        fab:fab_colorNormal="@color/note_button"
-        fab:fab_colorPressed="@color/note_button_pressed" />
+        fab:fab_colorNormal="@color/pink"
+        fab:fab_colorPressed="@color/pink_pressed" />
 
 
 </FrameLayout>
