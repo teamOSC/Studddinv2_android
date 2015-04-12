@@ -101,6 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:padding="10dp"
                     android:background="@drawable/listings_edittext_bg" />
             </LinearLayout>
 
@@ -113,11 +114,11 @@
 
                 <ImageView
                     android:id="@+id/listing_image"
-                    android:layout_width="300dp"
-                    android:layout_height="200dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:scaleType="fitXY"
-                    android:src="@drawable/listing_placeholder" />
+                    android:src="@drawable/listings_placeholder" />
             </LinearLayout>
 
 
