@@ -161,7 +161,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                                         in.putByteArray("pic", data);
                                         System.out.print("pic3" + String.valueOf(data));
-                                        transaction.replace(R.id.container, newFragment).addToBackStack("PeopleNearMe").commit();
+                                        transaction.add(R.id.container, newFragment).hide(PeopleSameInterestsFragment.this).addToBackStack(PeopleSameInterestsFragment.class.getName()).commit();
 
 
                                     } else {
@@ -172,7 +172,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                 } else {
 
 
-                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_person);
+                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.com_facebook_profile_picture_blank_portrait);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] bitmapdata = stream.toByteArray();
@@ -180,7 +180,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                     in.putByteArray("pic", bitmapdata);
                     System.out.print("pic2" + String.valueOf(bitmapdata));
 
-                    transaction.replace(R.id.container, newFragment).addToBackStack("PeopleNearMe").commit();
+                    transaction.add(R.id.container, newFragment).hide(PeopleSameInterestsFragment.this).addToBackStack(PeopleSameInterestsFragment.class.getName()).commit();
 
                 }
 
@@ -208,6 +208,8 @@ public class PeopleSameInterestsFragment extends Fragment {
 
 
         ParseQuery<ParseUser> currentuserInterestsQuery = ParseUser.getQuery();
+        if (cache)
+            currentuserInterestsQuery.fromLocalDatastore();
         currentuserInterestsQuery.whereEqualTo("username", currentuser);
         currentuserInterestsQuery.include(ParseTables.Users.INTERESTS);
         currentuserInterestsQuery.getFirstInBackground(new GetCallback<ParseUser>() {
@@ -215,8 +217,28 @@ public class PeopleSameInterestsFragment extends Fragment {
                 if (user == null) {
                     Log.d("query", "failed.");
                 } else {
-                        doneFetchingUserInterests(mCache);
-                    // The query was successful.
+
+                    final ArrayList<ParseObject> currentUserInterestsList = (ArrayList<ParseObject>) User.get(ParseTables.Users.INTERESTS);
+                    if(currentuserinterests==null)
+
+                    {
+                        currentuserinterests = "";
+                    }
+
+                    if (!cache) {
+                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS, new DeleteCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS, currentUserInterestsList);
+                                doneFetchingUserInterests(currentUserInterestsList, mCache);
+                            }
+                        });
+                    } else
+                        doneFetchingUserInterests(currentUserInterestsList, mCache);
+
+
+
+                      // The query was successful.
                 }
             }
         });
@@ -225,14 +247,9 @@ public class PeopleSameInterestsFragment extends Fragment {
 
 
 
-    public void doneFetchingUserInterests(final boolean cache) {
+    public void doneFetchingUserInterests(ArrayList<ParseObject> currentUserInterestsList, final boolean cache) {
 
-    ArrayList<ParseObject> currentUserInterestsList = (ArrayList<ParseObject>) User.get(ParseTables.Users.INTERESTS);
-    if(currentuserinterests==null)
 
-    {
-        currentuserinterests = "";
-    }
 
     if(!currentUserInterestsList.isEmpty())
 
@@ -300,7 +317,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                     ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
 
-                    if (!personInterests.isEmpty()) {
+                    if(personInterests!=null && !personInterests.isEmpty()) {
                         StringBuilder stringBuilder = new StringBuilder("");
                         for (ParseObject parseObject : personInterests) {
                             try {
@@ -409,7 +426,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                                                         ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
 
-                                                        if(!personInterests.isEmpty()) {
+                                                        if(personInterests!=null && !personInterests.isEmpty()) {
                                                             StringBuilder stringBuilder = new StringBuilder("");
                                                             for (ParseObject parseObject : personInterests) {
                                                                 try {
@@ -542,7 +559,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                                         }
                                     });
                         } else {
-                            holder.userimg.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_person));
+                            holder.userimg.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.com_facebook_profile_picture_blank_portrait));
                         }
 
                         return convertView;
