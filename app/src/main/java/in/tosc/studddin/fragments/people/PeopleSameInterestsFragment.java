@@ -161,7 +161,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                                         in.putByteArray("pic", data);
                                         System.out.print("pic3" + String.valueOf(data));
-                                        transaction.replace(R.id.container, newFragment).addToBackStack("PeopleNearMe").commit();
+                                        transaction.add(R.id.container, newFragment).hide(PeopleSameInterestsFragment.this).addToBackStack(PeopleSameInterestsFragment.class.getName()).commit();
 
 
                                     } else {
@@ -180,7 +180,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                     in.putByteArray("pic", bitmapdata);
                     System.out.print("pic2" + String.valueOf(bitmapdata));
 
-                    transaction.replace(R.id.container, newFragment).addToBackStack("PeopleNearMe").commit();
+                    transaction.add(R.id.container, newFragment).hide(PeopleSameInterestsFragment.this).addToBackStack(PeopleSameInterestsFragment.class.getName()).commit();
 
                 }
 
@@ -300,7 +300,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                     ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
 
-                    if (!personInterests.isEmpty()) {
+                    if(personInterests!=null && !personInterests.isEmpty()) {
                         StringBuilder stringBuilder = new StringBuilder("");
                         for (ParseObject parseObject : personInterests) {
                             try {
@@ -409,7 +409,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                                                         ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
 
-                                                        if(!personInterests.isEmpty()) {
+                                                        if(personInterests!=null && !personInterests.isEmpty()) {
                                                             StringBuilder stringBuilder = new StringBuilder("");
                                                             for (ParseObject parseObject : personInterests) {
                                                                 try {

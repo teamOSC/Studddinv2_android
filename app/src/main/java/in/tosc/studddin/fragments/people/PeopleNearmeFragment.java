@@ -164,7 +164,7 @@ public class PeopleNearmeFragment extends Fragment {
 
                                         in.putByteArray("pic", data);
                                         System.out.print("pic3" + String.valueOf(data));
-                                        transaction.replace(R.id.container, newFragment).addToBackStack("PeopleNearMe").commit();
+                                        transaction.add(R.id.container, newFragment).hide(PeopleNearmeFragment.this).addToBackStack(PeopleNearmeFragment.class.getName()).commit();
 
 
                                     } else {
@@ -183,7 +183,6 @@ public class PeopleNearmeFragment extends Fragment {
                     in.putByteArray("pic", bitmapdata);
                     System.out.print("pic2" + String.valueOf(bitmapdata));
 
-//                    transaction.replace(R.id.container, newFragment).addToBackStack("PeopleNearMe").commit();
                     transaction.add(R.id.container, newFragment).hide(PeopleNearmeFragment.this).addToBackStack(PeopleNearmeFragment.class.getName()).commit();
 
                 }
