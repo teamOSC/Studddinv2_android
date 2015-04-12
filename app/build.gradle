@@ -9,8 +9,8 @@ android {
         applicationId "in.tosc.studddin"
         minSdkVersion 10
         targetSdkVersion 21
-        versionCode 25
-        versionName "0.2.5"
+        versionCode 30
+        versionName "0.3.0"
     }
     buildTypes {
         debug {
