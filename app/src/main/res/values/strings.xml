@@ -30,6 +30,7 @@
     <string name="email_id">Email - ID</string>
     <string name="interests">Interests</string>
     <string name="submit">Submit</string>
+    <string name="upload">Upload</string>
     <string name="enter_name">Please Enter Name</string>
     <string name="enter_password">Please Enter password</string>
     <string name="enter_institute">Please Enter Institute</string>

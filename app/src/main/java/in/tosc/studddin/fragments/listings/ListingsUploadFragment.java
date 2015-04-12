@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -35,8 +37,6 @@ import java.util.List;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
-import in.tosc.studddin.ui.FloatingActionButton;
-import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.ui.ProgressBarCircular;
 
 /**
@@ -48,12 +48,12 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
     public static byte[] byteArray;
     public static String mCurrentPhotoPath;
     //private ImageView upload;
-    private MaterialEditText listing;
-    private MaterialEditText mobile;
+    private EditText listing;
+    private EditText mobile;
     private Spinner category;
     private ProgressBarCircular uploading;
-    private MaterialEditText listing_desc;
-    private FloatingActionButton upload;
+    private EditText listing_desc;
+    private Button upload;
 
     public ListingsUploadFragment() {
         // Required empty public constructor
@@ -67,14 +67,14 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
         View rootView;
         rootView = inflater.inflate(R.layout.fragment_listings_upload, container, false);
 
-        listing = (MaterialEditText) rootView.findViewById(R.id.et_listing);
-        mobile = (MaterialEditText) rootView.findViewById(R.id.et_mobile);
-        listing_desc = (MaterialEditText) rootView.findViewById(R.id.listing_desc);
+        listing = (EditText) rootView.findViewById(R.id.et_listing);
+        mobile = (EditText) rootView.findViewById(R.id.et_mobile);
+        listing_desc = (EditText) rootView.findViewById(R.id.listing_desc);
         listing_image = (ImageView) rootView.findViewById(R.id.listing_image);
         category = (Spinner) rootView.findViewById(R.id.listing_category);
         uploading = (ProgressBarCircular) rootView.findViewById(R.id.upload_progress);
         uploading.setBackgroundColor(getResources().getColor(R.color.listingsColorPrimaryDark));
-        upload = (FloatingActionButton) rootView.findViewById(R.id.listing_upload);
+        upload = (Button) rootView.findViewById(R.id.listing_upload);
         List<String> categoryList = new ArrayList<>();
         categoryList.add("Book");
         categoryList.add("Apparatus");

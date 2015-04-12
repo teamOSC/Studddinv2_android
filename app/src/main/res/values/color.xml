@@ -33,6 +33,7 @@
     <!--Listings color -->
     <color name="listingsColorPrimary">#8BC34A</color>
     <color name="listingsColorPrimaryDark">#689F38</color>
+    <color name="listingsColorPrimaryPressed">#aa8BC34A</color>
     <!--Events color -->
     <color name="eventsColorPrimary">#3F51B5</color>
     <color name="eventsColorPrimaryDark">#303F9F</color>
