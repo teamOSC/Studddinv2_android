@@ -16,6 +16,9 @@ android {
         debug {
             debuggable true
         }
+        travis {
+            debuggable true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -23,10 +26,20 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file("keystore/debug.jks")
+            if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+                storeFile file("${System.getenv('USERPROFILE')}\\.android\\debug.jks")
+            } else {
+                storeFile file("${System.getenv('HOME')}/.android/debug.jks")
+            }
             keyAlias 'teamosc'
             keyPassword 'teamosc'
             storePassword 'teamosc'
+        }
+        travis {
+            storeFile file("keystore/debug.jks")
+            keyAlias '$System.env.KEY_PASSWORD'
+            keyPassword '$System.env.KEY_PASSWORD'
+            storePassword '$System.env.KEY_PASSWORD'
         }
         release {
         }
