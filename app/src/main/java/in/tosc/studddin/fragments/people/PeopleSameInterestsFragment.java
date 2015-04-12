@@ -172,7 +172,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                 } else {
 
 
-                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_person);
+                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.com_facebook_profile_picture_blank_portrait);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] bitmapdata = stream.toByteArray();
@@ -542,7 +542,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                                         }
                                     });
                         } else {
-                            holder.userimg.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_action_person));
+                            holder.userimg.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.com_facebook_profile_picture_blank_portrait));
                         }
 
                         return convertView;
