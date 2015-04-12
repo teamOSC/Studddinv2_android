@@ -248,7 +248,7 @@ public class PeopleNearmeFragment extends Fragment {
 
                             ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
 
-                            if(!personInterests.isEmpty()) {
+                            if(!personInterests.isEmpty()) { //FIXME: NullPointerException
                                 StringBuilder stringBuilder = new StringBuilder("");
                                 for (ParseObject parseObject : personInterests) {
                                     try {
