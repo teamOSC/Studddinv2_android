@@ -4,9 +4,11 @@ package in.tosc.studddin.fragments.signon;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,9 +38,6 @@ import com.parse.ParseFacebookUtils;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,7 +49,6 @@ import in.tosc.studddin.externalapi.FacebookApi;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.externalapi.TwitterApi;
 import in.tosc.studddin.ui.FloatingActionButton;
-import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.utils.Utilities;
 
 
@@ -69,8 +68,8 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     private FloatingActionButton googleLoginButton;
     private Button signUpButton, signInButton;
     private TextView guestContinue;
-    private MaterialEditText emailEditText;
-    private MaterialEditText passwordEditText;
+    private EditText emailEditText;
+    private EditText passwordEditText;
 
     private static final int RC_SIGN_IN = 69;
     private GoogleApiClient mGoogleApiClient;
@@ -78,6 +77,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     private boolean mSignInClicked;
     private ConnectionResult mConnectionResult;
     public static String token;
+    private Typeface signOnFont;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -152,8 +152,11 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         signUpButton = (Button) rootView.findViewById(R.id.signon_button_signup);
         signInButton = (Button) rootView.findViewById(R.id.signon_button_signin);
         guestContinue = (TextView) rootView.findViewById(R.id.sign_in_guest);
-        emailEditText = (MaterialEditText) rootView.findViewById(R.id.sign_in_user_name);
-        passwordEditText = (MaterialEditText) rootView.findViewById(R.id.sign_in_user_password);
+        emailEditText = (EditText) rootView.findViewById(R.id.sign_in_user_name);
+        passwordEditText = (EditText) rootView.findViewById(R.id.sign_in_user_password);
+        signOnFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Gotham-Light.ttf");
+        emailEditText.setTypeface(signOnFont);
+        passwordEditText.setTypeface(signOnFont);
 
         emailEditText.setText(Utilities.getUserEmail(getActivity()));
 
@@ -286,7 +289,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                     }
                                 });*/
                                 new PushUserIntoParse().execute(bundle);
-                                showInterestFragment(bundle);
+//                                showInterestFragment(bundle);
                             }
                         });
                     } else {
@@ -346,7 +349,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                             public void gotData(Bundle bundle) {
 //                                final SignupDataFragment fragment = showSignupDataFragment(bundle);
                                 new PushUserIntoParse().execute(bundle);
-                                showInterestFragment(bundle);
+//                                showInterestFragment(bundle);
                                 /*
                                 TwitterApi.getUserInfo(new TwitterApi.TwitterInfoCallback() {
                                     @Override
@@ -428,7 +431,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                                         b.putString(ParseTables.Users.DOB, reverseDate);
                                                     }
                                                     new PushUserIntoParse().execute(b);
-                                                    showInterestFragment(b);
                                                 }
                                             } catch (Exception ex) {
                                                 ex.printStackTrace();
@@ -489,9 +491,18 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         }.execute();
     }
 
-    private class PushUserIntoParse extends AsyncTask<Bundle, Void, Void> {
+    private class PushUserIntoParse extends AsyncTask<Bundle, Void, Bundle> {
+        private ProgressDialog mProgressDialog;
+
         @Override
-        protected Void doInBackground(Bundle... bundles) {
+        protected void onPreExecute() {
+            mProgressDialog = new ProgressDialog(getActivity());
+            mProgressDialog.setMessage("Signing Up...");
+            mProgressDialog.show();
+        }
+
+        @Override
+        protected Bundle doInBackground(Bundle... bundles) {
             Bundle bundle = bundles[0];
             ParseUser currentUser = ParseUser.getCurrentUser();
             if (bundle.getString(ParseTables.Users.NAME) != null) {
@@ -508,7 +519,13 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            return null;
+            return bundle;
+        }
+
+        @Override
+        protected void onPostExecute(Bundle b) {
+            mProgressDialog.dismiss();
+            showInterestFragment(b);
         }
     }
 

@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Explode;
 import android.util.Log;
@@ -16,17 +16,13 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -39,7 +35,7 @@ import java.util.List;
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
-import in.tosc.studddin.ui.ProgressBarCircular;
+import in.tosc.studddin.ui.FloatingActionButton;
 
 /**
  * Class used for selection of Interests and College during the SignUp
@@ -59,7 +55,7 @@ public class ItemSelectorFragment extends Fragment {
 
     private RecyclerView itemRecyclerView;
     private ProgressBar progressBar;
-    private Button submitButton;
+    private FloatingActionButton submitButton;
 
     private ItemAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -84,7 +80,7 @@ public class ItemSelectorFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_item_selector, container, false);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressbar_item_selector);
         itemRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_interests);
-        submitButton = (Button) rootView.findViewById(R.id.button_item_submit);
+        submitButton = (FloatingActionButton) rootView.findViewById(R.id.button_item_submit);
 
         parentActivity = getActivity();
         incomingBundle = getArguments();
@@ -102,7 +98,7 @@ public class ItemSelectorFragment extends Fragment {
         });
 
         itemRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(parentActivity);
+        mLayoutManager = new GridLayoutManager(parentActivity, 2);
         itemRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new ItemAdapter(new ArrayList<ParseObject>(), type);
         itemRecyclerView.setAdapter(mAdapter);
@@ -186,6 +182,7 @@ public class ItemSelectorFragment extends Fragment {
                             }
                         }
                         currentUser.put(ParseTables.Users.INTERESTS, selectedParseObjects);
+                        currentUser.put(ParseTables.Users.FULLY_REGISTERED, true);
                         try {
                             currentUser.save();
                         } catch (ParseException e) {

@@ -19,31 +19,36 @@
             android:layout_height="0dp"
             android:layout_weight="2" />
 
-        <in.tosc.studddin.ui.MaterialEditText
+        <EditText
             android:id="@+id/sign_in_user_name"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:padding="10dp"
             android:layout_weight="1"
             android:imeOptions="actionNext"
             android:singleLine="true"
             android:hint="@string/user_username"
+            android:textColorHint="@android:color/white"
             android:inputType="textEmailAddress"
             android:textAlignment="center"
-            app:baseColor="@color/white"
-            app:primaryColor="@color/white" />
+            android:textColor="@android:color/white"
+            android:background="@drawable/signon_edittext"/>
 
-        <in.tosc.studddin.ui.MaterialEditText
+        <EditText
             android:id="@+id/sign_in_user_password"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_margin="10dp"
+            android:layout_marginBottom="10dp"
+            android:padding="10dp"
             android:layout_weight="1"
             android:hint="@string/user_password"
+            android:textColorHint="@android:color/white"
             android:inputType="textWebPassword"
             android:textAlignment="center"
-            app:baseColor="@color/white"
-            app:primaryColor="@color/white" />
+            android:textColor="@android:color/white"
+            android:background="@drawable/signon_edittext"/>
 
     </LinearLayout>
 

@@ -11,6 +11,11 @@
     <color name="textview_dark">#212121</color>
     <color name="textview_light">#616161</color>
     <color name="material_drawer_primary_text">#212121</color>
+    <color name="signon_editext_normal">#aa9E9E9E</color>
+    <color name="signon_editext_focused">#aa616161</color>
+    <color name="itemselector_checkbox_bg_normal">#aaF3B61F</color>
+    <color name="itemselector_checkbox_bg_pressed">#aaBB6B00</color>
+    <color name="signON_bg">#aa424242</color>
 
     <!-- App Main colors -->
     <color name="colorPrimary">#607D8B</color>
