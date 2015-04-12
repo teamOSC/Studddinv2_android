@@ -193,6 +193,7 @@ public class NavigationDrawerFragment extends Fragment {
                 }
 
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+                ((ActionBarActivity)getActivity()).getSupportActionBar().setElevation(0f);
             }
 
             @Override
@@ -213,6 +214,7 @@ public class NavigationDrawerFragment extends Fragment {
                 mProfilePic.loadInBackground();
                 mCoverPic.loadInBackground();
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+                ((ActionBarActivity)getActivity()).getSupportActionBar().setElevation(10f);
             }
         };
 
