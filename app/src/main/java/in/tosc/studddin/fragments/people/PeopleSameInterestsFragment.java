@@ -91,6 +91,8 @@ public class PeopleSameInterestsFragment extends Fragment {
         else
             loaddata(true);
 
+
+
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -104,11 +106,8 @@ public class PeopleSameInterestsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (Utilities.isNetworkAvailable(getActivity()))
-                    loaddataAfterSearch(editable.toString(),false);
-                else
-                    loaddataAfterSearch(editable.toString(),true);
-            }
+                // ALWAYS SEARCH FROM CACHE
+                loaddataAfterSearch(editable.toString(),true);            }
         });
 
 
@@ -375,21 +374,19 @@ public class PeopleSameInterestsFragment extends Fragment {
     private void loaddataAfterSearch(String textSearch, final boolean cache) {
 
         final boolean mCache =cache;
-
-
-        final String textSearchFilter = textSearch;
         list3.clear();
-        q = new MyAdapter3(getActivity(), 0, list3);
-        q.notifyDataSetChanged();
 
-        lv.setAdapter(q);
 
-        currentuser = ParseUser.getCurrentUser().getUsername();
-        currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
-        currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
-        currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
-        currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
-        userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
+        currentuser = User.getUsername();
+        currentuseremail = User.getString(ParseTables.Users.EMAIL);
+        currentuserinstituition = User.getString(ParseTables.Users.INSTITUTE);
+        currentusername = User.getString(ParseTables.Users.NAME);
+        currentuserqualification = User.getString(ParseTables.Users.QUALIFICATIONS);
+        userlocation = User.getParseGeoPoint(ParseTables.Users.LOCATION);
+
+//          ArrayList<ParseObject> interests = (ArrayList<ParseObject>) User.get(ParseTables.Users.INTERESTS);
+//         ^^ can't fetch array list in back ground, therefore using a query with .include(ParseTables.Users.INTERESTS)
+
 
         ParseQuery<ParseUser> currentuserInterestsQuery = ParseUser.getQuery();
         if (cache)
@@ -397,7 +394,7 @@ public class PeopleSameInterestsFragment extends Fragment {
         currentuserInterestsQuery.whereEqualTo("username", currentuser);
         currentuserInterestsQuery.include(ParseTables.Users.INTERESTS);
         currentuserInterestsQuery.getFirstInBackground(new GetCallback<ParseUser>() {
-            public void done(ParseUser user, ParseException e) {
+            public void done(final ParseUser user, ParseException e) {
                 if (user == null) {
                     Log.d("query", "failed.");
                 } else {
@@ -410,19 +407,21 @@ public class PeopleSameInterestsFragment extends Fragment {
                     }
 
                     if (!cache) {
-                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS_SEARCH, new DeleteCallback() {
+                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS, new DeleteCallback() {
                             @Override
                             public void done(ParseException e) {
-                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS_SEARCH, currentUserInterestsList);
-                                doneFetchingUserInterestsForSearch(currentUserInterestsList, mCache,textSearchFilter);
+                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS, currentUserInterestsList);
+                                doneFetchingUserInterests(currentUserInterestsList, mCache);
                             }
                         });
                     } else
-                        doneFetchingUserInterestsForSearch(currentUserInterestsList, mCache, textSearchFilter);
+                        doneFetchingUserInterests(currentUserInterestsList, mCache);
 
 
+
+                    // The query was successful.
                 }
-                }
+            }
         });
 
 
@@ -440,9 +439,9 @@ public class PeopleSameInterestsFragment extends Fragment {
                     ParseQuery<ParseUser> query = ParseUser.getQuery();
                     if (cache)
                         query.fromLocalDatastore();
-                    query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
-                    query.include(ParseTables.Users.INTERESTS);
                     query.whereEqualTo(ParseTables.Users.INTERESTS, currentUserInterestsList.get(c));
+//                    query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
+                    query.include(ParseTables.Users.INTERESTS);
 
 
                     query.findInBackground(new FindCallback<ParseUser>() {
@@ -451,10 +450,10 @@ public class PeopleSameInterestsFragment extends Fragment {
 
 
                                 if (!cache) {
-                                    ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_SAME_INTERESTS_SEARCH, new DeleteCallback() {
+                                    ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_SAME_INTERESTS, new DeleteCallback() {
                                         @Override
                                         public void done(ParseException e) {
-                                            ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_SAME_INTERESTS_SEARCH, objects);
+                                            ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_SAME_INTERESTS, objects);
                                             doneFetchingPeople(objects, cache);
                                         }
                                     });
@@ -478,6 +477,7 @@ public class PeopleSameInterestsFragment extends Fragment {
         {
             progressBar.setVisibility(View.GONE);
         }
+
 
     }
 
