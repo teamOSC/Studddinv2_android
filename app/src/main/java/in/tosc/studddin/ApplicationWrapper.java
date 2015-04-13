@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 
@@ -26,6 +27,7 @@ public class ApplicationWrapper extends Application {
         Parse.initialize(this, "9nhyJ0OEkfqmGygl44OAYfdFdnapE27d9yj9UI5x", "7pJlc2KZgpFXZHwvoXwVeZUsEtiDoTrtjPM7EGBa");
         ParseUser.enableAutomaticUser();
         ParseACL defaultACL = new ParseACL();
+        ParseFacebookUtils.initialize(getResources().getString(R.string.facebook_app_id));
         ParseTwitterUtils.initialize("FfUOeQ5OBuv0qOkdHbfXCrwdk", "xQmFnUSii54eS3iUrl0uIrxfeL4EfIdFc6iyoHUDgSIVGDbauD");
     }
 

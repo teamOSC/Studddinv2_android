@@ -248,6 +248,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                 ParseFacebookUtils.Permissions.User.RELATIONSHIPS,
                 ParseFacebookUtils.Permissions.User.BIRTHDAY,
                 ParseFacebookUtils.Permissions.User.LOCATION,
+                ParseFacebookUtils.Permissions.User.EVENTS,
                 ParseFacebookUtils.Permissions.User.PHOTOS);
         ParseFacebookUtils.logIn(permissions, getActivity(), new LogInCallback() {
             @Override
