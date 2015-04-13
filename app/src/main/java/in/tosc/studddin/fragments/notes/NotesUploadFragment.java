@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.luminous.pick.Action;
@@ -42,6 +43,7 @@ public class NotesUploadFragment extends Fragment {
     private EditText topicNameEdTxt, branchNameEdTxt, subjectNameEdTxt;
     private ArrayList<ParseFile> parseFileList;
     private String topicNameString = "", branchNameString = "", subjectNameString = "";
+    private ImageView notes_attach_imageview;
 
     public NotesUploadFragment() {
 
@@ -75,8 +77,8 @@ public class NotesUploadFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_notes_upload, container, false);
 
-
-        Button attachButton = (Button) rootView.findViewById(R.id.notes_attach);
+        notes_attach_imageview = (ImageView) rootView.findViewById(R.id.notes_selected_image);
+//        Button attachButton = (Button) rootView.findViewById(R.id.notes_attach);
         Button uploadButton = (Button) rootView.findViewById(R.id.notes_upload);
         topicNameEdTxt = (EditText) rootView.findViewById(R.id.notes_topic);
         branchNameEdTxt = (EditText) rootView.findViewById(R.id.notes_branch);
@@ -85,7 +87,7 @@ public class NotesUploadFragment extends Fragment {
 
         parseFileList = new ArrayList<>();
 
-        attachButton.setOnClickListener(new View.OnClickListener() {
+        notes_attach_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
