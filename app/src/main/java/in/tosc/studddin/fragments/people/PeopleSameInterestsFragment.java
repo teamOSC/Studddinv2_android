@@ -444,6 +444,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                     query.include(ParseTables.Users.INTERESTS);
                     query.whereEqualTo(ParseTables.Users.INTERESTS, currentUserInterestsList.get(c));
 
+
                     query.findInBackground(new FindCallback<ParseUser>() {
                         public void done(final List<ParseUser> objects, ParseException e) {
                             if (e == null) {

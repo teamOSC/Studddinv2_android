@@ -104,9 +104,7 @@ public class PeopleNearmeFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (Utilities.isNetworkAvailable(getActivity()))
-                    loaddataAfterSearch(editable.toString(),false);
-                else
+             // ALWAYS SEARCH FROM CACHE
                     loaddataAfterSearch(editable.toString(),true);            }
         });
 
@@ -357,10 +355,10 @@ public class PeopleNearmeFragment extends Fragment {
                 if (e == null) {
 
                     if (!cache) {
-                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_NEAR_ME_SEARCH, new DeleteCallback() {
+                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_NEAR_ME, new DeleteCallback() {
                             @Override
                             public void done(ParseException e) {
-                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_NEAR_ME_SEARCH, objects);
+                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_NEAR_ME, objects);
                                 doneFetchingPeople(objects, cache);
                             }
                         });
