@@ -328,10 +328,10 @@ public class PeopleSameInstituteFragment extends Fragment {
             e.printStackTrace();
         }
 
-
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         if (cache)
             query.fromLocalDatastore();
+        query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
         query.include(ParseTables.Users.INTERESTS);
 
         if (currentuserinstituition != null)
@@ -342,11 +342,12 @@ public class PeopleSameInstituteFragment extends Fragment {
 
 
 
+
                     if (!cache) {
-                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_SAME_INSTITUTE, new DeleteCallback() {
+                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_SAME_INSTITUTE_SEARCH, new DeleteCallback() {
                             @Override
                             public void done(ParseException e) {
-                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_SAME_INSTITUTE, objects);
+                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_SAME_INSTITUTE_SEARCH, objects);
                                 doneFetchingPeople(objects, cache);
                             }
                         });
@@ -359,6 +360,7 @@ public class PeopleSameInstituteFragment extends Fragment {
                 }
             }
         });
+
 
     }
 

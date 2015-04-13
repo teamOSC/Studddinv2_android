@@ -252,8 +252,6 @@ public class PeopleSameInterestsFragment extends Fragment {
 
     public void doneFetchingUserInterests(ArrayList<ParseObject> currentUserInterestsList, final boolean cache) {
 
-
-
     if(!currentUserInterestsList.isEmpty())
 
     {
@@ -412,15 +410,15 @@ public class PeopleSameInterestsFragment extends Fragment {
                     }
 
                     if (!cache) {
-                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS, new DeleteCallback() {
+                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS_SEARCH, new DeleteCallback() {
                             @Override
                             public void done(ParseException e) {
-                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS, currentUserInterestsList);
-                                doneFetchingUserInterests(currentUserInterestsList, mCache);
+                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS_SEARCH, currentUserInterestsList);
+                                doneFetchingUserInterestsForSearch(currentUserInterestsList, mCache,textSearchFilter);
                             }
                         });
                     } else
-                        doneFetchingUserInterests(currentUserInterestsList, mCache);
+                        doneFetchingUserInterestsForSearch(currentUserInterestsList, mCache, textSearchFilter);
 
 
                 }
@@ -430,6 +428,57 @@ public class PeopleSameInterestsFragment extends Fragment {
 
     }
 
+    public void doneFetchingUserInterestsForSearch(ArrayList<ParseObject> currentUserInterestsList, final boolean cache, String textSearch) {
+
+        if(!currentUserInterestsList.isEmpty())
+
+        {
+            for (int c = 0; c < currentUserInterestsList.size(); c++) {
+                if (!currentUserInterestsList.get(c).equals("") || !(currentUserInterestsList.get(c) == null)) {
+
+
+                    ParseQuery<ParseUser> query = ParseUser.getQuery();
+                    if (cache)
+                        query.fromLocalDatastore();
+                    query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
+                    query.include(ParseTables.Users.INTERESTS);
+                    query.whereEqualTo(ParseTables.Users.INTERESTS, currentUserInterestsList.get(c));
+
+                    query.findInBackground(new FindCallback<ParseUser>() {
+                        public void done(final List<ParseUser> objects, ParseException e) {
+                            if (e == null) {
+
+
+                                if (!cache) {
+                                    ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_SAME_INTERESTS_SEARCH, new DeleteCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_SAME_INTERESTS_SEARCH, objects);
+                                            doneFetchingPeople(objects, cache);
+                                        }
+                                    });
+                                } else
+                                    doneFetchingPeople(objects, cache);
+                            }
+
+                            else {
+                                // Something went wrong.
+                            }
+
+                        }
+                    });
+
+                }
+            }
+        }
+
+        else
+
+        {
+            progressBar.setVisibility(View.GONE);
+        }
+
+    }
 
 
                 class MyAdapter3 extends ArrayAdapter<EachRow3> {
