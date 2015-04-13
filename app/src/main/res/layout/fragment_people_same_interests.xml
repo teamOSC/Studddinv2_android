@@ -43,6 +43,7 @@
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
                 android:hint="Search here"
+                android:completionThreshold="1"
                 android:imeOptions="actionDone"
                 android:paddingRight="60dp"
                 android:singleLine="true" />
