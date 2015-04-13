@@ -100,10 +100,8 @@ public class PeopleSameInstituteFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (Utilities.isNetworkAvailable(getActivity()))
-                    loaddataAfterSearch(editable.toString(),false);
-                else
-                    loaddataAfterSearch(editable.toString(),true);              }
+                // ALWAYS SEARCH FROM CACHE
+                loaddataAfterSearch(editable.toString(),true);               }
         });
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -344,10 +342,10 @@ public class PeopleSameInstituteFragment extends Fragment {
 
 
                     if (!cache) {
-                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_SAME_INSTITUTE_SEARCH, new DeleteCallback() {
+                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_SAME_INSTITUTE, new DeleteCallback() {
                             @Override
                             public void done(ParseException e) {
-                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_SAME_INSTITUTE_SEARCH, objects);
+                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_SAME_INSTITUTE, objects);
                                 doneFetchingPeople(objects, cache);
                             }
                         });
