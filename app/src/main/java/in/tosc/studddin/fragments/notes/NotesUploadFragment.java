@@ -27,8 +27,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import in.tosc.studddin.R;
-import in.tosc.studddin.ui.MaterialEditText;
-import in.tosc.studddin.ui.FloatingActionButton;
 import in.tosc.studddin.ui.ProgressBarCircular;
 
 /**
@@ -79,10 +77,10 @@ public class NotesUploadFragment extends Fragment {
 
 
         Button attachButton = (Button) rootView.findViewById(R.id.notes_attach);
-        FloatingActionButton uploadButton = (FloatingActionButton) rootView.findViewById(R.id.notes_upload);
-        topicNameEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_topic);
-        branchNameEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_branch);
-        subjectNameEdTxt = (MaterialEditText) rootView.findViewById(R.id.notes_subject);
+        Button uploadButton = (Button) rootView.findViewById(R.id.notes_upload);
+        topicNameEdTxt = (EditText) rootView.findViewById(R.id.notes_topic);
+        branchNameEdTxt = (EditText) rootView.findViewById(R.id.notes_branch);
+        subjectNameEdTxt = (EditText) rootView.findViewById(R.id.notes_subject);
         uploadingNotes = (ProgressBarCircular) rootView.findViewById(R.id.notes_upload_progress);
 
         parseFileList = new ArrayList<>();
@@ -99,7 +97,7 @@ public class NotesUploadFragment extends Fragment {
         });
 
 
-        uploadButton = (FloatingActionButton) rootView.findViewById(R.id.notes_upload);
+        uploadButton = (Button) rootView.findViewById(R.id.notes_upload);
 
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
