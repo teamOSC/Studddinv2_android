@@ -289,7 +289,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                     }
                                 });*/
                                 new PushUserIntoParse().execute(bundle);
-//                                showInterestFragment(bundle);
                             }
                         });
                     } else {
@@ -349,7 +348,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                             public void gotData(Bundle bundle) {
 //                                final SignupDataFragment fragment = showSignupDataFragment(bundle);
                                 new PushUserIntoParse().execute(bundle);
-//                                showInterestFragment(bundle);
                                 /*
                                 TwitterApi.getUserInfo(new TwitterApi.TwitterInfoCallback() {
                                     @Override
@@ -510,12 +508,18 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
             }
             if (bundle.getString(ParseTables.Users.EMAIL) != null) {
                 currentUser.put(ParseTables.Users.EMAIL, bundle.getString(ParseTables.Users.EMAIL));
+                currentUser.setUsername(bundle.getString(ParseTables.Users.EMAIL));
             }
             if (bundle.getString(ParseTables.Users.DOB) != null) {
                 currentUser.put(ParseTables.Users.DOB, bundle.getString(ParseTables.Users.DOB));
             }
             try {
-                currentUser.save();
+                if (currentUser.getSessionToken() != null) {
+                    currentUser.save();
+                } else {
+                    currentUser.setPassword("todoGenerateARandomString");
+                    currentUser.signUp();
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
