@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
@@ -47,7 +48,6 @@ public class PeopleSameInterestsFragment extends Fragment {
 
     ProgressBarCircular progressBar;
 
-    HashMap<String, Boolean> existingelement = new HashMap<String, Boolean>();
 
     String currentuseremail = "";
     String currentuserinterests = "";
@@ -107,7 +107,8 @@ public class PeopleSameInterestsFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 // ALWAYS SEARCH FROM CACHE
-                loaddataAfterSearch(editable.toString(),true);            }
+                loaddataAfterSearch(editable.toString(),true);
+       }
         });
 
 
@@ -304,6 +305,10 @@ public class PeopleSameInterestsFragment extends Fragment {
 
     public void doneFetchingPeople(List<ParseUser> objects, boolean cache) {
 
+        HashMap<String, Boolean> existingelement = new HashMap<String, Boolean>();
+
+        existingelement.clear();
+
         for (ParseUser pu : objects) {
             //access the data associated with the ParseUser using the get method
             //pu.getString("key") or pu.get("key")
@@ -328,6 +333,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                         }
                         stringBuilder.setLength(stringBuilder.length() - 2);
                         each.cinterests = stringBuilder.toString();
+
                     }
 
 
@@ -371,11 +377,13 @@ public class PeopleSameInterestsFragment extends Fragment {
     }
 
 
-    private void loaddataAfterSearch(String textSearch, final boolean cache) {
+    private void loaddataAfterSearch(final String textSearch, final boolean cache) {
 
         final boolean mCache =cache;
         list3.clear();
-
+        q = new MyAdapter3(getActivity(), 0, list3);
+        q.notifyDataSetChanged();
+        lv.setAdapter(q);
 
         currentuser = User.getUsername();
         currentuseremail = User.getString(ParseTables.Users.EMAIL);
@@ -411,11 +419,11 @@ public class PeopleSameInterestsFragment extends Fragment {
                             @Override
                             public void done(ParseException e) {
                                 ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS, currentUserInterestsList);
-                                doneFetchingUserInterests(currentUserInterestsList, mCache);
+                                doneFetchingUserInterestsForSearch(currentUserInterestsList, mCache, textSearch);
                             }
                         });
                     } else
-                        doneFetchingUserInterests(currentUserInterestsList, mCache);
+                        doneFetchingUserInterestsForSearch(currentUserInterestsList, mCache,textSearch);
 
 
 
@@ -440,7 +448,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                     if (cache)
                         query.fromLocalDatastore();
                     query.whereEqualTo(ParseTables.Users.INTERESTS, currentUserInterestsList.get(c));
-//                    query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
+                    query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
                     query.include(ParseTables.Users.INTERESTS);
 
 
@@ -459,9 +467,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                                     });
                                 } else
                                     doneFetchingPeople(objects, cache);
-                            }
-
-                            else {
+                            } else {
                                 // Something went wrong.
                             }
 
