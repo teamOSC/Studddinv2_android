@@ -132,7 +132,7 @@ public class MyListingsFragment extends Fragment {
             viewHolder.createdAt.setText(sdf.format(mDataset.get(i).getCreatedAt()));
             viewHolder.listing_desc.setText(mDataset.get(i).getString(ParseTables.Listings.LISTING_DESC));
             if (!mCache)
-                viewHolder.listing_image.setPlaceholder(getResources().getDrawable(R.drawable.listing_placeholder));
+                viewHolder.listing_image.setPlaceholder(getResources().getDrawable(R.drawable.listings_placeholder));
             viewHolder.listing_image.setParseFile(mDataset.get(i).getParseFile(ParseTables.Listings.IMAGE));
             viewHolder.listing_image.loadInBackground(new GetDataCallback() {
                 @Override

@@ -124,7 +124,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                     ParseObject upload = new ParseObject(ParseTables.Listings.LISTINGS);
                     ParseGeoPoint point = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
                     if (byteArray == null) {
-                        Drawable drawable = getResources().getDrawable(R.drawable.listing_placeholder);
+                        Drawable drawable = getResources().getDrawable(R.drawable.listings_placeholder);
                         Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream);
