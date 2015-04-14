@@ -68,6 +68,7 @@ public class ParseTables {
         public static final String PEOPLE_SAME_INTERESTS= "PeopleSameInterests";
         public static final String PEOPLE_USER_INTERESTS= "CurrentUserInterests";
 
+
     }
 
 }
