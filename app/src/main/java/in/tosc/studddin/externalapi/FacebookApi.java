@@ -62,7 +62,7 @@ public class FacebookApi {
             @Override
             public void onCompleted(Response response) {
                 try {
-
+                    Log.d(TAG, "facebook response = " + response.getRawResponse());
                     fgedc.gotEventData(response.getGraphObject().getInnerJSONObject().getJSONArray("data"));
                 } catch (JSONException e) {
                     e.printStackTrace();
