@@ -276,9 +276,9 @@ public class ItemSelectorFragment extends Fragment implements TextWatcher{
             public void onClick(View v) {
                 Log.d(TAG, "checked position = " + getPosition());
                 if (mCheckBox.isChecked()) {
-                    selectedList.put(getPosition(), true);
+                    selectedList.put(mainList.indexOf(mDataset.get(getPosition())), true);
                 } else {
-                    selectedList.put(getPosition(), false);
+                    selectedList.put(mainList.indexOf(mDataset.get(getPosition())), false);
                 }
             }
         }
@@ -320,6 +320,12 @@ public class ItemSelectorFragment extends Fragment implements TextWatcher{
 
             }
             holder.mCheckBox.setText(text);
+            int positionInMainList = mainList.indexOf(mDataset.get(position));
+            if (selectedList.get(positionInMainList) != null && selectedList.get(positionInMainList)) {
+                holder.mCheckBox.setChecked(true);
+            } else {
+                holder.mCheckBox.setChecked(false);
+            }
         }
 
         @Override
