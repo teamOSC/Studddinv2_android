@@ -10,6 +10,8 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.transition.Explode;
 import android.util.Log;
 import android.util.SparseArray;
@@ -18,6 +20,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -40,7 +45,7 @@ import in.tosc.studddin.ui.FloatingActionButton;
 /**
  * Class used for selection of Interests and College during the SignUp
  */
-public class ItemSelectorFragment extends Fragment {
+public class ItemSelectorFragment extends Fragment implements TextWatcher{
 
     private static final String TAG = "ItemSelectorFragment";
 
@@ -56,6 +61,7 @@ public class ItemSelectorFragment extends Fragment {
     private RecyclerView itemRecyclerView;
     private ProgressBar progressBar;
     private FloatingActionButton submitButton;
+    private EditText searchEditText;
 
     private ItemAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -63,6 +69,8 @@ public class ItemSelectorFragment extends Fragment {
     private Activity parentActivity;
 
     private ProgressDialog progressDialog;
+
+    private ArrayList<String> itemTextList = new ArrayList();
 
     public ItemSelectorFragment() {
         // Required empty public constructor
@@ -78,9 +86,12 @@ public class ItemSelectorFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_item_selector, container, false);
+
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressbar_item_selector);
         itemRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_interests);
         submitButton = (FloatingActionButton) rootView.findViewById(R.id.button_item_submit);
+        searchEditText = (EditText) rootView.findViewById(R.id.edit_text_interest);
+        searchEditText.addTextChangedListener(this);
 
         parentActivity = getActivity();
         incomingBundle = getArguments();
@@ -145,6 +156,15 @@ public class ItemSelectorFragment extends Fragment {
     }
 
     private void showItemsList(List<ParseObject> list, int type) {
+        switch (type) {
+            case TYPE_INTEREST:
+                for (int i = 0; i < list.size(); ++i) {
+                    itemTextList.add(list.get(i).getString(ParseTables.Interests.NAME));
+                }
+                break;
+            case TYPE_COLLEGE:
+                break;
+        }
         progressBar.setVisibility(View.GONE);
         itemRecyclerView.setVisibility(View.VISIBLE);
 
@@ -216,10 +236,30 @@ public class ItemSelectorFragment extends Fragment {
         act.finish();
     }
 
-    public static class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        mAdapter.getFilter().filter(s);
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+    }
+
+    public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>
+            implements Filterable{
         private List<ParseObject> mainList;
+        private List<ParseObject> mDataset;
         private SparseArray<Boolean> selectedList = new SparseArray();
         private int type;
+
+        @Override
+        public Filter getFilter() {
+            return new ItemFilter();
+        }
 
         public class ViewHolder extends RecyclerView.ViewHolder implements
                 CheckBox.OnClickListener {
@@ -241,13 +281,14 @@ public class ItemSelectorFragment extends Fragment {
             }
         }
 
-        public ItemAdapter(List<ParseObject> myDataset, int type) {
-            mainList = myDataset;
+        public ItemAdapter(List<ParseObject> mDataset, int type) {
+            mainList = mDataset;
+            this.mDataset = mDataset;
             this.type = type;
         }
 
         public void updateDataSet(List<ParseObject> mDataSet) {
-            this.mainList = mDataSet;
+            this.mDataset = mDataSet;
         }
 
         @Override
@@ -286,7 +327,41 @@ public class ItemSelectorFragment extends Fragment {
         }
 
         public List<ParseObject> getDataSet() {
+            return mDataset;
+        }
+
+        public List<ParseObject> getMainList() {
             return mainList;
+        }
+    }
+
+    private class ItemFilter extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+            List<ParseObject> mainList = mAdapter.getMainList();
+            if (constraint == null || constraint.length() == 0) {
+                results.values = mainList;
+                results.count = mainList.size();
+            } else {
+                ArrayList<ParseObject> filteredObjects = new ArrayList();
+                for (ParseObject parseObject : mainList) {
+                    String item = parseObject.getString(ParseTables.Interests.NAME);
+                    if (item.toLowerCase().contains(constraint)) {
+                        filteredObjects.add(parseObject);
+                    }
+                }
+                results.values = filteredObjects;
+                results.count = filteredObjects.size();
+            }
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mAdapter.updateDataSet((ArrayList)results.values);
+            mAdapter.notifyDataSetChanged();
         }
     }
 }
