@@ -18,6 +18,8 @@ android:
 env:
   global:
     secure: OJjmKltBAHo/WOkdo0BNfmx0zsNlNnxaEiMYZbc2aO97DzujWBcadXiMFujVcTwCbkKMWLre8F2bXBcCO8yb00/LEEK++w+8IYIOpQ3JbaUIgdn4dbSs9gw9NirkagsizY/Xngd6kCIbbbpvYQ8LHA/AcFtiG32t6oW2kRM+dOw=
+notifications:
+  slack: tosc:zrPJuuvGq94tDSVf4aGYhjXp
 deploy:
   provider: releases
   skip_cleanup: true
