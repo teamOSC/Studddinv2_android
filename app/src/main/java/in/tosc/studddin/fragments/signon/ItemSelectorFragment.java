@@ -136,6 +136,7 @@ public class ItemSelectorFragment extends Fragment implements TextWatcher{
                     e.printStackTrace();
                     return;
                 }
+                Log.d(TAG, "List of size retrned = " + list.size());
                 showItemsList(list, TYPE_INTEREST);
             }
         });
@@ -167,8 +168,9 @@ public class ItemSelectorFragment extends Fragment implements TextWatcher{
         }
         progressBar.setVisibility(View.GONE);
         itemRecyclerView.setVisibility(View.VISIBLE);
+        Log.d(TAG, "Show recycler view");
 
-        mAdapter.updateDataSet(list);
+        mAdapter.updateDataSet(list, true);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -274,9 +276,9 @@ public class ItemSelectorFragment extends Fragment implements TextWatcher{
             public void onClick(View v) {
                 Log.d(TAG, "checked position = " + getPosition());
                 if (mCheckBox.isChecked()) {
-                    selectedList.put(getPosition(), true);
+                    selectedList.put(mainList.indexOf(mDataset.get(getPosition())), true);
                 } else {
-                    selectedList.put(getPosition(), false);
+                    selectedList.put(mainList.indexOf(mDataset.get(getPosition())), false);
                 }
             }
         }
@@ -287,8 +289,11 @@ public class ItemSelectorFragment extends Fragment implements TextWatcher{
             this.type = type;
         }
 
-        public void updateDataSet(List<ParseObject> mDataSet) {
+        public void updateDataSet(List<ParseObject> mDataSet, boolean initialize) {
             this.mDataset = mDataSet;
+            if (initialize) {
+                this.mainList = mDataSet;
+            }
         }
 
         @Override
@@ -305,21 +310,27 @@ public class ItemSelectorFragment extends Fragment implements TextWatcher{
             String text = "";
             switch (type) {
                 case TYPE_INTEREST:
-                    text = mainList.get(position).getString(ParseTables.Interests.NAME);
+                    text = mDataset.get(position).getString(ParseTables.Interests.NAME);
                     break;
                 case TYPE_COLLEGE:
-                    text = mainList.get(position).getString(ParseTables.College.NAME);
+                    text = mDataset.get(position).getString(ParseTables.College.NAME);
                     break;
                 default:
                     throw new UnsupportedOperationException("Unknown ItemSelector Type");
 
             }
             holder.mCheckBox.setText(text);
+            int positionInMainList = mainList.indexOf(mDataset.get(position));
+            if (selectedList.get(positionInMainList) != null && selectedList.get(positionInMainList)) {
+                holder.mCheckBox.setChecked(true);
+            } else {
+                holder.mCheckBox.setChecked(false);
+            }
         }
 
         @Override
         public int getItemCount() {
-            return mainList.size();
+            return mDataset.size();
         }
 
         public SparseArray<Boolean> getSelectedList() {
@@ -339,6 +350,7 @@ public class ItemSelectorFragment extends Fragment implements TextWatcher{
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
+
             FilterResults results = new FilterResults();
             List<ParseObject> mainList = mAdapter.getMainList();
             if (constraint == null || constraint.length() == 0) {
@@ -346,9 +358,10 @@ public class ItemSelectorFragment extends Fragment implements TextWatcher{
                 results.count = mainList.size();
             } else {
                 ArrayList<ParseObject> filteredObjects = new ArrayList();
+                String pattern = ((String) constraint).toLowerCase();
                 for (ParseObject parseObject : mainList) {
                     String item = parseObject.getString(ParseTables.Interests.NAME);
-                    if (item.toLowerCase().contains(constraint)) {
+                    if (item.toLowerCase().contains(pattern)) {
                         filteredObjects.add(parseObject);
                     }
                 }
@@ -360,7 +373,7 @@ public class ItemSelectorFragment extends Fragment implements TextWatcher{
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            mAdapter.updateDataSet((ArrayList)results.values);
+            mAdapter.updateDataSet((ArrayList)results.values, false);
             mAdapter.notifyDataSetChanged();
         }
     }
