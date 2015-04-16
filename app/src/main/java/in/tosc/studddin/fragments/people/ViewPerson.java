@@ -19,8 +19,8 @@ import in.tosc.studddin.ui.CircularImageView;
  */
 public class ViewPerson extends Fragment {
 
-    TextView name, interests, qualifications, distance, institute;
-    String sname, sinterests, squalifications, sdistance, sinstitute;
+    TextView name, interests, qualifications, distance, institute ;
+    String sname, sinterests, squalifications, sdistance, sinstitute , susername;
     CircularImageView pic;
     byte[] data;
 
@@ -37,15 +37,6 @@ public class ViewPerson extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.view_person, container, false);
 
-        contactButton = (Button) rootView.findViewById(R.id.contactPerson);
-        contactButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-
-            }
-        });
 
         Bundle i = getArguments();
         if (i != null) {
@@ -53,10 +44,29 @@ public class ViewPerson extends Fragment {
             sinstitute = i.getString("institute");
             sinterests = i.getString("interests");
             squalifications = i.getString("qualifications");
+            susername = i.getString("username");
             sdistance = i.getString("distance");
             data = i.getByteArray("pic");
             Log.e("pic", String.valueOf(data));
         }
+
+        contactButton = (Button) rootView.findViewById(R.id.contactPerson);
+        contactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(susername.contains("@gmail")){
+
+                }
+                else if(susername.contains("facebook")){
+
+                }
+                else if(susername.contains("@")){
+
+                }
+
+            }
+        });
 
         pic = (CircularImageView) rootView.findViewById(R.id.person_image);
         name = (TextView) rootView.findViewById(R.id.person_name);
