@@ -185,7 +185,7 @@ public class EventsCreateFragment extends Fragment {
     private void pushDataToParse() {
         ParseObject event = new ParseObject("Events");
         if (byteArray == null) {
-            Drawable drawable = getResources().getDrawable(R.drawable.listing_placeholder);
+            Drawable drawable = getResources().getDrawable(R.drawable.listings_placeholder);
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream);

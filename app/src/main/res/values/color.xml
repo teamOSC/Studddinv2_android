@@ -27,6 +27,7 @@
     <!--Notes color -->
     <color name="notesColorPrimary">#2196F3</color>
     <color name="notesColorPrimaryDark">#1976D2</color>
+    <color name="notesColorPrimaryPressed">#aa2196F3</color>
     <!--People color -->
     <color name="peopleColorPrimary">#FF9800</color>
     <color name="peopleColorPrimaryDark">#F57C00</color>

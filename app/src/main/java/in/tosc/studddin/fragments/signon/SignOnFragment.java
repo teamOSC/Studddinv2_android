@@ -83,6 +83,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     private String mParam1;
     private String mParam2;
 
+    private ProgressDialog mProgressDialog;
 
     public SignOnFragment() {
         // Required empty public constructor
@@ -139,6 +140,10 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_sign_on, container, false);
+
+        //Initialize the progress dialog which is shown at various times
+        mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.setCancelable(false);
 
         displayInit();
 
@@ -199,12 +204,15 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     }
 
     public void doSignIn(View v) {
+        mProgressDialog.setMessage("Signing in...");
+        mProgressDialog.show();
         ParseUser.logInInBackground(
                 emailEditText.getText().toString(),
                 passwordEditText.getText().toString(),
                 new LogInCallback() {
                     @Override
                     public void done(ParseUser parseUser, ParseException e) {
+                        mProgressDialog.dismiss();
                         if (parseUser != null) {
                             Intent i = new Intent(getActivity(), MainActivity.class);
                             startActivity(i);
@@ -232,6 +240,8 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     }
 
     public void doFacebookSignOn(View v) {
+        mProgressDialog.setMessage("Signing in via Facebook");
+        mProgressDialog.show();
         List<String> permissions = Arrays.asList("public_profile", "user_friends",
                 ParseFacebookUtils.Permissions.User.EMAIL,
                 ParseFacebookUtils.Permissions.User.ABOUT_ME,
@@ -243,13 +253,11 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         ParseFacebookUtils.logIn(permissions, getActivity(), new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException err) {
-                try {
-                    Log.w(TAG, "user = " + user.getUsername());
-                    if (err != null) {
-                        Log.w(TAG, "pe = " + err.getCode() + err.getMessage());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                mProgressDialog.dismiss();
+                if (err != null) {
+                    Log.w(TAG, "pe = " + err.getCode() + err.getMessage());
+                    Toast.makeText(getActivity(), err.getMessage(), Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 if (user == null) {
                     Log.w(TAG, "Uh oh. The user cancelled the Facebook login.");
@@ -326,9 +334,12 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     }
 
     public void doTwitterSignOn(View v) {
+        mProgressDialog.setMessage("Signing in via Twitter");
+        mProgressDialog.show();
         ParseTwitterUtils.logIn(getActivity(), new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException err) {
+                mProgressDialog.dismiss();
                 if (err != null) {
                     err.printStackTrace();
                     return;
@@ -491,12 +502,10 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     }
 
     private class PushUserIntoParse extends AsyncTask<Bundle, Void, Bundle> {
-        private ProgressDialog mProgressDialog;
 
         @Override
         protected void onPreExecute() {
-            mProgressDialog = new ProgressDialog(getActivity());
-            mProgressDialog.setMessage("Signing Up...");
+            mProgressDialog.setMessage("Signing up...");
             mProgressDialog.show();
         }
 

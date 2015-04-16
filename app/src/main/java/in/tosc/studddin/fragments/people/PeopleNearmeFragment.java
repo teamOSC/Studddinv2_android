@@ -104,8 +104,8 @@ public class PeopleNearmeFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                loaddataAfterSearch( editable.toString());
-            }
+             // ALWAYS SEARCH FROM CACHE
+                    loaddataAfterSearch(editable.toString(),true);            }
         });
 
 
@@ -312,9 +312,13 @@ public class PeopleNearmeFragment extends Fragment {
     }
 
 
-    private void loaddataAfterSearch(String textSearch) {
+    private void loaddataAfterSearch(String textSearch, final boolean cache) {
 
         list3.clear();
+        q = new MyAdapter3(getActivity(), 0, list3);
+        q.notifyDataSetChanged();
+
+        lv.setAdapter(q);
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
@@ -339,80 +343,34 @@ public class PeopleNearmeFragment extends Fragment {
 
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
+        if (cache)
+            query.fromLocalDatastore();
         query.whereNear(ParseTables.Users.LOCATION, userlocation);
         query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
         query.include(ParseTables.Users.INTERESTS);
 
 
         query.findInBackground(new FindCallback<ParseUser>() {
-            public void done(List<ParseUser> objects, ParseException e) {
+            public void done(final List<ParseUser> objects, ParseException e) {
                 if (e == null) {
 
-
-                    for (ParseUser pu : objects) {
-                        //access the data associated with the ParseUser using the get method
-                        //pu.getString("key") or pu.get("key")
-
-                        if (!pu.getUsername().equals(currentuser) && pu.getBoolean(ParseTables.Users.FULLY_REGISTERED)) {
-
-                            each = new EachRow3();
-                            each.cname = pu.getString(ParseTables.Users.NAME);
-
-
-                            ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
-
-                            if(personInterests!=null && !personInterests.isEmpty()) {
-                                StringBuilder stringBuilder = new StringBuilder("");
-                                for (ParseObject parseObject : personInterests) {
-                                    try {
-                                        stringBuilder.append(parseObject.fetchIfNeeded().getString("name")).append(", ");
-                                    } catch (ParseException e1) {
-                                        e1.printStackTrace();
-                                    }
-                                }
-                                stringBuilder.setLength(stringBuilder.length() - 2);
-                                each.cinterests = stringBuilder.toString();
+                    if (!cache) {
+                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_NEAR_ME, new DeleteCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_NEAR_ME, objects);
+                                doneFetchingPeople(objects, cache);
                             }
-
-
-                            each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
-                            each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
-//                                          each.cdistance = pu.getString(ParseTables.Users.NAME);
-                            each.cusername = pu.getString(ParseTables.Users.USERNAME);
-                            ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
-                            if (temploc != null && temploc.getLatitude() != 0) {
-                                if (userlocation != null) {
-                                    each.cdistance = String.valueOf((int) temploc.distanceInKilometersTo(userlocation)) + " km";
-                                } else {
-                                    each.cdistance = "N/A";
-                                }
-                            } else {
-                                each.cdistance = "N/A";
-                            }
-
-                            try {
-                                each.fileObject = (ParseFile) pu.get(ParseTables.Users.IMAGE);
-                            } catch (Exception e1) {
-                                System.out.print("nahh");
-                            }
-
-                            list3.add(each);
-
-
-                        }
-                    }
-
+                        });
+                    } else
+                        doneFetchingPeople(objects, cache);
+                    //
                     // The query was successful.
                 } else {
                     // Something went wrong.
                 }
 
-                q = new MyAdapter3(getActivity(), 0, list3);
-                q.notifyDataSetChanged();
 
-                lv.setAdapter(q);
-                progressBar.setVisibility(View.GONE);
-                lv.setVisibility(View.VISIBLE);
             }
         });
 
