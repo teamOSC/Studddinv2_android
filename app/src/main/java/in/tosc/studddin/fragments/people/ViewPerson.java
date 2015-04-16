@@ -20,7 +20,7 @@ import in.tosc.studddin.ui.CircularImageView;
 public class ViewPerson extends Fragment {
 
     TextView name, interests, qualifications, distance, institute ;
-    String sname, sinterests, squalifications, sdistance, sinstitute , susername;
+    String sname, sinterests, squalifications, sdistance, sinstitute , susername, sauthData;
     CircularImageView pic;
     byte[] data;
 
@@ -46,6 +46,8 @@ public class ViewPerson extends Fragment {
             squalifications = i.getString("qualifications");
             susername = i.getString("username");
             sdistance = i.getString("distance");
+            sauthData = i.getString("authData");
+
             data = i.getByteArray("pic");
             Log.e("pic", String.valueOf(data));
         }

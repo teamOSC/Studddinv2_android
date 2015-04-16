@@ -122,6 +122,8 @@ public class PeopleSameInterestsFragment extends Fragment {
                 String tqualifications = listOfPeople.get(i).cqualification;
                 String tdistance = listOfPeople.get(i).cdistance;
                 String tusername = listOfPeople.get(i).cusername;
+                String tauthData = listOfPeople.get(i).cauthData;
+
                 ParseFile tfile = listOfPeople.get(i).fileObject;
 
                 final Bundle in = new Bundle();
@@ -139,6 +141,8 @@ public class PeopleSameInterestsFragment extends Fragment {
                     tdistance = " - ";
                  if (tusername == null)
                     tusername = " - ";
+                 if (tauthData == null)
+                    tauthData = " - ";
 
                 in.putString("name", tname);
                 in.putString("institute", tinstitute);
@@ -146,6 +150,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                 in.putString("interests", tinterests);
                 in.putString("distance", tdistance);
                 in.putString("username", tusername);
+                in.putString("authData", tauthData);
 
                 newFragment.setArguments(in);
 
@@ -343,6 +348,8 @@ public class PeopleSameInterestsFragment extends Fragment {
                     each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
                     // each.cdistance = pu.getString(ParseTables.Users.NAME);
                     each.cusername = pu.getString(ParseTables.Users.USERNAME);
+                    each.cauthData = pu.getString(ParseTables.Users.AUTHORIZATION);
+
                     ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
                     if (temploc != null && temploc.getLatitude() != 0) {
                         if (userlocation != null) {
@@ -585,6 +592,8 @@ public class PeopleSameInterestsFragment extends Fragment {
                     String cqualification;
                     String cinstituition;
                     String cusername;
+                    String cauthData;
+
                     Bitmap cbmp;
                     ParseFile fileObject;
                 }
