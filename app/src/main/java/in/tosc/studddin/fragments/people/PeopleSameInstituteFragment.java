@@ -54,12 +54,12 @@ public class PeopleSameInstituteFragment extends Fragment {
     String currentuser = "";
     ParseGeoPoint userlocation = new ParseGeoPoint(0, 0);
 
-    ArrayList<ParseObject> interests = new ArrayList<>() ;
+    ArrayList<ParseObject> interests = new ArrayList<ParseObject>() ;
 
 
     EditText search;
 
-    ArrayList<EachRow3> list3 = new ArrayList<EachRow3>();
+    ArrayList<EachRow3> listOfPeople = new ArrayList<EachRow3>();
     EachRow3 each;
     MyAdapter3 q;
     ListView lv;
@@ -109,12 +109,13 @@ public class PeopleSameInstituteFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 final ViewPerson newFragment = new ViewPerson();
 
-                String tname = list3.get(i).cname;
-                String tinterests = list3.get(i).cinterests;
-                String tinstitute = list3.get(i).cinstituition;
-                String tqualifications = list3.get(i).cqualification;
-                String tdistance = list3.get(i).cdistance;
-                ParseFile tfile = list3.get(i).fileObject;
+                String tname = listOfPeople.get(i).cname;
+                String tinterests = listOfPeople.get(i).cinterests;
+                String tinstitute = listOfPeople.get(i).cinstituition;
+                String tqualifications = listOfPeople.get(i).cqualification;
+                String tdistance = listOfPeople.get(i).cdistance;
+                String tusername = listOfPeople.get(i).cusername;
+                ParseFile tfile = listOfPeople.get(i).fileObject;
 
                 final Bundle in = new Bundle();
 
@@ -129,6 +130,8 @@ public class PeopleSameInstituteFragment extends Fragment {
                     tqualifications = " - ";
                 if (tdistance == null)
                     tdistance = " - ";
+                if (tusername == null)
+                    tusername = " - ";
 
 
                 in.putString("name", tname);
@@ -136,6 +139,7 @@ public class PeopleSameInstituteFragment extends Fragment {
                 in.putString("qualifications", tqualifications);
                 in.putString("interests", tinterests);
                 in.putString("distance", tdistance);
+                in.putString("username", tusername);
 
                 newFragment.setArguments(in);
 
@@ -186,7 +190,7 @@ public class PeopleSameInstituteFragment extends Fragment {
 
     private void loaddata(final boolean cache) {
 
-       list3.clear();
+       listOfPeople.clear();
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         String currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
@@ -288,14 +292,14 @@ public class PeopleSameInstituteFragment extends Fragment {
                 }
 
 
-                list3.add(each);
+                listOfPeople.add(each);
 
             }
 
         }
 
 
-        q = new MyAdapter3(getActivity(), 0, list3);
+        q = new MyAdapter3(getActivity(), 0, listOfPeople);
         q.notifyDataSetChanged();
 
         lv.setAdapter(q);
@@ -307,8 +311,8 @@ public class PeopleSameInstituteFragment extends Fragment {
     private void loaddataAfterSearch(String textSearch, final boolean cache) {
 
 
-        list3.clear();
-        q = new MyAdapter3(getActivity(), 0, list3);
+        listOfPeople.clear();
+        q = new MyAdapter3(getActivity(), 0, listOfPeople);
         q.notifyDataSetChanged();
         lv.setAdapter(q);
 
@@ -431,7 +435,7 @@ public class PeopleSameInstituteFragment extends Fragment {
         @Override
         public EachRow3 getItem(int position) {
             // TODO Auto-generated method stub
-            return list3.get(position);
+            return listOfPeople.get(position);
         }
 
         private class ViewHolder {
