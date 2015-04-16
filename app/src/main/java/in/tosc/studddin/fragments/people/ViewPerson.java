@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import in.tosc.studddin.R;
@@ -23,6 +24,8 @@ public class ViewPerson extends Fragment {
     CircularImageView pic;
     byte[] data;
 
+    Button contactButton ;
+
 
     public ViewPerson() {
         // Required empty public constructor
@@ -33,6 +36,16 @@ public class ViewPerson extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.view_person, container, false);
+
+        contactButton = (Button) rootView.findViewById(R.id.contactPerson);
+        contactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+            }
+        });
 
         Bundle i = getArguments();
         if (i != null) {
