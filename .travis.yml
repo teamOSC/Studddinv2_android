@@ -18,6 +18,8 @@ android:
 env:
   global:
     secure: OJjmKltBAHo/WOkdo0BNfmx0zsNlNnxaEiMYZbc2aO97DzujWBcadXiMFujVcTwCbkKMWLre8F2bXBcCO8yb00/LEEK++w+8IYIOpQ3JbaUIgdn4dbSs9gw9NirkagsizY/Xngd6kCIbbbpvYQ8LHA/AcFtiG32t6oW2kRM+dOw=
+notifications:
+  slack: tosc:zrPJuuvGq94tDSVf4aGYhjXp
 deploy:
   provider: releases
   skip_cleanup: true
@@ -25,4 +27,6 @@ deploy:
     secure: o4CPYfEDU/qSkERjPS00cvRpw+fCXf3kRv8iZtwYtqOoESF/Ck/uX6TVqVm6myc2Bw4y4NmWg9cLjbGKBAgzoGpPaTjhQeZfbqe0AbHnEn5bO5JJQHmOEp+El2muiB+Z8wnusCfyI9lvB761MN7Rij41KOLyDXHlEMrBXaUzpP8=
   file: app/build/outputs/apk/app-debug.apk
   on:
+    tags: true
+    all_branches: true
     repo: teamOSC/LearnHut_android
