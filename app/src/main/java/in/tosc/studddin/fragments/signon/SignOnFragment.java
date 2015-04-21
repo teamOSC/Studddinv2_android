@@ -617,8 +617,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     }
 
     private void showInterestFragment(Bundle bundle) {
-        bundle.putInt(ItemSelectorFragment.TYPE, ItemSelectorFragment.TYPE_INTEREST);
-        ItemSelectorFragment fragment = ItemSelectorFragment.newInstance(bundle);
+        ItemSelectorFragment fragment = InterestSelectorFragment.newInstance(bundle);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
