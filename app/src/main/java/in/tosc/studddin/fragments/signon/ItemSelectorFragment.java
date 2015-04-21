@@ -76,6 +76,10 @@ public abstract class ItemSelectorFragment extends Fragment implements TextWatch
         // Required empty public constructor
     }
 
+    private int maxSelectableItems = getMaxSelectableItems();
+
+    public abstract int getMaxSelectableItems();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

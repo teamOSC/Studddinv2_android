@@ -12,4 +12,9 @@ public class CollegeSelectorFragment extends ItemSelectorFragment {
         fragment.setArguments(bundle);
         return fragment;
     }
+
+    @Override
+    public int getMaxSelectableItems() {
+        return 1;
+    }
 }
