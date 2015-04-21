@@ -303,7 +303,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                     } else {
                         Log.w(TAG, "User logged in through Facebook!");
                         Log.w(TAG,
-                                "FBSHIT \n" +
+                                "FB \n" +
                                         ParseFacebookUtils.getSession().getAccessToken() + " \n" +
                                         ParseFacebookUtils.getSession().getAccessToken() + " \n" +
                                         ParseFacebookUtils.getFacebook().getAppId()
