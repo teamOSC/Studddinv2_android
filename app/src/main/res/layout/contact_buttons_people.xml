@@ -14,6 +14,25 @@
         android:layout_weight="2"
         android:orientation="horizontal">
 
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <in.tosc.studddin.ui.FloatingActionButton
+                android:id="@+id/signon_button_facebook"
+                android:layout_width="@dimen/signin_button_size"
+                android:layout_height="@dimen/signin_button_size"
+                android:layout_centerInParent="true"
+                android:layout_margin="@dimen/signin_button_margin"
+                android:visibility="gone"
+
+                app:fab_size="normal"
+                fab:fab_colorNormal="@color/blue_semi_transparent"
+                fab:fab_colorPressed="@color/blue_semi_transparent_pressed"
+                fab:fab_icon="@drawable/image_fb" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -35,25 +54,7 @@
         </RelativeLayout>
 
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
 
-            <in.tosc.studddin.ui.FloatingActionButton
-                android:id="@+id/signon_button_facebook"
-                android:layout_width="@dimen/signin_button_size"
-                android:layout_height="@dimen/signin_button_size"
-                android:layout_centerInParent="true"
-                android:layout_margin="@dimen/signin_button_margin"
-                android:visibility="gone"
-
-                app:fab_size="normal"
-                fab:fab_colorNormal="@color/blue_semi_transparent"
-                fab:fab_colorPressed="@color/blue_semi_transparent_pressed"
-                fab:fab_icon="@drawable/image_fb" />
-        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="0dp"

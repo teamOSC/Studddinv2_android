@@ -18,7 +18,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="4"
         android:gravity="center"
         android:background="@color/peopleColorPrimary"
         android:elevation="10dp">
@@ -43,7 +44,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -165,7 +166,7 @@
         <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="25dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -196,16 +197,15 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="@color/peopleColorPrimary"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
+
         android:text="Contact"
         android:id="@+id/contactPerson"
         android:textSize="20sp"
         android:textColor="#ffffff"
-        android:layout_marginBottom="5dp"/>
+      />
 
     <LinearLayout
         android:layout_width="match_parent"
