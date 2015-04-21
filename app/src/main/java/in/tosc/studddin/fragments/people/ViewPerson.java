@@ -23,6 +23,7 @@ import com.facebook.Session;
 import com.facebook.model.GraphUser;
 import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 
 import in.tosc.studddin.R;
@@ -91,6 +92,9 @@ public class ViewPerson extends Fragment {
         if(makeMeRequest(ParseFacebookUtils.getSession())){
             facebook.setVisibility(View.VISIBLE);
         }
+        if(ParseTwitterUtils.getTwitter().getUserId()!=null){
+            twitter.setVisibility(View.VISIBLE);
+        }
 
 
         contactButton.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +145,11 @@ public class ViewPerson extends Fragment {
         twitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=" + ParseTwitterUtils.getTwitter().getUserId())));
+                }catch (Exception e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/" + ParseTwitterUtils.getTwitter().getScreenName())));
+                }
             }
         });
 
