@@ -73,26 +73,13 @@ public class ViewPerson extends Fragment {
             Log.e("pic", String.valueOf(data));
         }
 
-        Toast.makeText(getActivity(), sauthData, Toast.LENGTH_LONG).show();
-
-//        contactsView = (LinearLayout)rootView.findViewById(R.id.contactsLayout);
-
         contactButton = (Button) rootView.findViewById(R.id.contactPerson);
-//
-//        LayoutInflater layoutInflater =
-//                (LayoutInflater) getActivity().getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        final View addView = layoutInflater.inflate(R.layout.contact_buttons_people, null);
 
         final LinearLayout hiddenLayout = (LinearLayout) rootView.findViewById(R.id.hiddenId);
         final LinearLayout myLayout = (LinearLayout) rootView.findViewById(R.id.contactsLayout);
         final View addView = getActivity().getLayoutInflater().inflate(R.layout.contact_buttons_people, myLayout, false);
 
-        //Check if the Layout already exists
-
-
-
-
-            mail = (FloatingActionButton)addView.findViewById(R.id.signon_button_google);
+         mail = (FloatingActionButton)addView.findViewById(R.id.signon_button_google);
          facebook = (FloatingActionButton)addView.findViewById(R.id.signon_button_facebook);
          twitter = (FloatingActionButton)addView.findViewById(R.id.signon_button_twitter);
 
@@ -125,12 +112,17 @@ public class ViewPerson extends Fragment {
         mail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent email = new Intent(Intent.ACTION_SEND);
-                email.putExtra(Intent.EXTRA_EMAIL, new String[]{ susername});
-                email.putExtra(Intent.EXTRA_SUBJECT, "Connect through LearnHut");
-                email.putExtra(Intent.EXTRA_TEXT, "Hi,\nI saw your profile on LearnHut and I would like to .........  ");
 
-                startActivity(Intent.createChooser(email, "Choose an Email client :"));
+                Intent send = new Intent(Intent.ACTION_SENDTO);
+                String uriText = "mailto:" + Uri.encode(susername) +
+                        "?subject=" + Uri.encode("Connect through LearnHut") +
+                        "&body=" + Uri.encode("Hi,\n" +
+                        "I saw your profile on LearnHut and I would like to .........");
+                Uri uri = Uri.parse(uriText);
+
+                send.setData(uri);
+                startActivity(Intent.createChooser(send, "Send mail..."));
+
             }
         });
 
