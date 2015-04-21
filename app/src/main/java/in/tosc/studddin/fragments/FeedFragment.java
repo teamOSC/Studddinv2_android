@@ -313,7 +313,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
                     ParseObject.unpinAllInBackground(KEY_LOCAL_DATASTORE);
                     ParseObject.pinAllInBackground(KEY_LOCAL_DATASTORE,parseObjects);
                     Log.w(TAG, "Calling update UI from getFeed College");
-                    Log.w(TAG, "Random = " + parseObjects.get(0).getString(KEY_TITLE));
+//                    Log.w(TAG, "Random = " + parseObjects.get(0).getString(KEY_TITLE));
                     updateUI(CATEGORY_COLLEGE, EVENTS_TABLE, 1,latch);
                 } else {
                     Log.e(TAG, "Getting feed query broke");

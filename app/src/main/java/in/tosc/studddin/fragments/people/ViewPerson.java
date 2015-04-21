@@ -21,9 +21,11 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
 import com.parse.Parse;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.externalapi.FacebookApi;
 import in.tosc.studddin.ui.CircularImageView;
 import in.tosc.studddin.ui.FloatingActionButton;
 import in.tosc.studddin.utils.Utilities;
@@ -98,7 +100,7 @@ public class ViewPerson extends Fragment {
         if(susername.contains("@")){
             mail.setVisibility(View.VISIBLE);
         }
-        if(susername.contains("facebook")){
+        if(makeMeRequest(ParseFacebookUtils.getSession())){
             facebook.setVisibility(View.VISIBLE);
         }
 
@@ -122,7 +124,7 @@ public class ViewPerson extends Fragment {
         mail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent()
+                Intent intent = new Intent();
 
             }
         });
@@ -163,7 +165,8 @@ public class ViewPerson extends Fragment {
 
     }
 
-    private void makeMeRequest(final Session session) {
+
+    private boolean makeMeRequest(final Session session) {
         Request request = Request.newMeRequest(session,
                 new Request.GraphUserCallback() {
 
@@ -182,6 +185,7 @@ public class ViewPerson extends Fragment {
                     }
                 });
         request.executeAsync();
+        return false;
     }
 
 }
