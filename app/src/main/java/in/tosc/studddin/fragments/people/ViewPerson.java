@@ -4,6 +4,7 @@ package in.tosc.studddin.fragments.people;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -124,15 +125,24 @@ public class ViewPerson extends Fragment {
         mail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+                Intent email = new Intent(Intent.ACTION_SEND);
+                email.putExtra(Intent.EXTRA_EMAIL, new String[]{ susername});
+                email.putExtra(Intent.EXTRA_SUBJECT, "Connect through LearnHut");
+                email.putExtra(Intent.EXTRA_TEXT, "Hi,\nI saw your profile on LearnHut and I would like to .........  ");
 
+                startActivity(Intent.createChooser(email, "Choose an Email client :"));
             }
         });
 
         facebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/"+facebookId));
+                    startActivity(intent);
+                } catch(Exception e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.facebook.com/"+facebookId)));
+                }
             }
         });
 
