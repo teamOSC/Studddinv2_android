@@ -248,6 +248,15 @@
         android:background="@drawable/btn_sel"
         android:text="@string/submit"
         android:textColor="@android:color/white" />
+        <Button
+            android:id="@+id/facebook_events"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="bottom|center_horizontal|center_vertical|center"
+            android:background="@drawable/btn_sel"
+            android:text="@string/create_facebook_event"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 
