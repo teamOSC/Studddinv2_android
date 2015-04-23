@@ -18,7 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
@@ -63,7 +62,7 @@ public class PeopleSameInterestsFragment extends Fragment {
     ParseUser User = ParseUser.getCurrentUser();
 
 
-    ArrayList<EachRow3> list3 = new ArrayList<PeopleSameInterestsFragment.EachRow3>();
+    ArrayList<EachRow3> listOfPeople = new ArrayList<PeopleSameInterestsFragment.EachRow3>();
     EachRow3 each;
     MyAdapter3 q;
     ListView lv;
@@ -117,12 +116,15 @@ public class PeopleSameInterestsFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 final ViewPerson newFragment = new ViewPerson();
 
-                String tname = list3.get(i).cname;
-                String tinterests = list3.get(i).cinterests;
-                String tinstitute = list3.get(i).cinstituition;
-                String tqualifications = list3.get(i).cqualification;
-                String tdistance = list3.get(i).cdistance;
-                ParseFile tfile = list3.get(i).fileObject;
+                String tname = listOfPeople.get(i).cname;
+                String tinterests = listOfPeople.get(i).cinterests;
+                String tinstitute = listOfPeople.get(i).cinstituition;
+                String tqualifications = listOfPeople.get(i).cqualification;
+                String tdistance = listOfPeople.get(i).cdistance;
+                String tusername = listOfPeople.get(i).cusername;
+                String tauthData = listOfPeople.get(i).cauthData;
+
+                ParseFile tfile = listOfPeople.get(i).fileObject;
 
                 final Bundle in = new Bundle();
 
@@ -137,13 +139,18 @@ public class PeopleSameInterestsFragment extends Fragment {
                     tqualifications = " - ";
                 if (tdistance == null)
                     tdistance = " - ";
-
+                 if (tusername == null)
+                    tusername = " - ";
+                 if (tauthData == null)
+                    tauthData = " - ";
 
                 in.putString("name", tname);
                 in.putString("institute", tinstitute);
                 in.putString("qualifications", tqualifications);
                 in.putString("interests", tinterests);
                 in.putString("distance", tdistance);
+                in.putString("username", tusername);
+                in.putString("authData", tauthData);
 
                 newFragment.setArguments(in);
 
@@ -196,7 +203,7 @@ public class PeopleSameInterestsFragment extends Fragment {
     private void loaddata(final boolean cache) {
 
         final boolean mCache =cache;
-        list3.clear();
+        listOfPeople.clear();
 
 
         currentuser = User.getUsername();
@@ -341,6 +348,8 @@ public class PeopleSameInterestsFragment extends Fragment {
                     each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
                     // each.cdistance = pu.getString(ParseTables.Users.NAME);
                     each.cusername = pu.getString(ParseTables.Users.USERNAME);
+                    each.cauthData = pu.getString(ParseTables.Users.AUTHORIZATION);
+
                     ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
                     if (temploc != null && temploc.getLatitude() != 0) {
                         if (userlocation != null) {
@@ -360,7 +369,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                     }
 
 
-                    list3.add(each);
+                    listOfPeople.add(each);
                     existingelement.put(pu.getUsername(), true);
                 }
             }
@@ -368,7 +377,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
         // The query was successful.
 
-        q = new MyAdapter3(getActivity(), 0, list3);
+        q = new MyAdapter3(getActivity(), 0, listOfPeople);
         q.notifyDataSetChanged();
 
         lv.setAdapter(q);
@@ -380,8 +389,8 @@ public class PeopleSameInterestsFragment extends Fragment {
     private void loaddataAfterSearch(final String textSearch, final boolean cache) {
 
         final boolean mCache =cache;
-        list3.clear();
-        q = new MyAdapter3(getActivity(), 0, list3);
+        listOfPeople.clear();
+        q = new MyAdapter3(getActivity(), 0, listOfPeople);
         q.notifyDataSetChanged();
         lv.setAdapter(q);
 
@@ -560,7 +569,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                     @Override
                     public EachRow3 getItem(int position) {
                         // TODO Auto-generated method stub
-                        return list3.get(position);
+                        return listOfPeople.get(position);
                     }
 
                     private class ViewHolder {
@@ -583,6 +592,8 @@ public class PeopleSameInterestsFragment extends Fragment {
                     String cqualification;
                     String cinstituition;
                     String cusername;
+                    String cauthData;
+
                     Bitmap cbmp;
                     ParseFile fileObject;
                 }

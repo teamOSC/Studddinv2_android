@@ -45,7 +45,7 @@ import in.tosc.studddin.ui.FloatingActionButton;
 /**
  * Class used for selection of Interests and College during the SignUp
  */
-public class ItemSelectorFragment extends Fragment implements TextWatcher{
+public abstract class ItemSelectorFragment extends Fragment implements TextWatcher{
 
     private static final String TAG = "ItemSelectorFragment";
 
@@ -76,11 +76,9 @@ public class ItemSelectorFragment extends Fragment implements TextWatcher{
         // Required empty public constructor
     }
 
-    public static ItemSelectorFragment newInstance(Bundle bundle) {
-        ItemSelectorFragment fragment = new ItemSelectorFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
+    private int maxSelectableItems = getMaxSelectableItems();
+
+    public abstract int getMaxSelectableItems();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
