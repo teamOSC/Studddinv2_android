@@ -1,20 +1,24 @@
 package in.tosc.studddin.fragments.events;
 
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,17 +35,28 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import in.tosc.studddin.R;
+import in.tosc.studddin.externalapi.FacebookApi;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.ui.ProgressBarCircular;
+import in.tosc.studddin.utils.Utilities;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +64,7 @@ import in.tosc.studddin.ui.ProgressBarCircular;
 public class EventsCreateFragment extends Fragment {
 
     Button create;
+    Button facebookEvents;
     static View v;
     private static HashMap<String, String> events;
     ImageButton setDate;
@@ -78,6 +94,7 @@ public class EventsCreateFragment extends Fragment {
         setDate = (ImageButton) v.findViewById(R.id.date_picker);
         setTime = (ImageButton) v.findViewById(R.id.time_picker);
         uploadPicture = (ImageButton) v.findViewById(R.id.upload_image);
+        facebookEvents = (Button) v.findViewById(R.id.facebook_events);
         progressBarCircular = (ProgressBarCircular) v.findViewById(R.id.upload_progress);
         eventImage = (ImageView)v.findViewById(R.id.event_image);
         uploadPicture.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +129,13 @@ public class EventsCreateFragment extends Fragment {
                 }
             }
         });
+        facebookEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createFbEvent();
+            }
+        });
+
         return v;
     }
 
@@ -283,6 +307,91 @@ public class EventsCreateFragment extends Fragment {
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
+    }
+
+    public void createFbEvent(){
+
+        FacebookApi.getFacebookUserEvents(new FacebookApi.FbGotEventDataCallback() {
+            @Override
+            public void gotEventData(JSONArray jArray){
+                CharSequence[] event_names = new CharSequence[jArray.length()];
+                for(int i = 0; i < jArray.length(); i++){
+                    try {
+                        event_names[i] = jArray.getJSONObject(i).getString("name");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                selectEvent(event_names, jArray);
+            }
+        });
+
+    }
+
+    public void selectEvent(CharSequence[] charSequences, final JSONArray jsonArray){
+        final int[] selectedItem = {-1};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Select events");
+        builder.setSingleChoiceItems(charSequences, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                selectedItem[0] = which;
+            }
+        });
+        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    progressBarCircular.setVisibility(View.VISIBLE);
+                    final JSONObject jsonObject = jsonArray.getJSONObject(selectedItem[0]);
+                    events.put(ParseTables.Events.TITLE, jsonObject.getString("name"));
+                    events.put(ParseTables.Events.DESCRIPTION, jsonObject.getString("description"));
+                    events.put(ParseTables.Events.DATE, jsonObject.getString("start_time").substring(0, 10));
+                    events.put(ParseTables.Events.TIME, jsonObject.getString("start_time").substring(11, 17));
+                    if(jsonObject.has("ticket_uri")) {
+                        events.put(ParseTables.Events.URL, jsonArray.getJSONObject(selectedItem[0]).getString("ticket_uri"));
+                    } else{
+                        events.put(ParseTables.Events.URL, "No url");
+                    }
+                    if(jsonObject.has("place")) {
+                        events.put(ParseTables.Events.LOCATION, jsonObject.getString("place"));
+                    } else{
+                        events.put(ParseTables.Events.LOCATION, "No location");
+                    }
+                    events.put(ParseTables.Events.CONTACT, "none");
+                    events.put(ParseTables.Events.TYPE, "none");
+                    events.put(ParseTables.Events.USER, ParseUser.getCurrentUser().getString(ParseTables.Users.NAME));
+                    if(jsonObject.has("cover")) {
+                        new AsyncTask<Void, Void, Void>() {
+                            @Override
+                            protected Void doInBackground(Void... params) {
+                                Bitmap image = null;
+                                try {
+                                    image = Utilities.downloadBitmap(jsonObject.getJSONObject("cover").getString("source"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                image.compress(Bitmap.CompressFormat.PNG, 25, stream);
+                                byteArray = stream.toByteArray();
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Void aVoid) {
+                                super.onPostExecute(aVoid);
+                                pushDataToParse();
+                            }
+                        }.execute();
+                    }else {
+                        pushDataToParse();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        builder.create().show();
     }
 
 }

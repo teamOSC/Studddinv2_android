@@ -56,8 +56,9 @@ public class FacebookApi {
     }
 
     public static void getFacebookUserEvents(final FbGotEventDataCallback fgedc) {
-        JSONArray jsonArray;
-        Request r = new Request(session, "/me/events", null,
+        Bundle bundle = new Bundle();
+        bundle.putString("fields", "description,start_time,owner,name,cover");
+        Request r = new Request(session, "/me/events", bundle,
                 HttpMethod.GET, new Request.Callback() {
             @Override
             public void onCompleted(Response response) {

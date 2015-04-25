@@ -31,6 +31,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -268,7 +270,7 @@ public class PeopleNearmeFragment extends Fragment {
 
                 ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
 
-                if(personInterests!=null && !personInterests.isEmpty()) {
+                if (personInterests != null && !personInterests.isEmpty()) {
                     StringBuilder stringBuilder = new StringBuilder("");
                     for (ParseObject parseObject : personInterests) {
                         try {
@@ -285,7 +287,14 @@ public class PeopleNearmeFragment extends Fragment {
                 each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
 //                                          each.cdistance = pu.getString(ParseTables.Users.NAME);
                 each.cusername = pu.getString(ParseTables.Users.USERNAME);
-                each.cauthData = pu.getString(ParseTables.Users.AUTHORIZATION);
+                JSONObject s = pu.getJSONObject(ParseTables.Users.AUTHORIZATION);
+                if (s == null)
+                {
+                    each.cauthData = " - ";
+                }else
+                {
+                    each.cauthData= s.toString();
+                }
 
                 ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
                 if (temploc != null && temploc.getLatitude() != 0) {
@@ -472,13 +481,13 @@ public class PeopleNearmeFragment extends Fragment {
     }
 
     private class EachRow3 {
-        String cname;
-        String cinterests;
-        String cdistance;
-        String cqualification;
-        String cinstituition;
-        String cusername;
-        String cauthData;
+        String cname="";
+        String cinterests="";
+        String cdistance="";
+        String cqualification="";
+        String cinstituition="";
+        String cusername="";
+        String cauthData="";
 
         Bitmap cbmp;
         ParseFile fileObject;

@@ -82,6 +82,7 @@
     <string name="event_date">Date</string>
     <string name="event_created">Event created</string>
     <string name="placeholder_dialog_events">You haven\'t created an event yet!</string>
+    <string name="create_facebook_event">Create Fb Event</string>
 
     <string name="user_uid">UserID</string>
     <string name="new_password">New Password</string>
