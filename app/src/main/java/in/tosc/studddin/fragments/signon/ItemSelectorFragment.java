@@ -70,8 +70,6 @@ public abstract class ItemSelectorFragment extends Fragment implements TextWatch
 
     private ProgressDialog progressDialog;
 
-    private ArrayList<String> itemTextList = new ArrayList();
-
     public ItemSelectorFragment() {
         // Required empty public constructor
     }
@@ -155,15 +153,7 @@ public abstract class ItemSelectorFragment extends Fragment implements TextWatch
     }
 
     private void showItemsList(List<ParseObject> list, int type) {
-        switch (type) {
-            case TYPE_INTEREST:
-                for (int i = 0; i < list.size(); ++i) {
-                    itemTextList.add(list.get(i).getString(ParseTables.Interests.NAME));
-                }
-                break;
-            case TYPE_COLLEGE:
-                break;
-        }
+        
         progressBar.setVisibility(View.GONE);
         itemRecyclerView.setVisibility(View.VISIBLE);
         Log.d(TAG, "Show recycler view");

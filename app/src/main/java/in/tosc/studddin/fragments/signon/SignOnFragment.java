@@ -67,7 +67,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     private FloatingActionButton twitterLoginButton;
     private FloatingActionButton googleLoginButton;
     private Button signUpButton, signInButton;
-    private TextView guestContinue;
     private EditText emailEditText;
     private EditText passwordEditText;
 
@@ -156,7 +155,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         googleLoginButton = (FloatingActionButton) rootView.findViewById(R.id.signon_button_google);
         signUpButton = (Button) rootView.findViewById(R.id.signon_button_signup);
         signInButton = (Button) rootView.findViewById(R.id.signon_button_signin);
-//        guestContinue = (TextView) rootView.findViewById(R.id.sign_in_guest);
         emailEditText = (EditText) rootView.findViewById(R.id.sign_in_user_name);
         passwordEditText = (EditText) rootView.findViewById(R.id.sign_in_user_password);
         signOnFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Gotham-Light.ttf");
@@ -164,13 +162,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         passwordEditText.setTypeface(signOnFont);
 
         emailEditText.setText(Utilities.getUserEmail(getActivity()));
-
-        /*guestContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Put stuff here
-            }
-        });*/
         facebookLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,7 +239,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                 ParseFacebookUtils.Permissions.User.RELATIONSHIPS,
                 ParseFacebookUtils.Permissions.User.BIRTHDAY,
                 ParseFacebookUtils.Permissions.User.LOCATION,
-                ParseFacebookUtils.Permissions.User.EVENTS,
                 ParseFacebookUtils.Permissions.User.PHOTOS);
         ParseFacebookUtils.logIn(permissions, getActivity(), new LogInCallback() {
             @Override
