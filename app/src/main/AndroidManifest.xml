@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="in.tosc.studddin">
+    package="in.tosc.studddin" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -19,12 +19,12 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".SignOnActivity"
             android:label="@string/app_name"
             android:screenOrientation="locked"
-            android:theme="@style/AppTheme.Custom">
+            android:theme="@style/AppTheme.Custom" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,13 +35,12 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden" >
             <intent-filter>
-                
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name="com.luminous.pick.CustomGalleryActivity">
+        <activity android:name="com.luminous.pick.CustomGalleryActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="luminous.ACTION_PICK" />
@@ -64,5 +63,12 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyA6xwOyMA-tp1Vwk74YVhotLrHygI9DG0Q" />
+
+        <service
+            android:name=".fragments.notes.NotesUploadService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
+
 </manifest>
