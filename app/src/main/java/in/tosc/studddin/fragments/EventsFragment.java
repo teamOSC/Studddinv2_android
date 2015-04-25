@@ -64,7 +64,7 @@ public class EventsFragment extends Fragment {
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.pink);
+                return getResources().getColor(R.color.tabstripColor);
             }
         });
         tabs.setViewPager(eventsPager);
