@@ -41,9 +41,7 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
@@ -74,8 +72,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     private EditText searchEditText;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ImageButton searchButton;
-    private HashSet<ParseObject> hashParseObjects = new HashSet<>();
-    private static List<FeedCategoryDataWrapper> toBeAdded[];
 
     public FeedFragment() {
         // Required empty public constructor
@@ -131,23 +127,13 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         else {
             recyclerView.setLayoutManager(mGridLayoutManager);
         }
-
-//        mAdapter = new FeedRootAdapter();
-        mAdapter = new FeedCategoryAdapter();
-        recyclerView.setAdapter(mAdapter);
-
         
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayoutfeed);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if (Utilities.isNetworkAvailable(getActivity())) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            getFeed();
-                        }
-                    }).start();
+                    getFeed();
                 }
                  else {
                     swipeRefreshLayout.setRefreshing(false);
@@ -172,48 +158,9 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             }
         });
 
-        toBeAdded = new ArrayList[3];
-        toBeAdded[0] = new ArrayList<>();
-        toBeAdded[1] = new ArrayList<>();
-        toBeAdded[2] = new ArrayList<>();
-
+        getFeed();
 
         return rootView;
-    }
-
-    private void updateAll() {
-        CountDownLatch l = new CountDownLatch(3);
-        toBeAdded[0].clear();
-        toBeAdded[1].clear();
-        toBeAdded[2].clear();
-        updateUI(CATEGORY_INTERESTS, FEED_TABLE, 0,l);
-        updateUI(CATEGORY_COLLEGE, EVENTS_TABLE, 0,l);
-        updateUI(CATEGORY_AROUND, FEED_TABLE, 0,l);
-        try {
-            l.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        List<FeedCategoryDataWrapper> f = new ArrayList<>();
-        f.addAll(toBeAdded[0]);
-        f.addAll(toBeAdded[1]);
-        f.addAll(toBeAdded[2]);
-        Collections.shuffle(f);
-        mAdapter.setDataSet(f);
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getFeed();
-            }
-        }).start();
     }
 
     @Override
@@ -261,27 +208,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
     @Override
     public void onResume() {
         super.onResume();
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                updateAll();
-            }
-        });
-
-        t.start();
-    }
-
-    private int getCategoryResource(int i) throws UnsupportedOperationException {
-        switch (i) {
-            case 0:
-                return R.string.feed_category_interests;
-            case 1:
-                return R.string.feed_category_around;
-            case 2:
-                return R.string.feed_category_college;
-            default:
-                throw new UnsupportedOperationException();
-        }
     }
 
     public void doSearch(String query) {
@@ -299,128 +225,75 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         }, url).execute(); */
     }
 
-
     public void getFeed() {
 
-        toBeAdded[0].clear();
-        toBeAdded[1].clear();
-        toBeAdded[2].clear();
-        /* Get data related to interest*/
-        final CountDownLatch latch = new CountDownLatch(3);
+        final List<ParseObject> feedList = new ArrayList<>();
+
         ParseQuery<ParseObject> interestQuery = ParseQuery.getQuery(FEED_TABLE).setLimit(10);
         interestQuery.whereContainedIn("category", interestList);
         interestQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
-                    ParseObject.unpinAllInBackground(KEY_LOCAL_DATASTORE);
-                    ParseObject.pinAllInBackground(KEY_LOCAL_DATASTORE, parseObjects);
-                    updateUI(CATEGORY_INTERESTS, FEED_TABLE, 1,latch);
-                } else {
-                    Log.e(TAG, "Getting feed query broke");
-                }
-            }
-        });
-        /*Get data related to user's college*/
-        ParseQuery<ParseObject> collegeQuery = ParseQuery.getQuery(EVENTS_TABLE).setLimit(10);
-        collegeQuery.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> parseObjects, ParseException e) {
-                if (e == null) {
-                    ParseObject.unpinAllInBackground(KEY_LOCAL_DATASTORE);
-                    ParseObject.pinAllInBackground(KEY_LOCAL_DATASTORE,parseObjects);
-                    Log.w(TAG, "Calling update UI from getFeed College");
-//                    Log.w(TAG, "Random = " + parseObjects.get(0).getString(KEY_TITLE));
-                    updateUI(CATEGORY_COLLEGE, EVENTS_TABLE, 1,latch);
-                } else {
-                    Log.e(TAG, "Getting feed query broke");
-                }
-            }
-        });
-        /*Get data related to the around the user*/
-        ParseQuery<ParseObject> aroundQuery = ParseQuery.getQuery(FEED_TABLE).setLimit(10);
-        aroundQuery.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> parseObjects, ParseException e) {
-                if (e == null) {
-                    ParseObject.unpinAllInBackground(KEY_LOCAL_DATASTORE);
-                    ParseObject.pinAllInBackground(KEY_LOCAL_DATASTORE,parseObjects);
-                    Log.w(TAG, "Calling update UI from getFeed Around");
-                    updateUI(CATEGORY_AROUND, FEED_TABLE, 1,latch);
-                } else {
-                    Log.e(TAG, "Getting feed query broke");
-                }
-            }
-        });
-
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            Log.d(TAG,"Interrupted");
-        }
-
-        List<FeedCategoryDataWrapper> f = new ArrayList<>();
-        f.addAll(toBeAdded[0]);
-        f.addAll(toBeAdded[1]);
-        f.addAll(toBeAdded[2]);
-        Collections.shuffle(f);
-        mAdapter.setDataSet(f);
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(swipeRefreshLayout.isRefreshing())
-                    swipeRefreshLayout.setRefreshing(false);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-    }
-    private synchronized void updateUI(final int i, String tableName, final int flag, final CountDownLatch l) {
-        if (this.isAdded()) {
-            ParseQuery<ParseObject> query = ParseQuery.getQuery(tableName).fromLocalDatastore().setLimit(10);
-            // query.whereContainedIn("category", interestList);
-            query.findInBackground(new FindCallback<ParseObject>() {
-                public void done(List<ParseObject> parseObjects, ParseException e) {
-                    if (e == null) {
-
-                        if (FeedFragment.this.isAdded()) {
-                            swipeRefreshLayout.setRefreshing(false);
-//                            mAdapter.setDataSet(i, parseObjects, true, getString(resourceId));
-                            for(int iter = 0; iter < parseObjects.size(); iter++) {
-                                if (!(hashParseObjects.contains(parseObjects.get(iter)))) {
-                                    toBeAdded[i].add(FeedCategoryDataWrapper.newInstance(feedTags[i], parseObjects.get(iter)));
-                                    hashParseObjects.add(parseObjects.get(iter));
+                    feedList.addAll(parseObjects);
+                    ParseQuery<ParseObject> collegeQuery = ParseQuery.getQuery(EVENTS_TABLE).setLimit(10);
+                    collegeQuery.findInBackground(new FindCallback<ParseObject>() {
+                        @Override
+                        public void done(List<ParseObject> parseObjects, ParseException e) {
+                            if (e == null) {
+                                feedList.addAll(parseObjects);
+                                Collections.shuffle(feedList);
+                                mAdapter = new FeedCategoryAdapter(feedList);
+                                recyclerView.setAdapter(mAdapter);
+                                if(swipeRefreshLayout.isRefreshing())
+                                    swipeRefreshLayout.setRefreshing(false);
+                            } else {
+                                if(swipeRefreshLayout.isRefreshing()){
+                                    swipeRefreshLayout.setRefreshing(false);
                                 }
-
+                                Log.e(TAG, "Getting feed query broke");
                             }
                         }
-                    } else {
-                        Log.e(TAG, "Query failed");
-                        e.printStackTrace();
+                    });
+                } else {
+                    if(swipeRefreshLayout.isRefreshing()){
+                        swipeRefreshLayout.setRefreshing(false);
                     }
-                    l.countDown();
-                    Log.d(TAG, "LOL" + Long.toString(l.getCount()));
+                    Log.e(TAG, "Getting feed query broke");
                 }
-            });
+            }
+        });
 
-        }
+//        ParseQuery<ParseObject> aroundQuery = ParseQuery.getQuery(FEED_TABLE).setLimit(10);
+//        List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
+//        queries.add(interestQuery);
+//        queries.add(collegeQuery);
+//        ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
+//        mainQuery.findInBackground(new FindCallback<ParseObject>() {
+//            public void done(List<ParseObject> results, ParseException e) {
+//                if(e==null){
+//                    Collections.shuffle(results);
+//                    mAdapter = new FeedCategoryAdapter(results);
+//                    recyclerView.setAdapter(mAdapter);
+//                    if(swipeRefreshLayout.isRefreshing())
+//                        swipeRefreshLayout.setRefreshing(false);
+//                }
+//                else{
+//                    e.printStackTrace();
+//                    if(swipeRefreshLayout.isRefreshing()){
+//                        swipeRefreshLayout.setRefreshing(false);
+//                    }
+//                }
+//            }
+//        });
     }
-
 
     private static class FeedCategoryAdapter extends RecyclerView.Adapter<FeedCategoryAdapter.FeedCategoryViewHolder> {
 
-        List<FeedCategoryDataWrapper> feedData = new ArrayList();
+        List<ParseObject> feedData = new ArrayList();
 
-        public void setDataSet(List<FeedCategoryDataWrapper> feedData) {
-
-            Log.d(TAG,"Old Size of Feed" + Integer.toString(this.feedData.size()));
-            if(this.feedData != null) {
-                this.feedData.addAll(0,feedData);
-            }
-
-            else
-                this.feedData = feedData;
-            Log.d(TAG,"New Size of Feed" + Integer.toString(this.feedData.size()));
+        public FeedCategoryAdapter(List<ParseObject> feedList){
+            feedData = feedList;
         }
 
         @Override
@@ -433,25 +306,26 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         @Override
         public void onBindViewHolder(final FeedCategoryViewHolder holder, int position) {
 
-            final ParseObject object = feedData.get(position).parseObject;
+            final ParseObject object = feedData.get(position);
+            Log.d("test",object.getClassName());
             holder.mTextView.setText(object.getString(KEY_TITLE));
             Ion.with(holder.mImageView).load(object.getString(KEY_IMAGE_URL));
             Ion.with(context).load(object.getString(KEY_IMAGE_URL)).asBitmap().setCallback(new FutureCallback<Bitmap>() {
                 @Override
                 public void onCompleted(final Exception e, Bitmap result) {
-                    if(result!=null){
-                    Palette.generateAsync(result, new Palette.PaletteAsyncListener() {
-                        @Override
-                        public void onGenerated(Palette palette) {
-                            int bgColor = palette.getLightMutedColor(R.color.light_white_);
-                            int vibcolor = palette.getLightVibrantColor(R.color.light_white_);
-                            int vibdark = palette.getDarkVibrantColor(R.color.accent_material_dark);
-                            holder.frameLayout.setBackgroundColor(vibcolor);
-                            holder.mTextView.setTextColor(bgColor);
-                            holder.mFeedTag.setTextColor(vibdark);
-                            //Log.e("Yogesh", "aa ja bc");
-                        }
-                    });
+                    if (result != null) {
+                        Palette.generateAsync(result, new Palette.PaletteAsyncListener() {
+                            @Override
+                            public void onGenerated(Palette palette) {
+                                int bgColor = palette.getLightMutedColor(R.color.light_white_);
+                                int vibcolor = palette.getLightVibrantColor(R.color.light_white_);
+                                int vibdark = palette.getDarkVibrantColor(R.color.accent_material_dark);
+                                holder.frameLayout.setBackgroundColor(vibcolor);
+                                holder.mTextView.setTextColor(bgColor);
+                                holder.mFeedTag.setTextColor(vibdark);
+                                //Log.e("Yogesh", "aa ja bc");
+                            }
+                        });
                     }
                 }
             });
@@ -472,7 +346,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
                 }
             });*/
 
-            holder.mFeedTag.setText(feedData.get(position).feedTag);
+            holder.mFeedTag.setText("Interests");
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -514,39 +388,5 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             }
         }
     }
-
-    private static class FeedCategoryDataWrapper {
-        public String feedTag;
-        ParseObject parseObject;
-        FeedCategoryDataWrapper(String s,ParseObject p) {
-            this.feedTag = s;
-            this.parseObject = p;
-        }
-        public static FeedCategoryDataWrapper newInstance(String s,ParseObject p) {
-            FeedCategoryDataWrapper fcdw = new FeedCategoryDataWrapper(s,p);
-            return fcdw;
-        }
-    }
-
-    private List<FeedCategoryDataWrapper> makeListOfFeedData(List<ParseObject> parseObjects,int from) {
-        List<FeedCategoryDataWrapper> feedCategoryDataWrapperList = new ArrayList<>(parseObjects.size());
-        if(parseObjects.size() != 0) {
-            Log.e(TAG,"The size of array is : " + Integer.toString(feedCategoryDataWrapperList.size()));
-            for (int i = 0; i < parseObjects.size(); i++) {
-                feedCategoryDataWrapperList.add(FeedCategoryDataWrapper.newInstance(feedTags[from],parseObjects.get(i)));
-            }
-        }
-        return feedCategoryDataWrapperList;
-    }
-
-//    private void notifyAdapter() {
-//        try {
-//            mAdapterNotifier.wait();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        mAdapter.notifyDataSetChanged();
-//
-//    }
 
 }
