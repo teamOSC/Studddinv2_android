@@ -1,7 +1,6 @@
 package in.tosc.studddin.fragments.notes;
 
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,16 +14,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.luminous.pick.Action;
-import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import in.tosc.studddin.R;
@@ -35,11 +27,10 @@ import in.tosc.studddin.ui.ProgressBarCircular;
  */
 public class NotesUploadFragment extends Fragment {
 
-
-
     static String[] imagePaths = new String[0];
 
-    private ProgressBarCircular uploadingNotes;
+    private ProgressBarCircular uploadingNotesProgressBar;
+    private Button uploadButton;
     private EditText topicNameEdTxt, branchNameEdTxt, subjectNameEdTxt;
     private ArrayList<ParseFile> parseFileList;
     private String topicNameString = "", branchNameString = "", subjectNameString = "";
@@ -66,6 +57,7 @@ public class NotesUploadFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         String[] paths = data.getStringArrayExtra("all_path");
         Log.d("Raghav", "Req = " + requestCode + "res = " + resultCode + "NotesUploadFragment");
 
@@ -78,26 +70,21 @@ public class NotesUploadFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_notes_upload, container, false);
 
         notes_attach_imageview = (ImageView) rootView.findViewById(R.id.notes_selected_image);
-//        Button attachButton = (Button) rootView.findViewById(R.id.notes_attach);
-        Button uploadButton = (Button) rootView.findViewById(R.id.notes_upload);
+
         topicNameEdTxt = (EditText) rootView.findViewById(R.id.notes_topic);
         branchNameEdTxt = (EditText) rootView.findViewById(R.id.notes_branch);
         subjectNameEdTxt = (EditText) rootView.findViewById(R.id.notes_subject);
-        uploadingNotes = (ProgressBarCircular) rootView.findViewById(R.id.notes_upload_progress);
+        uploadingNotesProgressBar = (ProgressBarCircular) rootView.findViewById(R.id.notes_upload_progress);
 
         parseFileList = new ArrayList<>();
 
         notes_attach_imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent i = new Intent(Action.ACTION_MULTIPLE_PICK);
                 startActivityForResult(i, 5);
-
             }
-
         });
-
 
         uploadButton = (Button) rootView.findViewById(R.id.notes_upload);
 
@@ -108,7 +95,6 @@ public class NotesUploadFragment extends Fragment {
                 topicNameString = topicNameEdTxt.getText().toString();
                 branchNameString = branchNameEdTxt.getText().toString();
                 subjectNameString = subjectNameEdTxt.getText().toString();
-
 
                 if (topicNameString.length() < 1) {
                     Toast.makeText(getActivity(), getString(R.string.enter_topic_name),
@@ -124,54 +110,61 @@ public class NotesUploadFragment extends Fragment {
 
                     if (imagePaths.length != 0) {
 
-                        final ProgressDialog notesUploadProgress = new ProgressDialog(getActivity());
-                        notesUploadProgress.setMessage(getString(R.string.notes_uploading));
-                        notesUploadProgress.setCancelable(false);
-                        notesUploadProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        notesUploadProgress.show();
-                        uploadingNotes.setVisibility(View.VISIBLE);
 
-                        for (int i = 0; i < imagePaths.length; i++) {
-                            byte[] imageToBeUploaded = convertToByteArray(imagePaths[i]);
-                            if (imageToBeUploaded == null) {
-                                Toast.makeText(getActivity(), "File size beyond limit", Toast.LENGTH_SHORT)
-                                        .show();
-                            }
+                        Intent serviceIntent = new Intent(getActivity(), NotesUploadService.class);
+                        serviceIntent.putExtra("imagePaths", imagePaths);
+                        serviceIntent.putExtra("userName", ParseUser.getCurrentUser().getString("NAME"));
+                        serviceIntent.putExtra("subjectName", subjectNameString);
+                        serviceIntent.putExtra("topicName", topicNameString);
+                        serviceIntent.putExtra("branchName", branchNameString);
 
-                            ParseFile parseFile = new ParseFile("notes_images", imageToBeUploaded);
+                        getActivity().startService(serviceIntent);
+//                        final ProgressDialog notesUploadProgress = new ProgressDialog(getActivity());
+//                        notesUploadProgress.setMessage(getString(R.string.notes_uploading));
+//                        notesUploadProgress.setCancelable(false);
+//                        notesUploadProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//                        notesUploadProgress.show();
+//                        uploadingNotesProgressBar.setVisibility(View.VISIBLE);
 
-                            try {
-                                parseFile.save();
-                            } catch (ParseException e) {
-                                Log.d("Raghav", "Error in parsefile");
-                            }
-                            parseFileList.add(parseFile);
-                        }
+//                        for (int i = 0; i < imagePaths.length; i++) {
+//                            byte[] imageToBeUploaded = convertToByteArray(imagePaths[i]);
+//                            if (imageToBeUploaded == null) {
+//                                Toast.makeText(getActivity(), "File size beyond limit", Toast.LENGTH_SHORT)
+//                                        .show();
+//                            }
+//
+//                            ParseFile parseFile = new ParseFile("notes_images", imageToBeUploaded);
+//
+//                            try {
+//                                parseFile.save();
+//                            } catch (ParseException e) {
+//                                Log.d("Raghav", "Error in parsefile");
+//                            }
+//                            parseFileList.add(parseFile);
+//                        }
+//
+//                        ParseObject uploadNotes = new ParseObject("Notes");
+//
+//                        uploadNotes.addAll("notesImages", parseFileList);
+//                        uploadNotes.put("userName", ParseUser.getCurrentUser().getString("NAME"));
+//                        uploadNotes.put("subjectName", subjectNameString);
+//                        uploadNotes.put("topicName", topicNameString);
+//                        uploadNotes.put("branchName", branchNameString);
+//                        uploadNotes.put("collegeName", "DTU");
 
-
-                        ParseObject uploadNotes = new ParseObject("Notes");
-
-                        uploadNotes.addAll("notesImages", parseFileList);
-                        uploadNotes.put("userName", ParseUser.getCurrentUser().getString("NAME"));
-                        uploadNotes.put("subjectName", subjectNameString);
-                        uploadNotes.put("topicName", topicNameString);
-                        uploadNotes.put("branchName", branchNameString);
-                        uploadNotes.put("collegeName", "DTU");
-
-                        uploadNotes.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                // uploading.setVisibility(View.GONE);
-                                Log.d("Raghav", "File Uploaded");
-                                notesUploadProgress.dismiss();
-                                uploadingNotes.setVisibility(View.GONE);
-                                Toast.makeText(getActivity(), getString(R.string.upload_complete),
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        });
+//                        uploadNotes.saveInBackground(new SaveCallback() {
+//                            @Override
+//                            public void done(ParseException e) {
+//                                // uploading.setVisibility(View.GONE);
+//                                Log.d("Raghav", "File Uploaded");
+////                                notesUploadProgress.dismiss();
+//                                uploadingNotesProgressBar.setVisibility(View.GONE);
+//                                Toast.makeText(getActivity(), getString(R.string.upload_complete),
+//                                        Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
 
                     } else {
-
                         Toast.makeText(getActivity(), "Please select an Image to upload", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -180,28 +173,6 @@ public class NotesUploadFragment extends Fragment {
         return rootView;
     }
 
-    private static byte[] convertToByteArray(String imagePath) {
-        File file = new File(imagePath);
 
-        if (file.length() < 10485760) {
-            byte[] imageByte = new byte[(int) file.length()];
-            try {
-                Log.d("Raghav", "File Found");
-                FileInputStream fileInputStream = new FileInputStream(file);
-                fileInputStream.read(imageByte);
-
-            } catch (FileNotFoundException e) {
-                Log.d("Raghav", "File Not Found.");
-
-            } catch (IOException e1) {
-                Log.d("Raghav", "Error Reading The File.");
-
-            }
-            return imageByte;
-
-        } else {
-            return null;
-        }
-    }
 
 }
