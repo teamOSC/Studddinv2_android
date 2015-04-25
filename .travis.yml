@@ -29,4 +29,3 @@ deploy:
   on:
     tags: true
     all_branches: true
-    repo: teamOSC/LearnHut_android
