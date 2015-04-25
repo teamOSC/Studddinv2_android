@@ -3,14 +3,18 @@ package in.tosc.studddin.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -21,11 +25,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -113,7 +119,18 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         RecyclerView.LayoutManager mVerticalLayoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
 
+        StaggeredGridLayoutManager mGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+
+
         recyclerView.setLayoutManager(mVerticalLayoutManager);
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            recyclerView.setLayoutManager(mVerticalLayoutManager);
+        }
+        else {
+            recyclerView.setLayoutManager(mGridLayoutManager);
+        }
 
 //        mAdapter = new FeedRootAdapter();
         mAdapter = new FeedCategoryAdapter();
@@ -414,11 +431,47 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         }
 
         @Override
-        public void onBindViewHolder(FeedCategoryViewHolder holder, int position) {
+        public void onBindViewHolder(final FeedCategoryViewHolder holder, int position) {
 
             final ParseObject object = feedData.get(position).parseObject;
             holder.mTextView.setText(object.getString(KEY_TITLE));
             Ion.with(holder.mImageView).load(object.getString(KEY_IMAGE_URL));
+            Ion.with(context).load(object.getString(KEY_IMAGE_URL)).asBitmap().setCallback(new FutureCallback<Bitmap>() {
+                @Override
+                public void onCompleted(final Exception e, Bitmap result) {
+                    if(result!=null){
+                    Palette.generateAsync(result, new Palette.PaletteAsyncListener() {
+                        @Override
+                        public void onGenerated(Palette palette) {
+                            int bgColor = palette.getLightMutedColor(R.color.light_white_);
+                            int vibcolor = palette.getLightVibrantColor(R.color.light_white_);
+                            int vibdark = palette.getDarkVibrantColor(R.color.accent_material_dark);
+                            holder.frameLayout.setBackgroundColor(vibcolor);
+                            holder.mTextView.setTextColor(bgColor);
+                            holder.mFeedTag.setTextColor(vibdark);
+                            //Log.e("Yogesh", "aa ja bc");
+                        }
+                    });
+                    }
+                }
+            });
+
+            /*Ion.with(holder.mImageView).load(object.getString(KEY_IMAGE_URL)).setCallback(new FutureCallback<ImageView>() {
+                @Override
+                public void onCompleted(Exception e, ImageView result) {
+                    BitmapDrawable drawable = (BitmapDrawable) result.getDrawable();
+                    Bitmap bitmap = drawable.getBitmap();
+                    Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
+                        @Override
+                        public void onGenerated(Palette palette) {
+                            int bgColor = palette.getLightMutedColor(R.color.light_white_);
+                            holder.frameLayout.setBackgroundColor(bgColor);
+                            Log.d("Yogesh", "aa gaya bc");
+                        }
+                    });
+                }
+            });*/
+
             holder.mFeedTag.setText(feedData.get(position).feedTag);
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -434,6 +487,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
                     }
                 }
             });
+
         }
 
         @Override
@@ -448,6 +502,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             public TextView mTextView;
             public ImageView mImageView;
             public TextView mFeedTag;
+            public FrameLayout frameLayout;
 
             public FeedCategoryViewHolder(CardView v) {
                 super(v);
@@ -455,6 +510,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
                 mTextView = (TextView) this.view.findViewById(R.id.feed_item_text_view);
                 mImageView = (ImageView) this.view.findViewById(R.id.feed_item_image);
                 mFeedTag = (TextView) this.view.findViewById(R.id.feed_category_tag);
+                frameLayout = (FrameLayout) this.view.findViewById(R.id.feeds_frame);
             }
         }
     }
