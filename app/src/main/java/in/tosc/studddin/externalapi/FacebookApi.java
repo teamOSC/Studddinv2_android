@@ -15,12 +15,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.utils.Utilities;
 
 /**
  * Created by championswimmer on 26/1/15.
  */
 public class FacebookApi {
+    public static final boolean DEBUG = ApplicationWrapper.LOG_DEBUG;
+    public static final boolean INFO = ApplicationWrapper.LOG_INFO;
     public static final String APP_ID = "903137443064438";
     private static final String TAG = "FacebookApi";
     public static String USER_ID = "";
@@ -36,7 +39,7 @@ public class FacebookApi {
             @Override
             public void onCompleted(GraphUser gu, Response response) {
                 if (gu != null) {
-                    Log.d(TAG, "json = " + response.getGraphObject().getInnerJSONObject().toString());
+                    if (DEBUG) Log.d(TAG, "json = " + response.getGraphObject().getInnerJSONObject().toString());
                     JSONObject responseObject = response.getGraphObject().getInnerJSONObject();
                     USER_ID = gu.getId();
                     try {
@@ -63,7 +66,7 @@ public class FacebookApi {
             @Override
             public void onCompleted(Response response) {
                 try {
-                    Log.d(TAG, "facebook response = " + response.getRawResponse());
+                    if (DEBUG) Log.d(TAG, "facebook response = " + response.getRawResponse());
                     fgedc.gotEventData(response.getGraphObject().getInnerJSONObject().getJSONArray("data"));
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -74,7 +77,7 @@ public class FacebookApi {
     }
 
     public static void getProfilePicture(final FbGotProfilePictureCallback listener) {
-        Log.d(TAG, "getting profile picture");
+        if (DEBUG) Log.d(TAG, "getting profile picture");
         Bundle bundle = new Bundle();
         bundle.putString("fields", "picture");
         new Request(session, "me", bundle,
@@ -100,7 +103,7 @@ public class FacebookApi {
     }
 
     public static void getCoverPicture(final FbGotCoverPictureCallback listener) {
-        Log.d(TAG, "getting cover picture");
+        if (DEBUG) Log.d(TAG, "getting cover picture");
         Bundle bundle = new Bundle();
         bundle.putString("fields", "cover");
         new Request(session, "me", bundle,

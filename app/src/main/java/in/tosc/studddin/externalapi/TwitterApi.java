@@ -18,12 +18,16 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.utils.Utilities;
 
 /**
  * Created by championswimmer on 26/1/15.
  */
 public class TwitterApi {
+    public static final boolean DEBUG = ApplicationWrapper.LOG_DEBUG;
+    public static final boolean INFO = ApplicationWrapper.LOG_INFO;
+    
     private static final String TAG = "TwitterApi";
 
     private static final String infoGetUrl = "https://api.twitter.com/1.1/users/show.json?screen_name=%s";
@@ -79,7 +83,7 @@ public class TwitterApi {
                     JSONObject object = new JSONObject(EntityUtils.toString(response.getEntity()));
                     profileBitmap = Utilities.downloadBitmap(object.getString("profile_image_url").replace("_normal", ""));
                     coverBitmap = Utilities.downloadBitmap(object.getString("profile_background_image_url"));
-                    Log.d(TAG, "twitter profile url = " + object.getString("profile_image_url").replace("_normal", ""));
+                    if (DEBUG) Log.d(TAG, "twitter profile url = " + object.getString("profile_image_url").replace("_normal", ""));
                     return object;
                 } catch (IOException e) {
                     e.printStackTrace();

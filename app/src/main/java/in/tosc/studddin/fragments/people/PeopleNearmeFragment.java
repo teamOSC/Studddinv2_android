@@ -37,6 +37,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.ui.ParseCircularImageView;
@@ -168,7 +169,7 @@ public class PeopleNearmeFragment extends Fragment {
                                 public void done(byte[] data,
                                                  ParseException e) {
                                     if (e == null) {
-                                        Log.d("test",
+                                        if(ApplicationWrapper.LOG_DEBUG) Log.d("test",
                                                 "We've got data in data.");
 
                                         in.putByteArray("pic", data);
@@ -177,7 +178,7 @@ public class PeopleNearmeFragment extends Fragment {
 
 
                                     } else {
-                                        Log.d("test", "There was a problem downloading the data.");
+                                        if(ApplicationWrapper.LOG_DEBUG) Log.d("test", "There was a problem downloading the data.");
                                     }
                                 }
                             });
@@ -442,7 +443,7 @@ public class PeopleNearmeFragment extends Fragment {
                             public void done(byte[] data,
                                              ParseException e) {
                                 if (e == null) {
-                                    Log.d("test",
+                                    if(ApplicationWrapper.LOG_DEBUG) Log.d("test",
                                             "We've got data in data.");
 
                                     holder.userimg.setImageBitmap(BitmapFactory
@@ -451,7 +452,7 @@ public class PeopleNearmeFragment extends Fragment {
                                                     data.length));
 
                                 } else {
-                                    Log.d("test", "There was a problem downloading the data.");
+                                    if(ApplicationWrapper.LOG_DEBUG) Log.d("test", "There was a problem downloading the data.");
                                 }
                             }
                         });

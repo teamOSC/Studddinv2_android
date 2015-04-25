@@ -54,6 +54,8 @@ import in.tosc.studddin.utils.Utilities;
  * News Feed fragment subclass
  */
 public class FeedFragment extends Fragment implements View.OnKeyListener {
+    public static final boolean DEBUG = ApplicationWrapper.LOG_DEBUG;
+    public static final boolean INFO = ApplicationWrapper.LOG_INFO;
 
     public static final int CATEGORY_INTERESTS = 0;
     public static final int CATEGORY_AROUND = 1;
@@ -357,7 +359,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
             latch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            Log.d(TAG,"Interrupted");
+            if(DEBUG) Log.d(TAG,"Interrupted");
         }
 
         List<FeedCategoryDataWrapper> f = new ArrayList<>();
@@ -399,7 +401,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
                         e.printStackTrace();
                     }
                     l.countDown();
-                    Log.d(TAG, "LOL" + Long.toString(l.getCount()));
+                    if(DEBUG) Log.d(TAG, "LOL" + Long.toString(l.getCount()));
                 }
             });
 
@@ -413,14 +415,14 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
 
         public void setDataSet(List<FeedCategoryDataWrapper> feedData) {
 
-            Log.d(TAG,"Old Size of Feed" + Integer.toString(this.feedData.size()));
+            if(DEBUG) Log.d(TAG,"Old Size of Feed" + Integer.toString(this.feedData.size()));
             if(this.feedData != null) {
                 this.feedData.addAll(0,feedData);
             }
 
             else
                 this.feedData = feedData;
-            Log.d(TAG,"New Size of Feed" + Integer.toString(this.feedData.size()));
+            if(DEBUG) Log.d(TAG,"New Size of Feed" + Integer.toString(this.feedData.size()));
         }
 
         @Override
@@ -466,7 +468,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
                         public void onGenerated(Palette palette) {
                             int bgColor = palette.getLightMutedColor(R.color.light_white_);
                             holder.frameLayout.setBackgroundColor(bgColor);
-                            Log.d("Yogesh", "aa gaya bc");
+                            if(DEBUG) Log.d("Yogesh", "aa gaya bc");
                         }
                     });
                 }

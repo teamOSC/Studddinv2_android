@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.ui.ParseCircularImageView;
@@ -166,7 +167,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                                 public void done(byte[] data,
                                                  ParseException e) {
                                     if (e == null) {
-                                        Log.d("test",
+                                        if(ApplicationWrapper.LOG_DEBUG) Log.d("test",
                                                 "We've got data in data.");
 
                                         in.putByteArray("pic", data);
@@ -175,7 +176,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
 
                                     } else {
-                                        Log.d("test", "There was a problem downloading the data.");
+                                        if(ApplicationWrapper.LOG_DEBUG) Log.d("test", "There was a problem downloading the data.");
                                     }
                                 }
                             });
@@ -225,7 +226,7 @@ public class PeopleSameInterestsFragment extends Fragment {
         currentuserInterestsQuery.getFirstInBackground(new GetCallback<ParseUser>() {
             public void done(final ParseUser user, ParseException e) {
                 if (user == null) {
-                    Log.d("query", "failed.");
+                    if(ApplicationWrapper.LOG_DEBUG) Log.d("query", "failed.");
                 } else {
 
                     final ArrayList<ParseObject> currentUserInterestsList = (ArrayList<ParseObject>) User.get(ParseTables.Users.INTERESTS);
@@ -413,7 +414,7 @@ public class PeopleSameInterestsFragment extends Fragment {
         currentuserInterestsQuery.getFirstInBackground(new GetCallback<ParseUser>() {
             public void done(final ParseUser user, ParseException e) {
                 if (user == null) {
-                    Log.d("query", "failed.");
+                    if(ApplicationWrapper.LOG_DEBUG) Log.d("query", "failed.");
                 } else {
 
                     final ArrayList<ParseObject> currentUserInterestsList = (ArrayList<ParseObject>) User.get(ParseTables.Users.INTERESTS);
@@ -546,7 +547,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                                         public void done(byte[] data,
                                                          ParseException e) {
                                             if (e == null) {
-                                                Log.d("test",
+                                                if(ApplicationWrapper.LOG_DEBUG) Log.d("test",
                                                         "We've got data in data.");
 
                                                 holder.userimg.setImageBitmap(BitmapFactory
