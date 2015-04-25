@@ -5,54 +5,35 @@
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_vertical_margin"
-    android:paddingTop="35dp">
+    android:paddingTop="40dp">
 
     <RelativeLayout
-        android:id="@+id/parent_edit_text_interest"
+        android:id="@+id/parent_edit_text_college"
         android:layout_width="match_parent"
         android:layout_alignParentTop="true"
         android:layout_height="wrap_content">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp">
         <EditText
-            android:id="@+id/edit_text_interest"
+            android:id="@+id/edit_text_college"
             android:layout_width="match_parent"
-            android:paddingLeft="20dp"
-            android:paddingBottom="3dp"
-            android:paddingTop="3dp"
             android:layout_height="wrap_content"
             android:padding="20dp"
-            android:hint="search or add your own"
+            android:hint="Add your own"
             android:textColorHint="@android:color/white"
             android:textColor="@android:color/white"
-            android:background="@drawable/signon_edittext"/>
-
-        <Button
-            android:id="@+id/button_item_search"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignRight="@id/edit_text_interest"
-            android:layout_centerVertical="true"
-            android:paddingRight="2dp"
-            android:text="Add"
-            android:textColor="@color/white"
-            android:layout_gravity="right|center_vertical"
-            android:background="@drawable/add_button_selector_itemfragment"/>
-        </FrameLayout>
+            android:background="@color/signon_editext_focused"/>
 
     </RelativeLayout>
 
     <ProgressBar
-        android:id="@+id/progressbar_item_selector"
+        android:id="@+id/progressbar_college_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_interests"
-        android:layout_below="@id/parent_edit_text_interest"
+        android:id="@+id/recycler_view_college"
+        android:layout_below="@id/parent_edit_text_college"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -62,7 +43,7 @@
 
 
     <in.tosc.studddin.ui.FloatingActionButton
-        android:id="@+id/button_item_submit"
+        android:id="@+id/button_college_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
