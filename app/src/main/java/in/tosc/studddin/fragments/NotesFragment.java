@@ -82,7 +82,7 @@ public class NotesFragment extends Fragment {
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.pink);
+                return getResources().getColor(R.color.tabstripColor);
             }
         });
         tabs.setViewPager(notesPager);
@@ -113,7 +113,7 @@ public class NotesFragment extends Fragment {
 
     public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-        CharSequence TAB_TITLES[]={"Notes","Upload notes"};
+        CharSequence TAB_TITLES[]={"Notes","Upload Notes"};
         int NUM_TAB =2;
 
         public ViewPagerAdapter(FragmentManager fm) {

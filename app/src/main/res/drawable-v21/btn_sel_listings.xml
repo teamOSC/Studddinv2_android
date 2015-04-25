@@ -6,20 +6,20 @@
         android:drawable="@android:color/white"></item>
     <item android:state_pressed="true">
         <shape>
-            <solid android:color="@color/listingsColorPrimaryPressed" />
+            <solid android:color="@color/colorPrimaryDarkPressed" />
         </shape>
     </item>
 
     <item android:state_enabled="false">
         <shape>
-            <solid android:color="@color/listingsColorPrimaryPressed" />
+            <solid android:color="@color/colorPrimaryDarkPressed" />
         </shape>
     </item>
 
 
     <item>
         <shape>
-            <solid android:color="@color/listingsColorPrimaryDark" />
+            <solid android:color="@color/colorPrimaryDark" />
         </shape>
     </item>
 </ripple>

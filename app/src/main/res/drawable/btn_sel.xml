@@ -3,20 +3,20 @@
 
     <item android:state_pressed="true">
         <shape>
-            <solid android:color="@color/eventsColorPrimaryPressed" />
+            <solid android:color="@color/colorPrimaryDarkPressed" />
         </shape>
     </item>
 
     <item android:state_enabled="false">
         <shape>
-            <solid android:color="@color/eventsColorPrimaryPressed" />
+            <solid android:color="@color/colorPrimaryDarkPressed" />
         </shape>
     </item>
 
 
     <item>
         <shape>
-            <solid android:color="@color/eventsColorPrimaryDark" />
+            <solid android:color="@color/colorPrimaryDark" />
         </shape>
     </item>
 

@@ -107,7 +107,7 @@ public class ListingsFragment extends Fragment {
             tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
                 @Override
                 public int getIndicatorColor(int position) {
-                    return getResources().getColor(R.color.pink);
+                    return getResources().getColor(R.color.tabstripColor);
                 }
             });
             tabs.setViewPager(listingsPager);
@@ -173,7 +173,7 @@ public class ListingsFragment extends Fragment {
 
     public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-        CharSequence TAB_TITLES[]={"Listings","post an item", "My listings"};
+        CharSequence TAB_TITLES[]={"Listings","Post An Item", "My Listings"};
         int NUM_TAB =3;
 
         public ViewPagerAdapter(FragmentManager fm) {
