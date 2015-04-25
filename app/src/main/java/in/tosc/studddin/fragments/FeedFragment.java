@@ -155,10 +155,9 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
                 for (ParseObject parseObject : parseObjects) {
                     interestList.add(parseObject.getString("name"));
                 }
+                getFeed();
             }
         });
-
-        getFeed();
 
         return rootView;
     }
@@ -229,14 +228,16 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
 
         final List<ParseObject> feedList = new ArrayList<>();
 
-        ParseQuery<ParseObject> interestQuery = ParseQuery.getQuery(FEED_TABLE).setLimit(10);
+        ParseQuery<ParseObject> interestQuery = ParseQuery.getQuery(FEED_TABLE);
+        interestQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         interestQuery.whereContainedIn("category", interestList);
         interestQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
                     feedList.addAll(parseObjects);
-                    ParseQuery<ParseObject> collegeQuery = ParseQuery.getQuery(EVENTS_TABLE).setLimit(10);
+                    ParseQuery<ParseObject> collegeQuery = ParseQuery.getQuery(EVENTS_TABLE);
+                    collegeQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
                     collegeQuery.findInBackground(new FindCallback<ParseObject>() {
                         @Override
                         public void done(List<ParseObject> parseObjects, ParseException e) {
@@ -307,7 +308,6 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         public void onBindViewHolder(final FeedCategoryViewHolder holder, int position) {
 
             final ParseObject object = feedData.get(position);
-            Log.d("test",object.getClassName());
             holder.mTextView.setText(object.getString(KEY_TITLE));
             Ion.with(holder.mImageView).load(object.getString(KEY_IMAGE_URL));
             Ion.with(context).load(object.getString(KEY_IMAGE_URL)).asBitmap().setCallback(new FutureCallback<Bitmap>() {
@@ -346,7 +346,10 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
                 }
             });*/
 
-            holder.mFeedTag.setText("Interests");
+            if(object.getClassName().equalsIgnoreCase("Feed"))
+                holder.mFeedTag.setText("Interests");
+            else if(object.getClassName().equalsIgnoreCase("Events"))
+                holder.mFeedTag.setText("Events");
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
