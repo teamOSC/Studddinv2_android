@@ -10,15 +10,12 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import in.tosc.studddin.R;
 
 public class NotesUploadService extends Service {
 
@@ -34,51 +31,73 @@ public class NotesUploadService extends Service {
     }
 
 
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        String[] imagePaths = intent.getStringArrayExtra("imagePaths");
-        String userName = intent.getStringExtra("userName");
-        String subjectNameString = intent.getStringExtra("subjectName");
-        String branchNameString = intent.getStringExtra("branchName");
-        String topicNameString = intent.getStringExtra("topicName");
-        for (int i = 0; i < imagePaths.length; i++) {
-            byte[] imageToBeUploaded = convertToByteArray(imagePaths[i]);
-            if (imageToBeUploaded == null) {
-                Toast.makeText(getApplicationContext(), "File size beyond limit", Toast.LENGTH_SHORT)
-                        .show();
-            }
+        final android.os.Handler mHandler=new android.os.Handler();
+        parseFileList = new ArrayList<>();
+        final String[] imagePaths = intent.getStringArrayExtra("imagePaths");
+        final String userName = intent.getStringExtra("userName");
+        final String subjectNameString = intent.getStringExtra("subjectName");
+        final String branchNameString = intent.getStringExtra("branchName");
+        final String topicNameString = intent.getStringExtra("topicName");
 
-            ParseFile parseFile = new ParseFile("notes_images", imageToBeUploaded);
 
-            try {
-                parseFile.save();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            final Thread t = new Thread() {
 
-            parseFileList.add(parseFile);
-        }
+                @Override
+                public void run() {
+                    try {
+                        for (int i = 0; i < imagePaths.length; i++) {
+                        byte[] imageToBeUploaded = convertToByteArray(imagePaths[i]);
+                        if (imageToBeUploaded == null) {
+                            Toast.makeText(getApplicationContext(), "File size beyond limit", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
 
-        ParseObject uploadNotes = new ParseObject("Notes");
+                        ParseFile parseFile = new ParseFile("notes_images", imageToBeUploaded);
 
-        uploadNotes.addAll("notesImages", parseFileList);
-        uploadNotes.put("userName", ParseUser.getCurrentUser().getString("NAME"));
-        uploadNotes.put("subjectName", subjectNameString);
-        uploadNotes.put("topicName", topicNameString);
-        uploadNotes.put("branchName", branchNameString);
-        uploadNotes.put("collegeName", "DTU");
+                        try {
+                            parseFile.save();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
 
-        uploadNotes.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                // uploading.setVisibility(View.GONE);
-                Log.d("Raghav", "File Uploaded");
+                        parseFileList.add(parseFile);
+                    }
 
-                Toast.makeText(getApplicationContext(), getString(R.string.upload_complete),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+                        ParseObject uploadNotes = new ParseObject("Notes");
+
+                        uploadNotes.addAll("notesImages", parseFileList);
+                        uploadNotes.put("userName", ParseUser.getCurrentUser().getString("NAME"));
+                        uploadNotes.put("subjectName", subjectNameString);
+                        uploadNotes.put("topicName", topicNameString);
+                        uploadNotes.put("branchName", branchNameString);
+                        uploadNotes.put("collegeName", "DTU");
+
+                        try {
+                            uploadNotes.save();
+                            mHandler.post(new Runnable(){
+                                public void run(){
+                                    Toast.makeText(NotesUploadService.this, "Notes Uploaded Successfully", Toast.LENGTH_LONG).show();
+                                }
+                            });
+
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    } finally {
+
+                    }
+                }
+            };
+            t.start();
+
+
 
         return START_STICKY;
         //return super.onStartCommand(intent, flags, startId);
