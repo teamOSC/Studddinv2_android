@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -44,7 +45,6 @@ import java.util.regex.Pattern;
 
 import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
-import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.externalapi.ParseTables;
 
 /**
@@ -59,7 +59,7 @@ public class SignupDataFragment extends Fragment implements
     Bundle userDataBundle;
     View rootView;
     private HashMap<String, String> input;
-    private SparseArray<MaterialEditText> editTextArray = new SparseArray<>();
+    private SparseArray<EditText> editTextArray = new SparseArray<>();
     private Button submitButton;
     private ImageView profileImageView;
     private GoogleApiClient mGoogleApiClient;
@@ -221,7 +221,7 @@ public class SignupDataFragment extends Fragment implements
     }
 
     private void initializeEditTexts(int id) {
-        MaterialEditText mEditText = (MaterialEditText) rootView.findViewById(id);
+        EditText mEditText = (EditText) rootView.findViewById(id);
         if (mEditText == null) {
             Log.e(TAG, "edit text is null");
         }

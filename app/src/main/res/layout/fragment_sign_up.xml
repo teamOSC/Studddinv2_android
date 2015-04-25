@@ -12,7 +12,7 @@
         android:layout_height="0dp"
         android:layout_gravity="bottom"
         android:layout_marginTop="40dp"
-        android:layout_weight="6"
+        android:layout_weight="7"
         android:gravity="bottom"
         android:orientation="vertical">
 
@@ -21,7 +21,6 @@
             android:layout_height="fill_parent"
             android:paddingBottom="5dp"
             android:layout_gravity="center"
-            android:layout_weight="8"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -43,7 +42,7 @@
                     android:minWidth="130dp"
                     android:src="@drawable/image_default" />
 
-                <in.tosc.studddin.ui.MaterialEditText
+                <EditText
                     android:id="@+id/user_name"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -54,11 +53,14 @@
                     android:singleLine="true"
                     android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    app:floatingLabel="highlight"
-                    app:baseColor="@color/white"
-                    app:primaryColor="@color/white"/>
+                    android:paddingLeft="10dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/signon_edittext"
+                    />
 
-                <in.tosc.studddin.ui.MaterialEditText
+                <EditText
                     android:id="@+id/user_password"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -71,11 +73,13 @@
                     android:completionThreshold="1"
                     android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    app:floatingLabel="highlight"
-                    app:baseColor="@color/white"
-                    app:primaryColor="@color/white"/>
+                    android:paddingLeft="10dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/signon_edittext"/>
 
-                <in.tosc.studddin.ui.MaterialEditText
+                <EditText
                     android:id="@+id/user_email"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -86,9 +90,11 @@
                     android:singleLine="true"
                     android:textAlignment="center"
                     android:textCursorDrawable="@drawable/text_cursor_cyan"
-                    app:floatingLabel="highlight"
-                    app:baseColor="@color/white"
-                    app:primaryColor="@color/white"/>
+                    android:paddingLeft="10dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/signon_edittext"/>
 
                 <Button
                     android:id="@+id/user_location"
@@ -101,27 +107,28 @@
                     android:textAlignment="center"
                     android:textColor="@color/white" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/user_location"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center_horizontal">
+                <Button
+                    android:id="@+id/submit_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bbuton_primary_rounded"
+                    android:gravity="center_horizontal"
+                    android:text="@string/submit"
+                    android:textColor="@color/white"
+                    android:padding="15dp"
+                    android:layout_marginBottom="15dp"
+                    />
+                </LinearLayout>
+
             </RelativeLayout>
         </ScrollView>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/submit_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/bbuton_primary_rounded"
-            android:gravity="center"
-            android:text="@string/submit"
-            android:textColor="@color/white"
-            android:padding="15dp"/>
 
     </LinearLayout>
 
