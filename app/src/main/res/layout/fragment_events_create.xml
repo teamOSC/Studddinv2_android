@@ -249,6 +249,7 @@
         android:text="@string/submit"
         android:textColor="@android:color/white" />
         <Button
+            android:visibility="gone"
             android:id="@+id/facebook_events"
             android:layout_width="match_parent"
             android:layout_height="0dp"
