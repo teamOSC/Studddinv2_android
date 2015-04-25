@@ -16,6 +16,7 @@
     <color name="itemselector_checkbox_bg_normal">#aaF3B61F</color>
     <color name="itemselector_checkbox_bg_pressed">#aaBB6B00</color>
     <color name="signON_bg">#aa424242</color>
+    <color name="tabTextColor">#BDBDBD</color>
 
     <!-- App Main colors -->
     <color name="colorPrimary">#607D8B</color>
