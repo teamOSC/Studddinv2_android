@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.hardware.camera2.params.Face;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -55,7 +56,8 @@ import in.tosc.studddin.utils.Utilities;
 /**
  * SignOnFragment
  */
-public class SignOnFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class SignOnFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, FetchUserPhotos.PhotosFetcher {
 
     public static final String TAG = "SignOnFragment";
     // TODO: Rename parameter arguments, choose names that match
@@ -288,6 +290,17 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                     }
                                 });*/
                                 new PushUserIntoParse().execute(bundle);
+                                new FetchUserPhotos(new FetchUserPhotos.PhotosFetcher() {
+                                    @Override
+                                    public Bitmap downloadCoverPhoto() {
+                                        return FacebookApi.getProfileAndWait();
+                                    }
+
+                                    @Override
+                                    public Bitmap downloadProfilePhoto() {
+                                        return FacebookApi.getCoverAndWait();
+                                    }
+                                }).start();
                             }
                         });
                     } else {
@@ -396,7 +409,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                     // Network or server error, try later
                     Log.e(TAG, transientEx.toString());
                 }
-
                 return token;
             }
 
@@ -422,7 +434,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                         if (user.isNew() || (!fullyRegistered)) {
                                             try {
                                                 if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-                                                    Person currentPerson = Plus.PeopleApi
+                                                    final Person currentPerson = Plus.PeopleApi
                                                             .getCurrentPerson(mGoogleApiClient);
                                                     b.putString(ParseTables.Users.NAME, currentPerson.getDisplayName());
                                                     b.putString(ParseTables.Users.EMAIL, Plus.AccountApi.getAccountName(mGoogleApiClient));
@@ -431,6 +443,25 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                                         b.putString(ParseTables.Users.DOB, reverseDate);
                                                     }
                                                     new PushUserIntoParse().execute(b);
+                                                    new FetchUserPhotos(new FetchUserPhotos.PhotosFetcher() {
+                                                        @Override
+                                                        public Bitmap downloadCoverPhoto() {
+                                                            String coverUrl = currentPerson.getCover().getCoverPhoto().getUrl();
+                                                            if (coverUrl != null && !coverUrl.equals("")) {
+                                                                return Utilities.downloadBitmap(coverUrl);
+                                                            }
+                                                            return null;
+                                                        }
+
+                                                        @Override
+                                                        public Bitmap downloadProfilePhoto() {
+                                                            String photoUrl = currentPerson.getImage().getUrl();
+                                                            if (photoUrl != null && !photoUrl.equals("")) {
+                                                                return Utilities.downloadBitmap(photoUrl);
+                                                            }
+                                                            return null;
+                                                        }
+                                                    }).start();
                                                 }
                                             } catch (Exception ex) {
                                                 ex.printStackTrace();
@@ -489,6 +520,16 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                 });
             }
         }.execute();
+    }
+
+    @Override
+    public Bitmap downloadCoverPhoto() {
+        return null;
+    }
+
+    @Override
+    public Bitmap downloadProfilePhoto() {
+        return null;
     }
 
     private class PushUserIntoParse extends AsyncTask<Bundle, Void, Bundle> {
@@ -575,7 +616,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
             fragment.setCoverPicture(bitmap);
         }
     }
-
 
     @Override
     public void onConnectionSuspended(int i) {

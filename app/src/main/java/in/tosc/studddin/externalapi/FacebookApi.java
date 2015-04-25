@@ -99,6 +99,23 @@ public class FacebookApi {
         }).executeAsync();
     }
 
+    public static Bitmap getProfileAndWait() {
+        Bundle bundle = new Bundle();
+        bundle.putString("fields", "picture");
+        Request request = new Request(session, "me", bundle, HttpMethod.GET);
+        Response response = Request.executeAndWait(request);
+
+        try {
+            String objectId = response.getGraphObject().getInnerJSONObject().getString("id");
+            String sUrl = "https://graph.facebook.com/" + objectId + "/picture??width=300&&height=300";
+            Bitmap bitmap = Utilities.downloadBitmap(sUrl);
+            return bitmap;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static void getCoverPicture(final FbGotCoverPictureCallback listener) {
         Log.d(TAG, "getting cover picture");
         Bundle bundle = new Bundle();
@@ -122,6 +139,21 @@ public class FacebookApi {
                 }.execute();
             }
         }).executeAsync();
+    }
+
+    public static Bitmap getCoverAndWait() {
+        Bundle bundle = new Bundle();
+        bundle.putString("fields", "cover");
+        Request request = new Request(session, "me", bundle, HttpMethod.GET);
+        Response response = Request.executeAndWait(request);
+        try {
+            String sUrl = response.getGraphObject().getInnerJSONObject().getJSONObject("cover").getString("source");
+            Bitmap bitmap = Utilities.downloadBitmap(sUrl);
+            return bitmap;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public interface FbGotDataCallback {
