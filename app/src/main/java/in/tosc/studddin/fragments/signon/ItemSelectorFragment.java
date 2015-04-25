@@ -115,7 +115,7 @@ public abstract class ItemSelectorFragment extends Fragment implements TextWatch
                 inflateInterests();
                 break;
             case TYPE_COLLEGE:
-                inflateColleges();
+//                inflateColleges();
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown ItemSelector Type");
@@ -134,20 +134,6 @@ public abstract class ItemSelectorFragment extends Fragment implements TextWatch
                 }
                 Log.d(TAG, "List of size retrned = " + list.size());
                 showItemsList(list, TYPE_INTEREST);
-            }
-        });
-    }
-
-    private void inflateColleges() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseTables.College._NAME);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (e != null) {
-                    e.printStackTrace();
-                    return;
-                }
-                showItemsList(list, TYPE_COLLEGE);
             }
         });
     }
@@ -305,7 +291,6 @@ public abstract class ItemSelectorFragment extends Fragment implements TextWatch
                     break;
                 default:
                     throw new UnsupportedOperationException("Unknown ItemSelector Type");
-
             }
             holder.mCheckBox.setText(text);
             int positionInMainList = mainList.indexOf(mDataset.get(position));
