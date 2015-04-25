@@ -56,9 +56,9 @@
     <color name="google_red_pressed">#aaE02F2F</color>
 
     <!-- Button colors -->
-    <color name="button_primary">#4BC6B9</color>
-    <color name="button_primary_disabled">#4BC6B9</color>
-    <color name="button_primary_pressed">#ADE1E5</color>
+    <color name="button_primary">#009688</color>
+    <color name="button_primary_disabled">#009688</color>
+    <color name="button_primary_pressed">#004D40</color>
     <color name="note_button">#FF9800</color>
     <color name="note_button_pressed">#aaFF9800</color>
 
