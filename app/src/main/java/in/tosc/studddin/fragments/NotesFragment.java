@@ -50,8 +50,8 @@ public class NotesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
-        p = getActivity().getResources().getColor(R.color.notesColorPrimary);
-        s = getActivity().getResources().getColor(R.color.notesColorPrimaryDark);
+        p = getActivity().getResources().getColor(R.color.colorPrimary);
+        s = getActivity().getResources().getColor(R.color.colorPrimaryDark);
         ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(),p,s);
 
 /*        fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {

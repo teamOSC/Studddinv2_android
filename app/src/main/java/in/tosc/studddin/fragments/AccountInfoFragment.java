@@ -90,8 +90,8 @@ public class AccountInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_account_info, container, false);
-        int p = getActivity().getResources().getColor(R.color.accountColorPrimary);
-        int s = getActivity().getResources().getColor(R.color.accountColorPrimaryDark);
+        int p = getActivity().getResources().getColor(R.color.colorPrimary);
+        int s = getActivity().getResources().getColor(R.color.colorPrimaryDark);
         ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(), p, s);
         userInfo = new HashMap<>();
         init();

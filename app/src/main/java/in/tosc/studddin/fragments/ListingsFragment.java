@@ -55,8 +55,8 @@ public class ListingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_listings, container, false);
-        int p = getActivity().getResources().getColor(R.color.listingsColorPrimary);
-        int s = getActivity().getResources().getColor(R.color.listingsColorPrimaryDark);
+        int p = getActivity().getResources().getColor(R.color.colorPrimary);
+        int s = getActivity().getResources().getColor(R.color.colorPrimaryDark);
         ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(), p, s);
 
 /*        fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {

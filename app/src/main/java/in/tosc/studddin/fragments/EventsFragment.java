@@ -50,8 +50,8 @@ public class EventsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_events, container, false);
-        int p = getActivity().getResources().getColor(R.color.eventsColorPrimary);
-        int s = getActivity().getResources().getColor(R.color.eventsColorPrimaryDark);
+        int p = getActivity().getResources().getColor(R.color.colorPrimary);
+        int s = getActivity().getResources().getColor(R.color.colorPrimaryDark);
         ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(), p, s);
 
 

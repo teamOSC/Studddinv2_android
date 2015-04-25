@@ -20,7 +20,7 @@
             android:orientation="horizontal"
             android:padding="20dp"
             android:layout_weight="0.1"
-            android:background="@color/accountColorPrimary"
+            android:background="@color/colorPrimary"
             android:elevation="10dp">
 
             <LinearLayout

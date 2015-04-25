@@ -16,14 +16,14 @@
     <color name="itemselector_checkbox_bg_normal">#aaF3B61F</color>
     <color name="itemselector_checkbox_bg_pressed">#aaBB6B00</color>
     <color name="signON_bg">#aa424242</color>
-    <color name="tabTextColor">#BDBDBD</color>
+    <color name="tabTextColor">#009688</color>
 
     <!-- App Main colors -->
-    <color name="colorPrimary">#607D8B</color>
-    <color name="colorPrimaryDark">#455A64</color>
+    <color name="colorPrimary">#00BCD4</color>
+    <color name="colorPrimaryDark">#0097A7</color>
     
     <!--Feed color -->
-    <color name="feedColorPrimary">#D86C70</color>
+    <color name="feedColorPrimary">#00BCD4</color>
     <color name="feedColorPrimaryDark">#A3333D</color>
     <!--Notes color -->
     <color name="notesColorPrimary">#2196F3</color>
