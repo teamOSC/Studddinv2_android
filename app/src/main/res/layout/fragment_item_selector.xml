@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="20dp"
-            android:hint="Add your own"
+            android:hint="search or add your own"
             android:textColorHint="@android:color/white"
             android:textColor="@android:color/white"
             android:background="@color/signon_editext_focused"/>

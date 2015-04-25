@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -37,7 +39,6 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.tosc.studddin.MainActivity;
 import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.ui.FloatingActionButton;
@@ -74,10 +75,6 @@ public abstract class ItemSelectorFragment extends Fragment implements TextWatch
         // Required empty public constructor
     }
 
-    private int maxSelectableItems = getMaxSelectableItems();
-
-    public abstract int getMaxSelectableItems();
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -98,6 +95,7 @@ public abstract class ItemSelectorFragment extends Fragment implements TextWatch
             @Override
             public void onClick(View v) {
                 progressDialog = new ProgressDialog(parentActivity);
+                progressDialog.setCancelable(false);
                 progressDialog.setMessage("Saving...");
                 progressDialog.show();
                 pushDataToParse(type);
@@ -178,7 +176,7 @@ public abstract class ItemSelectorFragment extends Fragment implements TextWatch
                             }
                         }
                         currentUser.put(ParseTables.Users.INTERESTS, selectedParseObjects);
-                        currentUser.put(ParseTables.Users.FULLY_REGISTERED, true);
+//                        currentUser.put(ParseTables.Users.FULLY_REGISTERED, true);
                         try {
                             currentUser.save();
                         } catch (ParseException e) {
@@ -188,7 +186,7 @@ public abstract class ItemSelectorFragment extends Fragment implements TextWatch
                         parentActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                goToMainActivity(parentActivity);
+                                showCollegeFragment(new Bundle());
                             }
                         });
                     }
@@ -199,19 +197,6 @@ public abstract class ItemSelectorFragment extends Fragment implements TextWatch
         }).start();
     }
 
-    public static void goToMainActivity(Activity act) {
-        Intent i = new Intent(act, MainActivity.class);
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-            Activity activity = act;
-            Bundle options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle();
-            activity.getWindow().setExitTransition(new Explode().setDuration(1500));
-            ActivityCompat.startActivityForResult(activity, i, 0, options);
-        } else {
-            act.startActivity(i);
-        }
-        act.finish();
-    }
-
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
     }
@@ -219,6 +204,15 @@ public abstract class ItemSelectorFragment extends Fragment implements TextWatch
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         mAdapter.getFilter().filter(s);
+    }
+
+    private void showCollegeFragment(Bundle bundle) {
+        CollegeSelectorFragment fragment = CollegeSelectorFragment.newInstance(bundle);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
+
+        transaction.replace(R.id.signon_container, fragment).addToBackStack("SignIn").commit();
     }
 
     @Override

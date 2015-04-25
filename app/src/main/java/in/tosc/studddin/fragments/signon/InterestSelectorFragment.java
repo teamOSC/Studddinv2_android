@@ -13,9 +13,4 @@ public class InterestSelectorFragment extends ItemSelectorFragment {
         return fragment;
     }
 
-    @Override
-    public int getMaxSelectableItems() {
-        //Return -1 for unlimited
-        return -1;
-    }
 }
