@@ -12,5 +12,5 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/signON_bg"></FrameLayout>
+        android:background="@drawable/signon_bg_alpha"></FrameLayout>
     </RelativeLayout>

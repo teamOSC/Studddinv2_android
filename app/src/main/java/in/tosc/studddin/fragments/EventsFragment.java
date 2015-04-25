@@ -9,7 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
@@ -22,7 +23,7 @@ import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
 import in.tosc.studddin.fragments.events.EventsCreateFragment;
 import in.tosc.studddin.fragments.events.EventsListFragment;
-import in.tosc.studddin.fragments.notes.NotesSearchFragment;
+import in.tosc.studddin.ui.SlidingTabLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,7 +31,9 @@ import in.tosc.studddin.fragments.notes.NotesSearchFragment;
 public class EventsFragment extends Fragment {
 
     ViewPager eventsPager;
-    FragmentPagerAdapter fragmentPagerAdapter;
+    //FragmentPagerAdapter fragmentPagerAdapter;
+    ViewPagerAdapter adapter;
+    SlidingTabLayout tabs;
 
 
     public EventsFragment() {
@@ -51,7 +54,21 @@ public class EventsFragment extends Fragment {
         int s = getActivity().getResources().getColor(R.color.eventsColorPrimaryDark);
         ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(), p, s);
 
-        fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
+
+        eventsPager = (ViewPager) view.findViewById(R.id.events_pager);
+        adapter  =  new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        eventsPager.setAdapter(adapter);
+        eventsPager.setOffscreenPageLimit(3);
+        tabs = (SlidingTabLayout) view.findViewById(R.id.tabs);
+        tabs.setDistributeEvenly(true);
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.pink);
+            }
+        });
+        tabs.setViewPager(eventsPager);
+        /*fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 switch (position) {
@@ -85,10 +102,7 @@ public class EventsFragment extends Fragment {
                 return 3;
             }
         };
-
-        eventsPager = (ViewPager) view.findViewById(R.id.events_pager);
-        eventsPager.setAdapter(fragmentPagerAdapter);
-        eventsPager.setOffscreenPageLimit(2);
+*/
         return view;
     }
 
@@ -142,5 +156,45 @@ public class EventsFragment extends Fragment {
         EventsCreateFragment.byteArray = stream.toByteArray();
     }
 
+    public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+
+        CharSequence TAB_TITLES[]={"Events","Create event", "My Events"};
+        int NUM_TAB =3;
+
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+
+
+            if(position == 0)
+            {
+//                EventsCreateFragment eventsCreateFragment = new EventsCreateFragment();
+                return EventsListFragment.newInstance(false);
+            }
+            else if(position == 1)
+            {
+//                EventsListFragment eventsListFragment = new EventsListFragment();
+                return (new EventsCreateFragment());
+            }
+            else {
+//                EventsListFragment eventsListFragment = new EventsListFragment();
+                return EventsListFragment.newInstance(true);
+            }
+
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return TAB_TITLES[position];
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_TAB;
+        }
+    }
 
 }

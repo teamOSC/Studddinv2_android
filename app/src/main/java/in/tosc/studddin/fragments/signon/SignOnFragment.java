@@ -162,7 +162,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         passwordEditText.setTypeface(signOnFont);
 
         emailEditText.setText(Utilities.getUserEmail(getActivity()));
-
         facebookLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -4,6 +4,7 @@ package in.tosc.studddin.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -16,6 +17,7 @@ import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
 import in.tosc.studddin.fragments.notes.NotesSearchFragment;
 import in.tosc.studddin.fragments.notes.NotesUploadFragment;
+import in.tosc.studddin.ui.SlidingTabLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +32,8 @@ public class NotesFragment extends Fragment {
     FragmentStatePagerAdapter fragmentPagerAdapter;
     int p,s;
     NotesUploadFragment notesUploadFragment;
+    ViewPagerAdapter adapter;
+    SlidingTabLayout tabs;
 
 
     public NotesFragment() {
@@ -50,7 +54,7 @@ public class NotesFragment extends Fragment {
         s = getActivity().getResources().getColor(R.color.notesColorPrimaryDark);
         ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(),p,s);
 
-        fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
+/*        fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 switch (position) {
@@ -68,10 +72,20 @@ public class NotesFragment extends Fragment {
                 return 2;
             }
 
-        };
+        };*/
 
         notesPager = (ViewPager) rootView.findViewById(R.id.notes_pager);
-        notesPager.setAdapter(fragmentPagerAdapter);
+        adapter  =  new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        notesPager.setAdapter(adapter);
+        tabs = (SlidingTabLayout) rootView.findViewById(R.id.tabs);
+        tabs.setDistributeEvenly(true);
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return getResources().getColor(R.color.pink);
+            }
+        });
+        tabs.setViewPager(notesPager);
 
 
         return rootView;
@@ -95,6 +109,40 @@ public class NotesFragment extends Fragment {
 
         notesUploadFragment.setImagePaths(paths, true);
 
+    }
+
+    public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+
+        CharSequence TAB_TITLES[]={"Notes","Upload notes"};
+        int NUM_TAB =2;
+
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+
+
+            if(position == 0)
+            {
+                return (new NotesSearchFragment());
+            }
+            else {
+                return (new NotesUploadFragment());
+            }
+
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return TAB_TITLES[position];
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_TAB;
+        }
     }
     
 }

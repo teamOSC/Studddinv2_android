@@ -18,6 +18,8 @@
     <dimen name="floating_label_text_size">15dp</dimen>
     <dimen name="inner_components_spacing">8dp</dimen>
     <dimen name="bottom_ellipsis_height">5dp</dimen>
+    <dimen name="button_height">60dp</dimen>
+    <dimen name="EditText_height_signon">50dp</dimen>
 
     <!-- Floating Action Buttons Dimens -->
     <dimen name="fab_size_big">72dp</dimen>

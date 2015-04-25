@@ -1,25 +1,34 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
     tools:context="in.tosc.studddin.fragments.ListingsFragment">
+
+    <in.tosc.studddin.ui.SlidingTabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/listingsColorPrimary" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/listings_pager"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
-        <android.support.v4.view.PagerTabStrip
-            android:id="@+id/pager_tab_strip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:background="@color/listingsColorPrimary"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:textColor="#fff"
-            android:textSize="20sp" />
+        <!-- <android.support.v4.view.PagerTabStrip
+             android:id="@+id/pager_tab_strip"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_gravity="top"
+             android:background="@color/listingsColorPrimary"
+             android:paddingBottom="5dp"
+             android:paddingTop="5dp"
+             android:textColor="#fff"
+             android:textSize="20sp" />-->
 
     </android.support.v4.view.ViewPager>
 
-</FrameLayout>
+</LinearLayout>
