@@ -173,7 +173,7 @@ public class ListingsFragment extends Fragment {
 
     public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-        CharSequence TAB_TITLES[]={"Listings","post an item", "My listings"};
+        CharSequence TAB_TITLES[]={"Listings","Post An Item", "My Listings"};
         int NUM_TAB =3;
 
         public ViewPagerAdapter(FragmentManager fm) {

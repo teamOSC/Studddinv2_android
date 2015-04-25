@@ -102,7 +102,7 @@ public class PeopleFragment extends Fragment {
 
     public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-        CharSequence TAB_TITLES[]={"Near me","In institute", "Same interest"};
+        CharSequence TAB_TITLES[]={"Near Me","In Institute", "Same Interest"};
         int NUM_TAB =3;
 
         public ViewPagerAdapter(FragmentManager fm) {

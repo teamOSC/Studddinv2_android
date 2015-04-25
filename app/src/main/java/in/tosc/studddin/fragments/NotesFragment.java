@@ -113,7 +113,7 @@ public class NotesFragment extends Fragment {
 
     public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-        CharSequence TAB_TITLES[]={"Notes","Upload notes"};
+        CharSequence TAB_TITLES[]={"Notes","Upload Notes"};
         int NUM_TAB =2;
 
         public ViewPagerAdapter(FragmentManager fm) {

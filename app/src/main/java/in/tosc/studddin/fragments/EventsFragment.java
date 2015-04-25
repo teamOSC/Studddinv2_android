@@ -158,7 +158,7 @@ public class EventsFragment extends Fragment {
 
     public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-        CharSequence TAB_TITLES[]={"Events","Create event", "My Events"};
+        CharSequence TAB_TITLES[]={"Events","Create Event", "My Events"};
         int NUM_TAB =3;
 
         public ViewPagerAdapter(FragmentManager fm) {
