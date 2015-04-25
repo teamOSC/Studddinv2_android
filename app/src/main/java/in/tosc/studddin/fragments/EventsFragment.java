@@ -32,7 +32,6 @@ public class EventsFragment extends Fragment {
 
     ViewPager eventsPager;
     //FragmentPagerAdapter fragmentPagerAdapter;
-    ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
 
