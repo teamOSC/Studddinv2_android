@@ -178,7 +178,6 @@ public class SignupDataFragment extends Fragment implements
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-
                         }
                         return null;
                     }
