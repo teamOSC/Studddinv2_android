@@ -21,7 +21,7 @@
         android:layout_height="0dp"
         android:layout_weight="4"
         android:gravity="center"
-        android:background="@color/peopleColorPrimary"
+        android:background="@color/colorPrimary"
         android:elevation="10dp">
     
         <in.tosc.studddin.ui.CircularImageView
@@ -199,7 +199,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/peopleColorPrimary"
+        android:background="@color/colorPrimaryDark"
 
         android:text="Contact"
         android:id="@+id/contactPerson"
