@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.parse.LogOutCallback;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import in.tosc.studddin.fragments.AccountInfoFragment;
@@ -179,10 +181,20 @@ public class MainActivity extends ActionBarActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_signout) {
-            ParseUser.logOut();
-            Intent i = new Intent(this, SignOnActivity.class);
-            startActivity(i);
-            finish();
+            ParseUser.logOutInBackground(new LogOutCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if(e == null){
+                        Intent i = new Intent(getApplicationContext(), SignOnActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+                    else{
+                        //couldn't log out
+                        e.printStackTrace();
+                    }
+                }
+            });
             return true;
         }
 
