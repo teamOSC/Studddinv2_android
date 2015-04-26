@@ -55,7 +55,7 @@ public class PeopleSameInstituteFragment extends Fragment {
     String currentuser = "";
     ParseGeoPoint userlocation = new ParseGeoPoint(0, 0);
 
-    ArrayList<ParseObject> interests = new ArrayList<ParseObject>() ;
+    ArrayList<ParseObject> interests = new ArrayList<ParseObject>();
 
 
     EditText search;
@@ -82,7 +82,6 @@ public class PeopleSameInstituteFragment extends Fragment {
         lv = (ListView) view.findViewById(R.id.listviewpeople);
 
 
-
         if (Utilities.isNetworkAvailable(getActivity()))
             loaddata(false);
         else
@@ -102,7 +101,8 @@ public class PeopleSameInstituteFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 // ALWAYS SEARCH FROM CACHE
-                loaddataAfterSearch(editable.toString(),true);               }
+                loaddataAfterSearch(editable.toString(), true);
+            }
         });
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -161,7 +161,7 @@ public class PeopleSameInstituteFragment extends Fragment {
                                 public void done(byte[] data,
                                                  ParseException e) {
                                     if (e == null) {
-                                        if(ApplicationWrapper.LOG_DEBUG) Log.d("test",
+                                        if (ApplicationWrapper.LOG_DEBUG) Log.d("test",
                                                 "We've got data in data.");
 
                                         in.putByteArray("pic", data);
@@ -169,7 +169,8 @@ public class PeopleSameInstituteFragment extends Fragment {
                                         transaction.add(R.id.container, newFragment).hide(PeopleSameInstituteFragment.this).addToBackStack(PeopleSameInstituteFragment.class.getName()).commit();
 
                                     } else {
-                                        if(ApplicationWrapper.LOG_DEBUG) Log.d("test", "There was a problem downloading the data.");
+                                        if (ApplicationWrapper.LOG_DEBUG)
+                                            Log.d("test", "There was a problem downloading the data.");
                                     }
                                 }
                             });
@@ -196,7 +197,7 @@ public class PeopleSameInstituteFragment extends Fragment {
 
     private void loaddata(final boolean cache) {
 
-       listOfPeople.clear();
+        listOfPeople.clear();
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         String currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
@@ -207,8 +208,7 @@ public class PeopleSameInstituteFragment extends Fragment {
 
         try {
             interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
-        }catch (NullPointerException e)
-        {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
@@ -225,7 +225,6 @@ public class PeopleSameInstituteFragment extends Fragment {
                 if (e == null) {
 
 
-
                     if (!cache) {
                         ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_SAME_INSTITUTE, new DeleteCallback() {
                             @Override
@@ -237,7 +236,7 @@ public class PeopleSameInstituteFragment extends Fragment {
                     } else
                         doneFetchingPeople(objects, cache);
 
-                                     // The query was successful.
+                    // The query was successful.
                 } else {
                     // Something went wrong.
                 }
@@ -261,7 +260,7 @@ public class PeopleSameInstituteFragment extends Fragment {
 
                 ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
 
-                if(personInterests!=null && !personInterests.isEmpty()) {
+                if (personInterests != null && !personInterests.isEmpty()) {
                     StringBuilder stringBuilder = new StringBuilder("");
                     for (ParseObject parseObject : personInterests) {
                         try {
@@ -293,7 +292,7 @@ public class PeopleSameInstituteFragment extends Fragment {
                 }
 
                 try {
-                    each.fileObject = (ParseFile) pu.get(ParseTables.Users.IMAGE);
+                    each.fileObject = (ParseFile) pu.getParseFile(ParseTables.Users.IMAGE);
 
                 } catch (Exception e1) {
                     System.out.print("nahh");
@@ -333,8 +332,7 @@ public class PeopleSameInstituteFragment extends Fragment {
 
         try {
             interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
-        }catch (NullPointerException e)
-        {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
@@ -349,8 +347,6 @@ public class PeopleSameInstituteFragment extends Fragment {
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(final List<ParseUser> objects, ParseException e) {
                 if (e == null) {
-
-
 
 
                     if (!cache) {
@@ -420,7 +416,7 @@ public class PeopleSameInstituteFragment extends Fragment {
                             public void done(byte[] data,
                                              ParseException e) {
                                 if (e == null) {
-                                    if(ApplicationWrapper.LOG_DEBUG) Log.d("test",
+                                    if (ApplicationWrapper.LOG_DEBUG) Log.d("test",
                                             "We've got data in data.");
 
                                     holder.userimg.setImageBitmap(BitmapFactory
@@ -429,7 +425,8 @@ public class PeopleSameInstituteFragment extends Fragment {
                                                     data.length));
 
                                 } else {
-                                    if(ApplicationWrapper.LOG_DEBUG) Log.d("test", "There was a problem downloading the data.");
+                                    if (ApplicationWrapper.LOG_DEBUG)
+                                        Log.d("test", "There was a problem downloading the data.");
                                 }
                             }
                         });

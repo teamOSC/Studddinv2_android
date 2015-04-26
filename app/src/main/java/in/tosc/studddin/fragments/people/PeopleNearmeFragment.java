@@ -57,7 +57,7 @@ public class PeopleNearmeFragment extends Fragment {
     String currentuser = "";
     ParseGeoPoint userlocation = new ParseGeoPoint(0, 0);
 
-    ArrayList<ParseObject> interests = new ArrayList<ParseObject>() ;
+    ArrayList<ParseObject> interests = new ArrayList<ParseObject>();
 
     EditText search;
 
@@ -90,7 +90,6 @@ public class PeopleNearmeFragment extends Fragment {
             loaddata(true);
 
 
-
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -104,8 +103,9 @@ public class PeopleNearmeFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-             // ALWAYS SEARCH FROM CACHE
-                    loaddataAfterSearch(editable.toString(),true);            }
+                // ALWAYS SEARCH FROM CACHE
+                loaddataAfterSearch(editable.toString(), true);
+            }
         });
 
 
@@ -155,8 +155,6 @@ public class PeopleNearmeFragment extends Fragment {
                 newFragment.setArguments(in);
 
 
-
-
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
@@ -169,7 +167,7 @@ public class PeopleNearmeFragment extends Fragment {
                                 public void done(byte[] data,
                                                  ParseException e) {
                                     if (e == null) {
-                                        if(ApplicationWrapper.LOG_DEBUG) Log.d("test",
+                                        if (ApplicationWrapper.LOG_DEBUG) Log.d("test",
                                                 "We've got data in data.");
 
                                         in.putByteArray("pic", data);
@@ -178,7 +176,8 @@ public class PeopleNearmeFragment extends Fragment {
 
 
                                     } else {
-                                        if(ApplicationWrapper.LOG_DEBUG) Log.d("test", "There was a problem downloading the data.");
+                                        if (ApplicationWrapper.LOG_DEBUG)
+                                            Log.d("test", "There was a problem downloading the data.");
                                     }
                                 }
                             });
@@ -217,15 +216,13 @@ public class PeopleNearmeFragment extends Fragment {
 
         try {
             interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
-        }catch (NullPointerException e)
-        {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
         // DUMMY DATA SO THAT IT DISPLAYS SOMETHING
-        if (userlocation==null ||  userlocation.getLatitude() == 0)
-        {
-            userlocation = new ParseGeoPoint(28.7434552 , 77.1205612);
+        if (userlocation == null || userlocation.getLatitude() == 0) {
+            userlocation = new ParseGeoPoint(28.7434552, 77.1205612);
         }
 
 
@@ -258,8 +255,7 @@ public class PeopleNearmeFragment extends Fragment {
 
     }
 
-    public void doneFetchingPeople(List<ParseUser> objects, boolean cache)
-    {
+    public void doneFetchingPeople(List<ParseUser> objects, boolean cache) {
         for (ParseUser pu : objects) {
             //access the data associated with the ParseUser using the get method
             //pu.getString("key") or pu.get("key")
@@ -289,12 +285,10 @@ public class PeopleNearmeFragment extends Fragment {
 //                                          each.cdistance = pu.getString(ParseTables.Users.NAME);
                 each.cusername = pu.getString(ParseTables.Users.USERNAME);
                 JSONObject s = pu.getJSONObject(ParseTables.Users.AUTHORIZATION);
-                if (s == null)
-                {
+                if (s == null) {
                     each.cauthData = " - ";
-                }else
-                {
-                    each.cauthData= s.toString();
+                } else {
+                    each.cauthData = s.toString();
                 }
 
                 ParseGeoPoint temploc = pu.getParseGeoPoint(ParseTables.Users.LOCATION);
@@ -309,7 +303,7 @@ public class PeopleNearmeFragment extends Fragment {
                 }
 
                 try {
-                    each.fileObject = (ParseFile) pu.get(ParseTables.Users.IMAGE);
+                    each.fileObject = (ParseFile) pu.getParseFile(ParseTables.Users.IMAGE);
                 } catch (Exception e1) {
                     System.out.print("nahh");
                 }
@@ -348,16 +342,14 @@ public class PeopleNearmeFragment extends Fragment {
 
         try {
             interests = (ArrayList<ParseObject>) ParseUser.getCurrentUser().get(ParseTables.Users.INTERESTS);
-        }catch (NullPointerException e)
-        {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
 
         // DUMMY DATA SO THAT IT DISPLAYS SOMETHING
-        if (userlocation==null ||  userlocation.getLatitude() == 0)
-        {
-           userlocation = new ParseGeoPoint(28.7434552 , 77.1205612);
+        if (userlocation == null || userlocation.getLatitude() == 0) {
+            userlocation = new ParseGeoPoint(28.7434552, 77.1205612);
         }
 
 
@@ -443,7 +435,7 @@ public class PeopleNearmeFragment extends Fragment {
                             public void done(byte[] data,
                                              ParseException e) {
                                 if (e == null) {
-                                    if(ApplicationWrapper.LOG_DEBUG) Log.d("test",
+                                    if (ApplicationWrapper.LOG_DEBUG) Log.d("test",
                                             "We've got data in data.");
 
                                     holder.userimg.setImageBitmap(BitmapFactory
@@ -452,7 +444,8 @@ public class PeopleNearmeFragment extends Fragment {
                                                     data.length));
 
                                 } else {
-                                    if(ApplicationWrapper.LOG_DEBUG) Log.d("test", "There was a problem downloading the data.");
+                                    if (ApplicationWrapper.LOG_DEBUG)
+                                        Log.d("test", "There was a problem downloading the data.");
                                 }
                             }
                         });
@@ -482,18 +475,17 @@ public class PeopleNearmeFragment extends Fragment {
     }
 
     private class EachRow3 {
-        String cname="";
-        String cinterests="";
-        String cdistance="";
-        String cqualification="";
-        String cinstituition="";
-        String cusername="";
-        String cauthData="";
+        String cname = "";
+        String cinterests = "";
+        String cdistance = "";
+        String cqualification = "";
+        String cinstituition = "";
+        String cusername = "";
+        String cauthData = "";
 
         Bitmap cbmp;
         ParseFile fileObject;
     }
-
 
 
 }

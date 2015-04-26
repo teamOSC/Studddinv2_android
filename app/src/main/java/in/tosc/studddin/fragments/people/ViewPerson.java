@@ -1,7 +1,6 @@
 package in.tosc.studddin.fragments.people;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -13,37 +12,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
-import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseTwitterUtils;
-import com.parse.ParseUser;
 
 import in.tosc.studddin.R;
-import in.tosc.studddin.externalapi.FacebookApi;
 import in.tosc.studddin.ui.CircularImageView;
 import in.tosc.studddin.ui.FloatingActionButton;
-import in.tosc.studddin.utils.Utilities;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ViewPerson extends Fragment {
 
-    TextView name, interests, qualifications, distance, institute ;
-    String sname, sinterests, squalifications, sdistance, sinstitute , susername, sauthData;
+    TextView name, interests, qualifications, distance, institute;
+    String sname, sinterests, squalifications, sdistance, sinstitute, susername, sauthData;
     CircularImageView pic;
     byte[] data;
     LinearLayout contactsView;
 
-    Button contactButton ;
+    Button contactButton;
     String facebookId;
     FloatingActionButton mail;
     FloatingActionButton facebook;
@@ -80,19 +73,18 @@ public class ViewPerson extends Fragment {
         final LinearLayout myLayout = (LinearLayout) rootView.findViewById(R.id.contactsLayout);
         final View addView = getActivity().getLayoutInflater().inflate(R.layout.contact_buttons_people, myLayout, false);
 
-         mail = (FloatingActionButton)addView.findViewById(R.id.signon_button_google);
-         facebook = (FloatingActionButton)addView.findViewById(R.id.signon_button_facebook);
-         twitter = (FloatingActionButton)addView.findViewById(R.id.signon_button_twitter);
+        mail = (FloatingActionButton) addView.findViewById(R.id.signon_button_google);
+        facebook = (FloatingActionButton) addView.findViewById(R.id.signon_button_facebook);
+        twitter = (FloatingActionButton) addView.findViewById(R.id.signon_button_twitter);
 
 
-
-        if(susername.contains("@")){
+        if (susername.contains("@")) {
             mail.setVisibility(View.VISIBLE);
         }
-        if(makeMeRequest(ParseFacebookUtils.getSession())){
+        if (makeMeRequest(ParseFacebookUtils.getSession())) {
             facebook.setVisibility(View.VISIBLE);
         }
-        if(ParseTwitterUtils.getTwitter().getUserId()!=null){
+        if (ParseTwitterUtils.getTwitter().getUserId() != null) {
             twitter.setVisibility(View.VISIBLE);
         }
 
@@ -105,12 +97,10 @@ public class ViewPerson extends Fragment {
 
                     myLayout.removeAllViews();
                     myLayout.addView(addView);
-                }
-                else
-                {
+                } else {
                     myLayout.removeAllViews();
                 }
-                }
+            }
         });
 
         mail.setOnClickListener(new View.OnClickListener() {
@@ -134,10 +124,10 @@ public class ViewPerson extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/"+facebookId));
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://profile/" + facebookId));
                     startActivity(intent);
-                } catch(Exception e) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.facebook.com/"+facebookId)));
+                } catch (Exception e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.facebook.com/" + facebookId)));
                 }
             }
         });
@@ -147,7 +137,7 @@ public class ViewPerson extends Fragment {
             public void onClick(View v) {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=" + ParseTwitterUtils.getTwitter().getUserId())));
-                }catch (Exception e) {
+                } catch (Exception e) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/" + ParseTwitterUtils.getTwitter().getScreenName())));
                 }
             }
@@ -186,7 +176,7 @@ public class ViewPerson extends Fragment {
                         if (session == Session.getActiveSession()) {
                             if (user != null) {
                                 facebook.setVisibility(View.VISIBLE);
-                                 facebookId = user.getId();
+                                facebookId = user.getId();
                             }
                         }
                         if (response.getError() != null) {

@@ -46,9 +46,8 @@ import in.tosc.studddin.utils.Utilities;
 
 public class PeopleSameInterestsFragment extends Fragment {
 
+    private static final String TAG = "PeopleSameInterestsFragment";
     ProgressBarCircular progressBar;
-
-
     String currentuseremail = "";
     String currentuserinterests = "";
     String currentuserinstituition = "";
@@ -57,18 +56,12 @@ public class PeopleSameInterestsFragment extends Fragment {
     String currentuser = "";
     String currentuserlocation = "";
     ParseGeoPoint userlocation = new ParseGeoPoint(0, 0);
-
     EditText search;
-
     ParseUser User = ParseUser.getCurrentUser();
-
-
     ArrayList<EachRow3> listOfPeople = new ArrayList<PeopleSameInterestsFragment.EachRow3>();
     EachRow3 each;
     MyAdapter3 q;
     ListView lv;
-
-    private static final String TAG = "PeopleSameInterestsFragment";
 
     public PeopleSameInterestsFragment() {
         // Required empty public constructor
@@ -92,7 +85,6 @@ public class PeopleSameInterestsFragment extends Fragment {
             loaddata(true);
 
 
-
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -107,8 +99,8 @@ public class PeopleSameInterestsFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 // ALWAYS SEARCH FROM CACHE
-                loaddataAfterSearch(editable.toString(),true);
-       }
+                loaddataAfterSearch(editable.toString(), true);
+            }
         });
 
 
@@ -140,9 +132,9 @@ public class PeopleSameInterestsFragment extends Fragment {
                     tqualifications = " - ";
                 if (tdistance == null)
                     tdistance = " - ";
-                 if (tusername == null)
+                if (tusername == null)
                     tusername = " - ";
-                 if (tauthData == null)
+                if (tauthData == null)
                     tauthData = " - ";
 
                 in.putString("name", tname);
@@ -167,7 +159,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                                 public void done(byte[] data,
                                                  ParseException e) {
                                     if (e == null) {
-                                        if(ApplicationWrapper.LOG_DEBUG) Log.d("test",
+                                        if (ApplicationWrapper.LOG_DEBUG) Log.d("test",
                                                 "We've got data in data.");
 
                                         in.putByteArray("pic", data);
@@ -176,7 +168,8 @@ public class PeopleSameInterestsFragment extends Fragment {
 
 
                                     } else {
-                                        if(ApplicationWrapper.LOG_DEBUG) Log.d("test", "There was a problem downloading the data.");
+                                        if (ApplicationWrapper.LOG_DEBUG)
+                                            Log.d("test", "There was a problem downloading the data.");
                                     }
                                 }
                             });
@@ -203,7 +196,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
     private void loaddata(final boolean cache) {
 
-        final boolean mCache =cache;
+        final boolean mCache = cache;
         listOfPeople.clear();
 
 
@@ -226,11 +219,11 @@ public class PeopleSameInterestsFragment extends Fragment {
         currentuserInterestsQuery.getFirstInBackground(new GetCallback<ParseUser>() {
             public void done(final ParseUser user, ParseException e) {
                 if (user == null) {
-                    if(ApplicationWrapper.LOG_DEBUG) Log.d("query", "failed.");
+                    if (ApplicationWrapper.LOG_DEBUG) Log.d("query", "failed.");
                 } else {
 
                     final ArrayList<ParseObject> currentUserInterestsList = (ArrayList<ParseObject>) User.get(ParseTables.Users.INTERESTS);
-                    if(currentuserinterests==null)
+                    if (currentuserinterests == null)
 
                     {
                         currentuserinterests = "";
@@ -248,8 +241,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                         doneFetchingUserInterests(currentUserInterestsList, mCache);
 
 
-
-                      // The query was successful.
+                    // The query was successful.
                 }
             }
         });
@@ -257,58 +249,52 @@ public class PeopleSameInterestsFragment extends Fragment {
     }
 
 
-
     public void doneFetchingUserInterests(ArrayList<ParseObject> currentUserInterestsList, final boolean cache) {
 
-    if(!currentUserInterestsList.isEmpty())
+        if (!currentUserInterestsList.isEmpty())
 
-    {
-        for (int c = 0; c < currentUserInterestsList.size(); c++) {
-            if (!currentUserInterestsList.get(c).equals("") || !(currentUserInterestsList.get(c) == null)) {
-
-
-                ParseQuery<ParseUser> query = ParseUser.getQuery();
-                if (cache)
-                    query.fromLocalDatastore();
-                query.include(ParseTables.Users.INTERESTS);
-                query.whereEqualTo(ParseTables.Users.INTERESTS, currentUserInterestsList.get(c));
-
-                query.findInBackground(new FindCallback<ParseUser>() {
-                    public void done(final List<ParseUser> objects, ParseException e) {
-                        if (e == null) {
+        {
+            for (int c = 0; c < currentUserInterestsList.size(); c++) {
+                if (!currentUserInterestsList.get(c).equals("") || !(currentUserInterestsList.get(c) == null)) {
 
 
-                            if (!cache) {
-                                ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_SAME_INTERESTS, new DeleteCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_SAME_INTERESTS, objects);
-                                        doneFetchingPeople(objects, cache);
-                                    }
-                                });
-                            } else
-                                doneFetchingPeople(objects, cache);
+                    ParseQuery<ParseUser> query = ParseUser.getQuery();
+                    if (cache)
+                        query.fromLocalDatastore();
+                    query.include(ParseTables.Users.INTERESTS);
+                    query.whereEqualTo(ParseTables.Users.INTERESTS, currentUserInterestsList.get(c));
+
+                    query.findInBackground(new FindCallback<ParseUser>() {
+                        public void done(final List<ParseUser> objects, ParseException e) {
+                            if (e == null) {
+
+
+                                if (!cache) {
+                                    ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_SAME_INTERESTS, new DeleteCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_SAME_INTERESTS, objects);
+                                            doneFetchingPeople(objects, cache);
+                                        }
+                                    });
+                                } else
+                                    doneFetchingPeople(objects, cache);
+                            } else {
+                                // Something went wrong.
+                            }
+
                         }
+                    });
 
-                        else {
-                            // Something went wrong.
-                        }
-
-                    }
-                });
-
+                }
             }
+        } else
+
+        {
+            progressBar.setVisibility(View.GONE);
         }
+
     }
-
-    else
-
-    {
-        progressBar.setVisibility(View.GONE);
-    }
-
-}
-
 
 
     public void doneFetchingPeople(List<ParseUser> objects, boolean cache) {
@@ -330,7 +316,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                     ArrayList<ParseObject> personInterests = (ArrayList<ParseObject>) pu.get(ParseTables.Users.INTERESTS);
 
-                    if(personInterests!=null && !personInterests.isEmpty()) {
+                    if (personInterests != null && !personInterests.isEmpty()) {
                         StringBuilder stringBuilder = new StringBuilder("");
                         for (ParseObject parseObject : personInterests) {
                             try {
@@ -363,7 +349,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                     }
 
                     try {
-                        each.fileObject = (ParseFile) pu.get(ParseTables.Users.IMAGE);
+                        each.fileObject = (ParseFile) pu.getParseFile(ParseTables.Users.IMAGE);
 
                     } catch (Exception e1) {
                         System.out.print("nahh");
@@ -389,7 +375,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
     private void loaddataAfterSearch(final String textSearch, final boolean cache) {
 
-        final boolean mCache =cache;
+        final boolean mCache = cache;
         listOfPeople.clear();
         q = new MyAdapter3(getActivity(), 0, listOfPeople);
         q.notifyDataSetChanged();
@@ -414,11 +400,11 @@ public class PeopleSameInterestsFragment extends Fragment {
         currentuserInterestsQuery.getFirstInBackground(new GetCallback<ParseUser>() {
             public void done(final ParseUser user, ParseException e) {
                 if (user == null) {
-                    if(ApplicationWrapper.LOG_DEBUG) Log.d("query", "failed.");
+                    if (ApplicationWrapper.LOG_DEBUG) Log.d("query", "failed.");
                 } else {
 
                     final ArrayList<ParseObject> currentUserInterestsList = (ArrayList<ParseObject>) User.get(ParseTables.Users.INTERESTS);
-                    if(currentuserinterests==null)
+                    if (currentuserinterests == null)
 
                     {
                         currentuserinterests = "";
@@ -433,8 +419,7 @@ public class PeopleSameInterestsFragment extends Fragment {
                             }
                         });
                     } else
-                        doneFetchingUserInterestsForSearch(currentUserInterestsList, mCache,textSearch);
-
+                        doneFetchingUserInterestsForSearch(currentUserInterestsList, mCache, textSearch);
 
 
                     // The query was successful.
@@ -447,7 +432,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
     public void doneFetchingUserInterestsForSearch(ArrayList<ParseObject> currentUserInterestsList, final boolean cache, String textSearch) {
 
-        if(!currentUserInterestsList.isEmpty())
+        if (!currentUserInterestsList.isEmpty())
 
         {
             for (int c = 0; c < currentUserInterestsList.size(); c++) {
@@ -486,9 +471,7 @@ public class PeopleSameInterestsFragment extends Fragment {
 
                 }
             }
-        }
-
-        else
+        } else
 
         {
             progressBar.setVisibility(View.GONE);
@@ -498,104 +481,104 @@ public class PeopleSameInterestsFragment extends Fragment {
     }
 
 
-                class MyAdapter3 extends ArrayAdapter<EachRow3> {
-                    LayoutInflater inflat;
-                    ViewHolder holder;
+    class MyAdapter3 extends ArrayAdapter<EachRow3> {
+        LayoutInflater inflat;
+        ViewHolder holder;
 
-                    public MyAdapter3(Context context, int textViewResourceId,
-                                      ArrayList<EachRow3> objects) {
-                        super(context, textViewResourceId, objects);
-                        // TODO Auto-generated constructor stub
-                        inflat = LayoutInflater.from(context);
-                    }
+        public MyAdapter3(Context context, int textViewResourceId,
+                          ArrayList<EachRow3> objects) {
+            super(context, textViewResourceId, objects);
+            // TODO Auto-generated constructor stub
+            inflat = LayoutInflater.from(context);
+        }
 
-                    @Override
-                    public View getView(final int position, View convertView, ViewGroup parent) {
-                        // TODO Auto-generated method stub
-                        final int pos = position;
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            // TODO Auto-generated method stub
+            final int pos = position;
 
-                        if (convertView == null) {
-                            convertView = inflat.inflate(R.layout.listview_people, null);
-                            holder = new ViewHolder();
-                            holder.textname = (TextView) convertView.findViewById(R.id.people_name);
-                            holder.textinterests = (TextView) convertView.findViewById(R.id.people_interests);
+            if (convertView == null) {
+                convertView = inflat.inflate(R.layout.listview_people, null);
+                holder = new ViewHolder();
+                holder.textname = (TextView) convertView.findViewById(R.id.people_name);
+                holder.textinterests = (TextView) convertView.findViewById(R.id.people_interests);
 //                holder.textdate = (TextView) convertView.findViewById(R.id.date);
-                            holder.textinstituition = (TextView) convertView.findViewById(R.id.people_institute);
-                            holder.textdistance = (TextView) convertView.findViewById(R.id.people_distance);
-                            holder.textqualification = (TextView) convertView.findViewById(R.id.people_qualification);
-                            holder.userimg = (ParseCircularImageView) convertView.findViewById(R.id.people_userimg);
+                holder.textinstituition = (TextView) convertView.findViewById(R.id.people_institute);
+                holder.textdistance = (TextView) convertView.findViewById(R.id.people_distance);
+                holder.textqualification = (TextView) convertView.findViewById(R.id.people_qualification);
+                holder.userimg = (ParseCircularImageView) convertView.findViewById(R.id.people_userimg);
 
 
-                            convertView.setTag(holder);
-                        }
-                        holder = (ViewHolder) convertView.getTag();
-                        EachRow3 row = getItem(position);
+                convertView.setTag(holder);
+            }
+            holder = (ViewHolder) convertView.getTag();
+            EachRow3 row = getItem(position);
 
-                        holder.textname.setText(row.cname);
-                        holder.textinterests.setText(row.cinterests);
-                        holder.textinstituition.setText(row.cinstituition);
-                        holder.textdistance.setText(row.cdistance);
-                        holder.textqualification.setText(row.cqualification);
-                        holder.textdistance.setText(row.cdistance);
+            holder.textname.setText(row.cname);
+            holder.textinterests.setText(row.cinterests);
+            holder.textinstituition.setText(row.cinstituition);
+            holder.textdistance.setText(row.cdistance);
+            holder.textqualification.setText(row.cqualification);
+            holder.textdistance.setText(row.cdistance);
 
 
 //            Toast.makeText(getActivity(), row.cusername, Toast.LENGTH_SHORT).show();
 
-                        if (row.fileObject != null) {
-                            row.fileObject
-                                    .getDataInBackground(new GetDataCallback() {
-                                        public void done(byte[] data,
-                                                         ParseException e) {
-                                            if (e == null) {
-                                                if(ApplicationWrapper.LOG_DEBUG) Log.d("test",
-                                                        "We've got data in data.");
+            if (row.fileObject != null) {
+                row.fileObject
+                        .getDataInBackground(new GetDataCallback() {
+                            public void done(byte[] data,
+                                             ParseException e) {
+                                if (e == null) {
+                                    if (ApplicationWrapper.LOG_DEBUG) Log.d("test",
+                                            "We've got data in data.");
 
-                                                holder.userimg.setImageBitmap(BitmapFactory
-                                                        .decodeByteArray(
-                                                                data, 0,
-                                                                data.length));
+                                    holder.userimg.setImageBitmap(BitmapFactory
+                                            .decodeByteArray(
+                                                    data, 0,
+                                                    data.length));
 
-                                            } else {
-                                                Log.e("test", "There was a problem downloading the data.");
-                                            }
-                                        }
-                                    });
-                        } else {
-                            holder.userimg.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.com_facebook_profile_picture_blank_portrait));
-                        }
-
-                        return convertView;
-                    }
-
-                    @Override
-                    public EachRow3 getItem(int position) {
-                        // TODO Auto-generated method stub
-                        return listOfPeople.get(position);
-                    }
-
-                    private class ViewHolder {
-
-                        TextView textname;
-                        TextView textinterests;
-                        TextView textdistance;
-                        TextView textinstituition;
-                        TextView textqualification;
-                        ParseImageView userimg;
-
-                    }
-
-                }
-
-                private class EachRow3 {
-                    String cname;
-                    String cinterests;
-                    String cdistance;
-                    String cqualification;
-                    String cinstituition;
-                    String cusername;
-                    String cauthData;
-
-                    Bitmap cbmp;
-                    ParseFile fileObject;
-                }
+                                } else {
+                                    Log.e("test", "There was a problem downloading the data.");
+                                }
+                            }
+                        });
+            } else {
+                holder.userimg.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.com_facebook_profile_picture_blank_portrait));
             }
+
+            return convertView;
+        }
+
+        @Override
+        public EachRow3 getItem(int position) {
+            // TODO Auto-generated method stub
+            return listOfPeople.get(position);
+        }
+
+        private class ViewHolder {
+
+            TextView textname;
+            TextView textinterests;
+            TextView textdistance;
+            TextView textinstituition;
+            TextView textqualification;
+            ParseImageView userimg;
+
+        }
+
+    }
+
+    private class EachRow3 {
+        String cname;
+        String cinterests;
+        String cdistance;
+        String cqualification;
+        String cinstituition;
+        String cusername;
+        String cauthData;
+
+        Bitmap cbmp;
+        ParseFile fileObject;
+    }
+}
