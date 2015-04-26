@@ -15,6 +15,20 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+## - - - Facebook - - - ##
 -keep class com.facebook.** {
    *;
 }
+
+## - - - Fresco - - - ##
+# Keep our interfaces so they can be used by other ProGuard rules.
+# See http://sourceforge.net/p/proguard/bugs/466/
+-keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
+# Do not strip any method/class that is annotated with @DoNotStrip
+-keep @com.facebook.common.internal.DoNotStrip class *
+-keepclassmembers class * {
+@com.facebook.common.internal.DoNotStrip *;
+}
+-dontwarn okio.**
+-dontwarn javax.annotation.**

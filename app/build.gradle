@@ -47,6 +47,7 @@ dependencies {
     compile 'com.parse.bolts:bolts-android:1.1.4'
     compile 'com.facebook.android:facebook-android-sdk:3.21.1'
     compile 'com.koushikdutta.ion:ion:2.0.5'
+    compile 'com.facebook.fresco:fresco:0.4.0+'
     compile 'com.google.android.gms:play-services:6.5.87'
     compile 'com.android.support:palette-v7:21.0.0'
 }

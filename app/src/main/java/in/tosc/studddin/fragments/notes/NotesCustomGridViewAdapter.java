@@ -1,12 +1,14 @@
 package in.tosc.studddin.fragments.notes;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -56,12 +58,9 @@ public class NotesCustomGridViewAdapter extends RecyclerView.Adapter<NotesCustom
 
         holder.topicNameTxtView.setText(notesTopicName.get(position));
 
-        holder.notesImage.setParseFile(notesFirstImage.get(position).get(0));
-        holder.notesImage.loadInBackground(new GetDataCallback() {
-            @Override
-            public void done(byte[] bytes, ParseException e) {
-            }
-        });
+        Uri notesThumbUri = Uri.parse(notesFirstImage.get(position).get(0).getUrl());
+
+        holder.notesImage.setImageURI(notesThumbUri);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,14 +84,14 @@ public class NotesCustomGridViewAdapter extends RecyclerView.Adapter<NotesCustom
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView  topicNameTxtView;
-        public ParseImageView notesImage;
+        public SimpleDraweeView notesImage;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             topicNameTxtView = (TextView) itemView.findViewById(R.id.notes_gridview_topicname);
-            notesImage = (ParseImageView) itemView.findViewById(R.id.notes_gridview_image_view);
+            notesImage = (SimpleDraweeView) itemView.findViewById(R.id.notes_gridview_image_view);
 
         }
 

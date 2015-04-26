@@ -7,6 +7,7 @@ import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseFacebookUtils;
@@ -29,6 +30,7 @@ public class ApplicationWrapper extends Application {
         ParseACL defaultACL = new ParseACL();
         ParseFacebookUtils.initialize(getResources().getString(R.string.facebook_app_id));
         ParseTwitterUtils.initialize("FfUOeQ5OBuv0qOkdHbfXCrwdk", "xQmFnUSii54eS3iUrl0uIrxfeL4EfIdFc6iyoHUDgSIVGDbauD");
+        Fresco.initialize(this);
     }
 
     public static void setCustomTheme(ActionBarActivity actionBarActivity, int primary, int secondary){
