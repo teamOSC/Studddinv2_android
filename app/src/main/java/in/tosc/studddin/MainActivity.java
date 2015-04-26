@@ -1,6 +1,5 @@
 package in.tosc.studddin;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -191,11 +190,7 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 131077 && resultCode == Activity.RESULT_OK) {
-            paths = data.getStringArrayExtra("all_path");
-        }
         super.onActivityResult(requestCode, resultCode, data);
-
     }
     
 }
