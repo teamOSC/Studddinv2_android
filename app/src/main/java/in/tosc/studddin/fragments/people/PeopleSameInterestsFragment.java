@@ -1,6 +1,5 @@
 package in.tosc.studddin.fragments.people;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -13,10 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -24,7 +21,6 @@ import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -37,7 +33,6 @@ import java.util.List;
 import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
-import in.tosc.studddin.ui.ParseCircularImageView;
 import in.tosc.studddin.ui.ProgressBarCircular;
 
 
@@ -50,6 +45,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
     ParseGeoPoint userlocation = new ParseGeoPoint(0, 0);
     EditText search;
     ParseUser User = ParseUser.getCurrentUser();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -357,7 +353,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
                         currentuserinterests = "";
                     }
 
-                        doneFetchingUserInterestsForSearch(currentUserInterestsList,textSearch);
+                    doneFetchingUserInterestsForSearch(currentUserInterestsList, textSearch);
 
                     // The query was successful.
                 }
@@ -387,7 +383,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
                         public void done(final List<ParseUser> objects, ParseException e) {
                             if (e == null) {
 
-                                    doneFetchingPeople(objects);
+                                doneFetchingPeople(objects);
                             } else {
                                 // Something went wrong.
                             }

@@ -14,9 +14,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.parse.Parse;
-import com.parse.ParseFacebookUtils;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.parse.ParseTwitterUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import in.tosc.studddin.R;
 import in.tosc.studddin.ui.CircularImageView;
@@ -77,11 +81,11 @@ public class ViewPerson extends Fragment {
 
         if (susername.contains("@")) {
             mail.setVisibility(View.VISIBLE);
-        }/*
-        if(makeMeRequest(ParseFacebookUtils.getSession())){
+        }
+        if (makeMeRequest()) {
             facebook.setVisibility(View.VISIBLE);
-        }*/
-        if(ParseTwitterUtils.getTwitter().getUserId()!=null){
+        }
+        if (ParseTwitterUtils.getTwitter().getUserId() != null) {
             twitter.setVisibility(View.VISIBLE);
         }
 
@@ -162,27 +166,23 @@ public class ViewPerson extends Fragment {
 
     }
 
-/*
-    private boolean makeMeRequest(final Session session) {
-        Request request = Request.newMeRequest(session,
-                new Request.GraphUserCallback() {
-
+    private boolean makeMeRequest() {
+        GraphRequest request = GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
                     @Override
-                    public void onCompleted(GraphUser user, Response response) {
-                        // If the response is successful
-                        if (session == Session.getActiveSession()) {
-                            if (user != null) {
-                                facebook.setVisibility(View.VISIBLE);
-                                facebookId = user.getId();
-                            }
-                        }
-                        if (response.getError() != null) {
-                            // Handle error
+                    public void onCompleted(
+                            JSONObject object,
+                            GraphResponse response) {
+                        try {
+                            facebook.setVisibility(View.VISIBLE);
+                            facebookId = object.getString("id");
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
                         }
                     }
                 });
         request.executeAsync();
         return false;
     }
-*/
 }
