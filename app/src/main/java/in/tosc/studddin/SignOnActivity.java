@@ -64,6 +64,7 @@ public class SignOnActivity extends ActionBarActivity {
         {
             fragment.onActivityResult(requestCode, resultCode,data);
         }
-        ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
+//        ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
+        ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -17,10 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.model.GraphUser;
 import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseTwitterUtils;
@@ -88,10 +84,10 @@ public class ViewPerson extends Fragment {
 
         if(susername.contains("@")){
             mail.setVisibility(View.VISIBLE);
-        }
+        }/*
         if(makeMeRequest(ParseFacebookUtils.getSession())){
             facebook.setVisibility(View.VISIBLE);
-        }
+        }*/
         if(ParseTwitterUtils.getTwitter().getUserId()!=null){
             twitter.setVisibility(View.VISIBLE);
         }
@@ -175,7 +171,7 @@ public class ViewPerson extends Fragment {
 
     }
 
-
+/*
     private boolean makeMeRequest(final Session session) {
         Request request = Request.newMeRequest(session,
                 new Request.GraphUserCallback() {
@@ -197,5 +193,5 @@ public class ViewPerson extends Fragment {
         request.executeAsync();
         return false;
     }
-
+*/
 }

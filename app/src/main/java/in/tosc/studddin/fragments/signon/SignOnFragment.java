@@ -235,14 +235,19 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     public void doFacebookSignOn(View v) {
         mProgressDialog.setMessage("Signing in via Facebook");
         mProgressDialog.show();
+
+        List<String> permissions = Arrays.asList(
+                "public_profile", "email", "user_birthday", "user_location");
+        /*
         List<String> permissions = Arrays.asList("public_profile", "user_friends",
+
                 ParseFacebookUtils.Permissions.User.EMAIL,
                 ParseFacebookUtils.Permissions.User.ABOUT_ME,
                 ParseFacebookUtils.Permissions.User.RELATIONSHIPS,
                 ParseFacebookUtils.Permissions.User.BIRTHDAY,
                 ParseFacebookUtils.Permissions.User.LOCATION,
-                ParseFacebookUtils.Permissions.User.PHOTOS);
-        ParseFacebookUtils.logIn(permissions, getActivity(), new LogInCallback() {
+                ParseFacebookUtils.Permissions.User.PHOTOS); */
+        ParseFacebookUtils.logInWithReadPermissionsInBackground(getActivity(), permissions, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException err) {
                 mProgressDialog.dismiss();
@@ -263,13 +268,12 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
 
                     if (user.isNew() || (!fullyRegistered)) {
                         Log.w(TAG, "User signed up and logged in through Facebook!");
-
+/*
                         Log.w(TAG,
                                 "FBSHIT \n" +
                                         ParseFacebookUtils.getSession().getAccessToken() + " \n" +
                                         ParseFacebookUtils.getFacebook().getAppId()
-                        );
-                        FacebookApi.setSession(ParseFacebookUtils.getSession());
+                        );*/
                         FacebookApi.getFacebookData(new FacebookApi.FbGotDataCallback() {
                             @Override
                             public void gotData(final Bundle bundle) {
@@ -293,24 +297,33 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                 new FetchUserPhotos(new FetchUserPhotos.PhotosFetcher() {
                                     @Override
                                     public Bitmap downloadCoverPhoto() {
-                                        return FacebookApi.getProfileAndWait();
+                                        String url = bundle.getString(ParseTables.Users.COVER);
+                                        if (!url.equals("")) {
+                                            return Utilities.downloadBitmap(url);
+                                        }
+                                        return null;
                                     }
 
                                     @Override
                                     public Bitmap downloadProfilePhoto() {
-                                        return FacebookApi.getCoverAndWait();
+                                        String url = bundle.getString(ParseTables.Users.IMAGE);
+                                        if (!url.equals("")) {
+                                            return Utilities.downloadBitmap(url);
+                                        }
+                                        return null;
                                     }
                                 }).start();
                             }
                         });
                     } else {
                         Log.w(TAG, "User logged in through Facebook!");
+                        /*
                         Log.w(TAG,
                                 "FB \n" +
                                         ParseFacebookUtils.getSession().getAccessToken() + " \n" +
                                         ParseFacebookUtils.getSession().getAccessToken() + " \n" +
                                         ParseFacebookUtils.getFacebook().getAppId()
-                        );
+                        );*/
                         SignupDataFragment.goToMainActivity(getActivity());
                     }
                 }
@@ -333,7 +346,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                 mGoogleApiClient.connect();
             }
         }
-        ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
+        ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
     }
 
     public void doTwitterSignOn(View v) {

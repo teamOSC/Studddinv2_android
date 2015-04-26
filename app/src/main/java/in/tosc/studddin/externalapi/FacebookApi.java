@@ -5,11 +5,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.facebook.HttpMethod;
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.model.GraphUser;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,16 +21,43 @@ import in.tosc.studddin.utils.Utilities;
 public class FacebookApi {
     public static final String APP_ID = "903137443064438";
     private static final String TAG = "FacebookApi";
-    public static String USER_ID = "";
-    public static Bundle FbDataBundle = new Bundle();
-    private static Session session;
 
-    public static void setSession(Session s) {
-        session = s;
-    }
+    public static String PROFILE_URL = "";
+    public static String COVER_URL = "";
 
     public static void getFacebookData(final FbGotDataCallback fgdc) {
-        Request.newMeRequest(session, new Request.GraphUserCallback() {
+
+        final Bundle b = new Bundle();
+        GraphRequest request = GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(
+                            JSONObject object,
+                            GraphResponse response) {
+                        Log.d(TAG,"" +object.toString());
+                        try {
+                            if(!object.isNull("cover"))
+                                b.putString(ParseTables.Users.COVER,object.getJSONObject("cover").getString("source"));
+                            else
+                                b.putString(ParseTables.Users.COVER, "");
+                            String id = object.getString("id");
+                            b.putString(ParseTables.Users.IMAGE,"https://graph.facebook.com/" + id + "/picture??width=300&&height=300");
+                            b.putString(ParseTables.Users.NAME, object.getString("name"));
+                            b.putString(ParseTables.Users.EMAIL, object.getString("email"));
+
+                            fgdc.gotData(b);
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "name,id,cover,email,birthday");
+        request.setParameters(parameters);
+        request.executeAsync();
+        /*
+        LoginClient.Request.newMeRequest(session, new LoginClient.Request.GraphUserCallback() {
             @Override
             public void onCompleted(GraphUser gu, Response response) {
                 if (gu != null) {
@@ -51,11 +76,12 @@ public class FacebookApi {
                     fgdc.gotData(FbDataBundle);
                 }
             }
-        }).executeAsync();
+        }).executeAsync();*/
         return;
     }
 
     public static void getFacebookUserEvents(final FbGotEventDataCallback fgedc) {
+        /*
         Bundle bundle = new Bundle();
         bundle.putString("fields", "description,start_time,owner,name,cover");
         Request r = new Request(session, "/me/events", bundle,
@@ -70,9 +96,9 @@ public class FacebookApi {
                 }
             }
         });
-        r.executeAsync();
+        r.executeAsync();*/
     }
-
+/*
     public static void getProfilePicture(final FbGotProfilePictureCallback listener) {
         Log.d(TAG, "getting profile picture");
         Bundle bundle = new Bundle();
@@ -142,11 +168,14 @@ public class FacebookApi {
     }
 
     public static Bitmap getCoverAndWait() {
+        Log.d(TAG, "Getting cover photo");
         Bundle bundle = new Bundle();
         bundle.putString("fields", "cover");
-        Request request = new Request(session, "me", bundle, HttpMethod.GET);
+
         Response response = Request.executeAndWait(request);
         try {
+            Log.d(TAG, "response = " + response.getRawResponse());
+            Log.d(TAG, "error = " + response.getError());
             String sUrl = response.getGraphObject().getInnerJSONObject().getJSONObject("cover").getString("source");
             Bitmap bitmap = Utilities.downloadBitmap(sUrl);
             return bitmap;
@@ -155,7 +184,7 @@ public class FacebookApi {
         }
         return null;
     }
-
+*/
     public interface FbGotDataCallback {
         public void gotData(Bundle b);
     }

@@ -145,7 +145,7 @@ public class NavigationDrawerFragment extends Fragment {
         //mDrawerListView.addFooterView(mDrawerLinearLayout);
 
         mProfilePic = ((ParseCircularImageView) mDrawerLinearLayout.findViewById(R.id.nav_drawer_profile_pic));
-        mProfilePic.setPlaceholder(getResources().getDrawable(R.drawable.com_facebook_profile_default_icon));
+        mProfilePic.setPlaceholder(getResources().getDrawable(R.drawable.ic_launcher));
         mProfilePic.setParseFile(ParseUser.getCurrentUser().getParseFile(ParseTables.Users.IMAGE));
 
         mCoverPic = ((ParseImageView) mDrawerLinearLayout.findViewById(R.id.nav_drawer_cover_picture));
