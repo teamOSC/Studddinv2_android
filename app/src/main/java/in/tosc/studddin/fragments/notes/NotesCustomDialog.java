@@ -34,8 +34,8 @@ public class NotesCustomDialog extends Dialog {
     TextView dialogCollegeName, dialogBranchName, dialogTopicName, dialogSubjectName, dialogUploadedBy;
     Button downloadNotes;
     int position;
-    private DownloadManager downloadManager;
     Context c;
+    private DownloadManager downloadManager;
     private ArrayList<String> notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, uploadedBy;
 
     public NotesCustomDialog(Context activity, ArrayList<String> notesCollegeName,
@@ -65,7 +65,7 @@ public class NotesCustomDialog extends Dialog {
         dialogUploadedBy = (TextView) findViewById(R.id.notes_details_uploadedby);
         downloadNotes = (Button) findViewById(R.id.notes_button_download);
 
-        downloadManager =  (DownloadManager) this.c.getSystemService(Context.DOWNLOAD_SERVICE);
+        downloadManager = (DownloadManager) this.c.getSystemService(Context.DOWNLOAD_SERVICE);
 
         dialogUploadedBy.setText(uploadedBy.get(position));
         dialogBranchName.setText(notesBranchName.get(position));
@@ -78,8 +78,9 @@ public class NotesCustomDialog extends Dialog {
             @Override
             public void onClick(View v) {
 
-                if (DEBUG) Log.d(TAG, "" + position + notesSubjectName.get(position) + notesTopicName.get(position) + notesCollegeName.get(position) +
-                        notesBranchName.get(position) );
+                if (DEBUG)
+                    Log.d(TAG, "" + position + notesSubjectName.get(position) + notesTopicName.get(position) + notesCollegeName.get(position) +
+                            notesBranchName.get(position));
 
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Notes");
                 query.whereEqualTo("subjectName", notesSubjectName.get(position));
@@ -94,14 +95,14 @@ public class NotesCustomDialog extends Dialog {
                     public void done(ParseObject notesParseObject, ParseException e) {
 
                         ArrayList<ParseFile> parseFileList = (ArrayList<ParseFile>) notesParseObject.get("notesImages");
-                        if(!parseFileList.isEmpty()) {
-                            for(ParseFile pFile : parseFileList) {
+                        if (!parseFileList.isEmpty()) {
+                            for (ParseFile pFile : parseFileList) {
 
                                 ;
                                 String imageFileURL = pFile.getUrl();
                                 Uri uri = Uri.parse(imageFileURL);
                                 DownloadManager.Request dr = new DownloadManager.Request(uri);
-                                dr.setTitle("Notes: " + notesTopicName.get(position)+ ".jpg");
+                                dr.setTitle("Notes: " + notesTopicName.get(position) + ".jpg");
                                 dr.setDescription("");
 
                                 dr.setDestinationInExternalPublicDir("/LearnHut_Notes/",
@@ -110,7 +111,6 @@ public class NotesCustomDialog extends Dialog {
 
                             }
                         }
-
 
 
                     }

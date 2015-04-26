@@ -4,7 +4,6 @@ package in.tosc.studddin.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -30,7 +29,7 @@ public class NotesFragment extends Fragment {
 
     ViewPager notesPager;
     FragmentStatePagerAdapter fragmentPagerAdapter;
-    int p,s;
+    int p, s;
     NotesUploadFragment notesUploadFragment;
     SlidingTabLayout tabs;
 
@@ -51,11 +50,11 @@ public class NotesFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
         p = getActivity().getResources().getColor(R.color.colorPrimary);
         s = getActivity().getResources().getColor(R.color.colorPrimaryDark);
-        ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(),p,s);
+        ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(), p, s);
 
         fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
 
-            String[] fragmentTitles = new String[] {
+            String[] fragmentTitles = new String[]{
                     getResources().getString(R.string.notes_fragment_title_search),
                     getResources().getString(R.string.notes_fragment_title_upload)
             };
@@ -110,14 +109,17 @@ public class NotesFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (DEBUG) Log.d(TAG, "Request = " + requestCode + "result = " + resultCode);
-        String[] paths = data.getStringArrayExtra("all_path");
-        if (paths.length == 0)
+        String[] paths = null;
+        try {
+            paths = data.getStringArrayExtra("all_path");
+            if (paths.length == 0) {
+                notesUploadFragment.setImagePaths(paths, false);
+            } else {
+                notesUploadFragment.setImagePaths(paths, true);
+            }
+        } catch (Exception e) {
 
-            notesUploadFragment.setImagePaths(paths, false);
-
-
-        notesUploadFragment.setImagePaths(paths, true);
-
+        }
     }
-    
+
 }

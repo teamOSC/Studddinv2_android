@@ -4,7 +4,6 @@ package in.tosc.studddin.fragments.notes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,14 +51,6 @@ public class NotesUploadFragment extends Fragment {
                     .show();
 
         imagePaths = paths;
-
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        String[] paths = data.getStringArrayExtra("all_path");
-        Log.d("Raghav", "Req = " + requestCode + "res = " + resultCode + "NotesUploadFragment");
 
     }
 
@@ -172,7 +163,6 @@ public class NotesUploadFragment extends Fragment {
         });
         return rootView;
     }
-
 
 
 }

@@ -24,85 +24,6 @@ public class NotesUploadService extends Service {
     public NotesUploadService() {
     }
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-        final android.os.Handler mHandler=new android.os.Handler();
-        parseFileList = new ArrayList<>();
-        final String[] imagePaths = intent.getStringArrayExtra("imagePaths");
-        final String userName = intent.getStringExtra("userName");
-        final String subjectNameString = intent.getStringExtra("subjectName");
-        final String branchNameString = intent.getStringExtra("branchName");
-        final String topicNameString = intent.getStringExtra("topicName");
-
-
-            final Thread t = new Thread() {
-
-                @Override
-                public void run() {
-                    try {
-                        for (int i = 0; i < imagePaths.length; i++) {
-                        byte[] imageToBeUploaded = convertToByteArray(imagePaths[i]);
-                        if (imageToBeUploaded == null) {
-                            Toast.makeText(getApplicationContext(), "File size beyond limit", Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-
-                        ParseFile parseFile = new ParseFile("notes_images", imageToBeUploaded);
-
-                        try {
-                            parseFile.save();
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-                        parseFileList.add(parseFile);
-                    }
-
-                        ParseObject uploadNotes = new ParseObject("Notes");
-
-                        uploadNotes.addAll("notesImages", parseFileList);
-                        uploadNotes.put("userName", ParseUser.getCurrentUser().getString("NAME"));
-                        uploadNotes.put("subjectName", subjectNameString);
-                        uploadNotes.put("topicName", topicNameString);
-                        uploadNotes.put("branchName", branchNameString);
-                        uploadNotes.put("collegeName", "DTU");
-
-                        try {
-                            uploadNotes.save();
-                            mHandler.post(new Runnable(){
-                                public void run(){
-                                    Toast.makeText(NotesUploadService.this, "Notes Uploaded Successfully", Toast.LENGTH_LONG).show();
-                                }
-                            });
-
-
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    } finally {
-
-                    }
-                }
-            };
-            t.start();
-
-
-
-        return START_STICKY;
-        //return super.onStartCommand(intent, flags, startId);
-
-    }
     private static byte[] convertToByteArray(String imagePath) {
         File file = new File(imagePath);
 
@@ -125,5 +46,82 @@ public class NotesUploadService extends Service {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO: Return the communication channel to the service.
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        final android.os.Handler mHandler = new android.os.Handler();
+        parseFileList = new ArrayList<>();
+        final String[] imagePaths = intent.getStringArrayExtra("imagePaths");
+        final String userName = intent.getStringExtra("userName");
+        final String subjectNameString = intent.getStringExtra("subjectName");
+        final String branchNameString = intent.getStringExtra("branchName");
+        final String topicNameString = intent.getStringExtra("topicName");
+
+
+        final Thread t = new Thread() {
+
+            @Override
+            public void run() {
+                try {
+                    for (int i = 0; i < imagePaths.length; i++) {
+                        byte[] imageToBeUploaded = convertToByteArray(imagePaths[i]);
+                        if (imageToBeUploaded == null) {
+                            Toast.makeText(getApplicationContext(), "File size beyond limit", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+
+                        ParseFile parseFile = new ParseFile("notes_images", imageToBeUploaded);
+
+                        try {
+                            parseFile.save();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        parseFileList.add(parseFile);
+                    }
+
+                    ParseObject uploadNotes = new ParseObject("Notes");
+
+                    uploadNotes.addAll("notesImages", parseFileList);
+                    uploadNotes.put("userName", ParseUser.getCurrentUser().getString("NAME"));
+                    uploadNotes.put("subjectName", subjectNameString);
+                    uploadNotes.put("topicName", topicNameString);
+                    uploadNotes.put("branchName", branchNameString);
+                    uploadNotes.put("collegeName", "DTU");
+
+                    try {
+                        uploadNotes.save();
+                        mHandler.post(new Runnable() {
+                            public void run() {
+                                Toast.makeText(NotesUploadService.this, "Notes Uploaded Successfully", Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } finally {
+
+                }
+            }
+        };
+        t.start();
+
+
+        return START_STICKY;
+        //return super.onStartCommand(intent, flags, startId);
+
     }
 }

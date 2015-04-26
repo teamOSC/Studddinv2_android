@@ -132,7 +132,7 @@ public class NotesSearchFragment extends Fragment {
                 searchEdTxt.setFocusableInTouchMode(true);
                 searchEdTxt.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
             }
         });
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
@@ -154,9 +154,7 @@ public class NotesSearchFragment extends Fragment {
         getNotes();
 
 
-
         searchEdTxt = (EditText) rootView.findViewById(R.id.notes_search);
-
 
 
         addNotesButton.setOnClickListener(new View.OnClickListener() {
@@ -170,7 +168,6 @@ public class NotesSearchFragment extends Fragment {
         return rootView;
 
     }
-
 
 
     public void goToUploadFragment() {
@@ -199,7 +196,6 @@ public class NotesSearchFragment extends Fragment {
                     notesFirstImage.add((ArrayList<ParseFile>) notes.get("notesImages"));
 
 
-
                 }
                 notesCustomGridViewAdapter = new NotesCustomGridViewAdapter(getActivity(), notesCollegeName,
                         notesBranchName, notesTopicName, notesSubjectName, notesFirstImage, uploadedBy);
@@ -209,6 +205,7 @@ public class NotesSearchFragment extends Fragment {
 
         });
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
