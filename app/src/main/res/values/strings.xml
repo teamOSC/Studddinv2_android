@@ -94,11 +94,15 @@
 
     <!-- Listings -->
     <string name="upload_complete">Upload complete</string>
-    <string name="notes_uploading">Uploading</string>
-    <string name="notes_downloading">Downloading...</string>
-    <string name="notes_details">Details:</string>
+    <string name="listings_uploading">Uploading</string>
+    <string name="listings_downloading">Downloading...</string>
+    <string name="listings_details">Details:</string>
     <string name="dialog_download_starting">Download Start</string>
     <string name="placeholder_dialog_listing">You haven\'t posted an item to sell yet!</string>
     <string name="lets_get_going">lets get going</string>
+
+    <!-- Notes -->
+    <string name="notes_fragment_title_search">Get Notes</string>
+    <string name="notes_fragment_title_upload">Upload Notes</string>
 
 </resources>

@@ -68,7 +68,7 @@ public class NotesCustomGridViewAdapter extends RecyclerView.Adapter<NotesCustom
             public void onClick(View v) {
                 NotesCustomDialog notesCustomDialog = new NotesCustomDialog(mContext,
                         notesCollegeName, notesBranchName, notesTopicName, notesSubjectName, position, uploadedBy);
-                notesCustomDialog.setTitle(mContext.getString(R.string.notes_details));
+                notesCustomDialog.setTitle(mContext.getString(R.string.listings_details));
                 notesCustomDialog.show();
             }
         });

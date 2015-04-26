@@ -32,7 +32,6 @@ public class NotesFragment extends Fragment {
     FragmentStatePagerAdapter fragmentPagerAdapter;
     int p,s;
     NotesUploadFragment notesUploadFragment;
-    ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
 
 
@@ -54,7 +53,18 @@ public class NotesFragment extends Fragment {
         s = getActivity().getResources().getColor(R.color.colorPrimaryDark);
         ApplicationWrapper.setCustomTheme((ActionBarActivity) getActivity(),p,s);
 
-/*        fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
+        fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
+
+            String[] fragmentTitles = new String[] {
+                    getResources().getString(R.string.notes_fragment_title_search),
+                    getResources().getString(R.string.notes_fragment_title_upload)
+            };
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return fragmentTitles[position];
+            }
+
             @Override
             public Fragment getItem(int position) {
                 switch (position) {
@@ -72,11 +82,10 @@ public class NotesFragment extends Fragment {
                 return 2;
             }
 
-        };*/
+        };
 
         notesPager = (ViewPager) rootView.findViewById(R.id.notes_pager);
-        adapter  =  new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-        notesPager.setAdapter(adapter);
+        notesPager.setAdapter(fragmentPagerAdapter);
         tabs = (SlidingTabLayout) rootView.findViewById(R.id.tabs);
         tabs.setDistributeEvenly(true);
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
@@ -109,40 +118,6 @@ public class NotesFragment extends Fragment {
 
         notesUploadFragment.setImagePaths(paths, true);
 
-    }
-
-    public class ViewPagerAdapter extends FragmentStatePagerAdapter {
-
-        CharSequence TAB_TITLES[]={"Notes","Upload Notes"};
-        int NUM_TAB =2;
-
-        public ViewPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-
-            if(position == 0)
-            {
-                return (new NotesSearchFragment());
-            }
-            else {
-                return (new NotesUploadFragment());
-            }
-
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return TAB_TITLES[position];
-        }
-
-        @Override
-        public int getCount() {
-            return NUM_TAB;
-        }
     }
     
 }

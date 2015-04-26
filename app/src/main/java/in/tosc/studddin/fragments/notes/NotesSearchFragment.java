@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +29,7 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
 import in.tosc.studddin.fragments.NotesFragment;
 import in.tosc.studddin.ui.FloatingActionButton;
@@ -40,6 +42,8 @@ import in.tosc.studddin.utils.Utilities;
  * create an instance of this fragment.
  */
 public class NotesSearchFragment extends Fragment {
+
+    public static final String TAG = "NotesSearch";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -177,6 +181,7 @@ public class NotesSearchFragment extends Fragment {
 
 
     public void goToUploadFragment() {
+        if (ApplicationWrapper.LOG_DEBUG) Log.d(TAG, "goToUploadFragment called");
         NotesFragment notesFragment = (NotesFragment) getParentFragment();
         if (notesFragment != null) {
             notesFragment.goToOtherFragment(1);
