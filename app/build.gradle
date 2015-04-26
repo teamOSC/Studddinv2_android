@@ -8,8 +8,8 @@ android {
         applicationId "in.tosc.studddin"
         minSdkVersion 10
         targetSdkVersion 21
-        versionCode 39
-        versionName "0.3.9"
+        versionCode 40
+        versionName "0.4.0"
     }
     signingConfigs {
         debug {
