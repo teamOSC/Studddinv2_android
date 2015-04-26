@@ -39,7 +39,8 @@
             android:text="Add"
             android:textColor="@color/white"
             android:layout_gravity="right|center_vertical"
-            android:background="@drawable/add_button_selector_itemfragment"/>
+            android:background="@drawable/add_button_selector_itemfragment"
+            android:visibility="gone"/>
         </FrameLayout>
 
     </RelativeLayout>

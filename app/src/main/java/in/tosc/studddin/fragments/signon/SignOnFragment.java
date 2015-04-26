@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.hardware.camera2.params.Face;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -55,7 +56,8 @@ import in.tosc.studddin.utils.Utilities;
 /**
  * SignOnFragment
  */
-public class SignOnFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class SignOnFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, FetchUserPhotos.PhotosFetcher {
 
     public static final String TAG = "SignOnFragment";
     // TODO: Rename parameter arguments, choose names that match
@@ -233,14 +235,10 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
     public void doFacebookSignOn(View v) {
         mProgressDialog.setMessage("Signing in via Facebook");
         mProgressDialog.show();
-        List<String> permissions = Arrays.asList("public_profile", "user_friends",
-                ParseFacebookUtils.Permissions.User.EMAIL,
-                ParseFacebookUtils.Permissions.User.ABOUT_ME,
-                ParseFacebookUtils.Permissions.User.RELATIONSHIPS,
-                ParseFacebookUtils.Permissions.User.BIRTHDAY,
-                ParseFacebookUtils.Permissions.User.LOCATION,
-                ParseFacebookUtils.Permissions.User.PHOTOS);
-        ParseFacebookUtils.logIn(permissions, getActivity(), new LogInCallback() {
+
+        List<String> permissions = Arrays.asList(
+                "public_profile", "email", "user_birthday", "user_location");
+        ParseFacebookUtils.logInWithReadPermissionsInBackground(getActivity(), permissions, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException err) {
                 mProgressDialog.dismiss();
@@ -261,43 +259,33 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
 
                     if (user.isNew() || (!fullyRegistered)) {
                         Log.w(TAG, "User signed up and logged in through Facebook!");
-
-                        Log.w(TAG,
-                                "FBSHIT \n" +
-                                        ParseFacebookUtils.getSession().getAccessToken() + " \n" +
-                                        ParseFacebookUtils.getFacebook().getAppId()
-                        );
-                        FacebookApi.setSession(ParseFacebookUtils.getSession());
                         FacebookApi.getFacebookData(new FacebookApi.FbGotDataCallback() {
                             @Override
                             public void gotData(final Bundle bundle) {
-                                /*
-                                final SignupDataFragment fragment = showSignupDataFragment(bundle);
-                                FacebookApi.getProfilePicture(new FacebookApi.FbGotProfilePictureCallback() {
-                                    @Override
-                                    public void gotProfilePicture(Bitmap profilePicture) {
-                                        fragment.bitmapReady = true;
-                                        fragment.profileBitmap = profilePicture;
-                                        fragment.setProfilePicture();
-                                    }
-                                });
-                                FacebookApi.getCoverPicture(new FacebookApi.FbGotCoverPictureCallback() {
-                                    @Override
-                                    public void gotCoverPicture(Bitmap coverPicture) {
-                                        fragment.setCoverPicture(coverPicture);
-                                    }
-                                });*/
                                 new PushUserIntoParse().execute(bundle);
+                                new FetchUserPhotos(new FetchUserPhotos.PhotosFetcher() {
+                                    @Override
+                                    public Bitmap downloadCoverPhoto() {
+                                        String url = bundle.getString(ParseTables.Users.COVER);
+                                        if (!url.equals("")) {
+                                            return Utilities.downloadBitmap(url);
+                                        }
+                                        return null;
+                                    }
+
+                                    @Override
+                                    public Bitmap downloadProfilePhoto() {
+                                        String url = bundle.getString(ParseTables.Users.IMAGE);
+                                        if (!url.equals("")) {
+                                            return Utilities.downloadBitmap(url);
+                                        }
+                                        return null;
+                                    }
+                                }).start();
                             }
                         });
                     } else {
                         Log.w(TAG, "User logged in through Facebook!");
-                        Log.w(TAG,
-                                "FB \n" +
-                                        ParseFacebookUtils.getSession().getAccessToken() + " \n" +
-                                        ParseFacebookUtils.getSession().getAccessToken() + " \n" +
-                                        ParseFacebookUtils.getFacebook().getAppId()
-                        );
                         SignupDataFragment.goToMainActivity(getActivity());
                     }
                 }
@@ -320,7 +308,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                 mGoogleApiClient.connect();
             }
         }
-        ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
+        ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
     }
 
     public void doTwitterSignOn(View v) {
@@ -396,7 +384,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                     // Network or server error, try later
                     Log.e(TAG, transientEx.toString());
                 }
-
                 return token;
             }
 
@@ -422,7 +409,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                         if (user.isNew() || (!fullyRegistered)) {
                                             try {
                                                 if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-                                                    Person currentPerson = Plus.PeopleApi
+                                                    final Person currentPerson = Plus.PeopleApi
                                                             .getCurrentPerson(mGoogleApiClient);
                                                     b.putString(ParseTables.Users.NAME, currentPerson.getDisplayName());
                                                     b.putString(ParseTables.Users.EMAIL, Plus.AccountApi.getAccountName(mGoogleApiClient));
@@ -431,6 +418,25 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                                         b.putString(ParseTables.Users.DOB, reverseDate);
                                                     }
                                                     new PushUserIntoParse().execute(b);
+                                                    new FetchUserPhotos(new FetchUserPhotos.PhotosFetcher() {
+                                                        @Override
+                                                        public Bitmap downloadCoverPhoto() {
+                                                            String coverUrl = currentPerson.getCover().getCoverPhoto().getUrl();
+                                                            if (coverUrl != null && !coverUrl.equals("")) {
+                                                                return Utilities.downloadBitmap(coverUrl);
+                                                            }
+                                                            return null;
+                                                        }
+
+                                                        @Override
+                                                        public Bitmap downloadProfilePhoto() {
+                                                            String photoUrl = currentPerson.getImage().getUrl();
+                                                            if (photoUrl != null && !photoUrl.equals("")) {
+                                                                return Utilities.downloadBitmap(photoUrl);
+                                                            }
+                                                            return null;
+                                                        }
+                                                    }).start();
                                                 }
                                             } catch (Exception ex) {
                                                 ex.printStackTrace();
@@ -489,6 +495,17 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                 });
             }
         }.execute();
+    }
+
+    //We should remove this interface
+    @Override
+    public Bitmap downloadCoverPhoto() {
+        return null;
+    }
+
+    @Override
+    public Bitmap downloadProfilePhoto() {
+        return null;
     }
 
     private class PushUserIntoParse extends AsyncTask<Bundle, Void, Bundle> {
@@ -575,7 +592,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
             fragment.setCoverPicture(bitmap);
         }
     }
-
 
     @Override
     public void onConnectionSuspended(int i) {

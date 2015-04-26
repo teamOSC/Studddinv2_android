@@ -5,11 +5,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.facebook.HttpMethod;
-import com.facebook.Request;
-import com.facebook.Response;
-import com.facebook.Session;
-import com.facebook.model.GraphUser;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,39 +24,46 @@ public class FacebookApi {
     public static final boolean INFO = ApplicationWrapper.LOG_INFO;
     public static final String APP_ID = "903137443064438";
     private static final String TAG = "FacebookApi";
-    public static String USER_ID = "";
-    public static Bundle FbDataBundle = new Bundle();
-    private static Session session;
 
-    public static void setSession(Session s) {
-        session = s;
-    }
+    public static String PROFILE_URL = "";
+    public static String COVER_URL = "";
 
     public static void getFacebookData(final FbGotDataCallback fgdc) {
-        Request.newMeRequest(session, new Request.GraphUserCallback() {
-            @Override
-            public void onCompleted(GraphUser gu, Response response) {
-                if (gu != null) {
-                    if (DEBUG) Log.d(TAG, "json = " + response.getGraphObject().getInnerJSONObject().toString());
-                    JSONObject responseObject = response.getGraphObject().getInnerJSONObject();
-                    USER_ID = gu.getId();
-                    try {
-                        FbDataBundle.putString(ParseTables.Users.EMAIL, responseObject.getString("email"));
-                        FbDataBundle.putString(ParseTables.Users.NAME, gu.getName());
-                        FbDataBundle.putString(ParseTables.Users.USERNAME, gu.getUsername());
-                        FbDataBundle.putString(ParseTables.Users.CITY, "" + gu.getLocation().getLocation().getCity());
-                    } catch (Exception e) {
-//                        e.printStackTrace();
+
+        final Bundle b = new Bundle();
+        GraphRequest request = GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(
+                            JSONObject object,
+                            GraphResponse response) {
+                        if (DEBUG) Log.d(TAG,"" +object.toString());
+                        try {
+                            if(!object.isNull("cover"))
+                                b.putString(ParseTables.Users.COVER,object.getJSONObject("cover").getString("source"));
+                            else
+                                b.putString(ParseTables.Users.COVER, "");
+                            String id = object.getString("id");
+                            b.putString(ParseTables.Users.IMAGE,"https://graph.facebook.com/" + id + "/picture??width=300&&height=300");
+                            b.putString(ParseTables.Users.NAME, object.getString("name"));
+                            b.putString(ParseTables.Users.EMAIL, object.getString("email"));
+
+                            fgdc.gotData(b);
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
                     }
-                    FbDataBundle.putString(ParseTables.Users.DOB, gu.getBirthday());
-                    fgdc.gotData(FbDataBundle);
-                }
-            }
-        }).executeAsync();
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "name,id,cover,email,birthday");
+        request.setParameters(parameters);
+        request.executeAsync();
         return;
     }
 
     public static void getFacebookUserEvents(final FbGotEventDataCallback fgedc) {
+        /*
         Bundle bundle = new Bundle();
         bundle.putString("fields", "description,start_time,owner,name,cover");
         Request r = new Request(session, "/me/events", bundle,
@@ -73,58 +78,7 @@ public class FacebookApi {
                 }
             }
         });
-        r.executeAsync();
-    }
-
-    public static void getProfilePicture(final FbGotProfilePictureCallback listener) {
-        if (DEBUG) Log.d(TAG, "getting profile picture");
-        Bundle bundle = new Bundle();
-        bundle.putString("fields", "picture");
-        new Request(session, "me", bundle,
-                HttpMethod.GET, new Request.Callback() {
-            @Override
-            public void onCompleted(final Response response) {
-                new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        try {
-                            String objectId = response.getGraphObject().getInnerJSONObject().getString("id");
-                            String sUrl = "https://graph.facebook.com/" + objectId + "/picture??width=300&&height=300";
-                            Bitmap bitmap = Utilities.downloadBitmap(sUrl);
-                            listener.gotProfilePicture(bitmap);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        return null;
-                    }
-                }.execute();
-            }
-        }).executeAsync();
-    }
-
-    public static void getCoverPicture(final FbGotCoverPictureCallback listener) {
-        if (DEBUG) Log.d(TAG, "getting cover picture");
-        Bundle bundle = new Bundle();
-        bundle.putString("fields", "cover");
-        new Request(session, "me", bundle,
-                HttpMethod.GET, new Request.Callback() {
-            @Override
-            public void onCompleted(final Response response) {
-                new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        try {
-                            String sUrl = response.getGraphObject().getInnerJSONObject().getJSONObject("cover").getString("source");
-                            Bitmap bitmap = Utilities.downloadBitmap(sUrl);
-                            listener.gotCoverPicture(bitmap);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        return null;
-                    }
-                }.execute();
-            }
-        }).executeAsync();
+        r.executeAsync();*/
     }
 
     public interface FbGotDataCallback {
