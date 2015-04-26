@@ -31,7 +31,6 @@ import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.ui.ParseCircularImageView;
 import in.tosc.studddin.ui.ProgressBarCircular;
-import in.tosc.studddin.utils.Utilities;
 
 public class MyListingsFragment extends Fragment {
 
@@ -61,34 +60,21 @@ public class MyListingsFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        if (Utilities.isNetworkAvailable(getActivity()))
-            fetchMyListings(false);
-        else
-            fetchMyListings(true);
+        fetchMyListings();
 
         return rootView;
     }
 
-    private void fetchMyListings(final boolean cache){
+    private void fetchMyListings(){
         ParseQuery<ParseObject> query = new ParseQuery<>(
                 ParseTables.Listings.LISTINGS);
-        if (cache)
-            query.fromLocalDatastore();
+        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.whereEqualTo(ParseTables.Listings.OWNER_NAME, ParseUser.getCurrentUser().getString(ParseTables.Users.NAME));
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
-                    if (!cache) {
-                        ParseObject.unpinAllInBackground(ParseTables.Listings.LISTINGS, new DeleteCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                ParseObject.pinAllInBackground(ParseTables.Listings.LISTINGS, parseObjects);
-                                doneFetching(parseObjects, cache);
-                            }
-                        });
-                    } else
-                        doneFetching(parseObjects, cache);
+                    doneFetching(parseObjects);
                 } else {
                     loader.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
@@ -97,8 +83,8 @@ public class MyListingsFragment extends Fragment {
         });
     }
 
-    private void doneFetching(List<ParseObject> parseObjects, boolean cache) {
-        mAdapter = new MyListingAdapter(parseObjects, cache);
+    private void doneFetching(List<ParseObject> parseObjects) {
+        mAdapter = new MyListingAdapter(parseObjects);
         mAdapter.notifyDataSetChanged();
         loader.setVisibility(View.GONE);
         mRecyclerView.setAdapter(mAdapter);
@@ -111,11 +97,9 @@ public class MyListingsFragment extends Fragment {
 
     public class MyListingAdapter extends RecyclerView.Adapter<MyListingAdapter.ViewHolder> {
         private List<ParseObject> mDataset;
-        private boolean mCache;
 
-        public MyListingAdapter(List<ParseObject> dataSet, boolean cache) {
+        public MyListingAdapter(List<ParseObject> dataSet) {
             mDataset = dataSet;
-            mCache = cache;
         }
 
         @Override
@@ -131,8 +115,6 @@ public class MyListingsFragment extends Fragment {
             SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yy");
             viewHolder.createdAt.setText(sdf.format(mDataset.get(i).getCreatedAt()));
             viewHolder.listing_desc.setText(mDataset.get(i).getString(ParseTables.Listings.LISTING_DESC));
-            if (!mCache)
-                viewHolder.listing_image.setPlaceholder(getResources().getDrawable(R.drawable.listings_placeholder));
             viewHolder.listing_image.setParseFile(mDataset.get(i).getParseFile(ParseTables.Listings.IMAGE));
             viewHolder.listing_image.loadInBackground(new GetDataCallback() {
                 @Override
@@ -172,7 +154,7 @@ public class MyListingsFragment extends Fragment {
                                     mDataset.remove(getPosition());
                                     notifyItemRemoved(getPosition());
                                     notifyItemRangeChanged(getPosition(), mDataset.size());
-                                    fetchMyListings(false);
+                                    fetchMyListings();
                                 }
                                 else
                                  Toast.makeText(getActivity(),"Please connect to the Internet",Toast.LENGTH_SHORT).show();
