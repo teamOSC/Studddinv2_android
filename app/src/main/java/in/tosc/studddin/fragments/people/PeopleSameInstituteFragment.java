@@ -42,17 +42,9 @@ import in.tosc.studddin.ui.ParseCircularImageView;
 import in.tosc.studddin.ui.ProgressBarCircular;
 import in.tosc.studddin.utils.Utilities;
 
-public class PeopleSameInstituteFragment extends Fragment {
-    ProgressBarCircular progressBar;
+public class PeopleSameInstituteFragment extends PeopleListFragment {
     Dialog dialogPeople;
 
-
-    String currentuseremail = "";
-    String currentuserinterests = "";
-    String currentuserinstituition = "";
-    String currentusername = "";
-    String currentuserqualification = "";
-    String currentuser = "";
     ParseGeoPoint userlocation = new ParseGeoPoint(0, 0);
 
     ArrayList<ParseObject> interests = new ArrayList<ParseObject>();
@@ -65,10 +57,6 @@ public class PeopleSameInstituteFragment extends Fragment {
     MyAdapter3 q;
     ListView lv;
 
-
-    public PeopleSameInstituteFragment() {
-        // Required empty public constructor
-    }
 
 
     @Override
@@ -456,19 +444,5 @@ public class PeopleSameInstituteFragment extends Fragment {
         }
 
     }
-
-    private class EachRow3 {
-        String cname;
-        String cinterests;
-        String cdistance;
-        String cqualification;
-        String cinstituition;
-        String cusername;
-        String cauthData;
-
-        Bitmap cbmp;
-        ParseFile fileObject;
-    }
-
 
 }
