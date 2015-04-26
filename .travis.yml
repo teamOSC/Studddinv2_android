@@ -1,8 +1,4 @@
 language: android
-branches:
-  only:
-  - master
-  - stable
 script: ./gradlew clean assembleDebug
 android:
   components:
