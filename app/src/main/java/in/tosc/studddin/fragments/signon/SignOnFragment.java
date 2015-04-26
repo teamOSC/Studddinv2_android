@@ -522,6 +522,7 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
         }.execute();
     }
 
+    //We should remove this interface
     @Override
     public Bitmap downloadCoverPhoto() {
         return null;
