@@ -112,9 +112,14 @@ public class NotesFragment extends Fragment {
         String[] paths = null;
         try{
             paths = data.getStringArrayExtra("all_path");
-            notesUploadFragment.setImagePaths(paths, true);
+            if(paths.length == 0){
+                notesUploadFragment.setImagePaths(paths,false);
+            }
+            else{
+                notesUploadFragment.setImagePaths(paths, true);
+            }
         }catch(Exception e){
-            notesUploadFragment.setImagePaths(paths,false);
+
         }
     }
     
