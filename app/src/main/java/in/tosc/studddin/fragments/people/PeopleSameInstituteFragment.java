@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
@@ -20,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
@@ -40,7 +38,6 @@ import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.ui.ParseCircularImageView;
 import in.tosc.studddin.ui.ProgressBarCircular;
-import in.tosc.studddin.utils.Utilities;
 
 public class PeopleSameInstituteFragment extends PeopleListFragment {
     Dialog dialogPeople;
@@ -62,12 +59,7 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
         progressBar.setBackgroundColor(getResources().getColor(R.color.peopleColorPrimaryDark));
         search = (EditText) view.findViewById(R.id.people_search);
         lv = (ListView) view.findViewById(R.id.listviewpeople);
-
-
-        if (Utilities.isNetworkAvailable(getActivity()))
-            loaddata(false);
-        else
-            loaddata(true);
+        loaddata();
 
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -83,7 +75,7 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 // ALWAYS SEARCH FROM CACHE
-                loaddataAfterSearch(editable.toString(), true);
+                loaddataAfterSearch(editable.toString());
             }
         });
 
@@ -104,7 +96,6 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
                 ParseFile tfile = listOfPeople.get(i).fileObject;
 
                 final Bundle in = new Bundle();
-
 
                 if (tname == null)
                     tname = " - ";
@@ -158,7 +149,6 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
                             });
                 } else {
 
-
                     Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.com_facebook_profile_picture_blank_portrait);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -177,7 +167,7 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
         return view;
     }
 
-    private void loaddata(final boolean cache) {
+    private void loaddata() {
 
         listOfPeople.clear();
 
@@ -196,8 +186,7 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
 
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        if (cache)
-            query.fromLocalDatastore();
+        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.include(ParseTables.Users.INTERESTS);
 
         if (currentuserinstituition != null)
@@ -205,19 +194,7 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(final List<ParseUser> objects, ParseException e) {
                 if (e == null) {
-
-
-                    if (!cache) {
-                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_SAME_INSTITUTE, new DeleteCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_SAME_INSTITUTE, objects);
-                                doneFetchingPeople(objects, cache);
-                            }
-                        });
-                    } else
-                        doneFetchingPeople(objects, cache);
-
+                    doneFetchingPeople(objects);
                     // The query was successful.
                 } else {
                     // Something went wrong.
@@ -228,7 +205,7 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
 
     }
 
-    public void doneFetchingPeople(List<ParseUser> objects, boolean cache) {
+    public void doneFetchingPeople(List<ParseUser> objects) {
 
 
         for (ParseUser pu : objects) {
@@ -297,7 +274,7 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
     }
 
 
-    private void loaddataAfterSearch(String textSearch, final boolean cache) {
+    private void loaddataAfterSearch(String textSearch) {
 
 
         listOfPeople.clear();
@@ -319,8 +296,7 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
         }
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        if (cache)
-            query.fromLocalDatastore();
+        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
         query.include(ParseTables.Users.INTERESTS);
 
@@ -329,19 +305,7 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(final List<ParseUser> objects, ParseException e) {
                 if (e == null) {
-
-
-                    if (!cache) {
-                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_SAME_INSTITUTE, new DeleteCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_SAME_INSTITUTE, objects);
-                                doneFetchingPeople(objects, cache);
-                            }
-                        });
-                    } else
-                        doneFetchingPeople(objects, cache);
-
+                    doneFetchingPeople(objects);
                     // The query was successful.
                 } else {
                     // Something went wrong.

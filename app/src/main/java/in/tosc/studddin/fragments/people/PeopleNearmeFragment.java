@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
@@ -20,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
@@ -42,7 +40,6 @@ import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.ui.ParseCircularImageView;
 import in.tosc.studddin.ui.ProgressBarCircular;
-import in.tosc.studddin.utils.Utilities;
 
 public class PeopleNearmeFragment extends PeopleListFragment {
 
@@ -63,16 +60,10 @@ public class PeopleNearmeFragment extends PeopleListFragment {
         View view = inflater.inflate(R.layout.fragment_people_nearme, container, false);
         progressBar = (ProgressBarCircular) view.findViewById(R.id.progressbar_people);
         progressBar.setBackgroundColor(getResources().getColor(R.color.peopleColorPrimaryDark));
-
         search = (EditText) view.findViewById(R.id.people_search);
-
         lv = (ListView) view.findViewById(R.id.listviewpeople);
 
-        if (Utilities.isNetworkAvailable(getActivity()))
-            loaddata(false);
-        else
-            loaddata(true);
-
+        loaddata();
 
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -88,7 +79,7 @@ public class PeopleNearmeFragment extends PeopleListFragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 // ALWAYS SEARCH FROM CACHE
-                loaddataAfterSearch(editable.toString(), true);
+                loaddataAfterSearch(editable.toString());
             }
         });
 
@@ -135,14 +126,11 @@ public class PeopleNearmeFragment extends PeopleListFragment {
                 in.putString("username", tusername);
                 in.putString("authData", tauthData);
 
-
                 newFragment.setArguments(in);
-
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.setCustomAnimations(R.anim.anim_signin_enter, R.anim.anim_signin_exit);
-
 
                 if (tfile != null) {
                     tfile
@@ -167,7 +155,6 @@ public class PeopleNearmeFragment extends PeopleListFragment {
                             });
                 } else {
 
-
                     Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.com_facebook_profile_picture_blank_portrait);
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -183,11 +170,10 @@ public class PeopleNearmeFragment extends PeopleListFragment {
             }
         });
 
-
         return view;
     }
 
-    private void loaddata(final boolean cache) {
+    private void loaddata() {
 
         listOfPeople.clear();
 
@@ -209,27 +195,15 @@ public class PeopleNearmeFragment extends PeopleListFragment {
             userlocation = new ParseGeoPoint(28.7434552, 77.1205612);
         }
 
-
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        if (cache)
-            query.fromLocalDatastore();
+        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.whereNear(ParseTables.Users.LOCATION, userlocation);
         query.include(ParseTables.Users.INTERESTS);
 
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(final List<ParseUser> objects, ParseException e) {
                 if (e == null) {
-
-                    if (!cache) {
-                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_NEAR_ME, new DeleteCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_NEAR_ME, objects);
-                                doneFetchingPeople(objects, cache);
-                            }
-                        });
-                    } else
-                        doneFetchingPeople(objects, cache);
+                    doneFetchingPeople(objects);
                     // The query was successful.
                 } else {
                     // Something went wrong.
@@ -239,7 +213,7 @@ public class PeopleNearmeFragment extends PeopleListFragment {
 
     }
 
-    public void doneFetchingPeople(List<ParseUser> objects, boolean cache) {
+    public void doneFetchingPeople(List<ParseUser> objects) {
         for (ParseUser pu : objects) {
             //access the data associated with the ParseUser using the get method
             //pu.getString("key") or pu.get("key")
@@ -309,7 +283,7 @@ public class PeopleNearmeFragment extends PeopleListFragment {
     }
 
 
-    private void loaddataAfterSearch(String textSearch, final boolean cache) {
+    private void loaddataAfterSearch(String textSearch) {
 
         listOfPeople.clear();
         q = new MyAdapter3(getActivity(), 0, listOfPeople);
@@ -336,36 +310,19 @@ public class PeopleNearmeFragment extends PeopleListFragment {
             userlocation = new ParseGeoPoint(28.7434552, 77.1205612);
         }
 
-
         ParseQuery<ParseUser> query = ParseUser.getQuery();
-        if (cache)
-            query.fromLocalDatastore();
+        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.whereNear(ParseTables.Users.LOCATION, userlocation);
         query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
         query.include(ParseTables.Users.INTERESTS);
-
-
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(final List<ParseUser> objects, ParseException e) {
                 if (e == null) {
-
-                    if (!cache) {
-                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_NEAR_ME, new DeleteCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_NEAR_ME, objects);
-                                doneFetchingPeople(objects, cache);
-                            }
-                        });
-                    } else
-                        doneFetchingPeople(objects, cache);
-                    //
+                    doneFetchingPeople(objects);
                     // The query was successful.
                 } else {
                     // Something went wrong.
                 }
-
-
             }
         });
 
