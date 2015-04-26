@@ -60,11 +60,9 @@ public class SignOnActivity extends ActionBarActivity {
         if (DEBUG) Log.d(TAG, "onActivityResult called");
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag("SignOnFragment");
-        if (fragment != null)
-        {
+        if (fragment != null) {
             fragment.onActivityResult(requestCode, resultCode,data);
         }
-//        ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
         ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
     }
 }

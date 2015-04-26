@@ -7,11 +7,13 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.hardware.camera2.params.Face;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -57,7 +59,7 @@ import in.tosc.studddin.utils.Utilities;
  * SignOnFragment
  */
 public class SignOnFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, FetchUserPhotos.PhotosFetcher {
+        GoogleApiClient.OnConnectionFailedListener {
 
     public static final String TAG = "SignOnFragment";
     // TODO: Rename parameter arguments, choose names that match
@@ -265,23 +267,15 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                 new PushUserIntoParse().execute(bundle);
                                 new FetchUserPhotos(new FetchUserPhotos.PhotosFetcher() {
                                     @Override
-                                    public Bitmap downloadCoverPhoto() {
-                                        String url = bundle.getString(ParseTables.Users.COVER);
-                                        if (!url.equals("")) {
-                                            return Utilities.downloadBitmap(url);
-                                        }
-                                        return null;
+                                    public String downloadCoverPhoto() {
+                                        return bundle.getString(ParseTables.Users.COVER);
                                     }
 
                                     @Override
-                                    public Bitmap downloadProfilePhoto() {
-                                        String url = bundle.getString(ParseTables.Users.IMAGE);
-                                        if (!url.equals("")) {
-                                            return Utilities.downloadBitmap(url);
-                                        }
-                                        return null;
+                                    public String downloadProfilePhoto() {
+                                        return bundle.getString(ParseTables.Users.IMAGE);
                                     }
-                                }).start();
+                                }, getActivity()).start();
                             }
                         });
                     } else {
@@ -420,23 +414,15 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                                     new PushUserIntoParse().execute(b);
                                                     new FetchUserPhotos(new FetchUserPhotos.PhotosFetcher() {
                                                         @Override
-                                                        public Bitmap downloadCoverPhoto() {
-                                                            String coverUrl = currentPerson.getCover().getCoverPhoto().getUrl();
-                                                            if (coverUrl != null && !coverUrl.equals("")) {
-                                                                return Utilities.downloadBitmap(coverUrl);
-                                                            }
-                                                            return null;
+                                                        public String downloadCoverPhoto() {
+                                                            return currentPerson.getCover().getCoverPhoto().getUrl();
                                                         }
 
                                                         @Override
-                                                        public Bitmap downloadProfilePhoto() {
-                                                            String photoUrl = currentPerson.getImage().getUrl();
-                                                            if (photoUrl != null && !photoUrl.equals("")) {
-                                                                return Utilities.downloadBitmap(photoUrl);
-                                                            }
-                                                            return null;
+                                                        public String downloadProfilePhoto() {
+                                                            return currentPerson.getImage().getUrl();
                                                         }
-                                                    }).start();
+                                                    }, getActivity()).start();
                                                 }
                                             } catch (Exception ex) {
                                                 ex.printStackTrace();
@@ -495,17 +481,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                 });
             }
         }.execute();
-    }
-
-    //We should remove this interface
-    @Override
-    public Bitmap downloadCoverPhoto() {
-        return null;
-    }
-
-    @Override
-    public Bitmap downloadProfilePhoto() {
-        return null;
     }
 
     private class PushUserIntoParse extends AsyncTask<Bundle, Void, Bundle> {
