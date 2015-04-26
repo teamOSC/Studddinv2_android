@@ -11,6 +11,16 @@ android:
   - extra-android-m2repository
   - addon-google_apis-google-21
   - extra-android-support
+branches:
+  except:
+    - ui
+    - people
+    - notes
+    - signon
+    - feed
+    - caching
+    - events
+    - listings
 env:
   global:
     secure: OJjmKltBAHo/WOkdo0BNfmx0zsNlNnxaEiMYZbc2aO97DzujWBcadXiMFujVcTwCbkKMWLre8F2bXBcCO8yb00/LEEK++w+8IYIOpQ3JbaUIgdn4dbSs9gw9NirkagsizY/Xngd6kCIbbbpvYQ8LHA/AcFtiG32t6oW2kRM+dOw=
