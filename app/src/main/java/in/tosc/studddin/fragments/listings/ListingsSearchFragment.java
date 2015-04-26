@@ -177,13 +177,13 @@ public class ListingsSearchFragment extends Fragment {
         query.whereContainedIn(ParseTables.Listings.CATEGORY, categories);
         if (text == null) {
             //if (filterPrefs.getString("sortby", "nearest").equalsIgnoreCase("recent"))
-                query.orderByDescending(ParseTables.Listings.CREATED_AT);
+            query.orderByDescending(ParseTables.Listings.CREATED_AT);
             //else
-                //query.whereNear(ParseTables.Listings.LOCATION,location);
+            //query.whereNear(ParseTables.Listings.LOCATION,location);
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(final List<ParseObject> parseObjects, ParseException e) {
-                    Log.d("Objects: ","" +parseObjects);
+                    Log.d("Objects: ", "" + parseObjects);
                     if (e == null) {
                         doneFetching(parseObjects);
                     } else {
@@ -211,12 +211,12 @@ public class ListingsSearchFragment extends Fragment {
             ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
             mainQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
             //if (filterPrefs.getString("sortby", "nearest").compareTo("recent") == 0)
-                mainQuery.orderByDescending(ParseTables.Listings.CREATED_AT);
+            mainQuery.orderByDescending(ParseTables.Listings.CREATED_AT);
             //else
             //   mainQuery.whereNear("location",location);
             mainQuery.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> results, ParseException e) {
-                    if(e==null)
+                    if (e == null)
                         doneFetching(results);
                     else
                         e.printStackTrace(); // shouldn't happen
@@ -261,7 +261,7 @@ public class ListingsSearchFragment extends Fragment {
                 public void done(byte[] bytes, ParseException e) {
                 }
             });
-            try{
+            try {
                 double distance = mDataset.get(i).getParseGeoPoint(ParseTables.Listings.LOCATION).distanceInKilometersTo(location);
                 if (distance < 10 && distance >= 0.1)
                     viewHolder.listing_distance.setText(String.format("%.1f", distance) + " km away");
@@ -282,7 +282,7 @@ public class ListingsSearchFragment extends Fragment {
                         }
                     }
                 });
-            }catch(Exception e){
+            } catch (Exception e) {
                 viewHolder.listing_distance.setText("Unknown");
             }
         }

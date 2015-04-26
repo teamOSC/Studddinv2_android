@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -61,7 +60,7 @@ public class ListingsFragment extends Fragment {
         fragmentPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                Log.d(TAG,"getItem called");
+                Log.d(TAG, "getItem called");
                 switch (position) {
                     case 0:
                         return new ListingsSearchFragment();
@@ -95,11 +94,9 @@ public class ListingsFragment extends Fragment {
         listingsPager = (ViewPager) rootView.findViewById(R.id.listings_pager);
 
 
-
-
         try {
             listingsPager.setAdapter(fragmentPagerAdapter);
-          listingsPager.setOffscreenPageLimit(2);
+            listingsPager.setOffscreenPageLimit(2);
             tabs = (SlidingTabLayout) rootView.findViewById(R.id.tabs);
             tabs.setDistributeEvenly(true);
             tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
@@ -124,7 +121,8 @@ public class ListingsFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (DEBUG) Log.d(TAG, "onActivityResult call ho raha hai" + resultCode + "   " + requestCode);
+        if (DEBUG)
+            Log.d(TAG, "onActivityResult call ho raha hai" + resultCode + "   " + requestCode);
         if ((requestCode == 0) && resultCode == -1) {
             if (data == null) {
                 if (DEBUG) Log.d(TAG, "onActivityResult camera");

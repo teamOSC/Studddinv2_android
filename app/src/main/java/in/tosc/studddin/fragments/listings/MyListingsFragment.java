@@ -51,7 +51,7 @@ public class MyListingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView =  inflater.inflate(R.layout.fragment_my_listings, container, false);
+        rootView = inflater.inflate(R.layout.fragment_my_listings, container, false);
         loader = (ProgressBarCircular) rootView.findViewById(R.id.progressBar);
         loader.setBackgroundColor(getResources().getColor(R.color.listingsColorPrimaryDark));
         mEmptyView = (ScrollView) rootView.findViewById(R.id.listing_empty);
@@ -65,7 +65,7 @@ public class MyListingsFragment extends Fragment {
         return rootView;
     }
 
-    private void fetchMyListings(){
+    private void fetchMyListings() {
         ParseQuery<ParseObject> query = new ParseQuery<>(
                 ParseTables.Listings.LISTINGS);
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
@@ -88,7 +88,7 @@ public class MyListingsFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
         loader.setVisibility(View.GONE);
         mRecyclerView.setAdapter(mAdapter);
-        if(mAdapter.getItemCount()==0) {
+        if (mAdapter.getItemCount() == 0) {
             mEmptyView.setVisibility(View.VISIBLE);
             mListings.setVisibility(View.GONE);
         }
@@ -150,14 +150,13 @@ public class MyListingsFragment extends Fragment {
                         object.deleteInBackground(new DeleteCallback() {
                             @Override
                             public void done(ParseException e) {
-                                if(e==null){
+                                if (e == null) {
                                     mDataset.remove(getPosition());
                                     notifyItemRemoved(getPosition());
                                     notifyItemRangeChanged(getPosition(), mDataset.size());
                                     fetchMyListings();
-                                }
-                                else
-                                 Toast.makeText(getActivity(),"Please connect to the Internet",Toast.LENGTH_SHORT).show();
+                                } else
+                                    Toast.makeText(getActivity(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
                             }
                         });
 

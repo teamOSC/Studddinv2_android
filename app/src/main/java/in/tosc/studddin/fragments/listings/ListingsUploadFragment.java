@@ -130,7 +130,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 25, stream);
                         byteArray = stream.toByteArray();
                     }
-                    try{
+                    try {
                         ParseFile file = new ParseFile(ParseTables.Listings.LISTING_PNG, byteArray);
                         file.saveInBackground();
                         upload.put(ParseTables.Listings.IMAGE, file);
@@ -138,7 +138,7 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                         upload.put(ParseTables.Listings.LISTING_NAME, listing.getText().toString());
                         upload.put(ParseTables.Listings.LISTING_DESC, listing_desc.getText().toString());
                         upload.put(ParseTables.Listings.MOBILE, mobile.getText().toString());
-                        if(point!=null)
+                        if (point != null)
                             upload.put(ParseTables.Listings.LOCATION, point);
                         upload.put(ParseTables.Listings.CATEGORY, category.getSelectedItem().toString());
 
@@ -150,8 +150,8 @@ public class ListingsUploadFragment extends Fragment implements View.OnClickList
                                         Toast.LENGTH_SHORT).show();
                             }
                         });
-                    }catch(Exception e){
-                        Toast.makeText(getActivity(),"Please connect to the Internet",Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getActivity(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
