@@ -165,5 +165,4 @@ public class NotesUploadFragment extends Fragment {
     }
 
 
-
 }

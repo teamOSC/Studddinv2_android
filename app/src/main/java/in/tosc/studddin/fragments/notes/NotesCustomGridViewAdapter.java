@@ -9,10 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.parse.GetDataCallback;
-import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseImageView;
 
 import java.util.ArrayList;
 
@@ -83,7 +80,7 @@ public class NotesCustomGridViewAdapter extends RecyclerView.Adapter<NotesCustom
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView  topicNameTxtView;
+        public TextView topicNameTxtView;
         public SimpleDraweeView notesImage;
 
 
