@@ -24,7 +24,7 @@
             android:padding="5dp"
             android:id="@+id/data_holder">
 
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/feed_item_image"
                 android:layout_width="0dp"
                 android:layout_height="50dp"

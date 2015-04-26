@@ -31,8 +31,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -354,42 +353,14 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
 
             final ParseObject object = feedData.get(position);
             holder.mTextView.setText(object.getString(KEY_TITLE));
-            Ion.with(holder.mImageView).load(object.getString(KEY_IMAGE_URL));
-            Ion.with(context).load(object.getString(KEY_IMAGE_URL)).asBitmap().setCallback(new FutureCallback<Bitmap>() {
-                @Override
-                public void onCompleted(final Exception e, Bitmap result) {
-                    if (result != null) {
-                        Palette.generateAsync(result, new Palette.PaletteAsyncListener() {
-                            @Override
-                            public void onGenerated(Palette palette) {
-                                int bgColor = palette.getLightMutedColor(R.color.light_white_);
-                                int vibcolor = palette.getLightVibrantColor(R.color.light_white_);
-                                int vibdark = palette.getDarkVibrantColor(R.color.accent_material_dark);
-                                holder.frameLayout.setBackgroundColor(vibcolor);
-                                holder.mTextView.setTextColor(bgColor);
-                                holder.mFeedTag.setTextColor(vibdark);
-                                //Log.e("Yogesh", "aa ja bc");
-                            }
-                        });
-                    }
-                }
-            });
 
-            /*Ion.with(holder.mImageView).load(object.getString(KEY_IMAGE_URL)).setCallback(new FutureCallback<ImageView>() {
-                @Override
-                public void onCompleted(Exception e, ImageView result) {
-                    BitmapDrawable drawable = (BitmapDrawable) result.getDrawable();
-                    Bitmap bitmap = drawable.getBitmap();
-                    Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
-                        @Override
-                        public void onGenerated(Palette palette) {
-                            int bgColor = palette.getLightMutedColor(R.color.light_white_);
-                            holder.frameLayout.setBackgroundColor(bgColor);
-                            if(DEBUG) Log.d("Yogesh", "aa gaya bc");
-                        }
-                    });
-                }
-            });*/
+            try {
+                Uri imageUri = Uri.parse(object.getString(KEY_IMAGE_URL));
+                holder.mImageView.setImageURI(imageUri);
+            } catch (Exception e) {
+                // In case we have not url
+            }
+
 
             if(object.getClassName().equalsIgnoreCase("Feed"))
                 holder.mFeedTag.setText("Interests");
@@ -422,7 +393,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         public static class FeedCategoryViewHolder extends RecyclerView.ViewHolder {
             public CardView view;
             public TextView mTextView;
-            public ImageView mImageView;
+            public SimpleDraweeView mImageView;
             public TextView mFeedTag;
             public FrameLayout frameLayout;
 
@@ -430,7 +401,7 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
                 super(v);
                 this.view = v;
                 mTextView = (TextView) this.view.findViewById(R.id.feed_item_text_view);
-                mImageView = (ImageView) this.view.findViewById(R.id.feed_item_image);
+                mImageView = (SimpleDraweeView) this.view.findViewById(R.id.feed_item_image);
                 mFeedTag = (TextView) this.view.findViewById(R.id.feed_category_tag);
                 frameLayout = (FrameLayout) this.view.findViewById(R.id.feeds_frame);
             }
