@@ -232,6 +232,7 @@ public class EventsListFragment extends Fragment {
         if(check_my_events){
             query.whereEqualTo(ParseTables.Events.CREATED_BY, ParseUser.getCurrentUser().getString("NAME"));
         }
+        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {

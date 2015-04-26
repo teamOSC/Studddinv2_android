@@ -31,7 +31,6 @@ import java.util.List;
 import in.tosc.studddin.R;
 import in.tosc.studddin.fragments.NotesFragment;
 import in.tosc.studddin.ui.FloatingActionButton;
-import in.tosc.studddin.ui.MaterialEditText;
 import in.tosc.studddin.utils.Utilities;
 
 /**
@@ -148,13 +147,7 @@ public class NotesSearchFragment extends Fragment {
             }
 
         });
-        if (Utilities.isNetworkAvailable(getActivity())) {
-
-            getNotes();
-        }
-        else
-            Toast.makeText(getActivity(), "Internet Connection Problem", Toast.LENGTH_SHORT)
-                    .show();
+        getNotes();
 
 
 
@@ -187,10 +180,7 @@ public class NotesSearchFragment extends Fragment {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
                 "Notes");
         query.orderByDescending("createdAt");
-
-
-
-
+        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
