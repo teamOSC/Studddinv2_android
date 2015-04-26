@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
@@ -19,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
@@ -41,7 +39,6 @@ import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
 import in.tosc.studddin.ui.ParseCircularImageView;
 import in.tosc.studddin.ui.ProgressBarCircular;
-import in.tosc.studddin.utils.Utilities;
 
 
 public class PeopleSameInterestsFragment extends PeopleListFragment {
@@ -68,12 +65,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
         progressBar.setBackgroundColor(getResources().getColor(R.color.peopleColorPrimaryDark));
         search = (EditText) view.findViewById(R.id.people_search);
         lv = (ListView) view.findViewById(R.id.listviewpeople);
-
-        if (Utilities.isNetworkAvailable(getActivity()))
-            loaddata(false);
-        else
-            loaddata(true);
-
+        loaddata();
 
         search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -89,7 +81,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 // ALWAYS SEARCH FROM CACHE
-                loaddataAfterSearch(editable.toString(), true);
+                loaddataAfterSearch(editable.toString());
             }
         });
 
@@ -184,11 +176,9 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
         return view;
     }
 
-    private void loaddata(final boolean cache) {
+    private void loaddata() {
 
-        final boolean mCache = cache;
         listOfPeople.clear();
-
 
         currentuser = User.getUsername();
         currentuseremail = User.getString(ParseTables.Users.EMAIL);
@@ -202,8 +192,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
 
         ParseQuery<ParseUser> currentuserInterestsQuery = ParseUser.getQuery();
-        if (cache)
-            currentuserInterestsQuery.fromLocalDatastore();
+        currentuserInterestsQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         currentuserInterestsQuery.whereEqualTo("username", currentuser);
         currentuserInterestsQuery.include(ParseTables.Users.INTERESTS);
         currentuserInterestsQuery.getFirstInBackground(new GetCallback<ParseUser>() {
@@ -218,18 +207,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
                     {
                         currentuserinterests = "";
                     }
-
-                    if (!cache) {
-                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS, new DeleteCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS, currentUserInterestsList);
-                                doneFetchingUserInterests(currentUserInterestsList, mCache);
-                            }
-                        });
-                    } else
-                        doneFetchingUserInterests(currentUserInterestsList, mCache);
-
+                    doneFetchingUserInterests(currentUserInterestsList);
 
                     // The query was successful.
                 }
@@ -239,7 +217,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
     }
 
 
-    public void doneFetchingUserInterests(ArrayList<ParseObject> currentUserInterestsList, final boolean cache) {
+    public void doneFetchingUserInterests(ArrayList<ParseObject> currentUserInterestsList) {
 
         if (!currentUserInterestsList.isEmpty())
 
@@ -249,33 +227,19 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
 
                     ParseQuery<ParseUser> query = ParseUser.getQuery();
-                    if (cache)
-                        query.fromLocalDatastore();
+                    query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
                     query.include(ParseTables.Users.INTERESTS);
                     query.whereEqualTo(ParseTables.Users.INTERESTS, currentUserInterestsList.get(c));
 
                     query.findInBackground(new FindCallback<ParseUser>() {
                         public void done(final List<ParseUser> objects, ParseException e) {
                             if (e == null) {
-
-
-                                if (!cache) {
-                                    ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_SAME_INTERESTS, new DeleteCallback() {
-                                        @Override
-                                        public void done(ParseException e) {
-                                            ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_SAME_INTERESTS, objects);
-                                            doneFetchingPeople(objects, cache);
-                                        }
-                                    });
-                                } else
-                                    doneFetchingPeople(objects, cache);
+                                doneFetchingPeople(objects);
                             } else {
                                 // Something went wrong.
                             }
-
                         }
                     });
-
                 }
             }
         } else
@@ -287,7 +251,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
     }
 
 
-    public void doneFetchingPeople(List<ParseUser> objects, boolean cache) {
+    public void doneFetchingPeople(List<ParseUser> objects) {
 
         HashMap<String, Boolean> existingelement = new HashMap<String, Boolean>();
 
@@ -363,9 +327,8 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
     }
 
 
-    private void loaddataAfterSearch(final String textSearch, final boolean cache) {
+    private void loaddataAfterSearch(final String textSearch) {
 
-        final boolean mCache = cache;
         listOfPeople.clear();
         q = new MyAdapter3(getActivity(), 0, listOfPeople);
         q.notifyDataSetChanged();
@@ -383,8 +346,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
 
         ParseQuery<ParseUser> currentuserInterestsQuery = ParseUser.getQuery();
-        if (cache)
-            currentuserInterestsQuery.fromLocalDatastore();
+        currentuserInterestsQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         currentuserInterestsQuery.whereEqualTo("username", currentuser);
         currentuserInterestsQuery.include(ParseTables.Users.INTERESTS);
         currentuserInterestsQuery.getFirstInBackground(new GetCallback<ParseUser>() {
@@ -400,17 +362,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
                         currentuserinterests = "";
                     }
 
-                    if (!cache) {
-                        ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS, new DeleteCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_USER_INTERESTS, currentUserInterestsList);
-                                doneFetchingUserInterestsForSearch(currentUserInterestsList, mCache, textSearch);
-                            }
-                        });
-                    } else
-                        doneFetchingUserInterestsForSearch(currentUserInterestsList, mCache, textSearch);
-
+                        doneFetchingUserInterestsForSearch(currentUserInterestsList,textSearch);
 
                     // The query was successful.
                 }
@@ -420,7 +372,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
     }
 
-    public void doneFetchingUserInterestsForSearch(ArrayList<ParseObject> currentUserInterestsList, final boolean cache, String textSearch) {
+    public void doneFetchingUserInterestsForSearch(ArrayList<ParseObject> currentUserInterestsList, String textSearch) {
 
         if (!currentUserInterestsList.isEmpty())
 
@@ -430,8 +382,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
 
                     ParseQuery<ParseUser> query = ParseUser.getQuery();
-                    if (cache)
-                        query.fromLocalDatastore();
+                    query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
                     query.whereEqualTo(ParseTables.Users.INTERESTS, currentUserInterestsList.get(c));
                     query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
                     query.include(ParseTables.Users.INTERESTS);
@@ -441,17 +392,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
                         public void done(final List<ParseUser> objects, ParseException e) {
                             if (e == null) {
 
-
-                                if (!cache) {
-                                    ParseObject.unpinAllInBackground(ParseTables.People.PEOPLE_SAME_INTERESTS, new DeleteCallback() {
-                                        @Override
-                                        public void done(ParseException e) {
-                                            ParseObject.pinAllInBackground(ParseTables.People.PEOPLE_SAME_INTERESTS, objects);
-                                            doneFetchingPeople(objects, cache);
-                                        }
-                                    });
-                                } else
-                                    doneFetchingPeople(objects, cache);
+                                    doneFetchingPeople(objects);
                             } else {
                                 // Something went wrong.
                             }
