@@ -35,7 +35,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
@@ -114,7 +113,7 @@ public class ListingsSearchFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                fetchListings(true, editable.toString());
+                fetchListings(editable.toString());
             }
         });
 
@@ -124,7 +123,7 @@ public class ListingsSearchFragment extends Fragment {
             public void onRefresh() {
                 if (Utilities.isNetworkAvailable(getActivity())) {
                     onRefresh = true;
-                    fetchListings(false, null);
+                    fetchListings(null);
                 } else {
                     swipeRefreshLayout.setRefreshing(false);
                     Toast.makeText(getActivity(), "Please connect to the Internet", Toast.LENGTH_SHORT).show();
@@ -132,10 +131,7 @@ public class ListingsSearchFragment extends Fragment {
             }
         });
 
-        if (Utilities.isNetworkAvailable(getActivity()))
-            fetchListings(false, null);
-        else
-            fetchListings(true, null);
+        fetchListings(null);
 
         return rootView;
     }
@@ -167,7 +163,7 @@ public class ListingsSearchFragment extends Fragment {
         }
     }
 
-    private void fetchListings(final boolean cache, String text) {
+    private void fetchListings(String text) {
         final ArrayList<String> categories = new ArrayList<>();
         if (filterPrefs.getBoolean("books", true))
             categories.add("Book");
@@ -177,8 +173,7 @@ public class ListingsSearchFragment extends Fragment {
             categories.add("Misc.");
         ParseQuery<ParseObject> query = new ParseQuery<>(
                 ParseTables.Listings.LISTINGS);
-        if (cache)
-            query.fromLocalDatastore();
+        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.whereContainedIn(ParseTables.Listings.CATEGORY, categories);
         if (text == null) {
             //if (filterPrefs.getString("sortby", "nearest").equalsIgnoreCase("recent"))
@@ -190,16 +185,7 @@ public class ListingsSearchFragment extends Fragment {
                 public void done(final List<ParseObject> parseObjects, ParseException e) {
                     Log.d("Objects: ","" +parseObjects);
                     if (e == null) {
-                        if (categories.size() == 3 && !cache) {
-                            ParseObject.unpinAllInBackground("listings", new DeleteCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    ParseObject.pinAllInBackground("listings", parseObjects);
-                                    doneFetching(parseObjects, cache);
-                                }
-                            });
-                        } else
-                            doneFetching(parseObjects, cache);
+                        doneFetching(parseObjects);
                     } else {
                         e.printStackTrace();
                         if (onRefresh) {
@@ -216,13 +202,14 @@ public class ListingsSearchFragment extends Fragment {
             query.whereMatches(ParseTables.Listings.LISTING_NAME, "(" + text + ")", "i");
             ParseQuery<ParseObject> descQuery = new ParseQuery<>(
                     "Listings");
-            descQuery.fromLocalDatastore();
+            descQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
             descQuery.whereContainedIn(ParseTables.Listings.CATEGORY, categories);
             descQuery.whereMatches(ParseTables.Listings.LISTING_DESC, "(" + text + ")", "i");
             List<ParseQuery<ParseObject>> queries = new ArrayList<>();
             queries.add(query);
             queries.add(descQuery);
             ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
+            mainQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
             //if (filterPrefs.getString("sortby", "nearest").compareTo("recent") == 0)
                 mainQuery.orderByDescending(ParseTables.Listings.CREATED_AT);
             //else
@@ -230,7 +217,7 @@ public class ListingsSearchFragment extends Fragment {
             mainQuery.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> results, ParseException e) {
                     if(e==null)
-                        doneFetching(results, cache);
+                        doneFetching(results);
                     else
                         e.printStackTrace(); // shouldn't happen
                 }
@@ -238,8 +225,8 @@ public class ListingsSearchFragment extends Fragment {
         }
     }
 
-    private void doneFetching(List<ParseObject> parseObjects, boolean cache) {
-        mAdapter = new ListingAdapter(parseObjects, cache);
+    private void doneFetching(List<ParseObject> parseObjects) {
+        mAdapter = new ListingAdapter(parseObjects);
         if (onRefresh) {
             onRefresh = false;
             swipeRefreshLayout.setRefreshing(false);
@@ -250,11 +237,9 @@ public class ListingsSearchFragment extends Fragment {
 
     public class ListingAdapter extends RecyclerView.Adapter<ListingAdapter.ViewHolder> {
         private List<ParseObject> mDataset;
-        private boolean mCache;
 
-        public ListingAdapter(List<ParseObject> dataSet, boolean cache) {
+        public ListingAdapter(List<ParseObject> dataSet) {
             mDataset = dataSet;
-            mCache = cache;
         }
 
         @Override
@@ -270,8 +255,6 @@ public class ListingsSearchFragment extends Fragment {
             viewHolder.owner_name.setText(mDataset.get(i).getString(ParseTables.Listings.OWNER_NAME));
             viewHolder.mobile.setText(mDataset.get(i).getString(ParseTables.Listings.MOBILE));
             viewHolder.listing_desc.setText(mDataset.get(i).getString(ParseTables.Listings.LISTING_DESC));
-            if (!mCache)
-                viewHolder.listing_image.setPlaceholder(getResources().getDrawable(R.drawable.listings_placeholder));
             viewHolder.listing_image.setParseFile(mDataset.get(i).getParseFile(ParseTables.Listings.IMAGE));
             viewHolder.listing_image.loadInBackground(new GetDataCallback() {
                 @Override
@@ -386,7 +369,7 @@ public class ListingsSearchFragment extends Fragment {
                         editor.putBoolean("misc", false);
 
                     editor.commit();
-                    fetchListings(true, null);
+                    fetchListings(null);
                 }
             });
             return filterDialog.create();
