@@ -52,12 +52,6 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
 
     EditText search;
 
-    ArrayList<EachRow3> listOfPeople = new ArrayList<EachRow3>();
-    EachRow3 each;
-    MyAdapter3 q;
-    ListView lv;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -358,91 +352,5 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
 
     }
 
-    class MyAdapter3 extends ArrayAdapter<EachRow3> {
-        LayoutInflater inflat;
-        ViewHolder holder;
-
-        public MyAdapter3(Context context, int textViewResourceId,
-                          ArrayList<EachRow3> objects) {
-            super(context, textViewResourceId, objects);
-            // TODO Auto-generated constructor stub
-            inflat = LayoutInflater.from(context);
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            // TODO Auto-generated method stub
-            final int pos = position;
-
-            if (convertView == null) {
-                convertView = inflat.inflate(R.layout.listview_people, null);
-                holder = new ViewHolder();
-                holder.textname = (TextView) convertView.findViewById(R.id.people_name);
-                holder.textinterests = (TextView) convertView.findViewById(R.id.people_interests);
-                holder.textinstituition = (TextView) convertView.findViewById(R.id.people_institute);
-                holder.textdistance = (TextView) convertView.findViewById(R.id.people_distance);
-                holder.textqualification = (TextView) convertView.findViewById(R.id.people_qualification);
-                holder.userimg = (ParseCircularImageView) convertView.findViewById(R.id.people_userimg);
-
-                convertView.setTag(holder);
-            }
-            holder = (ViewHolder) convertView.getTag();
-            EachRow3 row = getItem(position);
-
-            holder.textname.setText(row.cname);
-            holder.textinterests.setText(row.cinterests);
-            holder.textinstituition.setText(row.cinstituition);
-            holder.textdistance.setText(row.cdistance);
-            holder.textqualification.setText(row.cqualification);
-            holder.textdistance.setText(row.cdistance);
-
-
-            if (row.fileObject != null) {
-                row.fileObject
-                        .getDataInBackground(new GetDataCallback() {
-
-                            public void done(byte[] data,
-                                             ParseException e) {
-                                if (e == null) {
-                                    if (ApplicationWrapper.LOG_DEBUG) Log.d("test",
-                                            "We've got data in data.");
-
-                                    holder.userimg.setImageBitmap(BitmapFactory
-                                            .decodeByteArray(
-                                                    data, 0,
-                                                    data.length));
-
-                                } else {
-                                    if (ApplicationWrapper.LOG_DEBUG)
-                                        Log.d("test", "There was a problem downloading the data.");
-                                }
-                            }
-                        });
-            } else {
-                holder.userimg.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.com_facebook_profile_picture_blank_portrait));
-            }
-
-            return convertView;
-        }
-
-        @Override
-        public EachRow3 getItem(int position) {
-            // TODO Auto-generated method stub
-            return listOfPeople.get(position);
-        }
-
-        private class ViewHolder {
-
-            TextView textname;
-            TextView textinterests;
-            TextView textdistance;
-            TextView textinstituition;
-            TextView textqualification;
-
-            ParseImageView userimg;
-
-        }
-
-    }
 
 }
