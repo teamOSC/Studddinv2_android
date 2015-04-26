@@ -238,15 +238,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
 
         List<String> permissions = Arrays.asList(
                 "public_profile", "email", "user_birthday", "user_location");
-        /*
-        List<String> permissions = Arrays.asList("public_profile", "user_friends",
-
-                ParseFacebookUtils.Permissions.User.EMAIL,
-                ParseFacebookUtils.Permissions.User.ABOUT_ME,
-                ParseFacebookUtils.Permissions.User.RELATIONSHIPS,
-                ParseFacebookUtils.Permissions.User.BIRTHDAY,
-                ParseFacebookUtils.Permissions.User.LOCATION,
-                ParseFacebookUtils.Permissions.User.PHOTOS); */
         ParseFacebookUtils.logInWithReadPermissionsInBackground(getActivity(), permissions, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException err) {
@@ -268,31 +259,9 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
 
                     if (user.isNew() || (!fullyRegistered)) {
                         Log.w(TAG, "User signed up and logged in through Facebook!");
-/*
-                        Log.w(TAG,
-                                "FBSHIT \n" +
-                                        ParseFacebookUtils.getSession().getAccessToken() + " \n" +
-                                        ParseFacebookUtils.getFacebook().getAppId()
-                        );*/
                         FacebookApi.getFacebookData(new FacebookApi.FbGotDataCallback() {
                             @Override
                             public void gotData(final Bundle bundle) {
-                                /*
-                                final SignupDataFragment fragment = showSignupDataFragment(bundle);
-                                FacebookApi.getProfilePicture(new FacebookApi.FbGotProfilePictureCallback() {
-                                    @Override
-                                    public void gotProfilePicture(Bitmap profilePicture) {
-                                        fragment.bitmapReady = true;
-                                        fragment.profileBitmap = profilePicture;
-                                        fragment.setProfilePicture();
-                                    }
-                                });
-                                FacebookApi.getCoverPicture(new FacebookApi.FbGotCoverPictureCallback() {
-                                    @Override
-                                    public void gotCoverPicture(Bitmap coverPicture) {
-                                        fragment.setCoverPicture(coverPicture);
-                                    }
-                                });*/
                                 new PushUserIntoParse().execute(bundle);
                                 new FetchUserPhotos(new FetchUserPhotos.PhotosFetcher() {
                                     @Override
@@ -317,13 +286,6 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                         });
                     } else {
                         Log.w(TAG, "User logged in through Facebook!");
-                        /*
-                        Log.w(TAG,
-                                "FB \n" +
-                                        ParseFacebookUtils.getSession().getAccessToken() + " \n" +
-                                        ParseFacebookUtils.getSession().getAccessToken() + " \n" +
-                                        ParseFacebookUtils.getFacebook().getAppId()
-                        );*/
                         SignupDataFragment.goToMainActivity(getActivity());
                     }
                 }
