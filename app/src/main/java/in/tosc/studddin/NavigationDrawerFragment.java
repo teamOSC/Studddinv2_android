@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +28,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.parse.ParseImageView;
 import com.parse.ParseUser;
 
@@ -66,8 +71,8 @@ public class NavigationDrawerFragment extends Fragment {
     private LinearLayout mDrawerLinearLayout;
     private ListView mDrawerListView;
     private View mFragmentContainerView;
-    private ParseImageView mProfilePic;
-    private ParseImageView mCoverPic;
+    private SimpleDraweeView mProfilePic;
+    private SimpleDraweeView mCoverPic;
 
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
@@ -144,13 +149,20 @@ public class NavigationDrawerFragment extends Fragment {
 
         //mDrawerListView.addFooterView(mDrawerLinearLayout);
 
-        mProfilePic = ((ParseCircularImageView) mDrawerLinearLayout.findViewById(R.id.nav_drawer_profile_pic));
-        mProfilePic.setPlaceholder(getResources().getDrawable(R.drawable.ic_launcher));
-        mProfilePic.setParseFile(ParseUser.getCurrentUser().getParseFile(ParseTables.Users.IMAGE));
+        mProfilePic = ((SimpleDraweeView) mDrawerLinearLayout.findViewById(R.id.nav_drawer_profile_pic));
+        mCoverPic = ((SimpleDraweeView) mDrawerLinearLayout.findViewById(R.id.nav_drawer_cover_picture));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String profileUrl = prefs.getString(ParseTables.KEY_IMAGE_URL, "");
+        Log.d("omerjerk", "profile picture url = " + profileUrl);
+        if (!profileUrl.equals("")) {
+            mProfilePic.setImageURI(Uri.parse(profileUrl));
+        }
 
-        mCoverPic = ((ParseImageView) mDrawerLinearLayout.findViewById(R.id.nav_drawer_cover_picture));
-        mCoverPic.setPlaceholder(getResources().getDrawable(R.drawable.rsz_cover_placeholder));
-        mCoverPic.setParseFile(ParseUser.getCurrentUser().getParseFile(ParseTables.Users.COVER));
+        String coverPhotoUrl = prefs.getString(ParseTables.KEY_COVER_URL, "");
+        Log.d("omerjerk", "cover photo url = " + coverPhotoUrl);
+        if (!coverPhotoUrl.equals("")) {
+            mCoverPic.setImageURI(Uri.parse(coverPhotoUrl));
+        }
 
         return mDrawerLinearLayout;
     }
@@ -211,8 +223,6 @@ public class NavigationDrawerFragment extends Fragment {
                             .getDefaultSharedPreferences(getActivity());
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
                 }
-                mProfilePic.loadInBackground();
-                mCoverPic.loadInBackground();
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
                 ((ActionBarActivity)getActivity()).getSupportActionBar().setElevation(10f);
             }

@@ -5,12 +5,15 @@ package in.tosc.studddin.externalapi;
  */
 public class ParseTables {
 
+    public static final String KEY_COVER_URL = "cover";
+    public static final String KEY_IMAGE_URL = "profile";
+
     public static class Users {
         public static final String NAME = "NAME";
         public static final String USERNAME = "username";
         public static final String PASSWORD = "PASSWORD";
         public static final String DOB = "DOB";
-        public static final String INSTITUTE = "INSTITUTE";
+        public static final String INSTITUTE = "institute";
         public static final String CITY = "CITY";
         public static final String EMAIL = "email";
         public static final String INTERESTS = "interests";
