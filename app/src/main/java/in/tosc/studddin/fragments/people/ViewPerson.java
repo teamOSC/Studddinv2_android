@@ -82,10 +82,10 @@ public class ViewPerson extends Fragment {
         if (susername.contains("@")) {
             mail.setVisibility(View.VISIBLE);
         }
-        if(makeMeRequest()){
+        if (makeMeRequest()) {
             facebook.setVisibility(View.VISIBLE);
         }
-        if(ParseTwitterUtils.getTwitter().getUserId()!=null){
+        if (ParseTwitterUtils.getTwitter().getUserId() != null) {
             twitter.setVisibility(View.VISIBLE);
         }
 
@@ -166,7 +166,7 @@ public class ViewPerson extends Fragment {
 
     }
 
-    private boolean makeMeRequest(){
+    private boolean makeMeRequest() {
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -174,10 +174,10 @@ public class ViewPerson extends Fragment {
                     public void onCompleted(
                             JSONObject object,
                             GraphResponse response) {
-                        try{
+                        try {
                             facebook.setVisibility(View.VISIBLE);
                             facebookId = object.getString("id");
-                        } catch(JSONException e1) {
+                        } catch (JSONException e1) {
                             e1.printStackTrace();
                         }
                     }

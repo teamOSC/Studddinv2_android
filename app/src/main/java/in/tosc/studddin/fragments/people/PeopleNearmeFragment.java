@@ -1,7 +1,6 @@
 package in.tosc.studddin.fragments.people;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -14,17 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -38,7 +34,6 @@ import java.util.List;
 import in.tosc.studddin.ApplicationWrapper;
 import in.tosc.studddin.R;
 import in.tosc.studddin.externalapi.ParseTables;
-import in.tosc.studddin.ui.ParseCircularImageView;
 import in.tosc.studddin.ui.ProgressBarCircular;
 
 public class PeopleNearmeFragment extends PeopleListFragment {
@@ -50,7 +45,6 @@ public class PeopleNearmeFragment extends PeopleListFragment {
     ArrayList<ParseObject> interests = new ArrayList<ParseObject>();
 
     EditText search;
-
 
 
     @Override

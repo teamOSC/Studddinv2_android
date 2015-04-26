@@ -48,6 +48,7 @@ public class PeopleListFragment extends Fragment {
     public PeopleListFragment() {
 
     }
+
     protected class EachRow3 {
         String cname = "";
         String cinterests = "";
@@ -60,6 +61,7 @@ public class PeopleListFragment extends Fragment {
         Bitmap cbmp;
         ParseFile fileObject;
     }
+
     class MyAdapter3 extends ArrayAdapter<EachRow3> {
         LayoutInflater inflat;
         ViewHolder holder;
