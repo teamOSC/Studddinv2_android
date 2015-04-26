@@ -145,13 +145,23 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Interests");
         query.whereEqualTo("users", currentUser);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(List<ParseObject> parseObjects, ParseException e) {
+            public void done(final List<ParseObject> parseObjects, ParseException e) {
                 if (e != null) {
                     e.printStackTrace();
                     return;
                 }
+//                if(Utilities.isNetworkAvailable(getActivity())){
+//                    ParseObject.unpinAllInBackground("feed_interests", new DeleteCallback() {
+//                        @Override
+//                        public void done(ParseException e) {
+//                            Log.d(TAG,"pinning");
+//                            ParseObject.pinAllInBackground("feed_interests", parseObjects);
+//                        }
+//                    });
+//                }
                 for (ParseObject parseObject : parseObjects) {
                     interestList.add(parseObject.getString("name"));
                 }
@@ -229,33 +239,66 @@ public class FeedFragment extends Fragment implements View.OnKeyListener {
         final List<ParseObject> feedList = new ArrayList<>();
 
         ParseQuery<ParseObject> interestQuery = ParseQuery.getQuery(FEED_TABLE);
-        interestQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         interestQuery.whereContainedIn("category", interestList);
+        interestQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         interestQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(List<ParseObject> parseObjects, ParseException e) {
+            public void done(final List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
                     feedList.addAll(parseObjects);
-                    ParseQuery<ParseObject> collegeQuery = ParseQuery.getQuery(EVENTS_TABLE);
-                    collegeQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
-                    collegeQuery.findInBackground(new FindCallback<ParseObject>() {
-                        @Override
-                        public void done(List<ParseObject> parseObjects, ParseException e) {
-                            if (e == null) {
-                                feedList.addAll(parseObjects);
-                                Collections.shuffle(feedList);
-                                mAdapter = new FeedCategoryAdapter(feedList);
-                                recyclerView.setAdapter(mAdapter);
-                                if(swipeRefreshLayout.isRefreshing())
-                                    swipeRefreshLayout.setRefreshing(false);
-                            } else {
-                                if(swipeRefreshLayout.isRefreshing()){
-                                    swipeRefreshLayout.setRefreshing(false);
-                                }
-                                Log.e(TAG, "Getting feed query broke");
-                            }
-                        }
-                    });
+//                    if(internet){
+//                        ParseObject.unpinAllInBackground("feed_interestQuery", new DeleteCallback() {
+//                            @Override
+//                            public void done(ParseException e) {
+//                                Log.d(TAG,"pinning");
+//                                ParseObject.pinAllInBackground("feed_interestQuery", parseObjects);
+//                            }
+//                        });
+//                    }
+                    Collections.shuffle(feedList);
+                    if(mAdapter == null){
+                        mAdapter = new FeedCategoryAdapter(feedList);
+                        recyclerView.setAdapter(mAdapter);
+                    }
+                    else{
+                        mAdapter.notifyDataSetChanged();
+                    }
+
+                } else {
+                    if(swipeRefreshLayout.isRefreshing()){
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                    Log.e(TAG, "Getting feed query broke");
+                }
+            }
+        });
+
+        ParseQuery<ParseObject> collegeQuery = ParseQuery.getQuery(EVENTS_TABLE);
+        collegeQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        collegeQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(final List<ParseObject> parseObjects, ParseException e) {
+                if (e == null) {
+                    feedList.addAll(parseObjects);
+//                    if(internet){
+//                        ParseObject.unpinAllInBackground("feed_collegeQuery", new DeleteCallback() {
+//                            @Override
+//                            public void done(ParseException e) {
+//                                Log.d(TAG,"pinning");
+//                                ParseObject.pinAllInBackground("feed_collegeQuery", parseObjects);
+//                            }
+//                        });
+//                    }
+                    Collections.shuffle(feedList);
+                    if(mAdapter == null){
+                        mAdapter = new FeedCategoryAdapter(feedList);
+                        recyclerView.setAdapter(mAdapter);
+                    }
+                    else{
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    if(swipeRefreshLayout.isRefreshing())
+                        swipeRefreshLayout.setRefreshing(false);
                 } else {
                     if(swipeRefreshLayout.isRefreshing()){
                         swipeRefreshLayout.setRefreshing(false);
