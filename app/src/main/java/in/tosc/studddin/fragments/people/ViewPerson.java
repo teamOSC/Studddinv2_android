@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import in.tosc.studddin.R;
 import in.tosc.studddin.ui.CircularImageView;
 import in.tosc.studddin.ui.FloatingActionButton;
+import in.tosc.studddin.utils.Utilities;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,7 +83,7 @@ public class ViewPerson extends Fragment {
         if (susername.contains("@")) {
             mail.setVisibility(View.VISIBLE);
         }
-        if (makeMeRequest()) {
+        if (makeMeRequest() && Utilities.isNetworkAvailable(getActivity())) {
             facebook.setVisibility(View.VISIBLE);
         }
         if (ParseTwitterUtils.getTwitter().getUserId() != null) {
@@ -176,7 +177,10 @@ public class ViewPerson extends Fragment {
                             GraphResponse response) {
                         try {
                             facebook.setVisibility(View.VISIBLE);
-                            facebookId = object.getString("id");
+
+                       if(object!=null)
+                           facebookId = object.getString("id");
+
                         } catch (JSONException e1) {
                             e1.printStackTrace();
                         }

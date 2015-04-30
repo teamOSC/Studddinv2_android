@@ -173,7 +173,14 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
         currentuser = User.getUsername();
         currentuseremail = User.getString(ParseTables.Users.EMAIL);
-        currentuserinstituition = User.getString(ParseTables.Users.INSTITUTE);
+        if(ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE)!=null)
+        {
+//            currentuserinstituition = ParseUser.getCurrentUser().getParseObject(ParseTables.Users.INSTITUTE).getString(ParseTables.College.NAME);
+        }
+        else{
+            currentuserinstituition = " - " ;
+        }
+
         currentusername = User.getString(ParseTables.Users.NAME);
         currentuserqualification = User.getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = User.getParseGeoPoint(ParseTables.Users.LOCATION);
@@ -186,6 +193,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
         currentuserInterestsQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         currentuserInterestsQuery.whereEqualTo("username", currentuser);
         currentuserInterestsQuery.include(ParseTables.Users.INTERESTS);
+        currentuserInterestsQuery.include(ParseTables.Users.INSTITUTE);
         currentuserInterestsQuery.getFirstInBackground(new GetCallback<ParseUser>() {
             public void done(final ParseUser user, ParseException e) {
                 if (user == null) {
@@ -220,6 +228,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
                     ParseQuery<ParseUser> query = ParseUser.getQuery();
                     query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
                     query.include(ParseTables.Users.INTERESTS);
+                    query.include(ParseTables.Users.INSTITUTE);
                     query.whereEqualTo(ParseTables.Users.INTERESTS, currentUserInterestsList.get(c));
 
                     query.findInBackground(new FindCallback<ParseUser>() {
@@ -243,17 +252,18 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
 
     public void doneFetchingPeople(List<ParseUser> objects) {
+        listOfPeople.clear();
 
-        HashMap<String, Boolean> existingelement = new HashMap<String, Boolean>();
+        HashMap<String,String> existingElement = new HashMap<>();
 
-        existingelement.clear();
+        existingElement.clear();
 
         for (ParseUser pu : objects) {
             //access the data associated with the ParseUser using the get method
             //pu.getString("key") or pu.get("key")
 
             if (!pu.getUsername().equals(currentuser) && pu.getBoolean(ParseTables.Users.FULLY_REGISTERED)) {
-                if (!existingelement.containsKey(pu.getUsername())) {
+                if (!existingElement.containsKey(pu.getUsername())) {
 
                     each = new EachRow3();
                     each.cname = pu.getString(ParseTables.Users.NAME);
@@ -277,8 +287,14 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
 
                     each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
-                    each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
-                    // each.cdistance = pu.getString(ParseTables.Users.NAME);
+                    if(pu.getParseObject(ParseTables.Users.INSTITUTE)!=null)
+                    {
+                        each.cinstituition = pu.getParseObject(ParseTables.Users.INSTITUTE).getString(ParseTables.College.NAME);
+                    }
+                    else{
+                        currentuserinstituition = " - " ;
+                    }
+                                      // each.cdistance = pu.getString(ParseTables.Users.NAME);
                     each.cusername = pu.getString(ParseTables.Users.USERNAME);
                     each.cauthData = pu.getString(ParseTables.Users.AUTHORIZATION);
 
@@ -302,7 +318,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
 
                     listOfPeople.add(each);
-                    existingelement.put(pu.getUsername(), true);
+                    existingElement.put(pu.getUsername(),"true");
                 }
             }
         }
@@ -327,7 +343,13 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
         currentuser = User.getUsername();
         currentuseremail = User.getString(ParseTables.Users.EMAIL);
-        currentuserinstituition = User.getString(ParseTables.Users.INSTITUTE);
+        if(ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE)!=null)
+        {
+//            currentuserinstituition = ParseUser.getCurrentUser().getParseObject(ParseTables.Users.INSTITUTE).getString(ParseTables.College.NAME);
+        }
+        else{
+            currentuserinstituition = " - " ;
+        }
         currentusername = User.getString(ParseTables.Users.NAME);
         currentuserqualification = User.getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = User.getParseGeoPoint(ParseTables.Users.LOCATION);
@@ -340,6 +362,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
         currentuserInterestsQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         currentuserInterestsQuery.whereEqualTo("username", currentuser);
         currentuserInterestsQuery.include(ParseTables.Users.INTERESTS);
+        currentuserInterestsQuery.include(ParseTables.Users.INSTITUTE);
         currentuserInterestsQuery.getFirstInBackground(new GetCallback<ParseUser>() {
             public void done(final ParseUser user, ParseException e) {
                 if (user == null) {
@@ -377,6 +400,8 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
                     query.whereEqualTo(ParseTables.Users.INTERESTS, currentUserInterestsList.get(c));
                     query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
                     query.include(ParseTables.Users.INTERESTS);
+                    query.include(ParseTables.Users.INSTITUTE);
+
 
 
                     query.findInBackground(new FindCallback<ParseUser>() {

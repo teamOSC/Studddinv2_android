@@ -168,7 +168,12 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         String currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
-        String currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
+        String currentuserinstituition =null;
+        if(ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE)!=null)
+        {
+//            currentuserinstituition = ParseUser.getCurrentUser().getParseObject(ParseTables.Users.INSTITUTE).getString(ParseTables.College.NAME);
+        }
+
         String currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
         String currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
@@ -183,9 +188,11 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.include(ParseTables.Users.INTERESTS);
+        query.include(ParseTables.Users.INSTITUTE);
 
-        if (currentuserinstituition != null)
-            query.whereMatches(ParseTables.Users.INSTITUTE, "(" + currentuserinstituition + ")", "i");
+
+        if(ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE)!=null)
+            query.whereEqualTo(ParseTables.Users.INSTITUTE,ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE));
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(final List<ParseUser> objects, ParseException e) {
                 if (e == null) {
@@ -230,8 +237,15 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
 
 
                 each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
-                each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
-//                        each.cdistance = pu.getString(ParseTables.Users.NAME);
+                if(pu.get(ParseTables.Users.INSTITUTE)!=null)
+                {
+                    each.cinstituition = pu.getParseObject(ParseTables.Users.INSTITUTE).getString(ParseTables.College.NAME);
+                }
+                else{
+                    currentuserinstituition = " - " ;
+                }
+
+                //                        each.cdistance = pu.getString(ParseTables.Users.NAME);
                 each.cusername = pu.getString(ParseTables.Users.USERNAME);
                 each.cauthData = pu.getString(ParseTables.Users.AUTHORIZATION);
 
@@ -280,7 +294,15 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         String currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
-        String currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
+        String currentuserinstituition ;
+        if(ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE)!=null)
+        {
+//            currentuserinstituition = ParseUser.getCurrentUser().getParseObject(ParseTables.Users.INSTITUTE).getString(ParseTables.College.NAME);
+        }
+        else{
+            currentuserinstituition = null;
+        }
+
         String currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
         String currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
@@ -295,9 +317,10 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
         query.include(ParseTables.Users.INTERESTS);
+        query.include(ParseTables.Users.INSTITUTE);
 
-        if (currentuserinstituition != null)
-            query.whereMatches(ParseTables.Users.INSTITUTE, "(" + currentuserinstituition + ")", "i");
+        if(ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE)!=null)
+            query.whereEqualTo(ParseTables.Users.INSTITUTE,ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE));
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(final List<ParseUser> objects, ParseException e) {
                 if (e == null) {
