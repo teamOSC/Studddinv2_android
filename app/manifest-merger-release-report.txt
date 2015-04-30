@@ -55,7 +55,9 @@ MERGED from com.android.support:support-v4:21.0.3:16:5
 MERGED from com.android.support:recyclerview-v7:21.0.3:17:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
 MERGED from com.android.support:cardview-v7:21.0.3:16:5
-MERGED from com.facebook.android:facebook-android-sdk:3.21.1:24:5
+MERGED from com.facebook.android:facebook-android-sdk:4.0.0:28:5
+MERGED from com.android.support:support-v4:21.0.3:16:5
+MERGED from com.android.support:support-v4:21.0.3:16:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
 MERGED from com.google.android.gms:play-services:6.5.87:20:5
 MERGED from com.android.support:support-v4:21.0.3:16:5
@@ -119,7 +121,7 @@ action#luminous.ACTION_MULTIPLE_PICK
 ADDED from AndroidManifest.xml:47:17
 	android:name
 		ADDED from AndroidManifest.xml:47:25
-activity#com.facebook.LoginActivity
+activity#com.facebook.FacebookActivity
 ADDED from AndroidManifest.xml:52:9
 	android:label
 		ADDED from AndroidManifest.xml:54:13
@@ -162,8 +164,16 @@ MERGED from com.android.support:support-v4:21.0.3:15:5
 MERGED from com.android.support:recyclerview-v7:21.0.3:15:5
 MERGED from com.android.support:support-v4:21.0.3:15:5
 MERGED from com.android.support:cardview-v7:21.0.3:15:5
-MERGED from com.facebook.android:facebook-android-sdk:3.21.1:20:5
+MERGED from com.facebook.android:facebook-android-sdk:4.0.0:24:5
 MERGED from com.android.support:support-v4:21.0.3:15:5
+MERGED from com.facebook.fresco:fresco:0.4.0:5:5
+MERGED from com.facebook.fresco:imagepipeline:0.4.0:5:5
+MERGED from com.android.support:support-v4:21.0.3:15:5
+MERGED from com.facebook.fresco:fbcore:0.4.0:5:5
+MERGED from com.facebook.fresco:fbcore:0.4.0:5:5
+MERGED from com.facebook.fresco:drawee:0.4.0:5:5
+MERGED from com.android.support:support-v4:21.0.3:15:5
+MERGED from com.facebook.fresco:fbcore:0.4.0:5:5
 MERGED from com.google.android.gms:play-services:6.5.87:18:5
 MERGED from com.android.support:support-v4:21.0.3:15:5
 MERGED from com.android.support:palette-v7:21.0.0:15:5
