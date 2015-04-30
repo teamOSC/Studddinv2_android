@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
@@ -173,8 +174,13 @@ public class PeopleNearmeFragment extends PeopleListFragment {
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
-        currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
-        currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
+        if(ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE)!=null)
+        {
+//            currentuserinstituition = ParseUser.getCurrentUser().getParseObject(ParseTables.Users.INSTITUTE).getString(ParseTables.College.NAME);
+        }
+        else{
+            currentuserinstituition = " - " ;
+        }        currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
         currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
 
@@ -186,13 +192,15 @@ public class PeopleNearmeFragment extends PeopleListFragment {
 
         // DUMMY DATA SO THAT IT DISPLAYS SOMETHING
         if (userlocation == null || userlocation.getLatitude() == 0) {
-            userlocation = new ParseGeoPoint(28.7434552, 77.1205612);
+            userlocation = new ParseGeoPoint(28.7434552,77.1205612);
         }
 
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.whereNear(ParseTables.Users.LOCATION, userlocation);
         query.include(ParseTables.Users.INTERESTS);
+        query.include(ParseTables.Users.INSTITUTE);
+
 
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(final List<ParseUser> objects, ParseException e) {
@@ -236,7 +244,14 @@ public class PeopleNearmeFragment extends PeopleListFragment {
                 }
 
                 each.cqualification = pu.getString(ParseTables.Users.QUALIFICATIONS);
-                each.cinstituition = pu.getString(ParseTables.Users.INSTITUTE);
+                if(pu.getParseObject(ParseTables.Users.INSTITUTE)!=null)
+                {
+                    each.cinstituition = pu.getParseObject(ParseTables.Users.INSTITUTE).getString(ParseTables.College.NAME);
+                }
+                else{
+                    each.cinstituition = " - " ;
+                }
+
 //                                          each.cdistance = pu.getString(ParseTables.Users.NAME);
                 each.cusername = pu.getString(ParseTables.Users.USERNAME);
                 JSONObject s = pu.getJSONObject(ParseTables.Users.AUTHORIZATION);
@@ -290,7 +305,13 @@ public class PeopleNearmeFragment extends PeopleListFragment {
 
         currentuser = ParseUser.getCurrentUser().getUsername();
         currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
-        currentuserinstituition = ParseUser.getCurrentUser().getString(ParseTables.Users.INSTITUTE);
+        if(ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE)!=null)
+        {
+            currentuserinstituition = ParseUser.getCurrentUser().getParseObject(ParseTables.Users.INSTITUTE).getString(ParseTables.College.NAME);
+        }
+        else{
+            currentuserinstituition = " - " ;
+        }
         currentusername = ParseUser.getCurrentUser().getString(ParseTables.Users.NAME);
         currentuserqualification = ParseUser.getCurrentUser().getString(ParseTables.Users.QUALIFICATIONS);
         userlocation = ParseUser.getCurrentUser().getParseGeoPoint(ParseTables.Users.LOCATION);
