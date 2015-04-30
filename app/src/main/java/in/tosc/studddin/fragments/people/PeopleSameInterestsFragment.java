@@ -210,7 +210,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
     public void doneFetchingUserInterests(ArrayList<ParseObject> currentUserInterestsList) {
 
-        if (!currentUserInterestsList.isEmpty())
+        if (currentUserInterestsList != null && !currentUserInterestsList.isEmpty())
 
         {
             for (int c = 0; c < currentUserInterestsList.size(); c++) {

@@ -202,6 +202,7 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
 
     public void doneFetchingPeople(List<ParseUser> objects) {
 
+        if (objects == null) return;
 
         for (ParseUser pu : objects) {
             //access the data associated with the ParseUser using the get method
