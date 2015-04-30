@@ -252,11 +252,11 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
 
     public void doneFetchingPeople(List<ParseUser> objects) {
+        listOfPeople.clear();
 
         HashMap<String,String> existingElement = new HashMap<>();
 
         existingElement.clear();
-//        listOfPeople.clear();
 
         for (ParseUser pu : objects) {
             //access the data associated with the ParseUser using the get method
