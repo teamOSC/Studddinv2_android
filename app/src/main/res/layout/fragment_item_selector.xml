@@ -24,7 +24,7 @@
             android:paddingTop="3dp"
             android:layout_height="wrap_content"
             android:padding="20dp"
-            android:hint="search or add your own"
+            android:hint="Search"
             android:textColorHint="@android:color/white"
             android:textColor="@android:color/white"
             android:background="@drawable/signon_edittext"/>
