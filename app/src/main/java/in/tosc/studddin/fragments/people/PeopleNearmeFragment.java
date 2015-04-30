@@ -307,7 +307,7 @@ public class PeopleNearmeFragment extends PeopleListFragment {
         currentuseremail = ParseUser.getCurrentUser().getString(ParseTables.Users.EMAIL);
         if(ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE)!=null)
         {
-            currentuserinstituition = ParseUser.getCurrentUser().getParseObject(ParseTables.Users.INSTITUTE).getString(ParseTables.College.NAME);
+//            currentuserinstituition = ParseUser.getCurrentUser().getParseObject(ParseTables.Users.INSTITUTE).getString(ParseTables.College.NAME);
         }
         else{
             currentuserinstituition = " - " ;

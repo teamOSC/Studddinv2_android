@@ -191,6 +191,7 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
         query.include(ParseTables.Users.INSTITUTE);
 
 
+        if(ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE)!=null)
             query.whereEqualTo(ParseTables.Users.INSTITUTE,ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE));
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(final List<ParseUser> objects, ParseException e) {
@@ -296,7 +297,7 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
         String currentuserinstituition ;
         if(ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE)!=null)
         {
-            currentuserinstituition = ParseUser.getCurrentUser().getParseObject(ParseTables.Users.INSTITUTE).getString(ParseTables.College.NAME);
+//            currentuserinstituition = ParseUser.getCurrentUser().getParseObject(ParseTables.Users.INSTITUTE).getString(ParseTables.College.NAME);
         }
         else{
             currentuserinstituition = null;
@@ -317,8 +318,8 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
         query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
         query.include(ParseTables.Users.INTERESTS);
 
-        if (currentuserinstituition != null)
-            query.whereMatches(ParseTables.Users.INSTITUTE, "(" + currentuserinstituition + ")", "i");
+        if(ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE)!=null)
+            query.whereEqualTo(ParseTables.Users.INSTITUTE,ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE));
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(final List<ParseUser> objects, ParseException e) {
                 if (e == null) {

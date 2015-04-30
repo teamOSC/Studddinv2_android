@@ -253,16 +253,17 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
     public void doneFetchingPeople(List<ParseUser> objects) {
 
-        HashMap<String, Boolean> existingelement = new HashMap<String, Boolean>();
+        HashMap<String,String> existingElement = new HashMap<>();
 
-        existingelement.clear();
+        existingElement.clear();
+        listOfPeople.clear();
 
         for (ParseUser pu : objects) {
             //access the data associated with the ParseUser using the get method
             //pu.getString("key") or pu.get("key")
 
             if (!pu.getUsername().equals(currentuser) && pu.getBoolean(ParseTables.Users.FULLY_REGISTERED)) {
-                if (!existingelement.containsKey(pu.getUsername())) {
+                if (!existingElement.containsKey(pu.getUsername())) {
 
                     each = new EachRow3();
                     each.cname = pu.getString(ParseTables.Users.NAME);
@@ -317,7 +318,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
 
                     listOfPeople.add(each);
-                    existingelement.put(pu.getUsername(), true);
+                    existingElement.put(pu.getUsername(),"true");
                 }
             }
         }
@@ -344,7 +345,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
         currentuseremail = User.getString(ParseTables.Users.EMAIL);
         if(ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE)!=null)
         {
-            currentuserinstituition = ParseUser.getCurrentUser().getParseObject(ParseTables.Users.INSTITUTE).getString(ParseTables.College.NAME);
+//            currentuserinstituition = ParseUser.getCurrentUser().getParseObject(ParseTables.Users.INSTITUTE).getString(ParseTables.College.NAME);
         }
         else{
             currentuserinstituition = " - " ;

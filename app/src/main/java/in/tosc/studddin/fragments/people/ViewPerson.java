@@ -178,7 +178,9 @@ public class ViewPerson extends Fragment {
                         try {
                             facebook.setVisibility(View.VISIBLE);
 
-                            facebookId = object.getString("id");
+                       if(object!=null)
+                           facebookId = object.getString("id");
+
                         } catch (JSONException e1) {
                             e1.printStackTrace();
                         }
