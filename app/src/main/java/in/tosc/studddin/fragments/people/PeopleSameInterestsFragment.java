@@ -256,7 +256,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
         HashMap<String,String> existingElement = new HashMap<>();
 
         existingElement.clear();
-        listOfPeople.clear();
+//        listOfPeople.clear();
 
         for (ParseUser pu : objects) {
             //access the data associated with the ParseUser using the get method
@@ -362,6 +362,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
         currentuserInterestsQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         currentuserInterestsQuery.whereEqualTo("username", currentuser);
         currentuserInterestsQuery.include(ParseTables.Users.INTERESTS);
+        currentuserInterestsQuery.include(ParseTables.Users.INSTITUTE);
         currentuserInterestsQuery.getFirstInBackground(new GetCallback<ParseUser>() {
             public void done(final ParseUser user, ParseException e) {
                 if (user == null) {

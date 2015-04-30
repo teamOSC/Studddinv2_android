@@ -333,6 +333,7 @@ public class PeopleNearmeFragment extends PeopleListFragment {
         query.whereNear(ParseTables.Users.LOCATION, userlocation);
         query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
         query.include(ParseTables.Users.INTERESTS);
+        query.include(ParseTables.Users.INSTITUTE);
         query.findInBackground(new FindCallback<ParseUser>() {
             public void done(final List<ParseUser> objects, ParseException e) {
                 if (e == null) {

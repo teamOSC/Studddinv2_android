@@ -317,6 +317,7 @@ public class PeopleSameInstituteFragment extends PeopleListFragment {
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.whereMatches(ParseTables.Users.NAME, "(" + textSearch + ")", "i");
         query.include(ParseTables.Users.INTERESTS);
+        query.include(ParseTables.Users.INSTITUTE);
 
         if(ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE)!=null)
             query.whereEqualTo(ParseTables.Users.INSTITUTE,ParseUser.getCurrentUser().get(ParseTables.Users.INSTITUTE));
