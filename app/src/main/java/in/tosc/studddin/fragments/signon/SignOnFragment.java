@@ -415,7 +415,11 @@ public class SignOnFragment extends Fragment implements GoogleApiClient.Connecti
                                                     new FetchUserPhotos(new FetchUserPhotos.PhotosFetcher() {
                                                         @Override
                                                         public String downloadCoverPhoto() {
-                                                            return currentPerson.getCover().getCoverPhoto().getUrl();
+                                                            Person.Cover cover = currentPerson.getCover();
+                                                            if (cover != null) {
+                                                                return cover.getCoverPhoto().getUrl();
+                                                            }
+                                                            return null;
                                                         }
 
                                                         @Override
