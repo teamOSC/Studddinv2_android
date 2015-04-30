@@ -9,15 +9,18 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -125,6 +128,20 @@ public class NotesSearchFragment extends Fragment {
 
         addNotesButton = (FloatingActionButton) rootView.findViewById(R.id.notes_button_add);
         searchEdTxt = (EditText) rootView.findViewById(R.id.notes_search);
+        searchEdTxt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    performSearch(v.getText().toString());
+                    ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow((v).getWindowToken(),0);
+                    return true;
+                }
+
+                return false;
+            }
+        });
         searchButton = (ImageButton) rootView.findViewById(R.id.searchblahblah);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,8 +196,10 @@ public class NotesSearchFragment extends Fragment {
     }
 
     public void getNotes() {
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+        clear_lists();
+        ParseQuery<ParseObject> query = new ParseQuery<>(
                 "Notes");
+
         query.orderByDescending("createdAt");
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -206,6 +225,55 @@ public class NotesSearchFragment extends Fragment {
         });
     }
 
+    public void performSearch(final String s) {
+
+        if(s.equals("")) {
+            Toast.makeText(getActivity(),"Please Enter Something",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ParseQuery<ParseObject> query = new ParseQuery<>(
+                "Notes");
+
+        clear_lists();
+        query.whereContains("topicName",s);
+        query.orderByDescending("createdAt");
+
+        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+
+//                Log.d("Search notes","result size : "+String.valueOf( parseObjects.size())+" "+s);
+
+                for (ParseObject notes : parseObjects) {
+
+                    notesBranchName.add((String) notes.get("branchName"));
+                    notesSubjectName.add((String) notes.get("subjectName"));
+                    notesCollegeName.add((String) notes.get("collegeName"));
+                    notesTopicName.add((String) notes.get("topicName"));
+                    uploadedBy.add((String) notes.get("userName"));
+                    notesFirstImage.add((ArrayList<ParseFile>) notes.get("notesImages"));
+
+
+                }
+                notesCustomGridViewAdapter = new NotesCustomGridViewAdapter(getActivity(), notesCollegeName,
+                        notesBranchName, notesTopicName, notesSubjectName, notesFirstImage, uploadedBy);
+
+                mRecyclerView.setAdapter(notesCustomGridViewAdapter);
+//                notesCustomGridViewAdapter.notifyDataSetChanged();
+            }
+
+        });
+    }
+
+    private void clear_lists() {
+        notesBranchName.clear();
+        notesSubjectName.clear();
+        notesCollegeName.clear();
+        notesTopicName.clear();
+        uploadedBy.clear();
+        notesFirstImage.clear();
+    }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);

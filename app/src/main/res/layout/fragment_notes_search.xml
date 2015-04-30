@@ -48,13 +48,13 @@
 
                     <EditText
                         android:id="@+id/notes_search"
+                        android:imeOptions="actionSearch"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
                         android:background="@android:color/transparent"
                         android:gravity="center_vertical"
                         android:hint="Search here"
-                        android:imeOptions="actionDone"
                         android:paddingRight="60dp"
                         android:singleLine="true" />
                 </LinearLayout>
