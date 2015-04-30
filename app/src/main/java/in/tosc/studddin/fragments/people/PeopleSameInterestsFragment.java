@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -45,6 +46,8 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
     ParseGeoPoint userlocation = new ParseGeoPoint(0, 0);
     EditText search;
     ParseUser User = ParseUser.getCurrentUser();
+
+    HashMap<String,String> existingElement = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -218,6 +221,9 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
     public void doneFetchingUserInterests(ArrayList<ParseObject> currentUserInterestsList) {
 
+
+                existingElement.clear();
+
         if (currentUserInterestsList != null && !currentUserInterestsList.isEmpty())
 
         {
@@ -252,20 +258,19 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
 
     public void doneFetchingPeople(List<ParseUser> objects) {
-        listOfPeople.clear();
 
-        HashMap<String,String> existingElement = new HashMap<>();
 
-        existingElement.clear();
 
         for (ParseUser pu : objects) {
             //access the data associated with the ParseUser using the get method
             //pu.getString("key") or pu.get("key")
 
-            if (!pu.getUsername().equals(currentuser) && pu.getBoolean(ParseTables.Users.FULLY_REGISTERED)) {
-                if (!existingElement.containsKey(pu.getUsername())) {
+            String name = pu.getUsername();
 
-                    each = new EachRow3();
+            if (!pu.getUsername().equals(currentuser) && pu.getBoolean(ParseTables.Users.FULLY_REGISTERED)) {
+                if (!existingElement.containsKey(name)) {
+
+                    EachRow3 each = new EachRow3();
                     each.cname = pu.getString(ParseTables.Users.NAME);
 
 
@@ -318,7 +323,7 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
 
 
                     listOfPeople.add(each);
-                    existingElement.put(pu.getUsername(),"true");
+                    existingElement.put(name,name);
                 }
             }
         }
@@ -387,6 +392,9 @@ public class PeopleSameInterestsFragment extends PeopleListFragment {
     }
 
     public void doneFetchingUserInterestsForSearch(ArrayList<ParseObject> currentUserInterestsList, String textSearch) {
+
+        existingElement.clear();
+
 
         if (!currentUserInterestsList.isEmpty())
 
