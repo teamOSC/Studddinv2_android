@@ -36,6 +36,7 @@
             android:layout_marginTop="50dp"
             android:layout_alignParentRight ="true"
             android:layout_marginRight="50dp"
+            android:onClick="jumpToPage"
 
             />
 
@@ -44,11 +45,12 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:numColumns="auto_fit"
+        android:numColumns="2"
         android:gravity="center"
-        android:columnWidth="100dp"
+        android:columnWidth="320dp"
         android:stretchMode="columnWidth"
-        android:id="@+id/notes_gridview">
+        android:id="@+id/notes_gridview"
+        >
 
         </GridView>
     </LinearLayout>

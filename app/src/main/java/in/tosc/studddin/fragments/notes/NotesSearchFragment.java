@@ -15,6 +15,7 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import in.tosc.studddin.R;
 
@@ -133,11 +134,24 @@ public class NotesSearchFragment extends Fragment {
 
 
 
-//        addNotesButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//
+        addNotesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Fragment viewPagerOfNotesFragment = getParentFragment();
+
+                List<Fragment> currFragment = viewPagerOfNotesFragment.getChildFragmentManager().getFragments();
+                FragmentTransaction fragmentTransaction = viewPagerOfNotesFragment.getFragmentManager().beginTransaction();
+                fragmentTransaction.show(currFragment.get(0));
+
+                fragmentTransaction.hide(currFragment.get(1));
+
+
+
+
+
+            }
+
 //                FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
 ////                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager(); //getFragmentManager().beginTransaction();
 //
@@ -147,12 +161,12 @@ public class NotesSearchFragment extends Fragment {
 //                NotesUploadFragment newFragment = new NotesUploadFragment();
 //
 //                fragmentTransaction.replace(R.id.notes_pager, newFragment).addToBackStack(null).commit();
-//
-//                // Start the animated transition.
-//
-//            }
-//        });
-//
+
+            // Start the animated transition.
+
+
+        });
+
         return rootView;
 
     }
