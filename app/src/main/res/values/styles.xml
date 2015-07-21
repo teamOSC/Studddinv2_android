@@ -10,6 +10,11 @@
         <item name="windowActionBar">false</item>
 
     </style>
+    
+    <style name="btn">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 
     <style name="myCustomTheme" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:textColorPrimary">@android:color/black</item>

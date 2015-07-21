@@ -22,6 +22,7 @@
             android:hint="@string/notes_search"
             android:id="@+id/notes_search"
             android:layout_marginLeft="50dp"
+            android:imeOptions="actionSearch"
             android:layout_alignParentTop = "true"
             android:layout_marginTop="50dp" />
 
